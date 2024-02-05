@@ -3,6 +3,7 @@ import struct
 
 # define 
 ACPI_HEADER_LENGTH = 6
+START_BYTE = 0x68
 
 TESTFR_ACT = 0x43
 TESTFR_CON = 0x83

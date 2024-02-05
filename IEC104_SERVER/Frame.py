@@ -1,18 +1,57 @@
 import struct
 from struct import calcsize
 import acpi
+import Iformat
+import Sformat
+import Uformat
 
-start_byte = 0x68
+
 
 
 class Frame:
     def __init__(self):
-        pass
+        self.start_byte = acpi.START_BYTE
+        self.length = acpi.ACPI_HEADER_LENGTH
+        self.structure = None
         
+    def parser(self, packet):
+        header = self.unpack_header(packet)
+        data = 0
+        
+        if not (header[2] & 1):
+            print(f"I format {header[2] & 0xFF}")
+            return Iformat(data, 0, 1)
+        
+        elif (header[2] & 3) == 1:
+            print(f"S format {header[2] & 0xFF}")
+            return Sformat(0)
+        
+        elif (header[2] & 3) == 3: 
+            print(f"U format {header[2] & 0xFF}")
+            return Uformat
+        
+        else:
+            print("Nejaky zpičený format")
+            return None  
+    
+    @property
+    def structure(self):
+        # here is specify format for each format 
+        return self.structure
+    
+    @structure.setter
+    def structure(self, value):
+        self.structure = value
+        
+    @structure.deleter
+    def structure(self):
+        del self.structure
+        
+    
     def pack(self, first = 0, second = 0, third = 0, fourth = 0, data = 0):
         # Vytvoření binární reprezentace hlavičky IPv4
         packed_header = struct.pack('!BBBBBB', 
-                                    start_byte, # start byte
+                                    self.start_byte, # start byte
                                     0,  # Total Length (bude doplněno později)
                                     0,  # 1. ridici pole
                                     0,  # 2. ridici pole
@@ -26,7 +65,7 @@ class Frame:
             total_length = len(packed_header)
             # Doplnění délky do hlavičky
             packed_header = struct.pack(f"{'B' * acpi.ACPI_HEADER_LENGTH}", 
-                                        start_byte, # start byte
+                                        self.start_byte, # start byte
                                         total_length,  # Total Length pouze hlavička
                                         first,   # 1. ridici pole
                                         second,  # 2. ridici pole
@@ -41,7 +80,7 @@ class Frame:
 
             # Doplnění délky do hlavičky
             packed_header = struct.pack(f"{'B' * acpi.ACPI_HEADER_LENGTH}", 
-                                        start_byte, # start byte
+                                        self.start_byte, # start byte
                                         total_length,  # Total Length i s hlavičkou
                                         first,   # 1. ridici pole
                                         second,  # 2. ridici pole
@@ -93,4 +132,5 @@ class Frame:
             shift += 8
         return number
 
+    
     
