@@ -3,26 +3,42 @@ import struct
 
 
 class SFormat(Frame):
-    def __init__(self):
+    def __init__(self, rsn = 0):
         super().__init__(self)
-        self.rsn = 0
+        self.rsn = rsn
         
 
-    @property
+    
+         
+        
+    @structure.setter
     def structure(self):
-        # here is specify format for S format 
-        total_length = len(packed_header)
+        # here is specify format for S format
+        third = 0
+        fourth = 0
+        third |= (self.rsn & 0x7F) << 1
+        fourth |= (self.rsn >> 7) & 0xFF
             # Doplnění délky do hlavičky
-        packed_header = struct.pack(f"{'B' * acpi.ACPI_HEADER_LENGTH}", 
+        packed_header = struct.pack(f"{'B' * self.length}", 
                                     self.start_byte, # start byte
-                                    total_length,  # Total Length pouze hlavička
-                                    first,   # 1. ridici pole
-                                    second,  # 2. ridici pole
+                                    self.length,  # Total Length pouze hlavička
+                                    1,   # 1. ridici pole
+                                    0,  # 2. ridici pole
                                     third,   # 3. ridici pole
                                     fourth,  # 4. ridici pole
         )
-        return self.structure
+        self.structure = packed_header
     
-    @structure.setter
-    def structure(self, value):
-        self.structure = value
+    
+     
+    @property
+    def inkrement_rsn(self):
+        return self.rsn
+            
+    @inkrement_rsn.setter
+    def inkrement_rsn(self):
+        self.rsn += 1
+        
+        
+    
+    

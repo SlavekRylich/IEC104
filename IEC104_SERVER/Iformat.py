@@ -1,3 +1,4 @@
+import math
 import struct
 import Frame
 
@@ -15,21 +16,29 @@ class IFormat(Frame):
     def rsn_incremetn(self):
         return self.rsn + 1
     
-    @property
+    
+    @structure.setter
     def structure(self):
-        # here is specify format for I format 
-        total_length = len(packed_header)
+        # here is specify format for S format
+        first = 0
+        second = 0
+        third = 0
+        fourth = 0
+        first |= (self.ssn & 0x7F) << 1
+        second |= (self.ssn >> 7) & 0xFF
+        third |= (self.rsn & 0x7F) << 1
+        fourth |= (self.rsn >> 7) & 0xFF
+        
+        # zaokrouhlední dat na celé byty
+        self.length += math.ceil(len(self.data) / 8)
+        
             # Doplnění délky do hlavičky
-        packed_header = struct.pack(f"{'B' * acpi.ACPI_HEADER_LENGTH}", 
+        packed_header = struct.pack(f"{'B' * self.length}", 
                                     self.start_byte, # start byte
-                                    total_length,  # Total Length pouze hlavička
+                                    self.length,  # Total Length pouze hlavička
                                     first,   # 1. ridici pole
                                     second,  # 2. ridici pole
                                     third,   # 3. ridici pole
                                     fourth,  # 4. ridici pole
         )
-        return self.structure
-    
-    @structure.setter
-    def structure(self, value):
-        self.structure = value
+        self.structure = packed_header

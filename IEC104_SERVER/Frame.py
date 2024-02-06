@@ -9,15 +9,27 @@ import Uformat
 
 
 class Frame:
+    # třídní proměná pro uchování unikátní id každé instance
+    _id = 0
+    
     def __init__(self):
         self.start_byte = acpi.START_BYTE
         self.length = acpi.ACPI_HEADER_LENGTH
         self.structure = None
+        Frame._id += 1  
+        self._id = Frame._id
         
+    @property
+    def id(self):
+        return self.id
+    
+    register_instance(instance)
+    
+    # prijme paket, zjisti o jaky format se jedna a vytvori odpovidajici instance    
     def parser(self, packet):
         header = self.unpack_header(packet)
         data = 0
-        
+    
         if not (header[2] & 1):
             print(f"I format {header[2] & 0xFF}")
             return Iformat(data, 0, 1)
@@ -35,9 +47,20 @@ class Frame:
             return None  
     
     @property
+    def length(self):
+        return self.length
+    
+    # opravit korektne, toto je spatny vypocet delky!!!
+    @length.setter
+    def length(self):
+        self.length += len(self.structure)
+    
+    # vraci strukturu ramce
+    @property
     def structure(self):
         # here is specify format for each format 
         return self.structure
+    
     
     @structure.setter
     def structure(self, value):
