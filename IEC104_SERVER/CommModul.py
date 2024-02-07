@@ -11,6 +11,8 @@ class CommModule:
         self.connected = False
         self.frame = Frame.Frame()
     
+    
+    
     ## ********* GENERAL ********* ##
     
     def send_data(self, data):

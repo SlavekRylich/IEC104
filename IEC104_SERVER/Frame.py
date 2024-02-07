@@ -11,6 +11,7 @@ import Uformat
 class Frame:
     # třídní proměná pro uchování unikátní id každé instance
     _id = 0
+    instances = []
     
     def __init__(self):
         self.start_byte = acpi.START_BYTE
@@ -18,12 +19,15 @@ class Frame:
         self.structure = None
         Frame._id += 1  
         self._id = Frame._id
+        Frame.instances.append(self)
         
     @property
     def id(self):
         return self.id
     
-    register_instance(instance)
+    @property
+    def get_all_instances(cls):
+        return Frame.instances
     
     # prijme paket, zjisti o jaky format se jedna a vytvori odpovidajici instance    
     def parser(self, packet):
