@@ -1,10 +1,6 @@
 import struct
 from struct import calcsize
 import acpi
-import Iformat
-import Sformat
-import Uformat
-
 
 
 
@@ -12,12 +8,12 @@ class Frame:
     # třídní proměná pro uchování unikátní id každé instance
     _id = 0
     instances = []
+    start_byte = acpi.START_BYTE
     
     def __init__(self):
-        self.start_byte = acpi.START_BYTE
         self.length = acpi.ACPI_HEADER_LENGTH
         self.structure = None
-        Frame._id += 1  
+        Frame._id += 1
         self._id = Frame._id
         Frame.instances.append(self)
         
@@ -36,15 +32,15 @@ class Frame:
     
         if not (header[2] & 1):
             print(f"I format {header[2] & 0xFF}")
-            return Iformat(data, 0, 1)
+            return IFormat(data, 0, 1)
         
         elif (header[2] & 3) == 1:
             print(f"S format {header[2] & 0xFF}")
-            return Sformat(0)
+            return SFormat(0)
         
         elif (header[2] & 3) == 3: 
             print(f"U format {header[2] & 0xFF}")
-            return Uformat
+            return UFormat()
         
         else:
             print("Nejaky zpičený format")
@@ -56,8 +52,12 @@ class Frame:
     
     # opravit korektne, toto je spatny vypocet delky!!!
     @length.setter
-    def length(self):
-        self.length += len(self.structure)
+    def length(self, length):
+        self.length += length
+    
+    @property
+    def get_length_of_data(self):
+        return self.length - acpi.ACPI_HEADER_LENGTH
     
     # vraci strukturu ramce
     @property
@@ -73,49 +73,6 @@ class Frame:
     @structure.deleter
     def structure(self):
         del self.structure
-        
-    
-    def pack(self, first = 0, second = 0, third = 0, fourth = 0, data = 0):
-        # Vytvoření binární reprezentace hlavičky IPv4
-        packed_header = struct.pack('!BBBBBB', 
-                                    self.start_byte, # start byte
-                                    0,  # Total Length (bude doplněno později)
-                                    0,  # 1. ridici pole
-                                    0,  # 2. ridici pole
-                                    0,  # 3. ridici pole
-                                    0   # 4. ridici pole
-        )
-        
-        
-        # Výpočet délky APDU
-        if not data:
-            total_length = len(packed_header)
-            # Doplnění délky do hlavičky
-            packed_header = struct.pack(f"{'B' * acpi.ACPI_HEADER_LENGTH}", 
-                                        self.start_byte, # start byte
-                                        total_length,  # Total Length pouze hlavička
-                                        first,   # 1. ridici pole
-                                        second,  # 2. ridici pole
-                                        third,   # 3. ridici pole
-                                        fourth,  # 4. ridici pole
-            )
-            return packed_header
-        
-        else:
-            packed_data = self.encode_varint(data)
-            total_length = len(packed_header) + len(packed_data)
-
-            # Doplnění délky do hlavičky
-            packed_header = struct.pack(f"{'B' * acpi.ACPI_HEADER_LENGTH}", 
-                                        self.start_byte, # start byte
-                                        total_length,  # Total Length i s hlavičkou
-                                        first,   # 1. ridici pole
-                                        second,  # 2. ridici pole
-                                        third,   # 3. ridici pole
-                                        fourth,  # 4. ridici pole
-            )
-        
-            return packed_header + packed_data
     
     
     def unpack_header(self, packed_header, length):

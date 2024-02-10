@@ -1,15 +1,21 @@
 import socket
-import pickle
 import acpi
-import time
 import struct
-import Frame
+from Iformat import IFormat
+from Sformat import SFormat
+from Uformat import UFormat
+
+
 
 class CommModule:
     def __init__(self, sock):
         self.sock = sock
         self.connected = False
-        self.frame = Frame.Frame()
+        self.buffer_all_frames = []
+        self.buffer_I_frames = []
+        self.buffer_S_frames = []
+        self.buffer_U_frames = []
+    
     
     
     
@@ -19,10 +25,119 @@ class CommModule:
         print(f"odeslány data: {data}")
         return self.sock.sendall(data)
     
-    def receive_length(self, length=acpi.ACPI_HEADER_LENGTH):
-        print(f"Receive {length} bytes.")
-        return self.sock.recv(length)
+    def receive_length(self):
+        receive_packet = self.sock.recv(2)
+        
+        # pokud se vubec jedna o iec104 paket
+        if receive_packet[0] == 0x68:
+            
+            # prijeti zbytku paketu dle délky v hlavičce
+            apdu=self.sock.recv(receive_packet[1]) 
+            acpi_header = apdu[:(acpi.ACPI_HEADER_LENGTH - 1)]
+            
+            frame_format = self.what_format(acpi_header)
+            
+            if frame_format == "I":
+                
+                ssn = (acpi_header[1] << 7) + (acpi_header[0] >> 1) 
+                rsn = (acpi_header[3] << 7) + (acpi_header[2] >> 1)
+                asdu_data = apdu[acpi.ACPI_HEADER_LENGTH:]
+                
+                # vytvoreni nove instance Iformatu a vlozeni do bufferu
+                new_instance = IFormat(asdu_data, ssn, rsn)
+                self.buffer_I_frames.append(new_instance)
+                self.buffer_all_frames.append(new_instance)
+                
+                return asdu_data
+                
+            elif frame_format == "S":
+                
+                rsn = (acpi_header[3] << 7) + (acpi_header[2] >> 1)
+                
+                new_instance = SFormat(rsn)
+                self.buffer_S_frames.append(new_instance)
+                self.buffer_all_frames.append(new_instance)
+                
+                # logika potvrzování přijatých dat
+                pass
+            
+                # kód označující že byl proveden U format
+                return 1
+                
+            elif frame_format == "U":
+                first_byte = acpi_header[0]
+                
+                new_instance = UFormat()
+                
+                # STARTDT ACT
+                if first_byte == acpi.STARTDT_ACT:
+                    new_instance.structure(acpi.STARTDT_ACT)
+                    
+                    self.buffer_U_frames.append(new_instance)
+                    self.buffer_all_frames.append(new_instance)
+                    
+                    new_instance = UFormat()
+                    new_instance.structure(acpi.STARTDT_CON)
+                    
+                    self.send_data(new_instance.structure())
+                    print("prijato startdt act, posilam startdt con")
+                    
+                    self.active_session = True
+                    
+                # STOPDT ACT
+                elif first_byte == acpi.STOPDT_ACT:
+                    new_instance.structure(acpi.STOPDT_ACT)
+                    
+                    self.buffer_U_frames.append(new_instance)
+                    self.buffer_all_frames.append(new_instance)
+                    
+                    new_instance = UFormat()
+                    new_instance.structure(acpi.STOPDT_CON)
+                    
+                    self.send_data(new_instance.structure())
+                    
+                    print("prijato stopdt act, posilam stopdt con a přenos je ukončen")
+                    self.active_session = False
+                
+                # TESTDT ACT
+                elif first_byte == acpi.TESTFR_ACT:
+                    new_instance.structure(acpi.TESTFR_ACT)
+                    
+                    self.buffer_U_frames.append(new_instance)
+                    self.buffer_all_frames.append(new_instance)
+                    
+                    new_instance = UFormat()
+                    new_instance.structure(acpi.TESTFR_CON)
+                    
+                    self.send_data(new_instance.structure())
+                    print("prijato testdt act, odeslano testdt. spojeni je aktivní")
+                     
+                # kód označující že byl proveden U format           
+                return 0
+            
+            else:
+                raise Exception("Přijat neznámí formát")
+            
+            
+        return ''
 
+    
+    def what_format(self, first_byte):
+        first_byte = first_byte[0]
+        if not (first_byte & 1):
+            print(f"I format {first_byte & 0xFF}")
+            return "I"
+        elif (first_byte & 3) == 1:
+            print(f"S format {first_byte & 0xFF}")
+            return "S"
+        elif (first_byte & 3) == 3: 
+            print(f"U format {first_byte & 0xFF}")
+            return "U"
+        else:
+            print("Nejaky zpičený format")
+            return None
+        
+        
     def receive_data(self):
         packed_header = None
         # Přijměte první dva byty pro získání délky rámce

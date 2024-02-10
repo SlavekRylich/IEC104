@@ -75,14 +75,13 @@ class Client:
 # Příklad použití
 server_address = ('localhost', 12345)
 
-server = Server(server_address)
-server.start()
+#server = Server(server_address)
+#server.start()
 
 # Čekání na připojení klientů
 time.sleep(1)
 
-client = Client(server_address)
-client.start()
+# #client.start()
 
 
 class CommModule:

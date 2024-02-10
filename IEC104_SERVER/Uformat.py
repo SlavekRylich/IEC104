@@ -1,19 +1,23 @@
-import Frame
+from Frame import Frame
 import struct
 
 
 class UFormat(Frame):
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
         self.type = None
         
+    @property
+    def structure(self):
+        # here is specify format for each format 
+        return self.structure  
     
     @structure.setter
     def structure(self, type): # what type STARTDT, STOPDT, TESTDT
         self.type = type
             # Doplnění délky do hlavičky
         packed_header = struct.pack(f"{'B' * self.length}", 
-                                    self.start_byte, # start byte
+                                    Frame.Frame.start_byte, # start byte
                                     self.length,  # Total Length pouze hlavička
                                     self.type,   # 1. ridici pole
                                     0,  # 2. ridici pole

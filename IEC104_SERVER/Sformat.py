@@ -1,15 +1,18 @@
-import Frame
+from Frame import Frame
 import struct
 
 
 class SFormat(Frame):
     def __init__(self, rsn = 0):
-        super().__init__(self)
+        super().__init__()
         self.rsn = rsn
         
 
     
-         
+    @property
+    def structure(self):
+        # here is specify format for each format 
+        return self.structure  
         
     @structure.setter
     def structure(self):
@@ -20,7 +23,7 @@ class SFormat(Frame):
         fourth |= (self.rsn >> 7) & 0xFF
             # Doplnění délky do hlavičky
         packed_header = struct.pack(f"{'B' * self.length}", 
-                                    self.start_byte, # start byte
+                                    Frame.Frame.start_byte, # start byte
                                     self.length,  # Total Length pouze hlavička
                                     1,   # 1. ridici pole
                                     0,  # 2. ridici pole
@@ -32,11 +35,15 @@ class SFormat(Frame):
     
      
     @property
-    def inkrement_rsn(self):
+    def rsn(self):
         return self.rsn
             
-    @inkrement_rsn.setter
-    def inkrement_rsn(self):
+    
+    @rsn.setter
+    def rsn(self, rsn):
+        self.rsn = rsn
+        
+    def increment_rsn(self):
         self.rsn += 1
         
         
