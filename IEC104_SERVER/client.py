@@ -32,11 +32,13 @@ if __name__ == "__main__":
     config_loader = ConfigLoader('config_parameters.json')
     client = IEC104Client(config_loader.config['client']['ip_address'], config_loader.config['client']['port'])
     client.client_socket.connect((client.ip, client.port))
+    
     client.client_socket.settimeout(acpi.T0)
+    
     print(client.client_socket.gettimeout())
-    frame = Frame.Frame()
     comm_module = CommModule(client.client_socket)
     
+    comm_module.send_U_format(acpi.TESTFR_CON)
     
     #threading.Thread(target=comm_module.connection_timeout, args=(client.client_socket,)).start()
         

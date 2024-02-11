@@ -8,31 +8,101 @@ from Uformat import UFormat
 
 
 class CommModule:
-    def __init__(self, sock):
-        self.sock = sock
+    def __init__(self, socket):
+        self.socket = socket[0]
+        self.socket_addr = socket[1]
+        
+        
         self.connected = False
-        self.buffer_all_frames = []
-        self.buffer_I_frames = []
-        self.buffer_S_frames = []
-        self.buffer_U_frames = []
+        self.buffer_recv_all_frames = []
+        self.buffer_recv_I_frames = []
+        self.buffer_recv_S_frames = []
+        self.buffer_recv_U_frames = []
+        
+        self.buffer_send_all_frames = []
+        self.buffer_send_I_frames = []
+        self.buffer_send_S_frames = []
+        self.buffer_send_U_frames = []
+        
+    ## pro řízení pomocí U formátu
+    def send_U_format(self, type):
+        request = type
+        response_type = ''
+        
+        if request == acpi.STARTDT_ACT:
+            response_type = acpi.STARTDT_CON
+            
+        elif request == acpi.STOPDT_ACT:
+            response_type = acpi.STOPDT_CON
+            
+        elif request == acpi.TESTFR_ACT:
+            response_type = acpi.TESTFR_CON
+        else:
+            return 1
+        
+        try:
+            new_instance = UFormat()
+            
+            new_instance.structure(request)
+            
+            self.socket.sendall(new_instance.structure())
+            
+            self.buffer_send_U_frames.append(new_instance)
+            self.buffer_send_all_frames.append(new_instance)
+            
+            
+            response = self.socket.recv(2)
+            
+            # pokud se vubec jedna o iec104 paket
+            if response[0] == 0x68:
+                
+                # prijeti zbytku paketu dle délky v hlavičce
+                apdu=self.socket.recv(response[1]) 
+                acpi_header = apdu[:(acpi.ACPI_HEADER_LENGTH - 1)]
+                
+                frame_format = self.what_format(acpi_header)
+                
+                if frame_format == "U":
+                    first_byte = acpi_header[0]
+                    
+                    new_instance = UFormat()
+                    
+                    if first_byte == response_type:
+                        new_instance.structure(response_type)
+                        
+                        self.buffer_recv_U_frames.append(new_instance)
+                        self.buffer_recv_all_frames.append(new_instance)
+                        
+                        # uspěšně přijata odpověď ... con
+                        return 0
+                    
+                # neni iec104 komunikace, nebyl to U format a nebylo to ... con
+            return 1
+            
+        except Exception as e:
+            print(f"Exception: {e}")
+            
+            return 1
     
-    
-    
-    
-    ## ********* GENERAL ********* ##
     
     def send_data(self, data):
         print(f"odeslány data: {data}")
-        return self.sock.sendall(data)
+        
+        new_instance = IFormat(data)
+        
+        self.buffer_send_I_frames.append(new_instance)
+        self.buffer_send_all_frames.append(new_instance)
+        
+        return self.socket.sendall(new_instance.structure())
     
-    def receive_length(self):
-        receive_packet = self.sock.recv(2)
+    def receive_traffic(self):
+        receive_packet = self.socket.recv(2)
         
         # pokud se vubec jedna o iec104 paket
         if receive_packet[0] == 0x68:
             
             # prijeti zbytku paketu dle délky v hlavičce
-            apdu=self.sock.recv(receive_packet[1]) 
+            apdu=self.socket.recv(receive_packet[1]) 
             acpi_header = apdu[:(acpi.ACPI_HEADER_LENGTH - 1)]
             
             frame_format = self.what_format(acpi_header)
@@ -45,24 +115,24 @@ class CommModule:
                 
                 # vytvoreni nove instance Iformatu a vlozeni do bufferu
                 new_instance = IFormat(asdu_data, ssn, rsn)
-                self.buffer_I_frames.append(new_instance)
-                self.buffer_all_frames.append(new_instance)
+                self.buffer_recv_I_frames.append(new_instance)
+                self.buffer_recv_all_frames.append(new_instance)
                 
-                return asdu_data
+                return (0, new_instance)
                 
             elif frame_format == "S":
                 
                 rsn = (acpi_header[3] << 7) + (acpi_header[2] >> 1)
                 
                 new_instance = SFormat(rsn)
-                self.buffer_S_frames.append(new_instance)
-                self.buffer_all_frames.append(new_instance)
+                self.buffer_recv_S_frames.append(new_instance)
+                self.buffer_recv_all_frames.append(new_instance)
                 
                 # logika potvrzování přijatých dat
                 pass
             
-                # kód označující že byl proveden U format
-                return 1
+                # kód označující že byl proveden S format
+                return (1, new_instance)
                 
             elif frame_format == "U":
                 first_byte = acpi_header[0]
@@ -73,47 +143,54 @@ class CommModule:
                 if first_byte == acpi.STARTDT_ACT:
                     new_instance.structure(acpi.STARTDT_ACT)
                     
-                    self.buffer_U_frames.append(new_instance)
-                    self.buffer_all_frames.append(new_instance)
+                    self.buffer_recv_U_frames.append(new_instance)
+                    self.buffer_recv_all_frames.append(new_instance)
                     
                     new_instance = UFormat()
                     new_instance.structure(acpi.STARTDT_CON)
                     
-                    self.send_data(new_instance.structure())
+                    self.socket.sendall(new_instance.structure())
                     print("prijato startdt act, posilam startdt con")
                     
                     self.active_session = True
+                    
+                    return (2, new_instance)
                     
                 # STOPDT ACT
                 elif first_byte == acpi.STOPDT_ACT:
                     new_instance.structure(acpi.STOPDT_ACT)
                     
-                    self.buffer_U_frames.append(new_instance)
-                    self.buffer_all_frames.append(new_instance)
+                    self.buffer_recv_U_frames.append(new_instance)
+                    self.buffer_recv_all_frames.append(new_instance)
                     
                     new_instance = UFormat()
                     new_instance.structure(acpi.STOPDT_CON)
                     
-                    self.send_data(new_instance.structure())
+                    self.socket.sendall(new_instance.structure())
                     
                     print("prijato stopdt act, posilam stopdt con a přenos je ukončen")
                     self.active_session = False
+                    
+                    return (3, new_instance)
                 
                 # TESTDT ACT
                 elif first_byte == acpi.TESTFR_ACT:
                     new_instance.structure(acpi.TESTFR_ACT)
                     
-                    self.buffer_U_frames.append(new_instance)
-                    self.buffer_all_frames.append(new_instance)
+                    self.buffer_recv_U_frames.append(new_instance)
+                    self.buffer_recv_all_frames.append(new_instance)
                     
                     new_instance = UFormat()
                     new_instance.structure(acpi.TESTFR_CON)
                     
-                    self.send_data(new_instance.structure())
+                    self.socket.sendall(new_instance.structure())
                     print("prijato testdt act, odeslano testdt. spojeni je aktivní")
-                     
-                # kód označující že byl proveden U format           
-                return 0
+                    
+                    return (4, new_instance)
+                
+                else:
+                    # nemělo by nikdy nastat           
+                    return  5
             
             else:
                 raise Exception("Přijat neznámí formát")
@@ -142,7 +219,7 @@ class CommModule:
         packed_header = None
         # Přijměte první dva byty pro získání délky rámce
         try:
-            packed_header = self.sock.recv(acpi.ACPI_HEADER_LENGTH)
+            packed_header = self.socket.recv(acpi.ACPI_HEADER_LENGTH)
         except ConnectionAbortedError:
             # Spojení bylo ukončeno ze strany hostitelského počítače
             print("Spojení bylo ukončeno ze strany hostitelského počítače.")
@@ -164,126 +241,18 @@ class CommModule:
             return header, None
         
         # Přijetí zbytku rámce na základě délky uvedené v hlavičce
-        packet_data = self.sock.recv(APDU_length)
+        packet_data = self.socket.recv(APDU_length)
         print("prajato dat", packet_data)
         
         data = self.frame.unpack_data(packet_data, APDU_length)
         
         return header, data
     
-    def send_start_act(self):
-        data = self.frame.pack(acpi.STARTDT_ACT)
-        self.send_data(data)
-        print("Odeslán start act.")
-        
-    def send_start_con(self):
-        data = self.frame.pack(acpi.STARTDT_CON)
-        print("Odeslán start con.")
-        
-        #
-    def receive_start_act(self):
-        data = self.frame.unpack_header(self.receive_data())
-        if data[2] == acpi.STARTDT_ACT:
-            print("Pokus o navázání spojení.")
-        else:
-            print("Chyba komunikace.")
-            
-    def receive_start_con(self):
-        data = self.frame.unpack_header(self.receive_data())
-        print(data)
-        if data[2] == acpi.STARTDT_CON:
-            self.connected = True
-            print("Spojení úspěšně navázáno.")
-        else:
-            print("Chyba spojení.")
-    
-    ## Start sequence
-    def send_startdt_sequence(self):
-        # send Startdt ACT frame
-        self.send_data(acpi.STARTDT_ACT)
-        print("Odeslán startdt act.")
-        
-        # 
-        data = self.receive_data()
-        if data == acpi.STARTDT_CON:
-            self.connected = True
-            print("Spojení úspěšně navázáno.")
-            return 1
-        else:
-            print("Chyba spojení.")
-            return 0
-        
-    ## Stop sequence
-    def send_stopdt_sequence(self):
-        # send Stopdt ACT frame
-        self.send_data(acpi.STOPDT_ACT)
-        print("Odeslán stopdt act.")
-        
-        # 
-        data = self.receive_data()
-        if data == acpi.STOPDT_CON:
-            self.connected = False
-            print("Spojení úspěšně ukončeno.")
-            return 1
-        else:
-            print("Chyba spojení.")
-            return 0
-    
-    ## TESTFR sequence
-    def send_testfr_sequence(self):
-        # send Start ACT frame
-        self.send_data(acpi.TESTFR_ACT)
-        print("Odeslán testfr act.")
-        
-        # 
-        data = self.receive_data()
-        print(data)
-        if data == acpi.TESTFR_CON:
-            self.connected = True
-            print("Úspěšně přijat testfr con. Otestováno.")
-            return 1
-        else:
-            print("Chyba spojení.")
-            return 0
-        
-    ## Response startdt sequence
-    def resp_startdt_sequence(self):
-        data = self.receive_data()
-        if data == acpi.STARTDT_ACT:
-            self.send_data(acpi.STARTDT_CON)
-            print("Přijato startdt act, odesláno startdt con.")
-            return 1
-        else:
-            print("Chyba spojení.")
-            return 0
-        
-    ## Response stopdt sequence
-    def resp_stopdt_sequence(self):
-        data = self.receive_data()
-        if data == acpi.STOPDT_ACT:
-            self.send_data(acpi.STOPDT_CON)
-            print("Přijato stopdt act, odesláno stopdt con.")
-            return 1
-        else:
-            print("Chyba spojení.")
-            return 0
-        
-    ## Response testfr sequence
-    def resp_testfr_sequence(self):
-        data = self.receive_data()
-        if data == acpi.TESTFR_ACT:
-            self.send_data(acpi.TESTFR_CON)
-            print("Přijato testfr act, odesláno testfr con.")
-            return 1
-        else:
-            print("Chyba spojení.")
-            return 0
-            
     def connection_timeout(self, socket):
         #time.sleep(acpi.T0)
         if not self.connected:
             print("Chyba: Časový limit pro připojení vypršel.")
-            self.sock.close()
+            self.socket.close()
             
     
         

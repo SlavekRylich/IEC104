@@ -113,7 +113,7 @@ class ServerIEC104():
         
         try:
             
-            comm_module = CommModule(client_socket)
+            comm_module = CommModule((client_socket, client_addr))
             
             # zkusit resit timeouty pomocí time.time()
             time.time(1)
@@ -125,7 +125,7 @@ class ServerIEC104():
                 #username = client.recv(2048).decode('utf-8')
                 # receive header for unpack header bytes
                 
-                data = comm_module.receive_length()
+                data = comm_module.receive_traffic()
                  
                 
                 
@@ -133,15 +133,19 @@ class ServerIEC104():
                     #prompt_message = "SERVER~" + f"{username} added to the chat"
                     #self.send_messages_to_all(prompt_message)
                     
-                    if data == 0:
-                        # U format - 
+                    if data[0] == 0:
+                        # I format - 
+                        frame_instance = data[1]
                         pass
-                    elif data == 1:
+                    elif data[0] > 0:
                         # S format - logika potvrzování
+                        frame_instance = data[1]
                         pass
                     else:
-                        # I format - logika dat ASDU
-                        pass
+                        # U format - logika dat ASDU
+                        frame_instance = data[1]
+                        if frame_instance.type() == acpi.STOPDT_CON:
+                            break
                     
                 
                 else:

@@ -4,6 +4,9 @@ from Frame import Frame
 
 
 class IFormat(Frame):
+    class_ssn = 0
+    class_rsn = 0
+    
     
     def __init__(self, data=None, ssn=0, rsn=0):
         super().__init__()
@@ -11,9 +14,25 @@ class IFormat(Frame):
         self.rsn = rsn
         self.data = data
         if data != None:
-            self.structure()
-            
-        
+            self.structure(self.data)
+    
+    # třídní atributy pro číslování rámců (dořešit v budoucnu)        
+    @property
+    def class_ssn(cls):
+        return cls.class_ssn
+    
+    @class_ssn.setter
+    def class_ssn(cls, ssn):
+        cls.class_ssn = ssn
+    
+    @property
+    def class_rsn(cls):
+        return cls.class_rsn
+    
+    @class_rsn.setter
+    def class_rsn(cls, rsn):
+        cls.class_rsn = rsn
+    
     def ssn_increment(self):
         return self.ssn + 1 
     
@@ -50,7 +69,7 @@ class IFormat(Frame):
         return self.structure   
     
     @structure.setter
-    def structure(self):
+    def structure(self, data):
         # here is specify format for S format
         first = 0
         second = 0
@@ -62,14 +81,14 @@ class IFormat(Frame):
         fourth |= (self.rsn >> 7) & 0xFF
         
         # zaokrouhlední dat na celé byty
-        self.length += math.ceil(len(self.data) / 8)
+        self.length += math.ceil(len(data) / 8)
         
         packed_header = struct.pack(f"{'B' * self.length}", 
-                                    Frame.Frame.start_byte, # start byte
+                                    Frame.start_byte, # start byte
                                     self.length,  # Total Length pouze hlavička
                                     first,   # 1. ridici pole
                                     second,  # 2. ridici pole
                                     third,   # 3. ridici pole
                                     fourth,  # 4. ridici pole
         )
-        self.structure = packed_header + self.data()
+        self.structure = packed_header + data
