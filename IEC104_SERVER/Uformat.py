@@ -7,19 +7,15 @@ class UFormat(Frame):
         super().__init__()
         self.type = None
         
-    @property
-    def structure(self):
-        return self.structure  
-    
-    @property
-    def type(self):
+    #property
+    def get_type(self):
         return self.type  
     
-    @structure.setter
-    def structure(self, type): # what type STARTDT, STOPDT, TESTDT
+    #structure.setter
+    def set_structure(self, type): # what type STARTDT, STOPDT, TESTDT
         self.type = type
             # Doplnění délky do hlavičky
-        packed_header = struct.pack(f"{'B' * self.length}", 
+        packed_header = struct.pack(f"{'B' * (self.length + 2)}", 
                                     Frame.start_byte, # start byte
                                     self.length,  # Total Length pouze hlavička
                                     self.type,   # 1. ridici pole

@@ -17,11 +17,11 @@ class Frame:
         self._id = Frame._id
         Frame.instances.append(self)
         
-    @property
-    def id(self):
+     
+    def get_id(self):
         return self.id
     
-    @property
+     
     def get_all_instances(cls):
         return Frame.instances
     
@@ -46,32 +46,32 @@ class Frame:
             print("Nejaky zpičený format")
             return None  
     
-    @property
-    def length(self):
+     
+    def get_length(self):
         return self.length
     
     # opravit korektne, toto je spatny vypocet delky!!!
-    @length.setter
-    def length(self, length):
+     #length.setter
+    def set_length(self, length):
         self.length += length
     
-    @property
+     
     def get_length_of_data(self):
         return self.length - acpi.ACPI_HEADER_LENGTH
     
     # vraci strukturu ramce
-    @property
-    def structure(self):
+     
+    def get_structure(self):
         # here is specify format for each format 
         return self.structure
     
     
-    @structure.setter
-    def structure(self, value):
+     #structure.setter
+    def set_structure(self, value):
         self.structure = value
         
-    @structure.deleter
-    def structure(self):
+     #structure.deleter
+    def rem_structure(self):
         del self.structure
     
     

@@ -33,24 +33,28 @@ if __name__ == "__main__":
     client = IEC104Client(config_loader.config['client']['ip_address'], config_loader.config['client']['port'])
     client.client_socket.connect((client.ip, client.port))
     
-    client.client_socket.settimeout(acpi.T0)
+    #client.client_socket.settimeout(acpi.T0)
     
     print(client.client_socket.gettimeout())
     comm_module = CommModule(client.client_socket)
     
-    comm_module.send_U_format(acpi.TESTFR_CON)
+    #comm_module.send_U_format(acpi.TESTFR_ACT)
+    
+    time.sleep(3)
+    
+    comm_module.send_U_format(acpi.TESTFR_ACT)
     
     #threading.Thread(target=comm_module.connection_timeout, args=(client.client_socket,)).start()
         
-    # send startdt
-    data = frame.pack(acpi.STARTDT_ACT)
-    comm_module.send_data(data)
-    data_back = comm_module.receive_data()
+    # # send startdt
+    # data = frame.pack(acpi.STARTDT_ACT)
+    # comm_module.send_data(data)
+    # data_back = comm_module.receive_data()
     
-    # send testdt
-    data = frame.pack(acpi.TESTFR_ACT)
-    comm_module.send_data(data)
-    data_back = comm_module.receive_data()
+    # # send testdt
+    # data = frame.pack(acpi.TESTFR_ACT)
+    # comm_module.send_data(data)
+    # data_back = comm_module.receive_data()
     
     # # send testdt
     # data = frame.pack(acpi.TESTFR_ACT)
@@ -62,22 +66,22 @@ if __name__ == "__main__":
     # comm_module.send_data(data)
     # data_back = comm_module.receive_data()
     
-    # send stopdt
-    data = frame.pack(acpi.STOPDT_ACT)
-    comm_module.send_data(data)
-    data_back = comm_module.receive_data()
-    client.client_socket.close()
+    # # send stopdt
+    # data = frame.pack(acpi.STOPDT_ACT)
+    # comm_module.send_data(data)
+    # data_back = comm_module.receive_data()
+    # client.client_socket.close()
     
-    time.sleep(40)
-    # send startdt
-    data = frame.pack(acpi.STARTDT_ACT)
-    comm_module.send_data(data)
-    data_back = comm_module.receive_data()
+    # time.sleep(40)
+    # # send startdt
+    # data = frame.pack(acpi.STARTDT_ACT)
+    # comm_module.send_data(data)
+    # data_back = comm_module.receive_data()
     
-    # send stopdt
-    data = frame.pack(acpi.STOPDT_ACT)
-    comm_module.send_data(data)
-    data_back = comm_module.receive_data()
+    # # send stopdt
+    # data = frame.pack(acpi.STOPDT_ACT)
+    # comm_module.send_data(data)
+    # data_back = comm_module.receive_data()
     client.client_socket.close()
     
     # client.comm_module.send_startdt_sequence()

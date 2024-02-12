@@ -17,20 +17,20 @@ class IFormat(Frame):
             self.structure(self.data)
     
     # třídní atributy pro číslování rámců (dořešit v budoucnu)        
-    @property
-    def class_ssn(cls):
+     #property
+    def get_class_ssn(cls):
         return cls.class_ssn
     
-    @class_ssn.setter
-    def class_ssn(cls, ssn):
+     #class_ssn.setter
+    def set_class_ssn(cls, ssn):
         cls.class_ssn = ssn
     
-    @property
-    def class_rsn(cls):
+     #property
+    def get_class_rsn(cls):
         return cls.class_rsn
     
-    @class_rsn.setter
-    def class_rsn(cls, rsn):
+     #class_rsn.setter
+    def set_class_rsn(cls, rsn):
         cls.class_rsn = rsn
     
     def ssn_increment(self):
@@ -39,37 +39,37 @@ class IFormat(Frame):
     def rsn_incremet(self):
         return self.rsn + 1
     
-    @property
-    def ssn(self):
+     #property
+    def get_ssn(self):
         return self.ssn
     
-    @ssn.setter
-    def ssn(self, ssn):
+     #ssn.setter
+    def set_ssn(self, ssn):
         self.ssn = ssn
     
-    @property
-    def rsn(self):
+     #property
+    def get_rsn(self):
         return self.rsn   
     
-    @rsn.setter
-    def rsn(self, rsn):
+     #rsn.setter
+    def set_rsn(self, rsn):
         self.rsn = rsn
         
-    @property
-    def data(self):
+     #property
+    def get_data(self):
         return self.data 
     
-    @property
+     #property
     def set_data_from_structure(self, structure):
         self.data= struct.unpack(f"{'B' * super().get_length_of_data()}", structure)
      
-    @property
-    def structure(self):
+     #property
+    def get_structure(self):
         # here is specify format for each format 
         return self.structure   
     
-    @structure.setter
-    def structure(self, data):
+     #structure.setter
+    def set_structure(self, data):
         # here is specify format for S format
         first = 0
         second = 0
@@ -83,7 +83,7 @@ class IFormat(Frame):
         # zaokrouhlední dat na celé byty
         self.length += math.ceil(len(data) / 8)
         
-        packed_header = struct.pack(f"{'B' * self.length}", 
+        packed_header = struct.pack(f"{'B' * self.length + 2}", 
                                     Frame.start_byte, # start byte
                                     self.length,  # Total Length pouze hlavička
                                     first,   # 1. ridici pole

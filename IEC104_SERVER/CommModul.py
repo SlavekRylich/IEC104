@@ -1,6 +1,7 @@
 import socket
 import acpi
 import struct
+import Frame
 from Iformat import IFormat
 from Sformat import SFormat
 from Uformat import UFormat
@@ -9,8 +10,8 @@ from Uformat import UFormat
 
 class CommModule:
     def __init__(self, socket):
-        self.socket = socket[0]
-        self.socket_addr = socket[1]
+        self.socket = socket
+        #self.socket_addr = socket[1]
         
         
         self.connected = False
@@ -38,14 +39,15 @@ class CommModule:
         elif request == acpi.TESTFR_ACT:
             response_type = acpi.TESTFR_CON
         else:
+            print("neodeslalo se nic")
             return 1
         
         try:
             new_instance = UFormat()
             
-            new_instance.structure(request)
+            new_instance.set_structure(request)
             
-            self.socket.sendall(new_instance.structure())
+            self.socket.sendall(new_instance.get_structure())
             
             self.buffer_send_U_frames.append(new_instance)
             self.buffer_send_all_frames.append(new_instance)
@@ -57,7 +59,7 @@ class CommModule:
             if response[0] == 0x68:
                 
                 # prijeti zbytku paketu dle délky v hlavičce
-                apdu=self.socket.recv(response[1]) 
+                apdu = self.socket.recv(response[1]) 
                 acpi_header = apdu[:(acpi.ACPI_HEADER_LENGTH - 1)]
                 
                 frame_format = self.what_format(acpi_header)
@@ -68,7 +70,7 @@ class CommModule:
                     new_instance = UFormat()
                     
                     if first_byte == response_type:
-                        new_instance.structure(response_type)
+                        new_instance.set_structure(response_type)
                         
                         self.buffer_recv_U_frames.append(new_instance)
                         self.buffer_recv_all_frames.append(new_instance)
@@ -93,16 +95,40 @@ class CommModule:
         self.buffer_send_I_frames.append(new_instance)
         self.buffer_send_all_frames.append(new_instance)
         
-        return self.socket.sendall(new_instance.structure())
+        return self.socket.sendall(new_instance.get_structure())
     
     def receive_traffic(self):
+        
+        while True:
+        
+            receive_packet = self.socket.recv(1)
+        
+            if not receive_packet:
+                break
+        
+            buffer += receive_packet
+
+            if len(buffer) >= 1 and buffer[0] != Frame.Frame.start_byte:
+                print("Nepřijatý očekávaný start byte. Vyprázdnění bufferu.")
+                buffer = b''
+        
+        
         receive_packet = self.socket.recv(2)
+        
+        if not receive_packet:
+            return None
+        
+        receive_packet = struct.unpack(f"{'B' * 2}", receive_packet)
         
         # pokud se vubec jedna o iec104 paket
         if receive_packet[0] == 0x68:
             
             # prijeti zbytku paketu dle délky v hlavičce
-            apdu=self.socket.recv(receive_packet[1]) 
+            apdu = self.socket.recv(receive_packet[1]) 
+            
+            # rozbalení po bytech
+            apdu = struct.unpack(f"{'B' * receive_packet[1]}", apdu)
+            
             acpi_header = apdu[:(acpi.ACPI_HEADER_LENGTH - 1)]
             
             frame_format = self.what_format(acpi_header)
@@ -141,15 +167,15 @@ class CommModule:
                 
                 # STARTDT ACT
                 if first_byte == acpi.STARTDT_ACT:
-                    new_instance.structure(acpi.STARTDT_ACT)
+                    new_instance.set_structure(acpi.STARTDT_ACT)
                     
                     self.buffer_recv_U_frames.append(new_instance)
                     self.buffer_recv_all_frames.append(new_instance)
                     
                     new_instance = UFormat()
-                    new_instance.structure(acpi.STARTDT_CON)
+                    new_instance.set_structure(acpi.STARTDT_CON)
                     
-                    self.socket.sendall(new_instance.structure())
+                    self.socket.sendall(new_instance.get_structure())
                     print("prijato startdt act, posilam startdt con")
                     
                     self.active_session = True
@@ -158,15 +184,15 @@ class CommModule:
                     
                 # STOPDT ACT
                 elif first_byte == acpi.STOPDT_ACT:
-                    new_instance.structure(acpi.STOPDT_ACT)
+                    new_instance.set_structure(acpi.STOPDT_ACT)
                     
                     self.buffer_recv_U_frames.append(new_instance)
                     self.buffer_recv_all_frames.append(new_instance)
                     
                     new_instance = UFormat()
-                    new_instance.structure(acpi.STOPDT_CON)
+                    new_instance.set_structure(acpi.STOPDT_CON)
                     
-                    self.socket.sendall(new_instance.structure())
+                    self.socket.sendall(new_instance.get_structure())
                     
                     print("prijato stopdt act, posilam stopdt con a přenos je ukončen")
                     self.active_session = False
@@ -175,15 +201,15 @@ class CommModule:
                 
                 # TESTDT ACT
                 elif first_byte == acpi.TESTFR_ACT:
-                    new_instance.structure(acpi.TESTFR_ACT)
+                    new_instance.set_structure(acpi.TESTFR_ACT)
                     
                     self.buffer_recv_U_frames.append(new_instance)
                     self.buffer_recv_all_frames.append(new_instance)
                     
                     new_instance = UFormat()
-                    new_instance.structure(acpi.TESTFR_CON)
+                    new_instance.set_structure(acpi.TESTFR_CON)
                     
-                    self.socket.sendall(new_instance.structure())
+                    self.socket.sendall(new_instance.get_structure())
                     print("prijato testdt act, odeslano testdt. spojeni je aktivní")
                     
                     return (4, new_instance)

@@ -105,20 +105,17 @@ class ServerIEC104():
         except Exception as e:
             print(f"Chyba při komunikaci s klientem {client_addr}: {e}")
             
-        finally:
-            pass
 
     # Function to handle client
     def client_handler(self,client_socket, client_addr):
         
         try:
             
-            comm_module = CommModule((client_socket, client_addr))
+            comm_module = CommModule(client_socket)
             
             # zkusit resit timeouty pomocí time.time()
-            time.time(1)
-            client_socket.settimeout(acpi.T0)
-            
+            cas = time.time()
+            #client_socket.settimeout(acpi.T0)
             # Server will listen for client message that will contain the username
             while True:
                 
@@ -137,14 +134,14 @@ class ServerIEC104():
                         # I format - 
                         frame_instance = data[1]
                         pass
-                    elif data[0] > 0:
+                    elif data[0] == 1:
                         # S format - logika potvrzování
                         frame_instance = data[1]
                         pass
                     else:
                         # U format - logika dat ASDU
                         frame_instance = data[1]
-                        if frame_instance.type() == acpi.STOPDT_CON:
+                        if frame_instance.get_type() == acpi.STOPDT_CON:
                             break
                     
                 
@@ -158,10 +155,14 @@ class ServerIEC104():
             
         except Exception as e:
             print(f"Chyba při komunikaci s klientem {client_addr}: {e}")
+            print("co teď ?")
             
         finally:
             self.active_clients.remove((client_socket, client_addr))
             client_socket.close()
+            for client in self.active_clients:
+                print(client)
+            print(f"Vlákno ukončeno. Spojení ukončení s {client_addr}")
 
     # Main function
     def start(self):
@@ -188,6 +189,7 @@ class ServerIEC104():
         # This while loop will keep listening to client connections
         while True:
 
+            print("Nasloucham dále...")
             client, address = server_socket.accept()
             print(f"Successfully connected to client {address[0]} {address[1]}")
             self.active_clients.append((client, address))
