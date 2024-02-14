@@ -1,9 +1,9 @@
 from CommModul import CommModule
 import struct
 
-class Queue(CommModule):
+class Queue():
     def __init__(self, socket):
-        super().__init__(socket)
+        pass
     
     def __enter__():
         pass    

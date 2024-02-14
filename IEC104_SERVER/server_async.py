@@ -110,7 +110,7 @@ class ServerIEC104():
             
 
     # Function to handle client
-    def client_handler(self,client_socket, client_addr):
+    async def client_handler(self,client_socket):
         
         try:
             
@@ -168,9 +168,11 @@ class ServerIEC104():
             print(f"Vlákno ukončeno. Spojení ukončení s {client_addr}")
 
     # Main function
-    def start(self):
+    async def start(loop):
 
         # Creating the socket class object
+        
+        server = ServerIEC104()
         # AF_INET: we are going to use IPv4 addresses
         # SOCK_STREAM: we are using TCP packets for communication
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -179,14 +181,14 @@ class ServerIEC104():
         try:
             # Provide the server with an address in the form of
             # host IP and port
-            server_socket.bind((self.ip, self.port))
-            print(f"Running the server on {self.ip} {self.port}")
+            server_socket.bind((server.ip, server.port))
+            print(f"Running the server on {server.ip} {server.port}")
             
             # Set server limit
             server_socket.listen(LISTENER_LIMIT)
             
         except:
-            print(f"Unable to bind to host {self.ip} and port {self.port}")
+            print(f"Unable to bind to host {server.ip} and port {server.port}")
 
 
         # This while loop will keep listening to client connections
@@ -195,11 +197,17 @@ class ServerIEC104():
             print("Nasloucham dále...")
             client, address = server_socket.accept()
             print(f"Successfully connected to client {address[0]} {address[1]}")
-            self.active_clients.append((client, address))
+            server.active_clients.append((client, address))
             
-            threading.Thread(target=self.client_handler, args=(client, address, )).start()
-
+            await server.client_handler(client)
 
 if __name__ == '__main__':
-    server = ServerIEC104()
-    server.start()
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(start(loop))
+    except KeyboardInterrupt:
+        pass
+    finally:
+        loop.close()
+
+        

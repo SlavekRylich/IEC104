@@ -1,10 +1,10 @@
 from CommModul import CommModule
 
 
-class Session(CommModule):
+class Session():
     
     def __init__(self, socket):
-        super().__init__(socket)
+        pass
         
     def __enter__():
         pass
