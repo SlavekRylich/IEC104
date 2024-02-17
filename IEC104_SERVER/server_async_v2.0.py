@@ -180,12 +180,17 @@ class ServerIEC104():
         # SOCK_STREAM: we are using TCP packets for communication
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
-        session = Session()
+        session = Session(self.ip, self.port)
+    
 
         server_socket.setblocking(False)
         
         # Creating a try catch block
         try:
+            session.start_s
+            
+            
+            
             # Provide the server with an address in the form of
             # host IP and port
             server_socket.bind((self.ip, self.port))
