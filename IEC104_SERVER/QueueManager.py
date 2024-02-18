@@ -2,7 +2,7 @@ import time
 from CommModul import CommModule
 import struct
 
-class Queue():
+class QueueManager():
     def __init__(self, socket):
         self.socket = socket
         pass
@@ -40,9 +40,10 @@ class Queue():
     def reconnect(): # Opětovné připojení k serveru v případě přerušení spojení.
         pass
 
+class QueueManager():
     def __init__(self):
-        self.request_queue = Queue.Queue()
-        self.response_queue = Queue.Queue()
+        self.request_queue = QueueManager()
+        self.response_queue = QueueManager()
         self.request_callbacks = {}
 
     def enqueue_request(self, request_data, callback):

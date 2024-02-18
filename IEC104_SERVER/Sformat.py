@@ -9,16 +9,20 @@ class SFormat(Frame):
     
         
      #structure.setter
-    def set_structure(self):
+    def set_structure(self, rsn = 0):
+        
+        if rsn:
+            self.rsn = rsn
+        
         # here is specify format for S format
         third = 0
         fourth = 0
         third |= (self.rsn & 0x7F) << 1
         fourth |= (self.rsn >> 7) & 0xFF
             # Doplnění délky do hlavičky
-        packed_header = struct.pack(f"{'B' * self.length + 2}", 
+        packed_header = struct.pack(f"{'B' * self.total_length + 2}", 
                                     Frame.start_byte, # start byte
-                                    self.length,  # Total Length pouze hlavička
+                                    self.total_length,  # Total Length pouze hlavička
                                     1,   # 1. ridici pole
                                     0,  # 2. ridici pole
                                     third,   # 3. ridici pole
@@ -26,6 +30,26 @@ class SFormat(Frame):
         )
         self.structure = packed_header
     
+    def serialize(self, rsn = 0):
+        
+        if rsn:
+            self.rsn = rsn
+        
+        # here is specify format for S format
+        third = (self.rsn & 0x7F) << 1
+        fourth = (self.rsn >> 7) & 0xFF
+        
+            # Doplnění délky do hlavičky
+        packed_header = struct.pack(f"{'B' * self.total_length + 2}", 
+                                    Frame.start_byte, # start byte
+                                    self.total_length,  # Total Length pouze hlavička
+                                    1,   # 1. ridici pole
+                                    0,  # 2. ridici pole
+                                    third,   # 3. ridici pole
+                                    fourth,  # 4. ridici pole
+        )
+        self.structure = packed_header
+        return self.structure
     
      
      #property

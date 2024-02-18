@@ -225,20 +225,7 @@ class CommModule:
         return ''
 
     
-    def what_format(self, first_byte):
-        first_byte = first_byte[0]
-        if not (first_byte & 1):
-            print(f"I format {first_byte & 0xFF}")
-            return "I"
-        elif (first_byte & 3) == 1:
-            print(f"S format {first_byte & 0xFF}")
-            return "S"
-        elif (first_byte & 3) == 3: 
-            print(f"U format {first_byte & 0xFF}")
-            return "U"
-        else:
-            print("Nejaky zpičený format")
-            return None
+    
         
         
     def receive_data(self):

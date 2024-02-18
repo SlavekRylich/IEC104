@@ -7,7 +7,7 @@ from config_loader import ConfigLoader
 from CommModul import CommModule
 import asyncio
 import Session
-import Queue
+import QueueManager
 
 
 HOST = '127.0.0.1'
