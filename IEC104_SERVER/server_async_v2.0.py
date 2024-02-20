@@ -187,7 +187,7 @@ class ServerIEC104():
         
         # Creating a try catch block
         try:
-            session.start_s
+            #session.start_s
             
             
             
