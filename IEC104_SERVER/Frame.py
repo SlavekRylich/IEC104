@@ -1,18 +1,17 @@
 import struct
+from IFormat import IFormat
+from SFormat import SFormat
+from UFormat import UFormat
 import acpi
-from Iformat import IFormat
-from Sformat import SFormat
-from Uformat import UFormat
-
 
 
 
 class Frame:
-    # třídní proměná pro uchování unikátní id každé instance
+# třídní proměná pro uchování unikátní id každé instance
     _id = 0
     instances = []
     start_byte = acpi.START_BYTE
-    
+
     def __init__(self):
         self.total_length = acpi.ACPI_HEADER_LENGTH
         self.structure = None
@@ -24,10 +23,10 @@ class Frame:
         if not self.structure:
             return False
         return True
-     
+        
     def get_id(self):
         return self._id
-    
+
     @classmethod
     def remove_instance(cls, id = 0, instance = None):
         instances_to_remove = []
@@ -40,7 +39,7 @@ class Frame:
             cls.instances.remove(inst)
 
         return instances_to_remove
-    
+
     @classmethod        # instance s indexem 0 neexistuje ( je rezevrována* )
     def remove_instance(cls, id = 0, instance = None):
         if not id:  # zde rezerva*
@@ -55,10 +54,10 @@ class Frame:
             return True
         else:
             return False
-     
+        
     def get_all_instances(cls):
         return cls.instances
-    
+
     def serialize(self):
         return False    # it will return false because method is overrided
         
@@ -68,7 +67,7 @@ class Frame:
         
         unpacked_apdu = struct.unpack(f"{'B' * (length)}", apdu)
         
-                  
+                    
         frame_format = cls.what_format(unpacked_apdu)    
             
         if frame_format == "I":
@@ -145,7 +144,7 @@ class Frame:
         
         else:
             raise Exception("Přijat neznámí formát")
-    
+
     @classmethod  
     def what_format(cls, first_byte):
         first_byte = first_byte[0]
@@ -162,38 +161,38 @@ class Frame:
         else:
             # print("Nejaky zpičený format")
             return None
-    
-     
+
+        
     def get_length(self):
         return self.total_length
-    
+
     # opravit korektne, toto je spatny vypocet delky!!!
-     #length.setter
+        #length.setter
     def set_length(self, length):
         self.total_length += length
-    
-     
+
+        
     def get_length_of_data(self):
         return self.total_length - acpi.ACPI_HEADER_LENGTH
-    
+
     # vraci strukturu ramce
-     
+        
     def get_structure(self):
         # here is specify format for each format 
         return self.structure
-    
-    
-     #structure.setter
+
+
+        #structure.setter
     def set_structure(self, value):
         self.structure = value
         
-     #structure.deleter
+        #structure.deleter
     def rem_structure(self):
         del self.structure
-    
-    
-    
-    
+
+
+
+
     # nepoužito, mám to tu jen pro návod jak dostat data po bytech 
     def encode_varint(self,number):
         """Zabalí číslo do varint."""
@@ -217,5 +216,5 @@ class Frame:
             shift += 8
         return number
 
-    
-    
+
+

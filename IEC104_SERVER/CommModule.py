@@ -1,10 +1,10 @@
 import socket
+import Frame
+import IFormat
+import SFormat
+import UFormat
 import acpi
 import struct
-import Frame
-from Iformat import IFormat
-from Sformat import SFormat
-from Uformat import UFormat
 
 
 
@@ -108,7 +108,7 @@ class CommModule:
         
             buffer += receive_packet
 
-            if len(buffer) >= 1 and buffer[0] != Frame.Frame.start_byte:
+            if len(buffer) >= 1 and buffer[0] != 0x68:
                 print("Nepřijatý očekávaný start byte. Vyprázdnění bufferu.")
                 buffer = b''
         

@@ -7,7 +7,7 @@ import json
 import struct
 import logging
 from config_loader import ConfigLoader
-from CommModul import CommModule
+from CommModule import CommModule
 import threading
 import Frame
 import time

@@ -22,23 +22,19 @@ class Session():
         
     @classmethod        # instance s indexem 0 neexistuje ( je rezevrována* )
     def remove_instance(cls, id = 0, instance = None):
-        if not id:  # zde rezerva*
-            if instance: 
-                cls.instances.remove(instance)
+        if isinstance(id, int):
+            if id < len(cls.instances):
+                
+                del cls.instances[id-1]
                 return True
             else:
                 return False
-        
-        if id < len(cls.instances):
-            del cls.instances[id]
-            return True
         else:
-            return False
-    
-    @classmethod
-    def remove_instance_new(cls, _id):
-        # Použijeme list comprehension pro vytvoření nového seznamu bez prvku, který chceme odstranit
-        cls.instances = [obj for obj in cls.instances if obj.id != _id]
+            if id: 
+                    cls.instances.remove(id)
+                    return True
+            else:
+                return False
     
     @classmethod
     def get_all_instances(cls):
@@ -53,6 +49,9 @@ class Session():
 
     def __str__(self) -> str:
         return (f"{self.ip}:{self.port}")
+    
+    def __del__(self):
+        print(f"Instance {self.id} is destroyed!")
     
 
 if __name__ == '__main__':
@@ -97,19 +96,29 @@ if __name__ == '__main__':
         
     my_instances = session.get_all_instances()
     print("Klasicky vypis:")
-    for item in my_instances:
-        print(f"Id: {item.id}, Objekt: {item}")
+    for item in session.get_all_instances():
+        print(f"Id: {item.id}, ObjektID: {id(item)}")
     
     session.remove_instance(5)
-    session.remove_instance_new(5)
-    for item in my_instances:
+    
+    for item in session.get_all_instances():
+        print(f"Id: {item.id}, Objekt: {item}")
+        
+    session.remove_instance(5)
+    for item in session.get_all_instances():
         print(f"Id: {item.id}, Objekt: {item}")
     
-    for item in my_instances:
-        if item.id == 6:
-            session.remove_instance(item)
+    to_destroy = Session.get_instance(1)
+    Session.remove_instance(to_destroy)
+    
+    for item in session.get_all_instances():
+        print(f"Id: {item.id}, Objekt: {item}")
+    
+    for item in session.get_all_instances():
+        if item.id == 9:
+            session.remove_instance(0,item)
             
-    for item in my_instances:
+    for item in session.get_all_instances():
         print(f"Id: {item.id}, Objekt: {item}")
             
             

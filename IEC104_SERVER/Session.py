@@ -1,7 +1,7 @@
 import socket
-from CommModul import CommModule
 import logging
 import asyncio
+from Frame import Frame
 
 LISTENER_LIMIT=5
 # Konfigurace logování
@@ -33,16 +33,13 @@ class Session():
         self.active_transaction = False
         self.timeout = 0
         self.sessions = []
+        self.server_clients = []
         
         Session.id += 1
         self.id = Session.id
         Session.instances.append(self)
     
-    def accept(self):
-        while True:
-            self.client = self.socket.accept()
-            self.sessions.append(self.client)
-            return self.client
+    
         
     @classmethod        # instance s indexem 0 neexistuje ( je rezevrována* )
     def remove_instance(cls, id = 0, instance = None):
@@ -70,9 +67,15 @@ class Session():
                 return inst
         return None
             
-    
+    def accept(self):
+        while True:
+            self.client, self.address = self.socket.accept()
+            self.sessions.append(self.client)
+            return (self.client, self.address)
+        
     async def accept_async(self):
         while True:
+            
             self.client = await self.socket.accept()
             self.sessions.append(self.client)
             return self.client
@@ -108,18 +111,67 @@ class Session():
 
 
     def start_server(self):
+        
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((self.ip,self.port))
         self.socket.listen(LISTENER_LIMIT)
         logging.info(f"Server listening on {self.ip}:{self.port}")
+        return self.socket
 
     def disconnect(self):
         logging.info(f"Disconnecting")
         self.connected = False
         self.sessions.remove(self.client)
         self.socket.close()
+        
+    async def server_handle_client(self, reader, writer):
+        self.server_clients.append(writer)
+        while True:
+            try:
+                header = await reader.read_bytes(2)
+                
+                if not header:
+                    break
+                
+                start_byte, frame_length = header
+                
+                if start_byte == Frame.start_byte:
+                    apdu = await reader.read(frame_length)
+                    if len(apdu) == frame_length:
+                        return_code, new_apdu = Frame.parser(apdu,frame_length)
+                        
+                        # return_code = 
+                        #   0 - IFormat
+                        #   1 - SFormat 
+                        #   2 - UFormat - startdt seq
+                        #   3 - UFormat - stopdt seq
+                        #   4 - UFormat - testdt seq
+                        #   >5 - Chyba
+                        
+                        if return_code < 5:    
+                            return new_apdu
+                        raise Exception(f"Chyba - nejspíš v implementaci, neznámý formát")
+                    
+                    else:
+                        raise Exception("Nastala chyba v přenosu, " 
+                                        "přijatá data se nerovnájí požadovaným.")
+                    
+                else:
+                    # zde pak psát logy
+                    raise Exception("Přijat neznámý formát")
+                
+            except Exception as e:
+                print(f"Exception {e}")
+        
 
-    async def start_server_async(self):
+    async def start_server_async(self,):
+        self.server = await asyncio.start_server(
+            self.server_handle_client, self.ip, self.port
+            )
+        async with self.server:
+            await self.server.serve_forever()
+        
+        
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((self.ip,self.port))
         self.socket.listen(LISTENER_LIMIT)

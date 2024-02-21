@@ -1,5 +1,10 @@
 import math
 import struct
+# TypeError: module() takes at most 2 arguments (3 given)
+# Your error is happening because Object is a module, not a class. 
+# So your inheritance is screwy.
+#Change your import statement to:
+#from Object import ClassName
 from Frame import Frame
 
 
@@ -7,8 +12,7 @@ class IFormat(Frame):
     class_ssn = 0
     class_rsn = 0
     
-    
-    def __init__(self, data=None, ssn=0, rsn=0):
+    def __init__(self, data, ssn, rsn):
         super().__init__()
         self.ssn = ssn
         self.rsn = rsn

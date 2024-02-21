@@ -1,5 +1,5 @@
 import time
-from CommModul import CommModule
+#from CommModul import CommModule
 import struct
 
 class QueueManager():

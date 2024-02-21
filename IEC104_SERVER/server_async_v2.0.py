@@ -1,12 +1,12 @@
 # Import required modules
 import socket
-import threading
+import sys
 import time
 import acpi
 from config_loader import ConfigLoader
-from CommModul import CommModule
 import asyncio
 import Session
+import Frame
 import QueueManager
 
 
@@ -17,7 +17,7 @@ LISTENER_LIMIT = 5
 class ServerIEC104():
     
     # constructor for IEC104 server
-    def __init__(self,loop): 
+    def __init__(self,loop=0): 
         config_loader = ConfigLoader('config_parameters.json')
 
         self.ip = config_loader.config['server']['ip_address']
@@ -26,7 +26,6 @@ class ServerIEC104():
         self.connected = False
         self.type_frame = ""
         
-        self.loop = asyncio.get_event_loop()
         
         self.active_clients = [] # List of all currently connected users
     
@@ -115,90 +114,110 @@ class ServerIEC104():
             
 
     # Function to handle client
-    async def client_handler(self,client_socket):
-        
-        try:
-            loop = asyncio.get_event_loop()
-            comm_module = CommModule(client_socket)
-            
-            # zkusit resit timeouty pomocí time.time()
-            cas = time.time()
-            #client_socket.settimeout(acpi.T0)
-            # Server will listen for client message that will contain the username
-            while True:
+    async def client_handler(self, client_socket):
+        while True:
+            try:
+            #loop = asyncio.get_event_loop()
+                #comm_module = CommModule(client_socket)
                 
-                #username = client.recv(2048).decode('utf-8')
-                # receive header for unpack header bytes
+                # iniciace jednotlivých komponent
+                queue = QueueManager(client_socket)
                 
-                data = comm_module.receive_traffic()
-                 
+                # zkusit resit timeouty pomocí time.time()
+                act_cas = time.time()
                 
-                
-                if data != '':
-                    #prompt_message = "SERVER~" + f"{username} added to the chat"
-                    #self.send_messages_to_all(prompt_message)
-                    
-                    if data[0] == 0:
-                        # I format - 
-                        frame_instance = data[1]
-                        pass
-                    elif data[0] == 1:
-                        # S format - logika potvrzování
-                        frame_instance = data[1]
-                        pass
-                    else:
-                        # U format - logika dat ASDU
-                        frame_instance = data[1]
-                        if frame_instance.get_type() == acpi.STOPDT_CON:
-                            break
-                    
+                receive_data = await self.session.receive_data()
+                header = await self.loop.sock_recv(client_socket,2)
+                start_byte, frame_length = header
+                if start_byte == Frame.Frame.start_byte:
+                    apdu = await self.loop.sock_recv(client_socket,frame_length)
+                    new_apdu = Frame.Frame.parser(apdu,frame_length)
                 
                 else:
-                    print("Receive packet is non-iec104")
-            
-            ## procedura pro udržování aktivního spojení pomocí testdt mezi klientem a serverem
-            
-        except socket.timeout:
-            print(f"Timeout - žádná data od klienta {client_addr} během {acpi.T0} sekund.")
-            
-        except Exception as e:
-            print(f"Chyba při komunikaci s klientem {client_addr}: {e}")
-            print("co teď ?")
-            
-        finally:
-            self.active_clients.remove((client_socket, client_addr))
-            client_socket.close()
-            for client in self.active_clients:
-                print(client)
-            print(f"Vlákno ukončeno. Spojení ukončení s {client_addr}")
+                    raise Exception("Přijat neznámý formát")
+                    
+                    
+                
+                #client_socket.settimeout(acpi.T0)
+                # Server will listen for client message that will contain the username
+                #while True:
+                    
+                    #username = client.recv(2048).decode('utf-8')
+                    # receive header for unpack header bytes
+                    
+                    #data = comm_module.receive_traffic()
+                    
+                    
+                    
+                    # if data != '':
+                    #     #prompt_message = "SERVER~" + f"{username} added to the chat"
+                    #     #self.send_messages_to_all(prompt_message)
+                        
+                    #     if data[0] == 0:
+                    #         # I format - 
+                    #         frame_instance = data[1]
+                    #         pass
+                    #     elif data[0] == 1:
+                    #         # S format - logika potvrzování
+                    #         frame_instance = data[1]
+                    #         pass
+                    #     else:
+                    #         # U format - logika dat ASDU
+                    #         frame_instance = data[1]
+                    #         if frame_instance.get_type() == acpi.STOPDT_CON:
+                    #             break
+                        
+                    
+                    # else:
+                    #     print("Receive packet is non-iec104")
+                
+                ## procedura pro udržování aktivního spojení pomocí testdt mezi klientem a serverem
+                
+            except socket.timeout:
+                print(f"Timeout - žádná data od klienta {client_addr} během {acpi.T0} sekund.")
+                
+            # except Exception as e:
+            #     print(f"Chyba při komunikaci s klientem {client_addr}: {e}")
+            #     print("co teď ?")
+                
+            finally:
+            #     self.active_clients.remove((client_socket, client_addr))
+            #     client_socket.close()
+                for client in self.active_clients:
+                    print(client)
+                print(f"Vlákno ukončeno. Spojení ukončení s {client.addr}")
 
     # Main function
-    async def start(self):
+    async def start(self, loop = 0):
 
         # Creating the socket class object
         # AF_INET: we are going to use IPv4 addresses
         # SOCK_STREAM: we are using TCP packets for communication
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
-        session = Session(self.ip, self.port)
-    
+        # pomoci session
+        
+        
 
-        server_socket.setblocking(False)
+        #server_socket.setblocking(False)
         
         # Creating a try catch block
         try:
             #session.start_s
             
-            
+            self.session = Session.Session(self.ip, self.port)
+            server_socket = self.session.start_server()
             
             # Provide the server with an address in the form of
             # host IP and port
-            server_socket.bind((self.ip, self.port))
+            #server_socket.bind((self.ip, self.port))
             
             print(f"Running the server on {self.ip} {self.port}")
             
+            self.loop = asyncio.get_event_loop()
+            
             # Set server limit
-            server_socket.listen(LISTENER_LIMIT)
+            #server_socket.listen(LISTENER_LIMIT)
             
         except:
             print(f"Unable to bind to host {self.ip} and port {self.port}")
@@ -208,10 +227,15 @@ class ServerIEC104():
         while True:
 
             print("Nasloucham dále...")
-            client, address = await self.loop.accept(server_socket)
+            #client, address = await self.loop.accept(server_socket)
+            client_socket, address = await self.loop.sock_accept(server_socket)
             print(f"Successfully connected to client {address[0]} {address[1]}")
-            server.active_clients.append((client, address))
-            await self.loop.create_task(self.client_handler(client))
+            server.active_clients.append(client_socket)
+            
+            task = asyncio.create_task(self.client_handler(client_socket))
+            await task
+            
+            #await self.loop.create_task(self.client_handler(client))
             
             #await server.client_handler(client)
         
@@ -219,10 +243,14 @@ class ServerIEC104():
         self.loop.close()
         # Creating the socket class object
 
+
+# deprecated style
 # if __name__ == '__main__':
 #     loop = asyncio.get_event_loop()
+    
+#     server = ServerIEC104()
 #     try:
-#         loop.run_until_complete(start(loop))
+#         loop.run_until_complete(server.start(loop))
 #     except KeyboardInterrupt:
 #         pass
 #     finally:
@@ -231,9 +259,19 @@ class ServerIEC104():
 if __name__ == '__main__':
     server = ServerIEC104()
     try:
-        server.start()
+        asyncio.run(server.start())
     except KeyboardInterrupt:
         pass
     finally:
-        server.close()
+        pass
+        
+        
+# if __name__ == '__main__':
+#     server = ServerIEC104()
+#     try:
+#         server.start()
+#     except KeyboardInterrupt:
+#         pass
+#     finally:
+#         server.close()
 

@@ -4,7 +4,7 @@ import threading
 import time
 import acpi
 from config_loader import ConfigLoader
-from CommModul import CommModule
+from CommModule import CommModule
 import asyncio
 
 HOST = '127.0.0.1'

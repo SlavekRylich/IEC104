@@ -5,7 +5,7 @@ import struct
 import logging
 import binascii
 from config_loader import ConfigLoader
-from CommModul import CommModule
+from CommModule import CommModule
 from multiprocessing import Process
 from bitstring import BitStream
 import Frame
