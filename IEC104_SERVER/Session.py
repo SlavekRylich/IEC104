@@ -146,7 +146,7 @@ class Session():
                         #   2 - UFormat - startdt seq
                         #   3 - UFormat - stopdt seq
                         #   4 - UFormat - testdt seq
-                        #   >5 - Chyba
+                        #   >=5 - Chyba
                         
                         if return_code < 5:    
                             return new_apdu
@@ -164,7 +164,7 @@ class Session():
                 print(f"Exception {e}")
         
 
-    async def start_server_async(self,):
+    async def start_server_async(self):
         self.server = await asyncio.start_server(
             self.server_handle_client, self.ip, self.port
             )
@@ -172,10 +172,10 @@ class Session():
             await self.server.serve_forever()
         
         
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.bind((self.ip,self.port))
-        self.socket.listen(LISTENER_LIMIT)
-        logging.info(f"Server listening on {self.ip}:{self.port}")
+        # self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # self.socket.bind((self.ip,self.port))
+        # self.socket.listen(LISTENER_LIMIT)
+        # logging.info(f"Server listening on {self.ip}:{self.port}")
 
     async def connect_async(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

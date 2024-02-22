@@ -5,6 +5,10 @@ import struct
 class QueueManager():
     def __init__(self, socket):
         self.socket = socket
+        self.VR = 0
+        self.VS = 0
+        self.ACK = 0
+        
         pass
     
     def enqueue_request(self, request_data, callback): # Přidá nový požadavek do fronty s odpovídajícím callbackem na zpracování odpovědi.

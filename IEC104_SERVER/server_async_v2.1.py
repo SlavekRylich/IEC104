@@ -5,9 +5,9 @@ import time
 import acpi
 from config_loader import ConfigLoader
 import asyncio
-import Session
+from Session import Session
 import Frame
-import QueueManager
+from QueueManager import QueueManager
 
 
 HOST = '127.0.0.1'
@@ -190,34 +190,12 @@ class ServerIEC104():
     # Main function
     async def start(self, loop = 0):
 
-        # Creating the socket class object
-        # AF_INET: we are going to use IPv4 addresses
-        # SOCK_STREAM: we are using TCP packets for communication
-        #server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        
-        # pomoci session
-        
-        
-
-        #server_socket.setblocking(False)
         
         # Creating a try catch block
         try:
-            #session.start_s
             
-            self.session = Session.Session(self.ip, self.port)
-            
-            # Provide the server with an address in the form of
-            # host IP and port
-            #server_socket.bind((self.ip, self.port))
-            
-            print(f"Running the server on {self.ip} {self.port}")
-            
-            self.loop = asyncio.get_event_loop()
-            
-            # Set server limit
-            #server_socket.listen(LISTENER_LIMIT)
-            
+            self.session = Session(self.ip, self.port)
+            self.queue_manager = QueueManager()
         except:
             print(f"Unable to bind to host {self.ip} and port {self.port}")
 
@@ -236,26 +214,10 @@ class ServerIEC104():
             task = asyncio.create_task(self.client_handler(client_socket))
             await task
             
-            #await self.loop.create_task(self.client_handler(client))
-            
-            #await server.client_handler(client)
         
     async def close(self):
         self.loop.close()
-        # Creating the socket class object
 
-
-# deprecated style
-# if __name__ == '__main__':
-#     loop = asyncio.get_event_loop()
-    
-#     server = ServerIEC104()
-#     try:
-#         loop.run_until_complete(server.start(loop))
-#     except KeyboardInterrupt:
-#         pass
-#     finally:
-#         loop.close()
         
 if __name__ == '__main__':
     server = ServerIEC104()
@@ -265,14 +227,3 @@ if __name__ == '__main__':
         pass
     finally:
         pass
-        
-        
-# if __name__ == '__main__':
-#     server = ServerIEC104()
-#     try:
-#         server.start()
-#     except KeyboardInterrupt:
-#         pass
-#     finally:
-#         server.close()
-
