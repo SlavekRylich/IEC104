@@ -29,3 +29,955 @@
 2024-02-21 19:03:40,722 - INFO - Server listening on 127.0.0.1:2404
 2024-02-21 19:06:14,378 - DEBUG - Using proactor: IocpProactor
 2024-02-21 19:06:14,384 - INFO - Server listening on 127.0.0.1:2404
+2024-02-24 12:57:15,544 - DEBUG - Using proactor: IocpProactor
+2024-02-24 12:57:45,356 - DEBUG - Using proactor: IocpProactor
+2024-02-24 12:57:54,055 - DEBUG - Using proactor: IocpProactor
+2024-02-24 12:58:35,229 - DEBUG - Using proactor: IocpProactor
+2024-02-24 12:58:43,952 - DEBUG - Using proactor: IocpProactor
+2024-02-24 13:01:12,792 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1240 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\Session.py", line 131, in server_handle_client
+    header = await reader.read_bytes(2)
+                   ^^^^^^^^^^^^^^^^^
+AttributeError: 'StreamReader' object has no attribute 'read_bytes'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\Session.py", line 164, in server_handle_client
+    print(f"Exception {e}")
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2024-02-24 13:19:35,623 - DEBUG - Using proactor: IocpProactor
+2024-02-24 13:28:06,635 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:28:42,795 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:29:50,752 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:40:24,860 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:41:11,160 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:48:06,600 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:56:50,006 - DEBUG - Using proactor: IocpProactor
+2024-02-24 13:56:55,850 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:57:39,571 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 13:58:38,529 - DEBUG - Using proactor: IocpProactor
+2024-02-24 13:58:42,899 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:02:44,762 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:10:20,633 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:11:58,624 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:12:09,830 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:12:38,805 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:14:04,625 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:14:26,082 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:46:32,467 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:46:37,326 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:46:37,331 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=892 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 492 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:46:37,351 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=996 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:47:02,603 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:47:05,966 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:47:05,971 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=964 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 492 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:47:05,992 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=724 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:47:15,597 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:47:15,598 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=944 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:47:15,616 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=964 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:48:11,946 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:48:19,446 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:48:19,456 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=188 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1022, in get_file_type
+    return _cache_file_type[cache_key]
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 398, in __call__
+    file_type = py_db.get_file_type(frame, abs_path_canonical_path_and_base)  # we don't want to debug threading or anything related to pydevd
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1050, in get_file_type
+    file_type = self._internal_get_file_type(abs_real_path_and_basename)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 943, in _internal_get_file_type
+    basename.startswith(IGNORE_BASENAMES_STARTING_WITH) or
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 491 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 469, in __call__
+    return None if event == 'call' else NO_FTRACE
+                   ^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+2024-02-24 14:48:19,523 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=996 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:49:14,575 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:49:14,585 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1000 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:49:14,603 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=356 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:50:33,406 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:50:33,406 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=644 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:50:33,432 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=672 read=<_OverlappedFuture finished result=24>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:51:18,868 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:51:27,498 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:51:27,513 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1140 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1022, in get_file_type
+    return _cache_file_type[cache_key]
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 398, in __call__
+    file_type = py_db.get_file_type(frame, abs_path_canonical_path_and_base)  # we don't want to debug threading or anything related to pydevd
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1050, in get_file_type
+    file_type = self._internal_get_file_type(abs_real_path_and_basename)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 943, in _internal_get_file_type
+    basename.startswith(IGNORE_BASENAMES_STARTING_WITH) or
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 491 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 469, in __call__
+    return None if event == 'call' else NO_FTRACE
+                   ^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+2024-02-24 14:51:27,543 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1144 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:51:45,197 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:51:49,076 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:51:49,089 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=972 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1022, in get_file_type
+    return _cache_file_type[cache_key]
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 398, in __call__
+    file_type = py_db.get_file_type(frame, abs_path_canonical_path_and_base)  # we don't want to debug threading or anything related to pydevd
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1050, in get_file_type
+    file_type = self._internal_get_file_type(abs_real_path_and_basename)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 943, in _internal_get_file_type
+    basename.startswith(IGNORE_BASENAMES_STARTING_WITH) or
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 491 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 469, in __call__
+    return None if event == 'call' else NO_FTRACE
+                   ^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+2024-02-24 14:51:49,112 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=948 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:52:31,891 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:52:31,891 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1016 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:52:31,924 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=980 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:54:34,690 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:54:41,823 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:54:41,833 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=860 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1022, in get_file_type
+    return _cache_file_type[cache_key]
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 398, in __call__
+    file_type = py_db.get_file_type(frame, abs_path_canonical_path_and_base)  # we don't want to debug threading or anything related to pydevd
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1050, in get_file_type
+    file_type = self._internal_get_file_type(abs_real_path_and_basename)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 943, in _internal_get_file_type
+    basename.startswith(IGNORE_BASENAMES_STARTING_WITH) or
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 491 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 469, in __call__
+    return None if event == 'call' else NO_FTRACE
+                   ^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+2024-02-24 14:54:41,862 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=328 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:55:19,270 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:55:27,803 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:55:27,895 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=972 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1022, in get_file_type
+    return _cache_file_type[cache_key]
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 398, in __call__
+    file_type = py_db.get_file_type(frame, abs_path_canonical_path_and_base)  # we don't want to debug threading or anything related to pydevd
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1050, in get_file_type
+    file_type = self._internal_get_file_type(abs_real_path_and_basename)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 943, in _internal_get_file_type
+    basename.startswith(IGNORE_BASENAMES_STARTING_WITH) or
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 491 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 469, in __call__
+    return None if event == 'call' else NO_FTRACE
+                   ^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+2024-02-24 14:55:27,918 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=788 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:56:00,361 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:56:00,361 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=888 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:56:00,387 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=836 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:56:31,274 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:56:35,321 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:56:35,326 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=916 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 492 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:56:35,346 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=904 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:57:25,319 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:57:31,830 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:57:31,845 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=880 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 492 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:57:31,868 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=876 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:57:46,374 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:59:28,043 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 14:59:32,247 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=992 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1022, in get_file_type
+    return _cache_file_type[cache_key]
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 398, in __call__
+    file_type = py_db.get_file_type(frame, abs_path_canonical_path_and_base)  # we don't want to debug threading or anything related to pydevd
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 1050, in get_file_type
+    file_type = self._internal_get_file_type(abs_real_path_and_basename)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 943, in _internal_get_file_type
+    basename.startswith(IGNORE_BASENAMES_STARTING_WITH) or
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 491 more times]
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 47, in __init__
+    def __init__(self):
+    
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_trace_dispatch_regular.py", line 469, in __call__
+    return None if event == 'call' else NO_FTRACE
+                   ^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded in comparison
+2024-02-24 14:59:32,274 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=788 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 205, in server_handle_client
+    self.queue_man = QueueManager()
+                     ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\QueueManager.py", line 48, in __init__
+    self.request_queue = QueueManager()
+                         ^^^^^^^^^^^^^^
+  [Previous line repeated 493 more times]
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-02-24 14:59:50,219 - DEBUG - Using proactor: IocpProactor
+2024-02-24 14:59:53,574 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:00:21,209 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:00:33,536 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:00:44,323 - DEBUG - Using proactor: IocpProactor
+2024-02-24 15:00:52,286 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:01:15,870 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:01:30,597 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:01:44,452 - DEBUG - Using proactor: IocpProactor
+2024-02-24 15:01:48,063 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:05:35,872 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:05:48,603 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=856 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 221, in server_handle_client
+    return_code, new_apdu = Parser.parser(apdu,frame_length)
+    ^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable int object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 244, in server_handle_client
+    print(f"Exception {e}")
+    ^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_frame.py", line 1197, in trace_dispatch
+    self.do_wait_suspend(thread, frame, event, arg)
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_frame.py", line 165, in do_wait_suspend
+    self._args[0].do_wait_suspend(*args, **kwargs)
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2070, in do_wait_suspend
+    keep_suspended = self._do_wait_suspend(thread, frame, event, arg, suspend_type, from_this_thread, frames_tracker)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2106, in _do_wait_suspend
+    time.sleep(0.01)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2024-02-24 15:05:48,626 - ERROR - Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 221, in server_handle_client
+    return_code, new_apdu = Parser.parser(apdu,frame_length)
+    ^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable int object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 244, in server_handle_client
+    print(f"Exception {e}")
+    ^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_frame.py", line 1197, in trace_dispatch
+    self.do_wait_suspend(thread, frame, event, arg)
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_frame.py", line 165, in do_wait_suspend
+    self._args[0].do_wait_suspend(*args, **kwargs)
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2070, in do_wait_suspend
+    keep_suspended = self._do_wait_suspend(thread, frame, event, arg, suspend_type, from_this_thread, frames_tracker)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2106, in _do_wait_suspend
+    time.sleep(0.01)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem
+2024-02-24 15:05:48,644 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell..._v2.1.py:202>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell..._v2.1.py:202>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 221, in server_handle_client
+    return_code, new_apdu = Parser.parser(apdu,frame_length)
+    ^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable int object
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 244, in server_handle_client
+    print(f"Exception {e}")
+    ^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_frame.py", line 1197, in trace_dispatch
+    self.do_wait_suspend(thread, frame, event, arg)
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\_pydevd_bundle\pydevd_frame.py", line 165, in do_wait_suspend
+    self._args[0].do_wait_suspend(*args, **kwargs)
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2070, in do_wait_suspend
+    keep_suspended = self._do_wait_suspend(thread, frame, event, arg, suspend_type, from_this_thread, frames_tracker)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\slary\.vscode\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\_vendored\pydevd\pydevd.py", line 2106, in _do_wait_suspend
+    time.sleep(0.01)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\server_async_v2.1.py", line 211, in server_handle_client
+    header = await reader.read(2)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 710, in read
+    await self._wait_for_data('read')
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 542, in _wait_for_data
+    await self._waiter
+asyncio.exceptions.CancelledError
+2024-02-24 15:05:55,683 - DEBUG - Using proactor: IocpProactor
+2024-02-24 15:06:08,596 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:09:31,174 - DEBUG - Using proactor: IocpProactor
+2024-02-24 15:09:33,856 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 15:11:13,073 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 16:53:40,533 - DEBUG - Using proactor: IocpProactor
+2024-02-24 16:53:57,157 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 17:02:38,351 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:02:41,700 - INFO - Connected to 127.0.0.1:2404
+2024-02-24 17:07:14,767 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:07:16,109 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:09:51,987 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:10:20,655 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:16:32,544 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:16:36,398 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:19:58,129 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:20:05,693 - DEBUG - Using proactor: IocpProactor
+2024-02-24 17:20:40,016 - DEBUG - Using proactor: IocpProactor

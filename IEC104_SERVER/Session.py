@@ -1,7 +1,8 @@
 import socket
 import logging
 import asyncio
-from Frame import Frame
+import Frame
+from Parser import Parser
 
 LISTENER_LIMIT=5
 # Konfigurace logování
@@ -123,54 +124,7 @@ class Session():
         self.connected = False
         self.sessions.remove(self.client)
         self.socket.close()
-        
-    async def server_handle_client(self, reader, writer):
-        self.server_clients.append(writer)
-        while True:
-            try:
-                header = await reader.read_bytes(2)
                 
-                if not header:
-                    break
-                
-                start_byte, frame_length = header
-                
-                if start_byte == Frame.start_byte:
-                    apdu = await reader.read(frame_length)
-                    if len(apdu) == frame_length:
-                        return_code, new_apdu = Frame.parser(apdu,frame_length)
-                        
-                        # return_code = 
-                        #   0 - IFormat
-                        #   1 - SFormat 
-                        #   2 - UFormat - startdt seq
-                        #   3 - UFormat - stopdt seq
-                        #   4 - UFormat - testdt seq
-                        #   >=5 - Chyba
-                        
-                        if return_code < 5:    
-                            return new_apdu
-                        raise Exception(f"Chyba - nejspíš v implementaci, neznámý formát")
-                    
-                    else:
-                        raise Exception("Nastala chyba v přenosu, " 
-                                        "přijatá data se nerovnájí požadovaným.")
-                    
-                else:
-                    # zde pak psát logy
-                    raise Exception("Přijat neznámý formát")
-                
-            except Exception as e:
-                print(f"Exception {e}")
-        
-
-    async def start_server_async(self):
-        self.server = await asyncio.start_server(
-            self.server_handle_client, self.ip, self.port
-            )
-        async with self.server:
-            await self.server.serve_forever()
-        
         
         # self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # self.socket.bind((self.ip,self.port))

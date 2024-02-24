@@ -5,14 +5,14 @@ import struct
 ACPI_HEADER_LENGTH = 4
 START_BYTE = 0x68
 
-TESTFR_ACT = 0x43
-TESTFR_CON = 0x83
+TESTFR_ACT = 0x43   # 67
+TESTFR_CON = 0x83   # 131
 
-STOPDT_ACT = 0x13
-STOPDT_CON = 0x23
+STOPDT_ACT = 0x13   # 19
+STOPDT_CON = 0x23   # 35
 
-STARTDT_ACT = 0x07
-STARTDT_CON = 0x0b
+STARTDT_ACT = 0x07  # 07
+STARTDT_CON = 0x0b  # 11
 
 T0 = 30     # t0 = 30s  - Time delay for init session
 T1 = 15     # t1 = 15s  - Time delay for transmission or test APDU

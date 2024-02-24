@@ -7,10 +7,15 @@ import json
 import struct
 import logging
 from config_loader import ConfigLoader
-from CommModule import CommModule
+#from CommModule import CommModule
 import threading
 import Frame
 import time
+import Session
+from IFormat import IFormat
+from SFormat import SFormat
+from UFormat import UFormat
+
 
 LOG = logging.getLogger()
 logging.basicConfig(level=logging.DEBUG)
@@ -33,16 +38,22 @@ if __name__ == "__main__":
     client = IEC104Client(config_loader.config['client']['ip_address'], config_loader.config['client']['port'])
     client.client_socket.connect((client.ip, client.port))
     
+    session = Session.Session(client.ip, client.port)
+    soket = session.connect()
+    print(socket)
+    data = UFormat(acpi.TESTFR_ACT)
+    
+    session.send_data(data.serialize())
     #client.client_socket.settimeout(acpi.T0)
     
     print(client.client_socket.gettimeout())
-    comm_module = CommModule(client.client_socket)
+   # comm_module = CommModule(client.client_socket)
     
     #comm_module.send_U_format(acpi.TESTFR_ACT)
     
     time.sleep(3)
     
-    comm_module.send_U_format(acpi.TESTFR_ACT)
+    #comm_module.send_U_format(acpi.TESTFR_ACT)
     
     #threading.Thread(target=comm_module.connection_timeout, args=(client.client_socket,)).start()
         

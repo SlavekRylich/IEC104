@@ -1,15 +1,64 @@
 import time
 #from CommModul import CommModule
 import struct
+from IFormat import IFormat
+from SFormat import SFormat
+from UFormat import UFormat
+import acpi
 
 class QueueManager():
-    def __init__(self, socket):
+    def __init__(self, socket=None):
         self.socket = socket
         self.VR = 0
         self.VS = 0
         self.ACK = 0
+        self.queue = []
         
-        pass
+    def insert(self, packet):
+        self.queue.append(packet)
+    
+    def clear_acked(self):
+        for item in self.queue:
+            if item.get_ssn() <= self.ACK:
+                self.queue.remove(item)
+        
+    def incrementVR(self):
+        self.VR = self.VR + 1
+    
+    def incrementVS(self):
+        self.VS = self.VS + 1
+        
+    def setACK(self, ack):
+        self.ACK = ack
+        
+    def getVR(self):
+        return self.VR
+    
+    def getVS(self):
+        return self.VS
+    
+    def getACK(self):
+        return self.ACK
+    
+    def Uformat(self, frame):
+        frame = frame.get_type()
+        
+        if (frame == acpi.STARTDT_ACT):
+            return UFormat(acpi.STARTDT_CON)
+            return acpi.STARTDT_CON
+        elif frame == acpi.STARTDT_CON:
+            return None
+        elif frame == acpi.STOPDT_ACT:
+            return UFormat(acpi.STARTDT_CON)
+        elif frame == acpi.STARTDT_CON:
+            return None
+        elif frame == acpi.TESTFR_ACT:
+            return UFormat(acpi.TESTFR_CON)
+        elif frame == acpi.TESTFR_CON:
+            return None
+        else:
+            return None
+    
     
     def enqueue_request(self, request_data, callback): # Přidá nový požadavek do fronty s odpovídajícím callbackem na zpracování odpovědi.
         pass
@@ -44,11 +93,11 @@ class QueueManager():
     def reconnect(): # Opětovné připojení k serveru v případě přerušení spojení.
         pass
 
-class QueueManager():
-    def __init__(self):
-        self.request_queue = QueueManager()
-        self.response_queue = QueueManager()
-        self.request_callbacks = {}
+# class QueueManager():
+#     def __init__(self):
+#         self.request_queue = QueueManager()
+#         self.response_queue = QueueManager()
+#         self.request_callbacks = {}
 
     def enqueue_request(self, request_data, callback):
         request_id = self.generate_request_id()

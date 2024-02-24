@@ -1,68 +1,83 @@
-# Import required modules
+# -*- coding: utf-8 -*-
 import socket
-import sys
+import binascii
+from Parser import Parser
+from QueueManager import QueueManager
+import acpi
+import asdu
+import json
+import struct
+import logging
+from config_loader import ConfigLoader
+import threading
+import Frame
 import time
+import Session
 from IFormat import IFormat
 from SFormat import SFormat
 from UFormat import UFormat
-from Parser import Parser
-import acpi
-from config_loader import ConfigLoader
 import asyncio
-import Session
-import Frame
-from QueueManager import QueueManager
-from Timeout import Timeout
+import time
 
 
 
-LISTENER_LIMIT = 5
 
-class ServerIEC104():
-    
-    # constructor for IEC104 server
-    def __init__(self,loop=0): 
-        config_loader = ConfigLoader('config_parameters.json')
 
-        self.ip = config_loader.config['server']['ip_address']
-        self.port = config_loader.config['server']['port']
-        self.active_session = False
+LOG = logging.getLogger()
+logging.basicConfig(level=logging.DEBUG)
+
+
+class IEC104Client(object):
+    def __init__(self, ip, port):
+        self.ip = ip
+        self.port = port
+        self.ssn = 0    # send sequence number
+        self.rsn = 0    # receive sequence number
         self.connected = False
-        self.type_frame = ""
-        self.server_clients = []
-        
-        self.active_clients = [] # List of all currently connected users
-    
-
-    # Main function
-    async def start(self, loop = 0):
-        
-        self.server = await asyncio.start_server(
-            self.server_handle_client, self.ip, self.port
-            )
-        async with self.server:
-            print(f"Naslouchám na {self.ip}:{self.port}")
-            await self.server.serve_forever()
-
-
-    async def server_handle_client(self, reader, writer):
-        
-        
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.servers = []
         self.queue_man = QueueManager()
         
-        self.server_clients.append(writer)
-        print(f"Připojen reader: {reader}, writer: {writer}")
+    async def run_client(self):
+        self.reader, self.writer = await asyncio.open_connection(self.ip, self.port)
+        
+        frame1 = UFormat(acpi.STARTDT_ACT)
+        self.writer.write(frame1.serialize())
+        
+        resp = await self.listen()
+        
+        if isinstance(resp, UFormat):
+            print(f"Ok")
+        
+        if isinstance(resp, IFormat):
+            self.queue_man.insert(resp)
+            self.queue_man.incrementVR
+            self.queue_man.setACK(resp.get_rsn)
+            self.queue_man.clear_acked()
+        
+        if isinstance(resp, SFormat):
+            self.queue_man.setACK(resp.get_rsn)
+            self.queue_man.clear_acked()
+        
+        
+        
+        
+        
+        self.servers.append(self.writer)
+        
+    async def listen(self):
         while True:
             try:
-                header = await reader.read(2)
+                header = await self.reader.read(2)
                 
                 if not header:
                     break
+                # timeout a return
                 
                 start_byte, frame_length = header
                 
                 if start_byte == Frame.Frame.start_byte:
-                    apdu = await reader.read(frame_length)
+                    apdu = await self.reader.read(frame_length)
                     if len(apdu) == frame_length:
                         return_code, new_apdu = Parser.parser(apdu,frame_length)
                         
@@ -88,10 +103,11 @@ class ServerIEC104():
                             if isinstance(new_apdu, UFormat):
                                 response = self.queue_man.Uformat(new_apdu)
                                 if response:
-                                    writer.write(response.serialize())
+                                    self.writer.write(response.serialize())
+                                return response
                                     
-                              
-                            await writer.drain() 
+                            
+                            await self.writer.drain() 
                             return new_apdu
                         raise Exception(f"Chyba - nejspíš v implementaci, neznámý formát")
                     
@@ -107,17 +123,13 @@ class ServerIEC104():
                 print(f"Exception {e}")
         
 
-        
-            
-        
-    async def close(self):
-        self.loop.close()
-
-        
-if __name__ == '__main__':
-    server = ServerIEC104()
+if __name__ == "__main__":
+    
+    config_loader = ConfigLoader('config_parameters.json')
+    client = IEC104Client(config_loader.config['client']['ip_address'], config_loader.config['client']['port'])
+    
     try:
-        asyncio.run(server.start())
+        asyncio.run(client.run_client())
     except KeyboardInterrupt:
         pass
     finally:
