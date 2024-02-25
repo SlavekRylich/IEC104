@@ -44,7 +44,6 @@ class IFormat(Frame):
         return self.rsn + 1
     
     
-    
      #property
     def get_ssn(self):
         return self.ssn
