@@ -10,9 +10,11 @@ class Frame:
     instances = []
     start_byte = acpi.START_BYTE
 
-    def __init__(self):
-        self.total_length = acpi.ACPI_HEADER_LENGTH
+    def __init__(self,type='Frame'):
+        self.header_length = acpi.ACPI_HEADER_LENGTH
+        self.total_length = self.header_length
         self.structure = None
+        self.type_in_word = type
         Frame._id += 1
         self._id = Frame._id
         Frame.instances.append(self)
@@ -24,6 +26,9 @@ class Frame:
         
     def get_id(self):
         return self._id
+    
+    def get_type_in_word(self):
+         return self.type_in_word
 
     @classmethod
     def remove_instance(cls, id = 0, instance = None):
@@ -78,15 +83,12 @@ class Frame:
         # here is specify format for each format 
         return self.structure
 
-
-        #structure.setter
-    def set_structure(self, value):
-        self.structure = value
-        
         #structure.deleter
     def rem_structure(self):
         del self.structure
 
+    def __str__(self):
+        return f"Typ: {self.type_in_word}, Data in bytes: {self.serialize()}"
 
 
 

@@ -28,26 +28,82 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class IEC104Client(object):
-    def __init__(self, ip, port):
-        self.ip = ip
-        self.port = port
+    def __init__(self):
         self.ssn = 0    # send sequence number
         self.rsn = 0    # receive sequence number
         self.connected = False
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.servers = []
         self.queue_man = QueueManager()
+        self.data = 'vymyslena data'
         
-    async def run_client(self):
-        self.reader, self.writer = await asyncio.open_connection(self.ip, self.port)
+    async def run_client(self, ip, port):
+        
+        self.server_address = ip
+        self.server_port = port
+        
+        
+        print(f"Vytáčím {self.server_address}:{self.server_port}")
+        
+        self.reader, self.writer = await asyncio.open_connection(self.server_address, self.server_port)
+        
+        client_address, client_port =self.writer.get_extra_info('sockname')
+        print(f"Navázáno {client_address}:{client_port}-->{self.server_address}:{self.server_port}")
+        
+        self.servers.append((self.server_address,self.server_port, self.queue_man))
         
         frame1 = UFormat(acpi.STARTDT_ACT)
         self.writer.write(frame1.serialize())
+        print(f"Odeslán rámec:\n {frame1}")
+        time.sleep(1)
+        self.writer.write(frame1.serialize())
+        print(f"Odeslán rámec:\n {frame1}")
         
         resp = await self.listen()
         
         if isinstance(resp, UFormat):
-            print(f"Ok")
+            
+            print(f"Přijat: {resp}")
+            frames1 = []
+            frames2 = []
+            for i in range(0,5):
+                frames1.append(UFormat(acpi.TESTFR_ACT))
+                self.writer.write(frames1[i].serialize())
+                await self.writer.drain()
+                print(f"Odeslán rámec: {frames1[i]}")
+                
+                resp = await self.listen()
+                if isinstance(resp, UFormat):
+                    print(f"Ok, přijat Testdt con")
+                    time.sleep(2)
+                else:
+                    break
+                
+            for i in range(0,10):
+                frames2.append(IFormat(self.data, self.queue_man.getVS(), self.queue_man.getVR()))
+                self.queue_man.insert(frames2[i])
+                self.writer.write(frames2[i].serialize())
+                
+                await self.writer.drain()
+                print(f"{time.ctime()} - Odeslán rámec: {frames2[i]}")
+                self.queue_man.incrementVS()
+                
+                resp = await self.listen()
+                if isinstance(resp, UFormat):
+                    print(f"{time.ctime()} - Ok, přijat Testdt con")
+                if isinstance(resp, IFormat):
+                    self.queue_man.insert(resp)
+                    self.queue_man.incrementVR
+                    self.queue_man.setACK(resp.get_rsn)
+                    self.queue_man.clear_acked()
+                
+                if isinstance(resp, SFormat):
+                    self.queue_man.setACK(resp.get_rsn)
+                    self.queue_man.clear_acked()
+                else:
+                    break
+                
+                time.sleep(2)
+                
         
         if isinstance(resp, IFormat):
             self.queue_man.insert(resp)
@@ -61,9 +117,6 @@ class IEC104Client(object):
         
         
         
-        
-        
-        self.servers.append(self.writer)
         
     async def listen(self):
         while True:
@@ -84,10 +137,10 @@ class IEC104Client(object):
                         # return_code = 
                         #   0 - IFormat
                         #   1 - SFormat 
-                        #   2 - UFormat - startdt seq
-                        #   3 - UFormat - stopdt seq
-                        #   4 - UFormat - testdt seq
-                        #   >=5 - Chyba
+                        #   2-3 - UFormat - startdt seq
+                        #   4-5 - UFormat - stopdt seq
+                        #   6-7 - UFormat - testdt seq
+                        #   >=8 - Chyba
                         
                         if return_code < 8:
                             if isinstance(new_apdu, IFormat):
@@ -104,10 +157,10 @@ class IEC104Client(object):
                                 response = self.queue_man.Uformat(new_apdu)
                                 if response:
                                     self.writer.write(response.serialize())
-                                return response
+                                    await self.writer.drain()
+                                    return response
                                     
                             
-                            await self.writer.drain() 
                             return new_apdu
                         raise Exception(f"Chyba - nejspíš v implementaci, neznámý formát")
                     
@@ -126,10 +179,10 @@ class IEC104Client(object):
 if __name__ == "__main__":
     
     config_loader = ConfigLoader('config_parameters.json')
-    client = IEC104Client(config_loader.config['client']['ip_address'], config_loader.config['client']['port'])
+    client = IEC104Client()
     
     try:
-        asyncio.run(client.run_client())
+        asyncio.run(client.run_client(config_loader.config['client']['ip_address'], config_loader.config['client']['port']))
     except KeyboardInterrupt:
         pass
     finally:

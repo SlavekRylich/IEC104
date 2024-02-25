@@ -12,14 +12,12 @@ class IFormat(Frame):
     class_ssn = 0
     class_rsn = 0
     
-    def __init__(self, data, ssn, rsn):
-        super().__init__()
+    def __init__(self, data, ssn=0, rsn=0):
+        super().__init__('I-format')
         self.ssn = ssn
         self.rsn = rsn
         self.data = data
-        self.data_length = 0
-        if data:
-            self.structure(self.data)
+        self.data_length = self.get_length_of_data()
     
     # třídní atributy pro číslování rámců (dořešit v budoucnu)      
      # už nevím proč, nejspíš pokud bych to neřešil tak, že co packet to instance X formátu ?  
@@ -45,6 +43,8 @@ class IFormat(Frame):
     def rsn_incremet(self):
         return self.rsn + 1
     
+    
+    
      #property
     def get_ssn(self):
         return self.ssn
@@ -65,6 +65,9 @@ class IFormat(Frame):
     def get_data(self):
         return self.data 
     
+    def get_length_of_data(self):
+        return math.ceil(len(self.data) / 8)
+    
      #property
     def set_data_from_structure(self, structure):
         self.data= struct.unpack(f"{'B' * super().get_length_of_data()}", structure)
@@ -74,40 +77,8 @@ class IFormat(Frame):
         # here is specify format for each format 
         return self.structure   
     
-     #structure.setter
-    def set_structure(self, data):
         
-        # here is specify format for I format
-        first = (self.ssn & 0x7F) << 1
-        second = (self.ssn >> 7) & 0xFF
-        third = (self.rsn & 0x7F) << 1
-        fourth = (self.rsn >> 7) & 0xFF
-        
-        # zaokrouhlední dat na celé byty
-        self.data_length = math.ceil(len(data) / 8)
-        
-        self.total_length += self.data_length
-        
-        
-        
-        # + 2 because start_byte and length
-        packed_header = struct.pack(f"{'B' * self.total_length + 2}", 
-                                    Frame.start_byte, # start byte
-                                    self.total_length,  # Total Length pouze hlavička
-                                    first,   # 1. ridici pole
-                                    second,  # 2. ridici pole
-                                    third,   # 3. ridici pole
-                                    fourth,  # 4. ridici pole
-        )
-        packet_data = struct.pack(f"{'B' * self.data_length}", data)
-        
-        self.structure = packed_header + packet_data
-        
-    def serialize(self, data = None):
-        
-        if data:
-            self.data = data
-            
+    def serialize(self):
     # here is specify format for I format
         first = (self.ssn & 0x7F) << 1
         second = (self.ssn >> 7) & 0xFF
@@ -115,12 +86,11 @@ class IFormat(Frame):
         fourth = (self.rsn >> 7) & 0xFF
         
         # zaokrouhlední dat na celé byty
-        self.data_length = math.ceil(len(data) / 8)
         
         self.total_length += self.data_length
         
         # + 2 because start_byte and length
-        packed_header = struct.pack(f"{'B' * self.total_length + 2}", 
+        packed_header = struct.pack(f"{'B' * (self.header_length + 2)}", 
                                     Frame.start_byte, # start byte
                                     self.total_length,  # Total Length pouze hlavička
                                     first,   # 1. ridici pole
@@ -128,7 +98,11 @@ class IFormat(Frame):
                                     third,   # 3. ridici pole
                                     fourth,  # 4. ridici pole
         )
-        packet_data = struct.pack(f"{'B' * self.data_length}", data)
+        print(self.data_length)
+        packet_data = struct.pack(f"{'B' * self.data_length}", self.data)
         
         self.structure = packed_header + packet_data
         return self.structure
+    
+    def __str__(self):
+        return f"Typ: {self.type_in_word}, Data in bytes: {self.serialize()}"

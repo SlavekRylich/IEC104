@@ -48,7 +48,7 @@ class Parser:
             # STARTDT ACT
             if first_byte == acpi.STARTDT_ACT:
                 
-                new_instance.set_structure(acpi.STARTDT_ACT)
+                new_instance.set_type(acpi.STARTDT_ACT)
                 
                 # self.buffer_recv_U_frames.append(new_instance)
                 # self.buffer_recv_all_frames.append(new_instance)
@@ -61,7 +61,7 @@ class Parser:
             # STOPDT ACT
             elif first_byte == acpi.STOPDT_ACT:
                 
-                new_instance.set_structure(acpi.STOPDT_ACT)
+                new_instance.set_type(acpi.STOPDT_ACT)
                 
                 # self.buffer_recv_U_frames.append(new_instance)
                 # self.buffer_recv_all_frames.append(new_instance)
@@ -74,7 +74,7 @@ class Parser:
             # TESTDT ACT
             elif first_byte == acpi.TESTFR_ACT:
                 
-                new_instance.set_structure(acpi.TESTFR_ACT)
+                new_instance.set_type(acpi.TESTFR_ACT)
                 
                 # self.buffer_recv_U_frames.append(new_instance)
                 # self.buffer_recv_all_frames.append(new_instance)
@@ -83,16 +83,16 @@ class Parser:
                 new_instance.set_structure(acpi.TESTFR_CON)
             
             elif first_byte == acpi.STARTDT_CON:
-                new_instance.set_structure(acpi.STARTDT_CON)
+                new_instance.set_type(acpi.STARTDT_CON)
                 return (5, new_instance)
             # STOPDT ACT
             elif first_byte == acpi.STOPDT_CON:
                 
-                new_instance.set_structure(acpi.STOPDT_CON)
+                new_instance.set_type(acpi.STOPDT_CON)
                 return (6, new_instance)
             # TESTDT ACT
             elif first_byte == acpi.TESTFR_CON:
-                new_instance.set_structure(acpi.TESTFR_CON)
+                new_instance.set_type(acpi.TESTFR_CON)
                 return (7, new_instance)
             
             else:

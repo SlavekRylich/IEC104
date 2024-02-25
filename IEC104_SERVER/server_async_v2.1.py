@@ -46,14 +46,15 @@ class ServerIEC104():
 
 
     async def server_handle_client(self, reader, writer):
-        
+        client_address, client_port = writer.get_extra_info('peername')
         
         self.queue_man = QueueManager()
         
-        self.server_clients.append(writer)
-        print(f"Připojen reader: {reader}, writer: {writer}")
+        self.server_clients.append((client_address,client_port,self.queue_man))
+        print(f"Spojení navázáno: s {client_address, client_port}")
         while True:
             try:
+                print(f"\n\n\n\n\nSu připraven přijímat data...")
                 header = await reader.read(2)
                 
                 if not header:
@@ -61,18 +62,20 @@ class ServerIEC104():
                 
                 start_byte, frame_length = header
                 
+                # identifikace IEC 104
                 if start_byte == Frame.Frame.start_byte:
                     apdu = await reader.read(frame_length)
                     if len(apdu) == frame_length:
                         return_code, new_apdu = Parser.parser(apdu,frame_length)
+                        print(f"{time.ctime()} - Přijata data: {new_apdu}")
                         
                         # return_code = 
                         #   0 - IFormat
                         #   1 - SFormat 
-                        #   2 - UFormat - startdt seq
-                        #   3 - UFormat - stopdt seq
-                        #   4 - UFormat - testdt seq
-                        #   >=5 - Chyba
+                        #   2-3 - UFormat - startdt seq
+                        #   4-5 - UFormat - stopdt seq
+                        #   6-7 - UFormat - testdt seq
+                        #   >=8 - Chyba
                         
                         if return_code < 8:
                             if isinstance(new_apdu, IFormat):
@@ -80,6 +83,13 @@ class ServerIEC104():
                                 self.queue_man.incrementVR
                                 self.queue_man.setACK(new_apdu.get_rsn)
                                 self.queue_man.clear_acked()
+                                
+                                # prozatím tady napíšu potvrzování
+                                response = SFormat(self.queue_man.getVR())
+                                if response:
+                                    writer.write(response.serialize())
+                                    await writer.drain()
+                                    print(f"{time.ctime()} - Odeslána odpověď: {response}")
                                 
                             if isinstance(new_apdu, SFormat):
                                 self.queue_man.setACK(new_apdu.get_rsn)
@@ -89,11 +99,17 @@ class ServerIEC104():
                                 response = self.queue_man.Uformat(new_apdu)
                                 if response:
                                     writer.write(response.serialize())
-                                    
+                                    await writer.drain()
+                                    print(f"{time.ctime()} - Odeslána odpověď: {response}")
                               
-                            await writer.drain() 
-                            return new_apdu
-                        raise Exception(f"Chyba - nejspíš v implementaci, neznámý formát")
+                            
+                            # zde se mohou provádět akce s přijatými daty
+                            
+                            
+                            
+                            #return new_apdu
+                        else:
+                            raise Exception(f"Chyba - nejspíš v implementaci, neznámý formát")
                     
                     else:
                         raise Exception("Nastala chyba v přenosu, " 
