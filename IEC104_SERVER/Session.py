@@ -3,6 +3,7 @@ import logging
 import asyncio
 import Frame
 from Parser import Parser
+from State import StateConn,StateTrans
 
 LISTENER_LIMIT=5
 # Konfigurace logování
@@ -30,17 +31,31 @@ class Session():
     def __init__(self, ip, port):
         self.ip = ip
         self.port = port
-        self.connected = False
-        self.active_transaction = False
         self.timeout = 0
         self.sessions = []
         self.server_clients = []
+        
+        self.connection_state = StateConn.set_state(1)
+        self.transmission_state = StateTrans.set_state(0)
+        
         
         Session.id += 1
         self.id = Session.id
         Session.instances.append(self)
     
+    # 0 = Connected
+    # 1 = Disconnected
+    def set_connection_state(self, state):
+        self.connection_state = state
     
+    def set_transmission_state(self, state):
+        self.connection_state = state
+    
+    def get_connection_state(self):
+        return self.connection_state
+    
+    def get_transmission_state(self):
+        return self.connection_state
         
     @classmethod        # instance s indexem 0 neexistuje ( je rezevrována* )
     def remove_instance(cls, id = 0, instance = None):
@@ -101,6 +116,35 @@ class Session():
             buffer += data
         return buffer
         
+    async def handle_messages(self, reader, writer):
+        while True:
+            try:
+                # Příjem zpráv a zpracování
+                print(f"\n\n\nSu připraven přijímat data...")
+                header = await reader.read(2)
+                
+                if not header:
+                    break
+                
+                start_byte, frame_length = header
+                
+                # identifikace IEC 104
+                if start_byte == Frame.Frame.start_byte:
+                    apdu = await reader.read(frame_length)
+                    if len(apdu) == frame_length:
+                        return_code, new_apdu = Parser.parser(apdu,frame_length)
+                        
+                        return return_code, new_apdu
+                
+                # přijat nějaký neznámý formát
+                      
+            except Exception as e:
+                print(f"Exception {e}")
+
+    async def send_message(self, message):
+        # Odeslat zprávu na hlavní nebo záložní spojení
+        pass
+    
             
     
     def connect(self):

@@ -9,7 +9,7 @@ class Timeout():
         self.seconds = seconds
         
     
-    def __enter__(self) -> None:
+    def __enter__(self):
         self.die_after = time.time() + self.seconds
         return self
     

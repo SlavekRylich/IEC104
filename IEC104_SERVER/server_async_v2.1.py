@@ -26,13 +26,38 @@ class ServerIEC104():
 
         self.ip = config_loader.config['server']['ip_address']
         self.port = config_loader.config['server']['port']
+        self.k = config_loader.config['server']['k']
+        self.w = config_loader.config['server']['w']
         self.active_session = False
         self.connected = False
         self.type_frame = ""
+        
+        # tuple (ip, queue)
         self.server_clients = []
         
         self.active_clients = [] # List of all currently connected users
     
+    
+    def receive_data(self, apdu):
+        pass
+    
+    def send_data(self, apdu):
+        pass
+    
+    def generate_resp(self, apdu):
+        pass
+    
+    def keepalive(self):
+        pass
+    
+    def add_new_client(self, client):
+        for item in self.server_clients:
+            if item[0] == client[0]:
+                
+                item[1].append(client)
+            else:
+                self.server_clients
+                self.server_clients.append(client)
 
     # Main function
     async def start(self, loop = 0):
@@ -46,15 +71,21 @@ class ServerIEC104():
 
 
     async def server_handle_client(self, reader, writer):
+        
+        
+        
         client_address, client_port = writer.get_extra_info('peername')
         
-        self.queue_man = QueueManager()
+        session = Session(client_address,client_port)
+        self.add_new_client((client_address, client_port, session))
         
+        self.queue_man = QueueManager()
         self.server_clients.append((client_address,client_port,self.queue_man))
+        
         print(f"Spojení navázáno: s {client_address, client_port}")
         while True:
             try:
-                print(f"\n\n\n\n\nSu připraven přijímat data...")
+                print(f"\n\n\nSu připraven přijímat data...")
                 header = await reader.read(2)
                 
                 if not header:
@@ -80,23 +111,23 @@ class ServerIEC104():
                         if return_code < 8:
                             if isinstance(new_apdu, IFormat):
                                 self.queue_man.insert(new_apdu)
-                                self.queue_man.incrementVR
-                                self.queue_man.setACK(new_apdu.get_rsn)
-                                self.queue_man.clear_acked()
+                                self.queue_man.incrementVR()
+                                self.queue_man.set_ack(new_apdu.get_rsn())
+                                self.queue_man.clear_acked_send_queue()
                                 
                                 # prozatím tady napíšu potvrzování
-                                response = SFormat(self.queue_man.getVR())
+                                response = SFormat(self.queue_man.get_VR())
                                 if response:
                                     writer.write(response.serialize())
                                     await writer.drain()
                                     print(f"{time.ctime()} - Odeslána odpověď: {response}")
                                 
                             if isinstance(new_apdu, SFormat):
-                                self.queue_man.setACK(new_apdu.get_rsn)
-                                self.queue_man.clear_acked()
+                                self.queue_man.set_ack(new_apdu.get_rsn())
+                                self.queue_man.clear_acked_send_queue()
                             
                             if isinstance(new_apdu, UFormat):
-                                response = self.queue_man.Uformat(new_apdu)
+                                response = self.queue_man.Uformat_response(new_apdu)
                                 if response:
                                     writer.write(response.serialize())
                                     await writer.drain()
@@ -120,9 +151,11 @@ class ServerIEC104():
                     raise Exception("Přijat neznámý formát")
                 
             except Exception as e:
+                
                 print(f"Exception {e}")
-        
-
+                if e.find('WinError'):
+                    print(f"Zachycen str \'WinError\' ")
+                    sys.exit(1)
         
             
         

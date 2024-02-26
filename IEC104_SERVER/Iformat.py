@@ -18,6 +18,8 @@ class IFormat(Frame):
         self.rsn = rsn
         self.data = data
         self.data_length = self.get_length_of_data()
+        # zaokrouhlední dat na celé byty
+        self.total_length += self.data_length
     
     # třídní atributy pro číslování rámců (dořešit v budoucnu)      
      # už nevím proč, nejspíš pokud bych to neřešil tak, že co packet to instance X formátu ?  
@@ -65,7 +67,7 @@ class IFormat(Frame):
         return self.data 
     
     def get_length_of_data(self):
-        return math.ceil(len(self.data) / 8)
+        return len(self.data)
     
      #property
     def set_data_from_structure(self, structure):
@@ -84,9 +86,6 @@ class IFormat(Frame):
         third = (self.rsn & 0x7F) << 1
         fourth = (self.rsn >> 7) & 0xFF
         
-        # zaokrouhlední dat na celé byty
-        
-        self.total_length += self.data_length
         
         # + 2 because start_byte and length
         packed_header = struct.pack(f"{'B' * (self.header_length + 2)}", 
@@ -97,10 +96,17 @@ class IFormat(Frame):
                                     third,   # 3. ridici pole
                                     fourth,  # 4. ridici pole
         )
-        print(self.data_length)
-        packet_data = struct.pack(f"{'B' * self.data_length}", self.data)
         
-        self.structure = packed_header + packet_data
+        # zabali random data
+        #packet_data = struct.pack(f"{'B' * self.data_length}", self.data)
+        
+        if type(self.data) == tuple:
+            data = struct.pack('I' * len(self.data), *self.data)
+            self.structure = packed_header + data
+            return self.structure
+        
+        #self.structure = packed_header + packet_data
+        self.structure = packed_header + self.data
         return self.structure
     
     def __str__(self):

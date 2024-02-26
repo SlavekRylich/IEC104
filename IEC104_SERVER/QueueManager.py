@@ -7,20 +7,58 @@ from UFormat import UFormat
 import acpi
 
 class QueueManager():
-    def __init__(self, socket=None):
-        self.socket = socket
+    def __init__(self):
+        # tuple (ip, port, session)
+        self.sessions = []
         self.VR = 0
         self.VS = 0
-        self.ACK = 0
-        self.queue = []
-        
-    def insert(self, packet):
-        self.queue.append(packet)
+        self.ack = 0
+        self.send_queue = []
+        self.recv_queue = []
     
-    def clear_acked(self):
-        for item in self.queue:
-            if item.get_ssn() <= self.ACK:
-                self.queue.remove(item)
+    def add_session(self, client):
+        # client[0] = ip
+        # client[1] = port
+        # client[2] = session
+        self.sessions.append((client[0],client[1],client[2]))
+    
+    def get_number_of_sessions(self):
+        count = 0
+        for item in self.sessions:
+            count = count + 1
+        return count
+    
+    def get_number_of_established_sessions(self):
+        count = 0
+        for item in self.sessions:
+            if item[2].get_connection_state().value == 1:
+                count = count + 1
+        return count
+    
+    def get_established_sessions(self):
+        for item in self.sessions:
+            if str(item.get_transmission_state()) == 'Running':
+                return item
+    
+    def get_sessions(self):
+        return self.sessions
+    
+    
+    def insert_send_queue(self, packet):
+        self.send_queue.append(packet)
+        
+    def insert_recv_queue(self, packet):
+        self.recv_queue.append(packet)
+    
+    def clear_acked_send_queue(self):
+        for item in self.send_queue:
+            if item.get_ssn() <= self.ack:
+                self.send_queue.remove(item)
+                
+    def clear_acked_recv_queue(self):
+        for item in self.recv_queue:
+            if item.get_ssn() <= self.ack:
+                self.recv_queue.remove(item)
         
     def incrementVR(self):
         self.VR = self.VR + 1
@@ -28,19 +66,19 @@ class QueueManager():
     def incrementVS(self):
         self.VS = self.VS + 1
         
-    def setACK(self, ack):
-        self.ACK = ack
+    def set_ack(self, ack):
+        self.ack = ack
         
-    def getVR(self):
+    def get_VR(self):
         return self.VR
     
-    def getVS(self):
+    def get_VS(self):
         return self.VS
     
-    def getACK(self):
-        return self.ACK
+    def get_ack(self):
+        return self.ack
     
-    def Uformat(self, frame):
+    def Uformat_response(self, frame):
         frame = frame.get_type()
         
         if (frame == acpi.STARTDT_ACT):

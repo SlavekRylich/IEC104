@@ -32,9 +32,25 @@ class IEC104Client(object):
         self.ssn = 0    # send sequence number
         self.rsn = 0    # receive sequence number
         self.connected = False
+        self.k = config_loader.config['client']['k']
+        self.w = config_loader.config['client']['w']
         self.servers = []
         self.queue_man = QueueManager()
         self.data = 'vymyslena data'
+        self.data = 0x65 + 0x01 + 0x0A + 0x00 + 0x0C + 0x00 + 0x00 + 0x00 + 0x00 + 0x05
+        self.data = struct.pack(f"{'B' * 10}", 
+                                    0x65, # start byte
+                                    0x01,  # Total Length pouze hlavička
+                                    0x0A,   # 1. ridici pole
+                                    0x00,  # 2. ridici pole
+                                    0x0C,   # 3. ridici pole
+                                    0x00,  # 4. ridici pole hlavička
+                                    0x00,   # 1. ridici pole
+                                    0x00,  # 2. ridici pole
+                                    0x00,   # 3. ridici pole
+                                    0x05,   # 3. ridici pole
+        )
+        print(len(self.data))
         
     async def run_client(self, ip, port):
         
@@ -53,34 +69,31 @@ class IEC104Client(object):
         
         frame1 = UFormat(acpi.STARTDT_ACT)
         self.writer.write(frame1.serialize())
-        print(f"Odeslán rámec:\n {frame1}")
-        time.sleep(1)
-        self.writer.write(frame1.serialize())
-        print(f"Odeslán rámec:\n {frame1}")
+        print(f"{time.ctime()} - Odeslán rámec: {frame1}")
         
         resp = await self.listen()
         
         if isinstance(resp, UFormat):
             
-            print(f"Přijat: {resp}")
+            print(f"{time.ctime()} - Přijat rámec: {resp}")
             frames1 = []
             frames2 = []
-            for i in range(0,5):
-                frames1.append(UFormat(acpi.TESTFR_ACT))
-                self.writer.write(frames1[i].serialize())
-                await self.writer.drain()
-                print(f"Odeslán rámec: {frames1[i]}")
+            # for i in range(0,1)
+            #     frames1.append(UFormat(acpi.TESTFR_ACT))
+            #     self.writer.write(frames1[i].serialize())
+            #     await self.writer.drain()
+            #     print(f"Odeslán rámec: {frames1[i]}")
                 
-                resp = await self.listen()
-                if isinstance(resp, UFormat):
-                    print(f"Ok, přijat Testdt con")
-                    time.sleep(2)
-                else:
-                    break
+            #     resp = await self.listen()
+            #     if isinstance(resp, UFormat):
+            #         print(f"Ok, přijat Testdt con")
+            #         time.sleep(2)
+            #     else:
+            #         break
                 
-            for i in range(0,10):
-                frames2.append(IFormat(self.data, self.queue_man.getVS(), self.queue_man.getVR()))
-                self.queue_man.insert(frames2[i])
+            for i in range(0,1):
+                frames2.append(IFormat(self.data, self.queue_man.get_VS(), self.queue_man.get_VR()))
+                self.queue_man.insert_send_queue(frames2[i])
                 self.writer.write(frames2[i].serialize())
                 
                 await self.writer.drain()
@@ -88,32 +101,34 @@ class IEC104Client(object):
                 self.queue_man.incrementVS()
                 
                 resp = await self.listen()
+                if resp:
+                    print(f"{time.ctime()} - Přijat rámec: {resp}")
                 if isinstance(resp, UFormat):
-                    print(f"{time.ctime()} - Ok, přijat Testdt con")
+                    pass
                 if isinstance(resp, IFormat):
-                    self.queue_man.insert(resp)
-                    self.queue_man.incrementVR
-                    self.queue_man.setACK(resp.get_rsn)
-                    self.queue_man.clear_acked()
+                    self.queue_man.insert_send_queue(resp)
+                    self.queue_man.incrementVR()
+                    self.queue_man.set_ack(resp.get_rsn())
+                    self.queue_man.clear_acked_send_queue()
                 
                 if isinstance(resp, SFormat):
-                    self.queue_man.setACK(resp.get_rsn)
-                    self.queue_man.clear_acked()
+                    self.queue_man.set_ack(resp.get_rsn())
+                    self.queue_man.clear_acked_send_queue()
                 else:
                     break
                 
-                time.sleep(2)
+                time.sleep(5)
                 
         
         if isinstance(resp, IFormat):
-            self.queue_man.insert(resp)
-            self.queue_man.incrementVR
-            self.queue_man.setACK(resp.get_rsn)
-            self.queue_man.clear_acked()
+            self.queue_man.insert_send_queue(resp)
+            self.queue_man.incrementVR()
+            self.queue_man.set_ack(resp.get_rsn())
+            self.queue_man.clear_acked_send_queue()
         
         if isinstance(resp, SFormat):
-            self.queue_man.setACK(resp.get_rsn)
-            self.queue_man.clear_acked()
+            self.queue_man.set_ack(resp.get_rsn())
+            self.queue_man.clear_acked_send_queue()
         
         
         
@@ -144,17 +159,17 @@ class IEC104Client(object):
                         
                         if return_code < 8:
                             if isinstance(new_apdu, IFormat):
-                                self.queue_man.insert(new_apdu)
-                                self.queue_man.incrementVR
-                                self.queue_man.setACK(new_apdu.get_rsn)
-                                self.queue_man.clear_acked()
+                                self.queue_man.insert_send_queue(new_apdu)
+                                self.queue_man.incrementVR()
+                                self.queue_man.set_ack(new_apdu.get_rsn())
+                                self.queue_man.clear_acked_send_queue()
                                 
                             if isinstance(new_apdu, SFormat):
-                                self.queue_man.setACK(new_apdu.get_rsn)
-                                self.queue_man.clear_acked()
+                                self.queue_man.set_ack(new_apdu.get_rsn())
+                                self.queue_man.clear_acked_send_queue()
                             
                             if isinstance(new_apdu, UFormat):
-                                response = self.queue_man.Uformat(new_apdu)
+                                response = self.queue_man.Uformat_response(new_apdu)
                                 if response:
                                     self.writer.write(response.serialize())
                                     await self.writer.drain()
