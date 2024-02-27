@@ -25,4 +25,5 @@ print(f'Today is {today}')
 
 # Nastavení a získání dne
 today = Days.set_day(4)
-print(f'Today is now {today}, which corresponds to {today.get_day()}')
+if today.get_day() == 4:
+    print(f'Today is now {today}, which corresponds to {today.get_day()}')

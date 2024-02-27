@@ -43,19 +43,24 @@ class Session():
         self.id = Session.id
         Session.instances.append(self)
     
-    # 0 = Connected
-    # 1 = Disconnected
+    # 0 = Disconnected
+    # 1 = Connected
     def set_connection_state(self, state):
         self.connection_state = state
     
+    # 0 = Stopped
+    # 1= Pending_running
+    # 2 = Running
+    # 3 = Pending_unconfirmed
+    # 4 = Pending_stopped
     def set_transmission_state(self, state):
         self.connection_state = state
     
     def get_connection_state(self):
-        return self.connection_state
+        return self.connection_state.get_state()
     
     def get_transmission_state(self):
-        return self.connection_state
+        return self.connection_state.get_state()
         
     @classmethod        # instance s indexem 0 neexistuje ( je rezevrována* )
     def remove_instance(cls, id = 0, instance = None):
