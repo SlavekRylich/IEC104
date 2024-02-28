@@ -7,6 +7,7 @@ class Timeout():
     
     def __init__(self, seconds) -> None:
         self.seconds = seconds
+        self.die_after = time.time() + self.seconds
         
     
     def __enter__(self):
@@ -16,6 +17,10 @@ class Timeout():
     
     def __exit__(*exc_info):
         pass
+    
+    def start(self):
+        self.die_after = time.time() + self.seconds
+        return self
         
     @property
     def timed_out(self):

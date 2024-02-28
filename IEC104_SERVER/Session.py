@@ -2,8 +2,13 @@ import socket
 import logging
 import asyncio
 import Frame
+import acpi
 from Parser import Parser
 from State import StateConn,StateTrans
+from Timeout import Timeout
+from IFormat import IFormat
+from SFormat import SFormat
+from UFormat import UFormat
 
 LISTENER_LIMIT=5
 # Konfigurace logování
@@ -35,8 +40,8 @@ class Session():
         self.sessions = []
         self.server_clients = []
         
-        self.connection_state = StateConn.set_state(1)
-        self.transmission_state = StateTrans.set_state(0)
+        self.connection_state = StateConn.set_state('Connected')
+        self.transmission_state = StateTrans.set_state('Stopped')
         
         
         Session.id += 1
@@ -122,24 +127,27 @@ class Session():
         return buffer
         
     async def handle_messages(self, reader, writer):
+        self.reader = reader
+        self.writer = writer
         while True:
             try:
                 # Příjem zpráv a zpracování
                 print(f"\n\n\nSu připraven přijímat data...")
-                header = await reader.read(2)
+
+                header = await self.reader.read(2)
                 
                 if not header:
-                    break
+                    return 0
                 
                 start_byte, frame_length = header
                 
                 # identifikace IEC 104
                 if start_byte == Frame.Frame.start_byte:
-                    apdu = await reader.read(frame_length)
+                    apdu = await self.reader.read(frame_length)
                     if len(apdu) == frame_length:
-                        return_code, new_apdu = Parser.parser(apdu,frame_length)
+                        new_apdu = Parser.parser(apdu,frame_length)
                         
-                        return return_code, new_apdu
+                        return new_apdu
                 
                 # přijat nějaký neznámý formát
                       
@@ -150,7 +158,45 @@ class Session():
         # Odeslat zprávu na hlavní nebo záložní spojení
         pass
     
-            
+    async def keepalive(self):
+        test_frame = UFormat(acpi.TESTFR_ACT)
+        self.writer(test_frame.serialize())
+        await self.writer.drain()
+        
+    async def response_testdt_act(self):
+        test_frame = UFormat(acpi.TESTFR_ACT)
+        self.writer(test_frame.serialize())
+        await self.writer.drain()
+    
+    async def response_testdt_con(self):
+        test_frame = UFormat(acpi.TESTFR_CON)
+        self.writer(test_frame.serialize())
+        await self.writer.drain()
+    
+    async def response_startdt_act(self):
+        test_frame = UFormat(acpi.STARTDT_ACT)
+        self.writer(test_frame.serialize())
+        await self.writer.drain()
+    
+    async def response_startdt_con(self):
+        test_frame = UFormat(acpi.STARTDT_CON)
+        self.writer(test_frame.serialize())
+        await self.writer.drain()
+        
+    async def response_stopdt_act(self):
+        test_frame = UFormat(acpi.STOPDT_ACT)
+        self.writer(test_frame.serialize())
+        await self.writer.drain()
+        
+    async def response_stopdt_con(self):
+        test_frame = UFormat(acpi.STOPDT_CON)
+        self.writer(test_frame.serialize())
+        await self.writer.drain()
+        
+    async def send_frame(self,frame):
+        self.writer(frame.serialize())
+        await self.writer.drain()
+        
     
     def connect(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

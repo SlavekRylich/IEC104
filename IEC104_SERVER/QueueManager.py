@@ -17,10 +17,10 @@ class QueueManager():
         self.recv_queue = []
     
     def add_session(self, client):
-        # client[0] = ip
-        # client[1] = port
-        # client[2] = session
-        self.sessions.append((client[0],client[1],client[2]))
+        ip = client[0] 
+        port = client[1]
+        session = client[2]
+        self.sessions.append((ip, port,session))
     
     def get_number_of_sessions(self):
         count = 0
@@ -28,17 +28,25 @@ class QueueManager():
             count = count + 1
         return count
     
-    def get_number_of_established_sessions(self):
+    def get_number_of_connected_sessions(self):
         count = 0
         for item in self.sessions:
-            if item[2].get_connection_state().value == 1:
+            if item[2].get_connection_state() == 'Connected':
                 count = count + 1
         return count
     
-    def get_established_sessions(self):
+    def get_connected_sessions(self):
+        list = []
         for item in self.sessions:
-            if str(item.get_transmission_state()) == 'Running':
-                return item
+            if str(item[2].get_connection_state()) == 'Connected':
+                list.append(item[2])   
+                 
+        return list
+    
+    def get_running_sessions(self):
+        for item in self.sessions:
+            if str(item[2].get_transmission_state()) == 'Running':
+                return item[2]
     
     def get_sessions(self):
         return self.sessions
@@ -50,6 +58,25 @@ class QueueManager():
     def insert_recv_queue(self, packet):
         self.recv_queue.append(packet)
     
+    def isBlank_send_queue(self):
+        count = 0
+        for item in self.send_queue():
+            count = count + 1
+        return count
+    
+    def isBlank_recv_queue(self):
+        count = 0
+        for item in self.recv_queue():
+            count = count + 1
+        return count
+    
+    def get_send_queue(self):
+        return self.send_queue
+    
+    def get_recv_queue(self):
+        return self.recv_queue
+    
+    
     def clear_acked_send_queue(self):
         for item in self.send_queue:
             if item.get_ssn() <= self.ack:
@@ -59,6 +86,10 @@ class QueueManager():
         for item in self.recv_queue:
             if item.get_ssn() <= self.ack:
                 self.recv_queue.remove(item)
+                
+    def response_S_format(self):
+        return SFormat(self.ack)
+        
         
     def incrementVR(self):
         self.VR = self.VR + 1

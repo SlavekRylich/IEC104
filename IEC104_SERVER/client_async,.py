@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import socket
 import binascii
+import sys
 from Parser import Parser
 from QueueManager import QueueManager
 import acpi
@@ -78,18 +79,19 @@ class IEC104Client(object):
             print(f"{time.ctime()} - Přijat rámec: {resp}")
             frames1 = []
             frames2 = []
-            # for i in range(0,1)
-            #     frames1.append(UFormat(acpi.TESTFR_ACT))
-            #     self.writer.write(frames1[i].serialize())
-            #     await self.writer.drain()
-            #     print(f"Odeslán rámec: {frames1[i]}")
+            for i in range(0,4):
+                frames1.append(UFormat(acpi.TESTFR_ACT))
+                self.writer.write(frames1[i].serialize())
+                await self.writer.drain()
+                print(f"Odeslán rámec: {frames1[i]}")
                 
-            #     resp = await self.listen()
-            #     if isinstance(resp, UFormat):
-            #         print(f"Ok, přijat Testdt con")
-            #         time.sleep(2)
-            #     else:
-            #         break
+                resp = await self.listen()
+                if isinstance(resp, UFormat):
+                    print(f"Ok, přijat Testdt con")
+                    time.sleep(2)
+                else:
+                    break
+                time.sleep(5)
                 
             for i in range(0,1):
                 frames2.append(IFormat(self.data, self.queue_man.get_VS(), self.queue_man.get_VR()))
@@ -147,38 +149,29 @@ class IEC104Client(object):
                 if start_byte == Frame.Frame.start_byte:
                     apdu = await self.reader.read(frame_length)
                     if len(apdu) == frame_length:
-                        return_code, new_apdu = Parser.parser(apdu,frame_length)
+                        new_apdu = Parser.parser(apdu,frame_length)
                         
-                        # return_code = 
-                        #   0 - IFormat
-                        #   1 - SFormat 
-                        #   2-3 - UFormat - startdt seq
-                        #   4-5 - UFormat - stopdt seq
-                        #   6-7 - UFormat - testdt seq
-                        #   >=8 - Chyba
                         
-                        if return_code < 8:
-                            if isinstance(new_apdu, IFormat):
-                                self.queue_man.insert_send_queue(new_apdu)
-                                self.queue_man.incrementVR()
-                                self.queue_man.set_ack(new_apdu.get_rsn())
-                                self.queue_man.clear_acked_send_queue()
-                                
-                            if isinstance(new_apdu, SFormat):
-                                self.queue_man.set_ack(new_apdu.get_rsn())
-                                self.queue_man.clear_acked_send_queue()
+                        
+                        if isinstance(new_apdu, IFormat):
+                            self.queue_man.insert_send_queue(new_apdu)
+                            self.queue_man.incrementVR()
+                            self.queue_man.set_ack(new_apdu.get_rsn())
+                            self.queue_man.clear_acked_send_queue()
                             
-                            if isinstance(new_apdu, UFormat):
-                                response = self.queue_man.Uformat_response(new_apdu)
-                                if response:
-                                    self.writer.write(response.serialize())
-                                    await self.writer.drain()
-                                    return response
+                        if isinstance(new_apdu, SFormat):
+                            self.queue_man.set_ack(new_apdu.get_rsn())
+                            self.queue_man.clear_acked_send_queue()
+                        
+                        if isinstance(new_apdu, UFormat):
+                            response = self.queue_man.Uformat_response(new_apdu)
+                            if response:
+                                self.writer.write(response.serialize())
+                                await self.writer.drain()
+                                return response
                                     
                             
-                            return new_apdu
-                        raise Exception(f"Chyba - nejspíš v implementaci, neznámý formát")
-                    
+                        return new_apdu
                     else:
                         raise Exception("Nastala chyba v přenosu, " 
                                         "přijatá data se nerovnájí požadovaným.")
@@ -189,6 +182,7 @@ class IEC104Client(object):
                 
             except Exception as e:
                 print(f"Exception {e}")
+                sys.exit(1)
         
 
 if __name__ == "__main__":

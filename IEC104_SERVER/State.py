@@ -1,8 +1,8 @@
 from enum import Enum
 
 class StateConn(Enum):
-    Disconnected = 0
-    Connected = 1
+    Disconnected = 'Disconnected'
+    Connected = 'Connected'
     
     def __str__(self):
         return self.name
@@ -15,11 +15,11 @@ class StateConn(Enum):
         return self.value
     
 class StateTrans(Enum):
-    Stopped = 0
-    Pending_running = 1
-    Running = 2
-    Pending_unconfirmed = 3
-    Pending_stopped = 4
+    Stopped = 'Stopped'
+    Pending_running = 'Pending_running'
+    Running = 'Running'
+    Pending_unconfirmed = 'Pending_unconfirmed'
+    Pending_stopped = 'Pending_stopped'
     
     def __str__(self):
         return self.name

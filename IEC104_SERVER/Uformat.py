@@ -38,6 +38,9 @@ class UFormat(Frame):
     def get_type_of_Uformat_Str(self):
         return self.type_of_Uformat_Str
     
+    def get_type_int(self):
+        return self.type_int
+    
     # serializace dat 
     def serialize(self, type = None):
         if type:

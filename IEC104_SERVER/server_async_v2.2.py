@@ -126,7 +126,7 @@ class ServerIEC104():
         session = Session(client_address,client_port)
         self.queue = self.add_new_client_session((client_address, client_port, session))
         self.active_session = self.Select_Session(session)
-        print(f"Spojení navázáno: s {client_address, client_port}, (Celkem spojení: {self.queue.get_number_of_established_sessions()}))")
+        print(f"Spojení navázáno: s {client_address, client_port}, (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
         
         while True:
             try:
