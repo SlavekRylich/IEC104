@@ -16,10 +16,10 @@ class StateConn(Enum):
     
 class StateTrans(Enum):
     Stopped = 'Stopped'
-    Pending_running = 'Pending_running'
+    Waiting_running = 'Waiting_running'
     Running = 'Running'
-    Pending_unconfirmed = 'Pending_unconfirmed'
-    Pending_stopped = 'Pending_stopped'
+    Waiting_unconfirmed = 'Waiting_unconfirmed'
+    Waiting_stopped = 'Waiting_stopped'
     
     def __str__(self):
         return self.name

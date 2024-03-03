@@ -31,14 +31,24 @@ class Session():
     id = 0
     instances = []
     
-    def __init__(self, ip, port, reader, writer, queue=0, session_params=0):
+    def __init__(self, ip, port, reader, writer, session_params=0):
         self.reader = reader
         self.writer = writer
         self.ip = ip
         self.port = port
         self.timestamp = time.ctime()
         self.sessions = []
-        self.queue = queue
+        self.queue = None
+        
+        # flag_session = 'start_session'
+        # flag_session = 'stop_session'
+        # flag_session = 'active_termination'
+        # flag_session = None
+        self.flag_session = None 
+        
+        # flag_timeout_t1 = 0 - good
+        # flag_timeout_t1 = 1 - timeout 
+        self.flag_timeout_t1 = 0
         
         self.k = session_params.k
         self.w = session_params.w
@@ -58,6 +68,18 @@ class Session():
         self.id = Session.id
         Session.instances.append(self)
     
+    def set_flag_session(self, flag):
+        self.flag_session = flag
+        
+    def get_flag_session(self):
+        return self.flag_session
+    
+    def set_flag_timeout_t1(self, flag):
+        self.flag_timeout_t1 = flag
+        
+    def get_flag_timeout_t1(self):
+        return self.flag_timeout_t1
+    
     def get_priority(self):
         return self.priority
     
@@ -70,10 +92,10 @@ class Session():
         self.connection_state = state
     
     # 0 = Stopped
-    # 1= Pending_running
+    # 1= Waiting_running
     # 2 = Running
-    # 3 = Pending_unconfirmed
-    # 4 = Pending_stopped
+    # 3 = Waiting_unconfirmed
+    # 4 = Waiting_stopped
     def set_transmission_state(self, state):
         self.connection_state = state
     
@@ -113,12 +135,6 @@ class Session():
             if inst.id == id:
                 return inst
         return None
-            
-    def accept(self):
-        while True:
-            self.client, self.address = self.socket.accept()
-            self.sessions.append(self.client)
-            return (self.client, self.address)
         
     async def accept_async(self):
         while True:
@@ -147,19 +163,21 @@ class Session():
             buffer += data
         return buffer
         
+    async def check_for_message(self):
+        if self.connection_state == StateConn.set_state('Connected'):
+                await self.handle_messages()
+            
     async def handle_messages(self):
         
         self.loop = asyncio.get_running_loop()
         try:
             while True:
-                # Příjem zpráv a zpracování
-                print(f"\n\n\nSu připraven přijímat data...")
-
+                print(f"Starting async handle_messages")
+                
                 header = await asyncio.wait_for(self.reader.read(2),timeout=2)
                 
                 if not header:
-                    await asyncio.sleep(1)
-                    continue
+                    break
                 
                 start_byte, frame_length = header
                 
@@ -168,19 +186,19 @@ class Session():
                     apdu = await self.reader.read(frame_length)
                     if len(apdu) == frame_length:
                         new_apdu = Parser.parser(apdu,frame_length)
+                        
+                        # aktualizace poslední aktivity 
                         self.update_timestamp()
                         
-                        if isinstance(new_apdu, UFormat):
-                            self.loop.create_task(self.handle_U_format(new_apdu))
-                            
-                            
-                            # return new_apdu
-                        await self.queue.add_frame(new_apdu)
-                        # return new_apdu
+                        # if isinstance(new_apdu, UFormat):
+                        #     self.loop.create_task(self.handle_U_format(new_apdu))
+                        
+                        print(f"Finish async handle_messages.")
+                        await self.queue.handle_apdu(new_apdu)
                     
             # přijat nějaký neznámý formát
         except asyncio.TimeoutError:
-            print(f'Client {self.ip} timed out due to inactivity')
+            print(f'Klient {self.ip} neposlal žádná data.')
         except asyncio.CancelledError:
             pass         
         except Exception as e:
@@ -192,7 +210,6 @@ class Session():
         if (apdu == acpi.STARTDT_ACT):
             await self.response_startdt_con()
             
-            
         elif apdu == acpi.STOPDT_ACT:
             await self.response_stopdt_con()
             
@@ -203,6 +220,9 @@ class Session():
         # Odeslat zprávu na hlavní nebo záložní spojení
         pass
     
+    
+    ##############################################
+    ## RESPONSES
     async def keepalive(self):
         frame = UFormat(acpi.TESTFR_ACT)
         self.writer(frame.serialize())
@@ -238,39 +258,35 @@ class Session():
         self.writer(frame.serialize())
         await self.writer.drain()
         
+    ################################################
+    ## SEND FRAME
+        
     async def send_frame(self,frame):
         self.writer(frame.serialize())
         await self.writer.drain()
-        
     
-    def connect(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((self.ip,self.port))
-        logging.info(f"Connected to {self.ip}:{self.port}")
-        self.connected = True
-        return self.socket
-
-
-    def start_server(self):
+    ################################################
+    # GENERATE U FRAME
+    
+    async def generate_testdt_act(self):
+        return UFormat(acpi.TESTFR_ACT)
+    
+    async def generate_testdt_con(self):
+        return UFormat(acpi.TESTFR_CON)
+    
+    async def generate_startdt_act(self):
+        return UFormat(acpi.STARTDT_ACT)
+    
+    async def generate_startdt_con(self):
+        return UFormat(acpi.STARTDT_CON)
         
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.bind((self.ip,self.port))
-        self.socket.listen(LISTENER_LIMIT)
-        logging.info(f"Server listening on {self.ip}:{self.port}")
-        return self.socket
-
-    def disconnect(self):
-        logging.info(f"Disconnecting")
-        self.connected = False
-        self.sessions.remove(self.client)
-        self.socket.close()
-                
+    async def generate_stopdt_act(self):
+        return UFormat(acpi.STOPDT_ACT)
         
-        # self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # self.socket.bind((self.ip,self.port))
-        # self.socket.listen(LISTENER_LIMIT)
-        # logging.info(f"Server listening on {self.ip}:{self.port}")
-
+    async def generate_stopdt_con(self):
+        return UFormat(acpi.STOPDT_CON)
+        
+        
     async def connect_async(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         await self.socket.connect((self.ip,self.port))
@@ -296,100 +312,104 @@ class Session():
         return self.ip, self.port, self.connected, self.timeout
     
     async def check_for_timeouts(self):
-        # Projděte si slovník klientů a zkontrolujte jejich timeout
+        print(f"Starting async check_for_timeouts")
+        
         time_now = time.time()
         last_timestamp = self.get_timestamp()
         
         if time_now - last_timestamp > self.timeout_t0:
             print(f'Client {self.ip}:{self.port} timed out and disconnected')
-            # self.loop.create_task()
+            
             
         if time_now - last_timestamp > self.timeout_t1:
             
             self.set_transmission_state('Stopped')
             self.set_connection_state('Disconnected')
+            
             raise Exception(f"Timeout pro t1")
-            # connection close
-            # self.loop.create_task()
             
         if time_now - last_timestamp > self.timeout_t2:
             resp = self.queue.response_S_format()
             await self.send_frame(resp)
-            # self.loop.create_task()
             
         if time_now - last_timestamp > self.timeout_t3:
             await self.response_testdt_act()
             # self.loop.create_task()
-    
-    
-    def update_state_machine(self, fr = 0):
         
-            # set_connection_state()
-                # 0 = Disconnected
-                # 1 = Connected
-            if  self.get_connection_state('Connected'):
-                
-            # get_connection_state()
-                # 0 = Stopped
-                # 1= Pending_running
-                # 2 = Running
-                # 3 = Pending_unconfirmed
-                # 4 = Pending_stopped
-                
-                # spravny format pro podminky 
-                if isinstance(fr, UFormat):
-                    frame = fr.get_type_int()
-                
-                else:
-                    frame = fr.get_type_in_word()   # S-format
-                
-                # STATE 1   - if stopped and U-frame(STARTDT ACT)
-                if self.get_transmission_state() == 'Stopped' and \
-                    frame == acpi.STARTDT_ACT:
-                    
-                    # poslat STARTDT CON
-                    self.set_transmission_state('Running')
-                    self.response_startdt_con()
-                    
-                # #   - if stopped and U-frame(other)
-                # if  self.active_session.get_transmission_state() and \
-                #     frame != acpi.STARTDT_ACT:
-                        
-                #     self.active_session.set_transmission_state(2)
-                
-                # STATE 2   - if running and U-frame(STOPDT ACT) and send_queue is blank
-                if self.get_transmission_state() == 'Running' and \
-                    frame == acpi.STOPDT_ACT and \
-                        not self.queue.isBlank_send_queue():
-                            
-                            # poslat STOPDT CON
-                        self.set_transmission_state('Stopped')
-                        self.response_stopdt_con()
-                        
-                        
-                # STATE 2   - if running and U-frame(STOPDT ACT) and send_queue is not blank
-                if self.get_transmission_state() == 'Running' and \
-                    frame == acpi.STOPDT_ACT and \
-                        self.queue.isBlank_send_queue():
-                            
-                            # poslat STOPDT CON
-                        self.set_transmission_state('Pending_unconfirmed')
-                
-                
-                # STATE 3   - if Pending_unconfirmed and S-Frame and send_queue is blank
-                if self.get_transmission_state() == 'Pending_unconfirmed' and \
-                    frame.get_type_in_word() == 'S-format' and \
-                        not self.queue.isBlank_send_queue():
-                            
-                            # poslat STOPDT CON
-                        self.set_transmission_state('Stopped')
-                        self.response_stopdt_con()
-                    
-            else:
-                self.set_transmission_state('Stopped')
-                self.set_connection_state('Disconnected')
-                pass
+        print(f"Finish async check_for_timeouts")
     
+    
+    async def update_state_machine(self, fr = 0):
+        print(f"Starting async update_state_machine")
+        
+        # set_connection_state()
+            # 0 = Disconnected
+            # 1 = Connected
+        if self.get_connection_state('Connected'):
+            
+        # get_connection_state()
+            # 0 = Stopped
+            # 1= Waiting_running
+            # 2 = Running
+            # 3 = Waiting_unconfirmed
+            # 4 = Waiting_stopped
+            
+            # spravny format pro podminky 
+            if isinstance(fr, UFormat):
+                frame = fr.get_type_int()
+            
+            else:
+                frame = fr.get_type_in_word()   # S-format
+            
+            # STATE 1 - if stopped and U-frame(STARTDT ACT)
+            if self.get_transmission_state() == 'Stopped' and \
+                frame == acpi.STARTDT_ACT:
+                
+                # poslat STARTDT CON
+                self.set_transmission_state('Running')
+                await self.response_startdt_con()
+                
+            # #   - if stopped and U-frame(other)
+            # if  self.active_session.get_transmission_state() and \
+            #     frame != acpi.STARTDT_ACT:
+                    
+            #     self.active_session.set_transmission_state(2)
+            
+            # STATE 2 - if running and U-frame(STOPDT ACT) and send_queue is blank
+            if self.get_transmission_state() == 'Running' and \
+                frame == acpi.STOPDT_ACT and \
+                    self.queue.isBlank_send_queue():
+                        
+                        # poslat STOPDT CON
+                    self.set_transmission_state('Stopped')
+                    await self.response_stopdt_con()
+                    
+                    
+            # STATE 2 - if running and U-frame(STOPDT ACT) and send_queue is not blank
+            if self.get_transmission_state() == 'Running' and \
+                frame == acpi.STOPDT_ACT and \
+                    not self.queue.isBlank_send_queue():
+                        
+                        # poslat STOPDT CON
+                    self.set_transmission_state('Waiting_unconfirmed')
+            
+            
+            # STATE 3 - if Waiting_unconfirmed and S-Frame and send_queue is blank
+            if self.get_transmission_state() == 'Waiting_unconfirmed' and \
+                frame.get_type_in_word() == 'S-format' and \
+                    self.queue.isBlank_send_queue():
+                        
+                        # poslat STOPDT CON
+                    self.set_transmission_state('Stopped')
+                    await self.response_stopdt_con()
+                
+        else:
+            self.set_transmission_state('Stopped')
+            self.set_connection_state('Disconnected')
+            pass
+        
+        print(f"Finish async update_state_machine")
+
     
     def reconnect(self):
         pass

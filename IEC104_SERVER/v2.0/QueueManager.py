@@ -16,18 +16,44 @@ class QueueManager():
         self.VS = 0
         self.ack = 0
         self.send_queue = []
+        self.sended_queue = []
         self.recv_queue = []
         self.active_session = None
         
     async def handle_apdu(self, apdu):
         
+        print(f"Starting async handle_apdu with {apdu.get_type()}")
+        
+        if self.active_session.get_transmission_state() == 'Stopped':
+            
+            if isinstance(apdu, UFormat):
+                if apdu.get_type_int() != acpi.STARTDT_ACT:
+                    
+                    if apdu.get_type_int() == acpi.TESTFR_ACT:
+                        await self.active_session.response_testdt_con()
+                    
+                    if apdu.get_type_int() == acpi.TESTFR_CON:
+                        pass
+                    
+                else:
+                    await self.active_session.update_state_machine(apdu)
+            else:
+                # dle normy -> aktivni ukončení a client si zahájí spojení znovu ??
+                pass
+            
         if self.active_session.get_transmission_state() == 'Running':
                     
             if isinstance(apdu, IFormat):
-                self.recv_queue.append(apdu)
-                self.incrementVR()
-                self.set_ack(apdu.get_rsn())
-                self.clear_acked_recv_queue()
+                if (apdu.get_ssn() - self.VR) > 1:
+                    # chyba sekvence
+                    # vyslat S-format s posledním self.VR
+                    raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
+                    
+                else:
+                    self.recv_queue.append(apdu)
+                    self.incrementVR()
+                    self.set_ack(apdu.get_rsn())
+                    self.clear_acked_recv_queue()
                 
             if isinstance(apdu, SFormat):
                 self.set_ack(apdu.get_rsn())
@@ -52,7 +78,7 @@ class QueueManager():
                     
         
         
-        if self.active_session.get_transmission_state() == 'Pending_unconfirmed':
+        if self.active_session.get_transmission_state() == 'Waiting_unconfirmed':
             
             if isinstance(apdu, SFormat):
                 self.set_ack(apdu.get_rsn())
@@ -70,7 +96,24 @@ class QueueManager():
                                 
             self.active_session.update_state_machine(apdu)
 
+        print(f"Finish async handle_apdu")
 
+    async def handle_send_queue(self):
+        """
+        Vyprázdní frontu odesílání dat odesláním všech položek.
+        """
+        for frame in self.send_queue:
+            
+            # move to sended queue
+            self.sended_queue.append(frame)
+            # remove frame from send queue
+            self.send_queue.remove(frame)
+            # send frame
+            frame = await self.active_session.send_frame(frame)
+            
+           
+            
+    
     def add_session(self, client):
         ip = client[0] 
         port = client[1]
@@ -83,6 +126,11 @@ class QueueManager():
             count = count + 1
         return count
     
+    def generate_i_frame(self,data):
+        return IFormat(data, self.VS, self.VR)
+    
+    def generate_s_frame(self):
+        return SFormat(self.VR)
     
     def Select_active_session(self, session):
         # logika výběru aktivního spojení
@@ -124,16 +172,14 @@ class QueueManager():
         self.recv_queue.append(packet)
     
     def isBlank_send_queue(self):
-        count = 0
         for item in self.send_queue():
-            count = count + 1
-        return count
+            return False
+        return True
     
     def isBlank_recv_queue(self):
-        count = 0
         for item in self.recv_queue():
-            count = count + 1
-        return count
+            return False
+        return True
     
     def get_send_queue(self):
         return self.send_queue

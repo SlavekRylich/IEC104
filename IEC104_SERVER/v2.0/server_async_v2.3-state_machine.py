@@ -126,7 +126,7 @@ class ServerIEC104():
         async with self.server:
             await asyncio.gather(
                 self.periodic_event_check(),
-                print(f"Naslouchám na {self.ip}:{self.port}"),                
+                print(f"Start serveru. - Naslouchám na {self.ip}:{self.port}"),                
                 await self.server.serve_forever(),
                 
                 # log start server
@@ -143,10 +143,15 @@ class ServerIEC104():
         client_address, client_port = writer.get_extra_info('peername')
         
         with self.lock:
-            session = Session(client_address, client_port, reader, writer, self.session_params)
+            session = Session( client_address,
+                              client_port,
+                              reader,
+                              writer,
+                              self.session_params )
             self.queue = self.add_new_client_session((client_address, client_port, session))
             self.active_session = self.queue.Select_active_session(session)
             print(f"Spojení navázáno: s {client_address, client_port}, (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
+            
             await self.active_session.handle_messages()
         
 
@@ -154,17 +159,30 @@ class ServerIEC104():
     
     
     async def periodic_event_check(self):
+        print(f"Starting async periodic event check.")
         while True:
             await asyncio.sleep(1)
             
-            # timeouts check
-            await self.active_session.check_for_timeouts()
+            
+            for client in self.clients:
+                # client is tuple (ip, queue)
+                for session in client[1].get_sessions():
+                    
+                    # timeouts check 
+                    await session.check_for_timeouts()
+                    
+                    # client message
+                    await session.check_for_message()
+                
+                # queue check
+                await client[1].check_for_queue()
+                
             
             # new client connected
+                # is check automaticaly by serve.forever()
             
-            # client message
             
-            # queue check
+            
             
         
     async def close(self):
