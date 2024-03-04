@@ -113,7 +113,7 @@ class QueueManager():
             
            
             
-    
+    # client is tuple (ip, port, session)
     def add_session(self, client):
         ip = client[0] 
         port = client[1]
@@ -135,11 +135,13 @@ class QueueManager():
     def Select_active_session(self, session):
         # logika výběru aktivního spojení
         # zatím ponechám jedno a to to poslední
-        for item in self.sessions():
-            if item.get_connection_state() == 'Connected' and \
-                item.get_priority() < 1:
-                    self.active_session = item
-                    return item
+        
+        # self.sessions = (ip, port, session)
+        for item in self.sessions:
+            if item[2].get_connection_state() == 'Connected' and \
+                item[2].get_priority() < 1:
+                    self.active_session = item[2]
+                    return self.active_session
     
     def get_number_of_connected_sessions(self):
         count = 0

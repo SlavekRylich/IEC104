@@ -22,16 +22,16 @@ LISTENER_LIMIT = 5
 class ServerIEC104():
     
     # constructor for IEC104 server
-    def __init__(self): 
-        config_loader = ConfigLoader('config_parameters.json')
+    def __init__(self, loop): 
+        self.config_loader = ConfigLoader('./v2.0/config_parameters.json')
 
-        self.ip = config_loader.config['server']['ip_address']
-        self.port = config_loader.config['server']['port']
+        self.ip = self.config_loader.config['server']['ip_address']
+        self.port = self.config_loader.config['server']['port']
         self.active_session = None
         self.queue = None
         self.clients = []   # tuple (ip, queue)
         
-        self.loop = asyncio.get_event_loop()
+        self.loop = loop
         self.server = None
         self.lock = asyncio.Lock()
         
@@ -42,38 +42,41 @@ class ServerIEC104():
             self.timeout_t0, \
             self.timeout_t1, \
             self.timeout_t2, \
-            self.timeout_t3 = self.load_params(config_loader)
+            self.timeout_t3 = self.load_params(self.config_loader)
             
             self.session_params = (self.k, self.w, self.timeout_t0, self.timeout_t1, self.timeout_t2, self.timeout_t3)
         
         except Exception as e:
             print(e)
     
+    async def set_loop(self, loop):
+        self.loop = loop
+        
     def load_params(self, config_loader):
         
-        k = config_loader.config['server']['k']
+        k = self.config_loader.config['server']['k']
         if k < 1 or k > 32767:
             raise Exception("Wrong value range for \'k\' variable!")
         
-        w = config_loader.config['server']['w']
+        w = self.config_loader.config['server']['w']
         if w > ((k*2)/3):  
             if w < 1 or w > 32767:
                 raise Exception("Wrong value range for \'w\' variable!")
             print(f"Warning! Use value range for \'w\' less than 2/3 of \'k\'")
         
-        t0 = config_loader.config['server']['t0']
+        t0 = self.config_loader.config['server']['t0']
         if t0 < 1 or t0 > 255:
             raise Exception("Wrong value range for \'t0\' variable!")
         
-        t1 = config_loader.config['server']['t1']
+        t1 = self.config_loader.config['server']['t1']
         if t1 < 1 or t1 > 255:
             raise Exception("Wrong value range for \'t1\' variable!")
         
-        t2 = config_loader.config['server']['t2']
+        t2 = self.config_loader.config['server']['t2']
         if t2 < 1 or t2 > 255:
             raise Exception("Wrong value range for \'t2\' variable!")
         
-        t3 = config_loader.config['server']['t3']
+        t3 = self.config_loader.config['server']['t3']
         if t3 < 1 or t3 > 172800:
             raise Exception("Wrong value range for \'t3\' variable!")
         
@@ -124,13 +127,16 @@ class ServerIEC104():
             )
         
         async with self.server:
-            await asyncio.gather(
-                self.periodic_event_check(),
-                print(f"Start serveru. - Naslouchám na {self.ip}:{self.port}"),                
-                await self.server.serve_forever(),
+            async with asyncio.TaskGroup() as group:
+                group.create_task(self.server.serve_forever())
+                group.create_task(self.periodic_event_check())
+            # await asyncio.gather(
+            #     self.periodic_event_check(),
+            #     print(f"Start serveru. - Naslouchám na {self.ip}:{self.port}"),                
+            #     self.loop.create_task(self.server.serve_forever()),
                 
                 # log start server
-            )
+            # )
 
 
     async def handle_client(self, reader, writer):
@@ -191,7 +197,8 @@ class ServerIEC104():
         
 if __name__ == '__main__':
     
-    server = ServerIEC104()
+    loop = asyncio.new_event_loop()
+    server = ServerIEC104(loop)
     try:
         asyncio.run(server.start())
 

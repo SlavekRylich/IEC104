@@ -1,0 +1,296 @@
+2024-03-04 18:00:31,756 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:02:15,579 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:03:53,017 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:05:47,846 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:06:24,439 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:06:42,503 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:06:50,438 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:14:57,961 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:15:40,596 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:16:03,329 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:17:10,103 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:18:23,963 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:18:23,964 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:26:24,492 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:26:24,494 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:26:39,368 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:26:43,124 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=480 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:27:47,936 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:27:49,785 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=536 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:29:06,991 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:29:06,998 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=480 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:29:45,175 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:29:45,183 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=348 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:30:24,851 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:30:24,857 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=536 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:31:59,482 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:31:59,490 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=524 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:32:12,407 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:32:12,418 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=492 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:34:32,209 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:34:32,216 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=348 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:35:13,545 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:35:13,551 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=496 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:36:02,995 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:36:03,002 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=524 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:38:52,771 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:38:52,779 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=536 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:39:50,594 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:39:50,601 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=524 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:40:09,286 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:40:09,293 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=496 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:41:58,380 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:41:58,389 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=348 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:43:15,039 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:43:15,046 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=496 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:44:14,774 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:44:14,782 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=348 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:46:27,054 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:46:27,060 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:46:27,065 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=544 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:46:40,567 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:46:40,572 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:46:40,577 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=480 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:49:43,680 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:49:43,685 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:49:43,691 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=348 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:49:45,501 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:592> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 597, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-04 18:51:03,267 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:51:03,268 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:51:24,158 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:51:33,928 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:51:42,571 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:51:46,534 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:52:17,551 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:52:17,552 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:52:17,555 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:592> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 597, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-04 18:52:19,809 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:52:19,811 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:52:19,813 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:592> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 597, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-04 18:52:41,545 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=904>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:52:41,593 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=944>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:52:47,022 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:52:47,024 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:52:47,027 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1248 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 148, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 18:52:47,026 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:592> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 597, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-04 18:53:43,604 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:53:43,606 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:55:08,698 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:55:10,110 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:55:34,342 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:55:35,531 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:56:38,946 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:56:40,364 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:58:01,000 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:58:03,551 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:59:01,941 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:59:03,086 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:59:34,929 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:59:36,103 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:59:47,369 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:59:47,371 - DEBUG - Using proactor: IocpProactor
+2024-03-04 18:59:47,374 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:592> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 597, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-04 18:59:47,376 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1020 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 19:02:21,223 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:02:21,225 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:02:21,228 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=632 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 19:02:21,237 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:592>>
+2024-03-04 19:03:48,522 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:03:48,524 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:03:48,527 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=884 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 19:03:48,544 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-04 19:04:11,882 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:04:25,996 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:04:34,565 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:04:34,567 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:04:34,571 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=628 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 19:04:59,275 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-04 19:05:20,876 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:05:20,878 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:05:25,286 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:05:25,292 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:05:25,297 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=460 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 19:06:04,746 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:06:04,751 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:06:04,756 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=520 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-04 19:08:59,364 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:08:59,369 - DEBUG - Using proactor: IocpProactor
+2024-03-04 19:08:59,374 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=440 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol

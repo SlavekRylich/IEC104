@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-import readline
+# import readline
+import os
 import socket
 import binascii
 import sys
 from Parser import Parser
 from QueueManager import QueueManager
 import acpi
-import json
 import struct
 import logging
 from config_loader import ConfigLoader
@@ -29,8 +29,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class IEC104Client(object):
-    def __init__(self):
-        
+    def __init__(self, loop):
+        print(os.getcwd())
         self.servers = [] # tuple (ip, port, queue)
         self.queue = QueueManager()
         self.data = 'vymyslena data'
@@ -44,9 +44,10 @@ class IEC104Client(object):
                     0x00 + \
                     0x00 + \
                     0x05
-                    
+        
+        self.loop = loop
         self.no_overflow = 0
-        self.loop = asyncio.get_running_loop()
+        # self.loop = asyncio.get_event_loop()
         
                     
         self.data = struct.pack(f"{'B' * 10}", 
@@ -61,9 +62,7 @@ class IEC104Client(object):
                                     0x00,   # 3. ridici pole
                                     0x05,   # 3. ridici pole
         )
-        print(len(self.data))
-        
-        config_loader = ConfigLoader('config_parameters.json')
+        config_loader = ConfigLoader('./v2.0/config_parameters.json')
 
         self.server_ip = config_loader.config['server']['ip_address']
         self.server_port = config_loader.config['server']['port']
@@ -118,22 +117,28 @@ class IEC104Client(object):
         return k, w, t0, t1, t2, t3
     
     async def new_session(self, ip, port):
-        self.reader, self.writer = await asyncio.wait_for(
-                asyncio.open_connection(ip, port),
-                timeout = self.timeout_t0
-                )
-        
-        client_address, client_port =self.writer.get_extra_info('sockname')
-        print(f"Navázáno {client_address}:{client_port}-->{self.server_ip}:{self.server_port}")
-        
-        self.session = Session.Session( self.server_ip,
-                                        self.server_port,
-                                        self.reader,
-                                        self.writer,
-                                        self.session_params )
-        self.queue.add_session(self.session)
-        self.active_session = self.queue.Select_active_session(self.session)
-        return self.active_session
+        try:
+            self.reader, self.writer = await asyncio.wait_for(
+                    asyncio.open_connection(ip, port),
+                    timeout = self.timeout_t0
+                    )
+            
+            client_address, client_port =self.writer.get_extra_info('sockname')
+            print(f"Navázáno {client_address}:{client_port}-->{self.server_ip}:{self.server_port}")
+            
+            self.session = Session.Session( self.server_ip,
+                                            self.server_port,
+                                            self.reader,
+                                            self.writer,
+                                            self.session_params )
+            
+            self.queue.add_session((self.server_ip, self.server_port, self.session))
+            self.active_session = self.queue.Select_active_session(self.session)
+            return self.active_session
+        except asyncio.TimeoutError:
+            pass
+        except Exception as e:
+            print(e)
         
     async def run_client(self):        
         try:
@@ -148,13 +153,15 @@ class IEC104Client(object):
                                  self.server_port,
                                  self.queue) )
             
-            async with asyncio.TaskGroup() as group:
-                group.create_task(self.periodic_event_check())
-                # group.create_task(_timer_2())
+            self.task = self.loop.create_task(self.periodic_event_check())
+            await self.main()
+            # async with asyncio.TaskGroup() as group:
+            #     group.create_task(self.periodic_event_check())
+                # group.create_task()
             
             
         except Exception as e:
-            pass  
+            print(e) 
             
             
     async def nejaka_funkce(self):
@@ -246,7 +253,7 @@ class IEC104Client(object):
                         new_apdu = Parser.parser(apdu,frame_length)
                         
                         # aktualizace poslední aktivity 
-                        self.update_timestamp()
+                        self.active_session.update_timestamp()
                         
                         # if isinstance(new_apdu, UFormat):
                         #     self.loop.create_task(self.handle_U_format(new_apdu))
@@ -262,6 +269,7 @@ class IEC104Client(object):
             print(f"Exception {e}")
         
     async def handle_response(self,apdu):
+        
         if isinstance(self.active_session, Session.Session):
             # STATE MACHINE
             if self.active_session.get_connection_state() == 'Connected':
@@ -453,15 +461,17 @@ class IEC104Client(object):
         
         print(f"Finish async update_state_machine")
 
-    
+    async def check_for_message(self):
+        if self.active_session.get_connection_state == 'Connected':
+                self.loop.create_task(self.handle_messages())
     
         
     async def get_user_input(self, prompt):
         """
         Získá vstup od uživatele.
         """
-        readline.set_completer(None)
-        readline.set_completion_display_matches(False)
+        # readline.set_completer(None)
+        # readline.set_completion_display_matches(False)
         return await asyncio.get_event_loop().run_in_executor(None, input, prompt)
     
    
@@ -529,6 +539,8 @@ class IEC104Client(object):
                         pass
                 else:
                     print(f"Neznámý příkaz: {user_input}")
+                
+                await self.task
             
     async def listen(self):
         while True:
@@ -596,7 +608,7 @@ class IEC104Client(object):
                     self.loop.create_task(self.check_for_message())
                 
                 # queue check
-                self.loop.create_task(self.queue.check_for_queue())
+                # self.loop.create_task(self.queue.check_for_queue())
             
             # UI se nebude volat tak často jako ostatní metody
             self.no_overflow = self.no_overflow + 1
@@ -606,14 +618,15 @@ class IEC104Client(object):
                     # musí se UI volat periodicky? 
                     # self.loop.create_task(self.main())
             
-            await asyncio.sleep(1)
             # new client connected
-                # is check automaticaly by serve.forever()        
+                # is check automaticaly by serve.forever() 
+            
+            await asyncio.sleep(1)       
 
 if __name__ == "__main__":
     
-    client = IEC104Client()
-    
+    loop = asyncio.new_event_loop()
+    client = IEC104Client(loop)
     try:
         asyncio.run(client.run_client())
     except KeyboardInterrupt:

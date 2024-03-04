@@ -36,7 +36,7 @@ class Session():
         self.writer = writer
         self.ip = ip
         self.port = port
-        self.timestamp = time.ctime()
+        self.timestamp = time.time()
         self.sessions = []
         self.queue = None
         
@@ -50,12 +50,12 @@ class Session():
         # flag_timeout_t1 = 1 - timeout 
         self.flag_timeout_t1 = 0
         
-        self.k = session_params.k
-        self.w = session_params.w
-        self.timeout_t0 = session_params.timeout_t0
-        self.timeout_t1 = session_params.timeout_t1
-        self.timeout_t2 = session_params.timeout_t2
-        self.timeout_t3 = session_params.timeout_t3
+        self.k = session_params[0]
+        self.w = session_params[1]
+        self.timeout_t0 = session_params[2]
+        self.timeout_t1 = session_params[3]
+        self.timeout_t2 = session_params[4]
+        self.timeout_t3 = session_params[5]
         
         # param for select session
         self.priority = 0
@@ -225,44 +225,44 @@ class Session():
     ## RESPONSES
     async def keepalive(self):
         frame = UFormat(acpi.TESTFR_ACT)
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
         
     async def response_testdt_act(self):
         frame = UFormat(acpi.TESTFR_ACT)
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
     
     async def response_testdt_con(self):
         frame = UFormat(acpi.TESTFR_CON)
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
     
     async def response_startdt_act(self):
         frame = UFormat(acpi.STARTDT_ACT)
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
     
     async def response_startdt_con(self):
         frame = UFormat(acpi.STARTDT_CON)
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
         
     async def response_stopdt_act(self):
         frame = UFormat(acpi.STOPDT_ACT)
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
         
     async def response_stopdt_con(self):
         frame = UFormat(acpi.STOPDT_CON)
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
         
     ################################################
     ## SEND FRAME
         
     async def send_frame(self,frame):
-        self.writer(frame.serialize())
+        self.writer.write(frame.serialize())
         await self.writer.drain()
     
     ################################################
