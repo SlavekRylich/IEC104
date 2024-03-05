@@ -20,6 +20,13 @@ class QueueManager():
         self.recv_queue = []
         self.active_session = None
         
+    async def check_for_queue(self):
+        if self.queue.empty():
+            await asyncio.sleep(0.1)
+            return False
+        else:
+            return True
+    
     async def handle_apdu(self, apdu):
         
         print(f"Starting async handle_apdu with {apdu.get_type()}")

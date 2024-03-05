@@ -22,19 +22,17 @@ import time
 
 
 
-
-
 LOG = logging.getLogger()
 logging.basicConfig(level=logging.DEBUG)
 
 
 class IEC104Client(object):
-    def __init__(self, loop):
+    def __init__(self):
         print(os.getcwd())
         self.servers = [] # tuple (ip, port, queue)
         self.queue = QueueManager()
         self.data = 'vymyslena data'
-        self.data = 0x65 + \
+        self.data1 = 0x65 + \
                     0x01 + \
                     0x0A + \
                     0x00 + \
@@ -45,12 +43,15 @@ class IEC104Client(object):
                     0x00 + \
                     0x05
         
-        self.loop = loop
+        
+        
+        
+        self.loop = None
         self.no_overflow = 0
         # self.loop = asyncio.get_event_loop()
         
                     
-        self.data = struct.pack(f"{'B' * 10}", 
+        self.data2 = struct.pack(f"{'B' * 10}", 
                                     0x65, # start byte
                                     0x01,  # Total Length pouze hlavička
                                     0x0A,   # 1. ridici pole
@@ -62,6 +63,9 @@ class IEC104Client(object):
                                     0x00,   # 3. ridici pole
                                     0x05,   # 3. ridici pole
         )
+        
+        self.data_list = [self.data1, self.data2]     # define static data
+        
         config_loader = ConfigLoader('./v2.0/config_parameters.json')
 
         self.server_ip = config_loader.config['server']['ip_address']
@@ -85,7 +89,8 @@ class IEC104Client(object):
         
         except Exception as e:
             print(e)
-    
+    def set_loop(self, loop):
+        self.loop = loop
     def load_params(self, config_loader):
         
         k = config_loader.config['server']['k']
@@ -140,7 +145,12 @@ class IEC104Client(object):
         except Exception as e:
             print(e)
         
-    async def run_client(self):        
+    async def run_client(self): 
+        
+        
+        loop = asyncio.get_event_loop_policy().get_event_loop()
+        self.set_loop(loop)
+               
         try:
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
             
@@ -148,13 +158,20 @@ class IEC104Client(object):
             self.active_session = await self.new_session(self.server_ip,
                                                          self.server_port )
             
+            
+            
             # tuple (ip, port, queue)
             self.servers.append( (self.server_ip,   
                                  self.server_port,
                                  self.queue) )
             
-            self.task = self.loop.create_task(self.periodic_event_check())
-            await self.main()
+            # set start session flag
+            self.active_session.set_flag_session('start_session')
+            
+            self.task = loop.create_task(self.periodic_event_check())
+            
+            # self.task_main = self.loop.create_task(self.main())
+            
             # async with asyncio.TaskGroup() as group:
             #     group.create_task(self.periodic_event_check())
                 # group.create_task()
@@ -259,7 +276,8 @@ class IEC104Client(object):
                         #     self.loop.create_task(self.handle_U_format(new_apdu))
                         
                         print(f"Finish async handle_messages.")
-                        await self.handle_response(new_apdu)
+                        # await self.handle_response(new_apdu)
+                        await self.update_state_machine(new_apdu)
                         
         except asyncio.TimeoutError:
             print(f'Klient {self.ip} neposlal žádná data.')
@@ -268,50 +286,89 @@ class IEC104Client(object):
         except Exception as e:
             print(f"Exception {e}")
         
-    async def handle_response(self,apdu):
-        
-        if isinstance(self.active_session, Session.Session):
-            # STATE MACHINE
-            if self.active_session.get_connection_state() == 'Connected':
-                
-                # STATE 1
-                if self.active_session.get_transmission_state() == 'Stopped':
-                    # send 2x testdt frame 
-                    # send start act
+    async def handle_response(self):
+        try:
+            if isinstance(self.active_session, Session.Session):
+                # STATE MACHINE
+                if self.active_session.get_connection_state() == 'Connected':
+                    
+                    #* STATE 1
+                    if self.active_session.get_transmission_state() == 'Stopped':
+                        
+                        # send start act
+                        if self.active_session.get_flag_session() == 'start_session':
+                            await self.active_session.response_startdt_act()
+                            await self.handle_messages()
+                        
+                        else:
+                            # send 2x testdt frame 
+                            for frame in range(0,2):
+                                await self.active_session.response_testdt_act()
+                                await asyncio.sleep(0.5)
+                            
+                    
+                    #* STATE 2
+                    if self.active_session.get_transmission_state() == 'Waiting_running':
+                        # check if response is start con
+                        # else send testdt frame 
+                        
+                        
+                        
+                        
+                        for frame in range(0,2):
+                                await self.active_session.response_testdt_act()
+                                await asyncio.sleep(0.5)
+                    
+                    #* STATE 3
+                    if self.active_session.get_transmission_state() == 'Running':
+                        # for cyklus for send I frame with random data
+                        for frame in self.data_list:
+                                # list of data
+                                await self.active_session.send_frame(frame)
+                                await asyncio.sleep(0.5)
+                                
+                        # check if response is ack with S format
+                        
+                        
+                        # send testdt frame 
+                        for frame in range(0,2):
+                                await self.active_session.response_testdt_act()
+                                await asyncio.sleep(0.5)
+                    
+                    #* STATE 4
+                    if self.active_session.get_transmission_state() == 'Waiting_unconfirmed':
+                        # do not send new I frame, but check if response are I,S or U formats
+                        # send testdt frame 
+                        for frame in range(0,2):
+                                await self.active_session.response_testdt_act()
+                                await asyncio.sleep(0.5)
+                        
+                        
+                        # check if response is stopdt con
+                        await self.active_session.response_stopdt_con()
+                        pass
+                    
+                    #* STATE 5
+                    if self.active_session.get_transmission_state() == 'Waiting_stopped':
+                        # # do not send new I frame, but check if response are I,S or U formats
+                        # send testdt frame 
+                        for frame in range(0,2):
+                                await self.active_session.response_testdt_act()
+                                await asyncio.sleep(0.5)
+                                
+                        # check if response is stopdt con
+                        await self.active_session.response_stopdt_con()
+                    
+                    await self.handle_messages()
+                    
+                else:
+                    
                     pass
-                
-                # STATE 2
-                if self.active_session.get_transmission_state() == 'Waiting_running':
-                    # check if response is start con
-                    # else send testdt frame 
-                    pass
-                
-                # STATE 3
-                if self.active_session.get_transmission_state() == 'Running':
-                    # for cyklus for send I frame with random data
-                    # check if response is ack with S format
-                    # send testdt frame 
-                    pass
-                
-                # STATE 4
-                if self.active_session.get_transmission_state() == 'Waiting_unconfirmed':
-                    # do not send new I frame, but check if response are I,S or U formats
-                    # send testdt frame 
-                    # check if response is stopdt con
-                    pass
-                
-                # STATE 5
-                if self.active_session.get_transmission_state() == 'Waiting_stopped':
-                    # # do not send new I frame, but check if response are I,S or U formats
-                    # send testdt frame 
-                    # check if response is stopdt con
-                    pass
-                
-                self.update_state_machne()
-                
-            else:
-                
-                pass
+        except asyncio.CancelledError:
+            print(f"CancelledError")
+            pass
+        except Exception as e:
+            print(f"Exception {e}")
     
     async def update_state_machine(self, fr = 0):
         print(f"Starting async update_state_machine")
@@ -470,77 +527,84 @@ class IEC104Client(object):
         """
         Získá vstup od uživatele.
         """
-        # readline.set_completer(None)
-        # readline.set_completion_display_matches(False)
-        return await asyncio.get_event_loop().run_in_executor(None, input, prompt)
-    
+        try:
+            # readline.set_completer(None)
+            # readline.set_completion_display_matches(False)
+            return await asyncio.get_event_loop().run_in_executor(None, input, prompt)
+        except Exception as e:
+            print(e)
+            return None
    
     async def main(self):
         """
         Hlavní funkce UI.
         """
         if isinstance(self.active_session, Session.Session):
-            
-            while True:
-                # Získá vstup od uživatele
-                user_input = await self.get_user_input("I\nS\nU\n\
-                    Vyberte formát rámce, který chcete poslet na server: ")
+            try:
+                
+                while True:
+                    # Získá vstup od uživatele
+                    user_input = await self.get_user_input("I\nS\nU\n\
+                        Vyberte formát rámce, který chcete poslet na server: ")
 
-                # Zpracujte vstup
-                if user_input == "quit":
-                    break
-                elif user_input == "help":
-                    print("Dostupné příkazy: quit, help")
+                    # Zpracujte vstup
+                    if user_input == "quit":
+                        break
+                    elif user_input == "help":
+                        print("Dostupné příkazy: quit, help")
+                        
+                    elif user_input == "I" or user_input == "i":
+                        i_format_data = u_format = await self.get_user_input(f"zadejte data:")
+                        frame = await self.queue.generate_i_frame(i_format_data)
+                        # napsat natvrdo nějaké funkce z ASDU
+                        await self.active_session.send_frame(frame)
                     
-                elif user_input == "I" or user_input == "i":
-                    i_format_data = u_format = await self.get_user_input(f"zadejte data:")
-                    frame = await self.queue.generate_i_frame(i_format_data)
-                    # napsat natvrdo nějaké funkce z ASDU
-                    await self.active_session.send_frame(frame)
-                
-                elif user_input == "S" or user_input == "s":
-                    frame = await self.queue.generate_s_frame()
-                    await self.active_session.send_frame(frame)
-                    pass
-                
-                elif user_input == "U" or user_input == "u":
-                    u_format = await self.get_user_input(f"start_act\n\
-                        start_con\n\
-                        stop_act\n\
-                        stop_con\n\
-                        testdt_act\n\
-                        testdt_con\n\
-                        ")
-                    if u_format == "start_act":
-                        await self.active_session.response_startdt_act()
+                    elif user_input == "S" or user_input == "s":
+                        frame = await self.queue.generate_s_frame()
+                        await self.active_session.send_frame(frame)
                         pass
                     
-                    if u_format == "start_con":
-                        await self.active_session.response_startdt_con()
-                        pass
+                    elif user_input == "U" or user_input == "u":
+                        u_format = await self.get_user_input(f"start_act\n\
+                            start_con\n\
+                            stop_act\n\
+                            stop_con\n\
+                            testdt_act\n\
+                            testdt_con\n\
+                            ")
+                        if u_format == "start_act":
+                            await self.active_session.response_startdt_act()
+                            pass
+                        
+                        if u_format == "start_con":
+                            await self.active_session.response_startdt_con()
+                            pass
+                        
+                        if u_format == "stop_act":
+                            await self.active_session.response_stopdt_act()
+                            pass
+                        
+                        if u_format == "stop_con":
+                            await self.active_session.response_stopdt_con()
+                            pass
+                        
+                        if u_format == "testdt_act":
+                            await self.active_session.response_testdt_act()
+                            pass
+                        
+                        if u_format == "testdt_con":
+                            await self.active_session.response_testdt_con()
+                            pass
+                        
+                        if u_format == "quit":
+                            pass
+                    else:
+                        print(f"Neznámý příkaz: {user_input}")
                     
-                    if u_format == "stop_act":
-                        await self.active_session.response_stopdt_act()
-                        pass
-                    
-                    if u_format == "stop_con":
-                        await self.active_session.response_stopdt_con()
-                        pass
-                    
-                    if u_format == "testdt_act":
-                        await self.active_session.response_testdt_act()
-                        pass
-                    
-                    if u_format == "testdt_con":
-                        await self.active_session.response_testdt_con()
-                        pass
-                    
-                    if u_format == "quit":
-                        pass
-                else:
-                    print(f"Neznámý příkaz: {user_input}")
-                
-                await self.task
+                    await self.task
+            
+            except Exception as e:
+                print(f"Chyba: {e}")
             
     async def listen(self):
         while True:
@@ -594,39 +658,46 @@ class IEC104Client(object):
     
     async def periodic_event_check(self):
         print(f"Starting async periodic event check.")
-        while True:
-            
-            
-            for client in self.clients:
-                # client is tuple (ip, queue)
-                for session in client[1].get_sessions():
-                    
-                    # timeouts check 
-                    self.loop.create_task(session.check_for_timeouts())
-                    
-                    # check client message
-                    self.loop.create_task(self.check_for_message())
+        try:
+            while True:
                 
-                # queue check
-                # self.loop.create_task(self.queue.check_for_queue())
-            
-            # UI se nebude volat tak často jako ostatní metody
-            self.no_overflow = self.no_overflow + 1
-            if self.no_overflow > 2:
-                    self.no_overflow = 0
+                
+                for client in self.servers:
+                    # client is tuple (ip, port, queue)
+                        # .get_sessions() is tuple (ip, port, session)
+                    for item in client[2].get_sessions():
+                        
+                        # timeouts check 
+                        # self.loop.create_task(item[2].check_for_timeouts())
+                        await item[2].check_for_timeouts()
+                        
+                        # check client message
+                        # self.loop.create_task(self.check_for_message())
+                        # await self.check_for_message()
+                        
+                        await self.handle_response()
                     
-                    # musí se UI volat periodicky? 
-                    # self.loop.create_task(self.main())
-            
-            # new client connected
-                # is check automaticaly by serve.forever() 
-            
-            await asyncio.sleep(1)       
+                    # queue check
+                    # self.loop.create_task(self.queue.check_for_queue())
+                
+                # UI se nebude volat tak často jako ostatní metody
+                self.no_overflow = self.no_overflow + 1
+                if self.no_overflow > 2:
+                        self.no_overflow = 0
+                        
+                        # musí se UI volat periodicky? 
+                        # self.loop.create_task(self.main())
+                
+                # new client connected
+                    # is check automaticaly by serve.forever() 
+                
+                await asyncio.sleep(1)    
+        except Exception as e:
+            print(f"Exception {e}")
 
 if __name__ == "__main__":
     
-    loop = asyncio.new_event_loop()
-    client = IEC104Client(loop)
+    client = IEC104Client()
     try:
         asyncio.run(client.run_client())
     except KeyboardInterrupt:

@@ -294,3 +294,486 @@ Traceback (most recent call last):
   File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 151, in handle_client
     with self.lock:
 TypeError: 'Lock' object does not support the context manager protocol
+2024-03-05 15:45:41,859 - DEBUG - Using proactor: IocpProactor
+2024-03-05 15:46:55,780 - DEBUG - Using proactor: IocpProactor
+2024-03-05 15:47:40,844 - DEBUG - Using proactor: IocpProactor
+2024-03-05 15:48:11,188 - DEBUG - Using proactor: IocpProactor
+2024-03-05 15:48:32,074 - DEBUG - Using proactor: IocpProactor
+2024-03-05 15:49:06,121 - DEBUG - Using proactor: IocpProactor
+2024-03-05 15:49:22,917 - DEBUG - Using proactor: IocpProactor
+2024-03-05 15:50:41,626 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:00:03,526 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:00:45,551 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:00:59,431 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:00:59,432 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:00:59,437 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=860 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 160, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-05 16:01:27,195 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:02:21,007 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:02:21,009 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:02:23,208 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=808 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 160, in handle_client
+    with self.lock:
+TypeError: 'Lock' object does not support the context manager protocol
+2024-03-05 16:02:40,953 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:02:47,683 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:02:49,140 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:02:49,141 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:05:31,497 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:06:22,661 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:14:26,361 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:14:34,150 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:14:34,152 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:15:08,240 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:15:12,932 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:15:15,000 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:15:15,001 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:17:50,385 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:17:58,891 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:18:01,057 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:18:01,059 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:18:49,947 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:18:52,164 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:18:52,166 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:20:07,131 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:20:18,404 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:20:20,444 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:20:20,445 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:21:41,803 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:21:52,128 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:21:57,648 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:21:57,650 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:23:13,043 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:23:16,393 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:23:17,839 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:23:17,841 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:35:06,384 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:35:09,165 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:35:10,224 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:35:10,225 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:35:41,084 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<IEC104Client.periodic_event_check() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:595>>
+2024-03-05 16:35:47,988 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:38:27,451 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:38:42,455 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:38:42,461 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:45:15,490 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:45:39,893 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=484 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 16:47:23,540 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:47:55,137 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:48:25,842 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:48:58,941 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:49:41,215 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:50:50,177 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:50:52,615 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 16:51:21,316 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:51:29,536 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:51:31,962 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:606> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 611, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 16:52:01,548 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:52:02,115 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 16:52:24,312 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<ServerIEC104.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py:134> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-05 16:52:26,567 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:52:33,018 - DEBUG - Using proactor: IocpProactor
+2024-03-05 16:52:33,592 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:00:09,552 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<ServerIEC104.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py:134> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-05 17:00:19,056 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:00:27,337 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:00:27,895 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:01:14,023 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:01:25,275 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<ServerIEC104.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py:134> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-05 17:01:29,717 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:01:34,917 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:01:43,551 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:02:26,324 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:02:29,854 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:04:15,304 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:04:19,089 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:04:20,384 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:05:27,536 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:05:31,998 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:05:33,160 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:06:23,540 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:06:27,583 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:06:28,576 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:25:31,604 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:25:33,143 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:25:34,604 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=976 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 17:25:41,241 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:25:48,851 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:25:53,688 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:26:10,058 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:26:18,693 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:26:28,489 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:26:31,244 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:605> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 610, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:27:11,029 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:27:13,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:608> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 613, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:27:36,696 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:27:43,198 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:27:43,755 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<IEC104Client.periodic_event_check() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py:608> exception=AttributeError("'IEC104Client' object has no attribute 'clients'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\client_async.py", line 613, in periodic_event_check
+    for client in self.clients:
+                  ^^^^^^^^^^^^
+AttributeError: 'IEC104Client' object has no attribute 'clients'
+2024-03-05 17:28:26,514 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:29:07,215 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:35:15,996 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<ServerIEC104.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py:134> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-05 17:54:40,131 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:55:06,466 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:55:51,902 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:55:57,017 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:57:23,531 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:57:23,538 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=312 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 17:58:00,698 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:58:00,706 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=508 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 17:58:51,098 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:58:51,106 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=312 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 17:59:23,379 - DEBUG - Using proactor: IocpProactor
+2024-03-05 17:59:23,389 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=508 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:01:22,901 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:01:22,908 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=516 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:28:51,659 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:28:51,667 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=500 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:29:19,842 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:29:19,850 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=484 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:32:35,904 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:32:35,913 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=500 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:33:34,454 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:33:34,462 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=312 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:34:05,103 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:34:05,111 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=500 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:35:09,484 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:35:09,493 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=516 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:35:22,136 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:35:22,143 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=488 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:35:48,314 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:36:27,803 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:38:04,382 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:38:04,390 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=528 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:38:28,672 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:38:28,680 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=508 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:40:18,658 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:40:18,666 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=524 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py", line 167, in handle_client
+    self.active_session = self.queue.Select_active_session(session)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\QueueManager.py", line 148, in Select_active_session
+    if item[2].get_connection_state() == 'Connected' and \
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\Session.py", line 105, in get_connection_state
+    return self.connection_state.get_state()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get_state'
+2024-03-05 18:40:42,272 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:41:07,653 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:43:01,741 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<ServerIEC104.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py:134> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-05 18:43:03,942 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:43:15,986 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:57:26,347 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:59:36,437 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<ServerIEC104.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py:134> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-05 18:59:46,858 - DEBUG - Using proactor: IocpProactor
+2024-03-05 18:59:59,322 - DEBUG - Using proactor: IocpProactor
+2024-03-05 19:00:17,828 - DEBUG - Using proactor: IocpProactor
+2024-03-05 20:18:50,894 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<ServerIEC104.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v2.0\server_async_v2.3-state_machine.py:134> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>

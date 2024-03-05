@@ -22,7 +22,7 @@ LISTENER_LIMIT = 5
 class ServerIEC104():
     
     # constructor for IEC104 server
-    def __init__(self, loop=0): 
+    def __init__(self): 
         self.config_loader = ConfigLoader('./v2.0/config_parameters.json')
 
         self.ip = self.config_loader.config['server']['ip_address']
@@ -31,10 +31,10 @@ class ServerIEC104():
         self.queue = None
         self.clients = []   # tuple (ip, queue)
         
-        self.loop = loop
+        self.loop = None
         self.server = None
         self.lock = asyncio.Lock()
-        
+        self.no_overflow = 0
         
         # load configuration parameters
         try:
@@ -49,7 +49,7 @@ class ServerIEC104():
         except Exception as e:
             print(e)
     
-    async def set_loop(self, loop):
+    def set_loop(self, loop):
         self.loop = loop
         
     def load_params(self, config_loader):
@@ -125,10 +125,17 @@ class ServerIEC104():
         self.set_loop(loop)
 
         
-        periodic_task = await self.loop.create_task(self.periodic_event_check)
+        periodic_task = loop.create_task(self.periodic_event_check())
         
-        await server.serve_forever(self.handle_client, self.ip, self.port)
-
+        self.server = await asyncio.start_server(
+            self.handle_client, self.ip, self.port
+            )
+        
+        async with self.server:
+            print(f"Naslouchám na {self.ip}:{self.port}")
+            await self.server.serve_forever()
+            await periodic_task
+            
         #     async with asyncio.TaskGroup() as group:
         #         group.create_task(self.server.serve_forever())
         #         group.create_task(self.periodic_event_check())
@@ -150,7 +157,7 @@ class ServerIEC104():
         # urci se aktivni spojeni pro prenos uziv. dat
         client_address, client_port = writer.get_extra_info('peername')
         
-        with self.lock:
+        async with self.lock:
             session = Session( client_address,
                               client_port,
                               reader,
@@ -161,36 +168,44 @@ class ServerIEC104():
             print(f"Spojení navázáno: s {client_address, client_port}, (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
             
             await self.active_session.handle_messages()
-        
 
     
     
     
     async def periodic_event_check(self):
         print(f"Starting async periodic event check.")
-        while True:
-            
-            # update timers in all sessions instances
-            for client in self.clients:
-                # client is tuple (ip, queue)
-                for session in client[1].get_sessions():
+        try:
+            while True:
+                # update timers in all sessions instances
+                for client in self.clients:
                     
-                    # timeouts check 
-                    await session.check_for_timeouts()
+                    # client is tuple (ip, queue)
+                        # .get_sessions() is tuple (ip, port, session)
+                    for item in client[1].get_sessions():
+                        
+                        print(f"bezi - {item[2]}")
+                        # timeouts check 
+                        await item[2].check_for_timeouts()
+                        
+                        # client message
+                        await item[2].check_for_message()
                     
-                    # client message
-                    await session.check_for_message()
+                    # queue check
+                    await client[1].check_for_queue()
                 
-                # queue check
-                await client[1].check_for_queue()
-            
-            
-            # new client connected
-                # is check automaticaly by serve.forever()
-            
-            await asyncio.sleep(0.5)
-            
-            
+                self.no_overflow = self.no_overflow + 1
+                if self.no_overflow > 2:
+                    self.no_overflow = 0
+                        
+                    print(f"Timer bezi ")
+                    
+                    
+                # new client connected
+                    # is check automaticaly by serve.forever()
+                
+                await asyncio.sleep(2)
+        except Exception as e:
+            print(e)
             
         
     async def close(self):
