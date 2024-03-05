@@ -22,7 +22,7 @@ LISTENER_LIMIT = 5
 class ServerIEC104():
     
     # constructor for IEC104 server
-    def __init__(self, loop): 
+    def __init__(self, loop=0): 
         self.config_loader = ConfigLoader('./v2.0/config_parameters.json')
 
         self.ip = self.config_loader.config['server']['ip_address']
@@ -121,15 +121,17 @@ class ServerIEC104():
         
     # Main function
     async def start(self):
+        loop = asyncio.get_event_loop_policy().get_event_loop()
+        self.set_loop(loop)
+
         
-        self.server = await asyncio.start_server(
-            self.handle_client, self.ip, self.port
-            )
+        periodic_task = await self.loop.create_task(self.periodic_event_check)
         
-        async with self.server:
-            async with asyncio.TaskGroup() as group:
-                group.create_task(self.server.serve_forever())
-                group.create_task(self.periodic_event_check())
+        await server.serve_forever(self.handle_client, self.ip, self.port)
+
+        #     async with asyncio.TaskGroup() as group:
+        #         group.create_task(self.server.serve_forever())
+        #         group.create_task(self.periodic_event_check())
             # await asyncio.gather(
             #     self.periodic_event_check(),
             #     print(f"Start serveru. - Naslouchám na {self.ip}:{self.port}"),                
@@ -167,9 +169,8 @@ class ServerIEC104():
     async def periodic_event_check(self):
         print(f"Starting async periodic event check.")
         while True:
-            await asyncio.sleep(1)
             
-            
+            # update timers in all sessions instances
             for client in self.clients:
                 # client is tuple (ip, queue)
                 for session in client[1].get_sessions():
@@ -182,11 +183,12 @@ class ServerIEC104():
                 
                 # queue check
                 await client[1].check_for_queue()
-                
+            
             
             # new client connected
                 # is check automaticaly by serve.forever()
             
+            await asyncio.sleep(0.5)
             
             
             
@@ -197,8 +199,7 @@ class ServerIEC104():
         
 if __name__ == '__main__':
     
-    loop = asyncio.new_event_loop()
-    server = ServerIEC104(loop)
+    server = ServerIEC104()
     try:
         asyncio.run(server.start())
 
