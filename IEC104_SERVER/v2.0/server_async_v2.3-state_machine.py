@@ -54,29 +54,29 @@ class ServerIEC104():
         
     def load_params(self, config_loader):
         
-        k = self.config_loader.config['server']['k']
+        k = config_loader.config['server']['k']
         if k < 1 or k > 32767:
             raise Exception("Wrong value range for \'k\' variable!")
         
-        w = self.config_loader.config['server']['w']
+        w = config_loader.config['server']['w']
         if w > ((k*2)/3):  
             if w < 1 or w > 32767:
                 raise Exception("Wrong value range for \'w\' variable!")
             print(f"Warning! Use value range for \'w\' less than 2/3 of \'k\'")
         
-        t0 = self.config_loader.config['server']['t0']
+        t0 = config_loader.config['server']['t0']
         if t0 < 1 or t0 > 255:
             raise Exception("Wrong value range for \'t0\' variable!")
         
-        t1 = self.config_loader.config['server']['t1']
+        t1 = config_loader.config['server']['t1']
         if t1 < 1 or t1 > 255:
             raise Exception("Wrong value range for \'t1\' variable!")
         
-        t2 = self.config_loader.config['server']['t2']
+        t2 = config_loader.config['server']['t2']
         if t2 < 1 or t2 > 255:
             raise Exception("Wrong value range for \'t2\' variable!")
         
-        t3 = self.config_loader.config['server']['t3']
+        t3 = config_loader.config['server']['t3']
         if t3 < 1 or t3 > 172800:
             raise Exception("Wrong value range for \'t3\' variable!")
         
@@ -121,6 +121,8 @@ class ServerIEC104():
         
     # Main function
     async def start(self):
+        
+        
         loop = asyncio.get_event_loop_policy().get_event_loop()
         self.set_loop(loop)
 

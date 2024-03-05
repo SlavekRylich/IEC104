@@ -1,4 +1,3 @@
-import socket
 import logging
 import asyncio
 import time
@@ -37,7 +36,6 @@ class Session():
         self.ip = ip
         self.port = port
         self.timestamp = time.time()
-        self.sessions = []
         self.queue = None
         
         # flag_session = 'start_session'
@@ -138,38 +136,13 @@ class Session():
                 return inst
         return None
         
-    async def accept_async(self):
-        while True:
-            
-            self.client = await self.socket.accept()
-            self.sessions.append(self.client)
-            return self.client
-        
-    def receive_data(self):
-        buffer = 0
-        while True:
-            data = self.socket.recv(1)
-            
-            if not data:
-                break
-            buffer += data
-        return buffer
     
-    async def receive_data_async(self):
-        buffer = 0
-        while True:
-            data = await self.socket.recv(1)
-            
-            if not data:
-                break
-            buffer += data
-        return buffer
         
     async def check_for_message(self):
         if self.connection_state == StateConn.set_state('Connected'):
                 await self.handle_messages()
             
-    async def handle_messages(self):
+    async def handle_messages(self, callback_func):
         
         self.loop = asyncio.get_running_loop()
         try:
@@ -196,6 +169,7 @@ class Session():
                         #     self.loop.create_task(self.handle_U_format(new_apdu))
                         
                         print(f"Finish async handle_messages.")
+                        await callback_func(new_apdu)   #! zkousim zda bude fungovat
                         await self.queue.handle_apdu(new_apdu)
                     
             # přijat nějaký neznámý formát
@@ -288,32 +262,17 @@ class Session():
     async def generate_stopdt_con(self):
         return UFormat(acpi.STOPDT_CON)
         
-        
-    async def connect_async(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        await self.socket.connect((self.ip,self.port))
-        logging.info(f"Connected to {self.ip}:{self.port}")
-        return self.socket
-        
-    def send_data(self, data):
-        return self.socket.send(data)
-        
-    async def send_data_async(self, data):
-        return await self.socket.send(data)
-    
     def is_connected(self):
         if self.connection_state == StateConn.set_state('Connected'):
             return True
         return False
     
-    def handle_error(self, error):
-        pass
     
     def set_timeout(self, timeout):
         self.timeout = timeout
         
     def get_connection_info(self):
-        return self.ip, self.port, self.connection_state, self.timeout
+        return self.ip, self.port, self.connection_state, self.transmission_state, self.timeout
     
     async def check_for_timeouts(self):
         print(f"Starting async check_for_timeouts")
@@ -438,6 +397,7 @@ class Session():
                 
                 self.set_transmission_state('Stopped')
                 self.set_connection_state('Disconnected')
+                del self
                 
         else:
             self.set_transmission_state('Stopped')
@@ -446,16 +406,15 @@ class Session():
         
         print(f"Finish async update_state_machine")
 
-    
-    def reconnect(self):
-        pass
+    def __del__(self):
+        self.queue.del_session(self)
         
-    def __enter__():
+    
+    def __enter__(self):
         pass
     def __str__(self):
         return (f"SessionID: {self.id}, ip: {self.ip}, port: {self.port}, connected: {self.is_connected()}")
         pass
-        
         
     def __exit__(*exc_info):
         pass

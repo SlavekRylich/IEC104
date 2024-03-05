@@ -11,14 +11,14 @@ class QueueManager():
     def __init__(self):
         self.queue = asyncio.Queue()
         # tuple (ip, port, session)
-        self.sessions = []
+        self.sessions_tuple = []
         self.VR = 0
         self.VS = 0
         self.ack = 0
         self.send_queue = []
         self.sended_queue = []
         self.recv_queue = []
-        self.active_session = None
+        self.session = None
         
     async def check_for_queue(self):
         if self.queue.empty():
@@ -31,24 +31,24 @@ class QueueManager():
         
         print(f"Starting async handle_apdu with {apdu.get_type()}")
         
-        if self.active_session.get_transmission_state() == 'Stopped':
+        if self.session.get_transmission_state() == 'Stopped':
             
             if isinstance(apdu, UFormat):
                 if apdu.get_type_int() != acpi.STARTDT_ACT:
                     
                     if apdu.get_type_int() == acpi.TESTFR_ACT:
-                        await self.active_session.response_testdt_con()
+                        await self.session.response_testdt_con()
                     
                     if apdu.get_type_int() == acpi.TESTFR_CON:
                         pass
                     
                 else:
-                    await self.active_session.update_state_machine(apdu)
+                    await self.session.update_state_machine(apdu)
             else:
                 # dle normy -> aktivni ukončení a client si zahájí spojení znovu ??
                 pass
             
-        if self.active_session.get_transmission_state() == 'Running':
+        if self.session.get_transmission_state() == 'Running':
                     
             if isinstance(apdu, IFormat):
                 if (apdu.get_ssn() - self.VR) > 1:
@@ -70,12 +70,12 @@ class QueueManager():
                 if apdu.get_type_int() != acpi.STOPDT_ACT:
                     
                     if apdu.get_type_int() == acpi.TESTFR_ACT:
-                        self.active_session.response_testdt_con()
+                        self.session.response_testdt_con()
                     
                     if apdu.get_type_int() == acpi.TESTFR_CON:
                         pass
             
-            self.active_session.update_state_machine(apdu)
+            self.session.update_state_machine(apdu)
             
             #vysílat vygenerovanou odpoved v odesilaci frontě -> implementovat do Session
             if self.isResponse():
@@ -85,7 +85,7 @@ class QueueManager():
                     
         
         
-        if self.active_session.get_transmission_state() == 'Waiting_unconfirmed':
+        if self.session.get_transmission_state() == 'Waiting_unconfirmed':
             
             if isinstance(apdu, SFormat):
                 self.set_ack(apdu.get_rsn())
@@ -96,12 +96,12 @@ class QueueManager():
                 if apdu.get_type_int() != acpi.STOPDT_ACT:
                     
                     if apdu.get_type_int() == acpi.TESTFR_ACT:
-                        self.active_session.response_testdt_con()
+                        self.session.response_testdt_con()
                     
                     if apdu.get_type_int() == acpi.TESTFR_CON:
                         pass
                                 
-            self.active_session.update_state_machine(apdu)
+            self.session.update_state_machine(apdu)
 
         print(f"Finish async handle_apdu")
 
@@ -116,7 +116,7 @@ class QueueManager():
             # remove frame from send queue
             self.send_queue.remove(frame)
             # send frame
-            frame = await self.active_session.send_frame(frame)
+            frame = await self.session.send_frame(frame)
             
            
             
@@ -125,11 +125,11 @@ class QueueManager():
         ip = client[0] 
         port = client[1]
         session = client[2]
-        self.sessions.append((ip,port,session))
+        self.sessions_tuple.append((ip,port,session))
     
     def get_number_of_sessions(self):
         count = 0
-        for item in self.sessions:
+        for item in self.sessions_tuple:
             count = count + 1
         return count
     
@@ -144,35 +144,43 @@ class QueueManager():
         # zatím ponechám jedno a to to poslední
         
         # self.sessions = (ip, port, session)
-        for item in self.sessions:
+        for item in self.sessions_tuple:
             if item[2].get_connection_state() == 'Connected' and \
                 item[2].get_priority() < 1:
-                    self.active_session = item[2]
-                    return self.active_session
+                    self.session = item[2]
+                    return self.session
     
     def get_number_of_connected_sessions(self):
         count = 0
-        for item in self.sessions:
+        for item in self.sessions_tuple:
             if item[2].get_connection_state() == 'Connected':
                 count = count + 1
         return count
     
     def get_connected_sessions(self):
         list = []
-        for item in self.sessions:
+        for item in self.sessions_tuple:
             if str(item[2].get_connection_state()) == 'Connected':
                 list.append(item[2])   
-                 
         return list
+    def del_session(self, session):
+        for item in self.sessions_tuple:
+            if item[2] == session:
+                self.sessions_tuple.remove(item)
     
     def get_running_sessions(self):
-        for item in self.sessions:
+        for item in self.sessions_tuple:
             if str(item[2].get_transmission_state()) == 'Running':
                 return item[2]
     
-    def get_sessions(self):
-        return self.sessions
+    def get_sessions_tuple(self):
+        return self.sessions_tuple
     
+    def get_only_sessions(self):
+        list = []
+        for item in self.sessions_tuple:
+            list.append(item[2])
+        return list
     
     def insert_send_queue(self, packet):
         self.send_queue.append(packet)
@@ -207,10 +215,6 @@ class QueueManager():
             if item.get_ssn() <= self.ack:
                 self.recv_queue.remove(item)
                 
-    def response_S_format(self):
-        return SFormat(self.ack)
-        
-        
     def incrementVR(self):
         self.VR = self.VR + 1
     
@@ -253,39 +257,7 @@ class QueueManager():
         else:
             return None
     
-    
-    def enqueue_request(self, request_data, callback): # Přidá nový požadavek do fronty s odpovídajícím callbackem na zpracování odpovědi.
-        pass
-    
-    def dequeue_request(self): # Vrací a odstraňuje nejstarší požadavek z fronty.
-        pass
-    
-    def process_response(self,response_data): # Zpracuje příchozí odpověď a vyvolá odpovídající callback.
-        pass
-    
-    def pair_requests(self, request1, request2): # Propojí dva požadavky, např. pro výzvu a odpověď.
-        pass
-    
-    def remove_request(request_id): # Odebere požadavek z fronty na základě jeho identifikátoru.
-        pass
-
-    def get_pending_requests(): # Vrátí seznam všech nevyřízených požadavků.
-        pass
-
-    def get_waiting_responses(): # Vrátí seznam všech čekajících odpovědí.
-        pass
-
-    def handle_timeout(request_id): # Zpracuje timeout pro konkrétní požadavek.
-        pass
-
-    def handle_error(request_id, error): # Zpracuje chybu pro konkrétní požadavek.
-        pass
-
-    def get_connection_status(): # Vrátí informace o aktuálním stavu spojení.
-        pass
-
-    def reconnect(): # Opětovné připojení k serveru v případě přerušení spojení.
-        pass
+ 
 
 # class QueueManager():
 #     def __init__(self):
