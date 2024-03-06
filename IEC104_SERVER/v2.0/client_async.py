@@ -29,8 +29,7 @@ logging.basicConfig(level=logging.DEBUG)
 class IEC104Client(object):
     def __init__(self):
         print(os.getcwd())
-        self.servers = [] # tuple (ip, port, queue)
-        self.queue = QueueManager()
+        self.queues = [] 
         self.data = 'vymyslena data'
         self.data1 = 0x65 + \
                     0x01 + \
@@ -137,36 +136,38 @@ class IEC104Client(object):
                                             self.writer,
                                             self.session_params )
             
-            self.queue.add_session((self.server_ip, self.server_port, new_session))
+            new_session.add_queue(self.queue)
+            self.queue.add_session(new_session)
             self.active_session = self.queue.Select_active_session(new_session)
             return self.active_session
         
         except asyncio.TimeoutError:
+            print(f"{time.ctime()} - Nastala chyba: {self.active_session}")
             pass
         except Exception as e:
             print(e)
         
-    async def run_client(self): 
+    async def run_client(self, ip, port): 
         
         
         loop = asyncio.get_event_loop_policy().get_event_loop()
         self.set_loop(loop)
-               
+        
+        self.queue = QueueManager(ip, port)       
         try:
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
             
             # přidá novou session a zároveň vybere aktivní session
-            self.active_session = await self.new_session(self.server_ip,
-                                                         self.server_port )
+            self.active_session = await self.new_session(ip, port)
             
             
             # tuple (ip, port, queue)
-            self.servers.append( (self.server_ip,   
-                                 self.server_port,
-                                 self.queue) )
+            self.queues.append(self.queue)
             
             # set start session flag
-            self.active_session.set_flag_session('start_session')
+            self.active_session.set_flag_session('START_SESSION')
+            await self.handle_response()
+            
             
             self.task = loop.create_task(self.periodic_event_check())
             
@@ -180,91 +181,26 @@ class IEC104Client(object):
         except Exception as e:
             print(e) 
             
-            
-    async def nejaka_funkce(self):
-        try: 
-            frame1 = UFormat(acpi.STARTDT_ACT)
-            self.writer.write(frame1.serialize())
-            print(f"{time.ctime()} - Odeslán rámec: {frame1}")
-            
-            resp = await self.listen()
-            
-            if isinstance(resp, UFormat):
-                
-                print(f"{time.ctime()} - Přijat rámec: {resp}")
-                frames1 = []
-                frames2 = []
-                for i in range(0,4):
-                    frames1.append(UFormat(acpi.TESTFR_ACT))
-                    self.writer.write(frames1[i].serialize())
-                    await self.writer.drain()
-                    print(f"Odeslán rámec: {frames1[i]}")
-                    
-                    resp = await self.listen()
-                    if isinstance(resp, UFormat):
-                        print(f"Ok, přijat Testdt con")
-                        time.sleep(2)
-                    else:
-                        break
-                    time.sleep(5)
-                    
-                for i in range(0,1):
-                    frames2.append(IFormat(self.data, self.queue_man.get_VS(), self.queue_man.get_VR()))
-                    self.queue.insert_send_queue(frames2[i])
-                    self.writer.write(frames2[i].serialize())
-                    
-                    await self.writer.drain()
-                    print(f"{time.ctime()} - Odeslán rámec: {frames2[i]}")
-                    self.queue_man.incrementVS()
-                    
-                    resp = await self.listen()
-                    if resp:
-                        print(f"{time.ctime()} - Přijat rámec: {resp}")
-                    if isinstance(resp, UFormat):
-                        pass
-                    if isinstance(resp, IFormat):
-                        self.queue_man.insert_send_queue(resp)
-                        self.queue_man.incrementVR()
-                        self.queue_man.set_ack(resp.get_rsn())
-                        self.queue_man.clear_acked_send_queue()
-                    
-                    if isinstance(resp, SFormat):
-                        self.queue_man.set_ack(resp.get_rsn())
-                        self.queue_man.clear_acked_send_queue()
-                    else:
-                        break
-                    
-                    time.sleep(5)
-                    
-            
-            if isinstance(resp, IFormat):
-                self.queue_man.insert_send_queue(resp)
-                self.queue_man.incrementVR()
-                self.queue_man.set_ack(resp.get_rsn())
-                self.queue_man.clear_acked_send_queue()
-            
-            if isinstance(resp, SFormat):
-                self.queue_man.set_ack(resp.get_rsn())
-                self.queue_man.clear_acked_send_queue()
-            
-        except Exception as e:
-            pass
-    
  
     async def handle_response(self):
         try:
             if isinstance(self.active_session, Session.Session):
                 # STATE MACHINE
-                if self.active_session.get_connection_state() == 'Connected':
+                if self.active_session.get_connection_state() == 'CONNECTED':
                     
                     #* STATE 1
-                    if self.active_session.get_transmission_state() == 'Stopped':
+                    if self.active_session.get_transmission_state() == 'STOPPED':
                         
                         # send start act
-                        if self.active_session.get_flag_session() == 'start_session':
+                        if self.active_session.get_flag_session() == 'START_SESSION':
+                            
                             frame = self.active_session.generate_startdt_act()
                             await self.active_session.send_frame(frame)
-                        
+                            
+                            # resp = await self.active_session.handle_messages()
+                            # if resp:
+                            #     if resp.get_type == acpi.STARTDT_ACT:
+                                    
                         else:
                             # send 2x testdt frame 
                             
@@ -275,10 +211,8 @@ class IEC104Client(object):
                             
                     
                     #* STATE 2
-                    if self.active_session.get_transmission_state() == 'Waiting_running':
-                        # check if response is start con
+                    if self.active_session.get_transmission_state() == 'WAITING_RUNNING':
                         # else send testdt frame 
-                        
                         
                         frame = self.active_session.generate_testdt_act()
                         for i in range(0,2):
@@ -286,7 +220,7 @@ class IEC104Client(object):
                             await asyncio.sleep(0.5)
                     
                     #* STATE 3
-                    if self.active_session.get_transmission_state() == 'Running':
+                    if self.active_session.get_transmission_state() == 'RUNNING':
                         # for cyklus for send I frame with random data
                         for frame in self.data_list:
                                 # list of data
@@ -303,7 +237,7 @@ class IEC104Client(object):
                             await asyncio.sleep(0.5)
                     
                     #* STATE 4
-                    if self.active_session.get_transmission_state() == 'Waiting_unconfirmed':
+                    if self.active_session.get_transmission_state() == 'WAITING_UNCONFIRMED':
                         # do not send new I frame, but check if response are I,S or U formats
                         # send testdt frame 
                         frame = self.active_session.generate_testdt_act()
@@ -317,7 +251,7 @@ class IEC104Client(object):
                         await self.active_session.send_frame(frame)
                     
                     #* STATE 5
-                    if self.active_session.get_transmission_state() == 'Waiting_stopped':
+                    if self.active_session.get_transmission_state() == 'WAITING_STOPPED':
                         # # do not send new I frame, but check if response are I,S or U formats
                         # send testdt frame 
                         frame = self.active_session.generate_testdt_act()
@@ -331,7 +265,7 @@ class IEC104Client(object):
                     
                     response = await self.active_session.handle_messages()
                     if response:
-                        self.active_session.update_state_machine_client()
+                        self.active_session.update_state_machine_client(response)
                         pass
                     
                 else:
@@ -346,7 +280,7 @@ class IEC104Client(object):
  
 
     async def check_for_message(self):
-        if self.active_session.get_connection_state == 'Connected':
+        if self.active_session.get_connection_state() == 'CONNECTED':
                 self.loop.create_task(self.active_session.handle_messages())
     
         
@@ -440,14 +374,13 @@ class IEC104Client(object):
             while True:
                 
                 
-                for server in self.servers:
-                    # client is tuple (ip, port, queue)
-                        # .get_sessions() is tuple (ip, port, session)
+                for queue in self.queues:
                         
-                        await server[1].check_clients()
+                        resp = await queue.check_events_client()
+                        if resp:
+                            await self.handle_response()
                         
-                        await self.handle_response()
-                    
+                
                     # queue check
                     # self.loop.create_task(self.queue.check_for_queue())
                 
@@ -458,19 +391,30 @@ class IEC104Client(object):
                         
                         # musí se UI volat periodicky? 
                         # self.loop.create_task(self.main())
-                
+                await self.task
                 # new client connected
                     # is check automaticaly by serve.forever() 
-                
+                print(f"Timer bezi")
                 await asyncio.sleep(1)    
+        
+        except TimeoutError as e :
+            print(f"TimeoutError {e}")
+            pass
+        
+        except asyncio.CancelledError as e:
+            print(f"CancelledError {e}")
+            pass
         except Exception as e:
             print(f"Exception {e}")
 
 if __name__ == "__main__":
     
+    host = "127.0.0.1"
+    port = 2404
+    
     client = IEC104Client()
     try:
-        asyncio.run(client.run_client())
+        asyncio.run(client.run_client(host, port))
     except KeyboardInterrupt:
         pass
     finally:

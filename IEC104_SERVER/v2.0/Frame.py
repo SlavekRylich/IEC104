@@ -10,7 +10,7 @@ class Frame:
     instances = []
     start_byte = acpi.START_BYTE
 
-    def __init__(self,type='Frame'):
+    def __init__(self, type='Frame'):
         self.header_length = acpi.ACPI_HEADER_LENGTH
         self.total_length = self.header_length
         self.structure = None

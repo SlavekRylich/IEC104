@@ -27,7 +27,7 @@ class ServerIEC104():
 
         self.ip = self.config_loader.config['server']['ip_address']
         self.port = self.config_loader.config['server']['port']
-        self.clients = []   # tuple (ip, queue)
+        self.queues = []  
         
         self.lock = asyncio.Lock()
         self.no_overflow = 0
@@ -87,33 +87,38 @@ class ServerIEC104():
     # pokud už nějaké spojení s daným klientem existuje, jen přidá toto spojení k frontě
     # jinak vytvoří novou frontu a přidá tam toto spojení
     # client = tuple (ip, port, queue)
-    def add_new_client_session(self, client):
-        ip = client[0] 
-        port = client[1]
-        session = client[2]
+    def add_new_session(self, reader, writer):
         
-        # dosud žádný klient
-        if  not self.clients:
-            new_queue = QueueManager()
-            new_queue.add_session(client)
-            self.clients.append((ip, new_queue))
+        client_address, client_port = writer.get_extra_info('peername')
+        
+        session = Session( client_address,
+                            client_port,
+                            reader,
+                            writer,
+                            self.session_params )
+        
+        # no client in queues yet
+        if  not self.queues:
+            new_queue = QueueManager(client_address, client_port)
+            new_queue.add_session(session)
+            self.queues.append(new_queue)
             session.add_queue(new_queue)
-            return new_queue    # returt this queue
+            return session,new_queue    # returt this queue
         
-        # existující klienti, přiřadí danému klientovi další spojení
-        for item in self.clients:
-            if item[0] == ip:
-                item[1].add_session((ip, port, session))
-                session.add_queue(item[1])
-                return item[1]  # returt this queue
-            
+        else:
+            # existující klienti, přiřadí danému klientovi další spojení
+            for queue in self.queues:
+                if queue.get_ip() == client_address:
+                    queue.add_session(session)
+                    session.add_queue(queue)
+                    return session,queue  # returt this queue
+                
             # nový klient, přiřadí mu spojení
-            else:
-                new_queue = QueueManager()
-                new_queue.add_session(client)
-                self.clients.append((ip, new_queue))
-                session.add_queue(new_queue)
-                return new_queue    # returt this queue
+            new_queue = QueueManager()
+            new_queue.add_session(session)
+            self.queues.append(new_queue)
+            session.add_queue(new_queue)
+            return session,new_queue    # returt this queue
         
     # Main function
     async def start(self):
@@ -122,8 +127,8 @@ class ServerIEC104():
         loop = asyncio.get_event_loop_policy().get_event_loop()
         self.set_loop(loop)
 
-        
         periodic_task = loop.create_task(self.periodic_event_check())
+        # periodic_task = loop.run_forever(self.periodic_event_check)
         
         self.server = await asyncio.start_server(
             self.handle_client, self.ip, self.port
@@ -132,7 +137,6 @@ class ServerIEC104():
         async with self.server:
             print(f"Naslouchám na {self.ip}:{self.port}")
             await self.server.serve_forever()
-            await periodic_task
             
         #     async with asyncio.TaskGroup() as group:
         #         group.create_task(self.server.serve_forever())
@@ -148,26 +152,16 @@ class ServerIEC104():
 
     async def handle_client(self, reader, writer):
         
-        # Ziskani info ze soketu,
-        # pokud je to nove spojeni s danym klientem vytvori se pro nej nova fronta
-        # pokud uz s danym klientem (podle ip add) jiz nejake spojeni existuje
-        # priradi ho do stejne fronty 
-        # urci se aktivni spojeni pro prenos uziv. dat
-        client_address, client_port = writer.get_extra_info('peername')
+        new_session,self.queue = self.add_new_session( reader, writer)
         
-        async with self.lock:
-            new_session = Session( client_address,
-                              client_port,
-                              reader,
-                              writer,
-                              self.session_params )
-            self.queue = self.add_new_client_session((client_address, client_port, new_session))
-            self.active_session = self.queue.Select_active_session(new_session)
-            print(f"Spojení navázáno: s {client_address, client_port}, (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
-            
-            request = await self.active_session.handle_messages()
-            if request:
-                await self.queue.handle_apdu(request)
+        self.active_session = self.queue.Select_active_session(new_session)
+        
+        print(f"Spojení navázáno: s {self.active_session.get_ip(), self.active_session.get_port()},\
+                (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
+        
+        request = await self.active_session.handle_messages()
+        if request:
+            await self.queue.handle_apdu(request)
     
     
     
@@ -176,25 +170,32 @@ class ServerIEC104():
         try:
             while True:
                 # update timers in all sessions instances
-                for client in self.clients:
+                for queue in self.queues:
                     
                     # client is tuple (ip, queue)
                     # queue check
-                    await client[1].check_clients()
+                    await queue.check_events_server()
                 
+                # log doesnt spam console
                 self.no_overflow = self.no_overflow + 1
                 if self.no_overflow > 2:
                     self.no_overflow = 0
                         
                     print(f"Timer bezi ")
                     
-                    
+                   
                 # new client connected
                     # is check automaticaly by serve.forever()
                 
-                await asyncio.sleep(2)
+                await asyncio.sleep(1)
+        
+            
+        except TimeoutError as e :
+            print(f"TimeoutError {e}")
+            pass
+    
         except Exception as e:
-            print(e)
+            print(f"Exception {e}")
             
         
     async def close(self):

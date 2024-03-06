@@ -1,17 +1,15 @@
 import asyncio
 import time
-#from CommModul import CommModule
-import struct
 from IFormat import IFormat
 from SFormat import SFormat
 from UFormat import UFormat
 import acpi
 
 class QueueManager():
-    def __init__(self):
+    def __init__(self,ip, port):
         self.queue = asyncio.Queue()
         # tuple (ip, port, session)
-        self.sessions_tuple = []
+        self.sessions = []
         self.VR = 0
         self.VS = 0
         self.ack = 0
@@ -19,42 +17,75 @@ class QueueManager():
         self.sended_queue = []
         self.recv_queue = []
         self.session = None
+        self.ip = ip
         
+    def get_ip(self):
+        return self.ip
+    
     async def check_for_queue(self):
         if self.queue.empty():
             await asyncio.sleep(0.1)
             return False
         else:
             return True
+    async def check_events_server(self): 
+        
+        for session in self.get_sessions():
+            
+            await session.check_for_timeouts()
+            
+            request = await session.handle_messages()
+            await session.update_state_machine_server()
+            if request:
+                # ulozit do queue
+                # kontrolovat queue, zda je potřeba neco poslat
+                return request
     
+    async def check_events_client(self): 
+        
+        for session in self.get_sessions():
+            
+            await session.check_for_timeouts()
+            
+            request = await session.handle_messages()
+            
+            if request:
+                # ulozit do queue
+                # kontrolovat queue, zda je potřeba neco poslat
+                await session.update_state_machine_client(request)
+                return request
+            
+            await session.update_state_machine_client()
+            
     async def handle_apdu(self, apdu):
         
-        print(f"Starting async handle_apdu with {apdu.get_type()}")
+        print(f"Starting async handle_apdu with {apdu}")
         
-        if self.session.get_transmission_state() == 'Stopped':
+        if self.session.get_transmission_state() == 'STOPPED':
             
             if isinstance(apdu, UFormat):
                 if apdu.get_type_int() != acpi.STARTDT_ACT:
                     
                     if apdu.get_type_int() == acpi.TESTFR_ACT:
-                        await self.session.response_testdt_con()
+                        frame = self.session.generate_testdt_con()
+                        await self.session.send_frame(frame)
                     
                     if apdu.get_type_int() == acpi.TESTFR_CON:
                         pass
                     
-                else:
-                    await self.session.update_state_machine(apdu)
-            else:
-                # dle normy -> aktivni ukončení a client si zahájí spojení znovu ??
-                pass
             
-        if self.session.get_transmission_state() == 'Running':
+        if self.session.get_transmission_state() == 'RUNNING':
                     
             if isinstance(apdu, IFormat):
+                
                 if (apdu.get_ssn() - self.VR) > 1:
+                    
                     # chyba sekvence
                     # vyslat S-format s posledním self.VR
-                    raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
+                    frame = self.generate_s_frame()
+                    await self.session.send_frame(frame)
+                    self.session.set_flag_session('ACTIVE_TERMINATION')
+                    # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
                     
                 else:
                     self.recv_queue.append(apdu)
@@ -62,6 +93,10 @@ class QueueManager():
                     self.set_ack(apdu.get_rsn())
                     self.clear_acked_recv_queue()
                 
+                if (self.VR - self.ack) >= self.session.get_w():
+                    frame = self.generate_s_frame()
+                    await self.session.send_frame(frame)
+                
             if isinstance(apdu, SFormat):
                 self.set_ack(apdu.get_rsn())
                 self.clear_acked_send_queue()
@@ -70,12 +105,11 @@ class QueueManager():
                 if apdu.get_type_int() != acpi.STOPDT_ACT:
                     
                     if apdu.get_type_int() == acpi.TESTFR_ACT:
-                        self.session.response_testdt_con()
+                        frame = self.session.generate_testdt_con()
+                        await self.session.send_frame(frame)
                     
                     if apdu.get_type_int() == acpi.TESTFR_CON:
                         pass
-            
-            self.session.update_state_machine(apdu)
             
             #vysílat vygenerovanou odpoved v odesilaci frontě -> implementovat do Session
             if self.isResponse():
@@ -83,9 +117,11 @@ class QueueManager():
                     self.writer.write(item.serialize())
                     await self.writer.drain()
                     
+                    # here is important k parameter
+                    
         
         
-        if self.session.get_transmission_state() == 'Waiting_unconfirmed':
+        if self.session.get_transmission_state() == 'WAITING_UNCONFIRMED':
             
             if isinstance(apdu, SFormat):
                 self.set_ack(apdu.get_rsn())
@@ -96,13 +132,15 @@ class QueueManager():
                 if apdu.get_type_int() != acpi.STOPDT_ACT:
                     
                     if apdu.get_type_int() == acpi.TESTFR_ACT:
-                        self.session.response_testdt_con()
+                        frame = self.session.generate_testdt_con()
+                        await self.session.send_frame(frame)
                     
                     if apdu.get_type_int() == acpi.TESTFR_CON:
                         pass
                                 
            
-
+        
+        await self.session.update_state_machine_server(apdu)                
         print(f"Finish async handle_apdu")
 
     async def handle_send_queue(self):
@@ -119,17 +157,16 @@ class QueueManager():
             frame = await self.session.send_frame(frame)
             
            
-            
-    # client is tuple (ip, port, session)
-    def add_session(self, client):
-        ip = client[0] 
-        port = client[1]
-        session = client[2]
-        self.sessions_tuple.append((ip,port,session))
+    def isResponse(self):
+        return False        
+    
+    
+    def add_session(self, session):
+        self.sessions.append(session)
     
     def get_number_of_sessions(self):
         count = 0
-        for item in self.sessions_tuple:
+        for item in self.sessions:
             count = count + 1
         return count
     
@@ -144,44 +181,40 @@ class QueueManager():
         # zatím ponechám jedno a to to poslední
         
         # self.sessions = (ip, port, session)
-        for item in self.sessions_tuple:
-            if item[2].get_connection_state() == 'Connected' and \
-                item[2].get_priority() < 1:
-                    self.session = item[2]
+        for session in self.sessions:
+            if session.get_connection_state() == 'CONNECTED' and \
+                session.get_priority() < 1:
+                    self.session = session
                     return self.session
     
     def get_number_of_connected_sessions(self):
         count = 0
-        for item in self.sessions_tuple:
-            if item[2].get_connection_state() == 'Connected':
+        for session in self.sessions:
+            if session.get_connection_state() == 'CONNECTED':
                 count = count + 1
         return count
     
     def get_connected_sessions(self):
         list = []
-        for item in self.sessions_tuple:
-            if str(item[2].get_connection_state()) == 'Connected':
-                list.append(item[2])   
+        for session in self.sessions:
+            if session.get_connection_state() == 'CONNECTED':
+                list.append(session)   
         return list
-    def del_session(self, session):
-        for item in self.sessions_tuple:
-            if item[2] == session:
-                self.sessions_tuple.remove(item)
+    
+    def del_session(self, sess):
+        for session in self.sessions:
+            if session == sess:
+                print(f"Remove by del_session: {session}")
+                self.sessions.remove(session)
     
     def get_running_sessions(self):
-        for item in self.sessions_tuple:
-            if str(item[2].get_transmission_state()) == 'Running':
-                return item[2]
+        for session in self.sessions:
+            if session.get_transmission_state() == 'RUNNING':
+                return session
     
-    def get_sessions_tuple(self):
-        return self.sessions_tuple
-    
-    def get_only_sessions(self):
-        list = []
-        for item in self.sessions_tuple:
-            list.append(item[2])
-        return list
-    
+    def get_sessions(self):
+        return self.sessions
+        
     def insert_send_queue(self, packet):
         self.send_queue.append(packet)
         
@@ -189,12 +222,12 @@ class QueueManager():
         self.recv_queue.append(packet)
     
     def isBlank_send_queue(self):
-        for item in self.send_queue():
+        for item in self.send_queue:
             return False
         return True
     
     def isBlank_recv_queue(self):
-        for item in self.recv_queue():
+        for item in self.recv_queue:
             return False
         return True
     
@@ -210,11 +243,14 @@ class QueueManager():
             if item.get_ssn() <= self.ack:
                 self.send_queue.remove(item)
                 
-    def clear_acked_recv_queue(self):
+    async def clear_acked_recv_queue(self):
         for item in self.recv_queue:
             if item.get_ssn() <= self.ack:
                 self.recv_queue.remove(item)
-                
+            
+    def get_len_recv_queue(self):
+        return len(self.recv_queue)
+    
     def incrementVR(self):
         self.VR = self.VR + 1
     
@@ -257,21 +293,22 @@ class QueueManager():
         else:
             return None
     
-    async def check_clients(self):
+    async def check_events(self):
         
         # .get_sessions_tuple() = tuple (ip, port, session)
-        for item in self.get_sessions_tuple():
+        for session in self.get_sessions():
                         
-            print(f"bezi - {item[2]}")
+            print(f"bezi - {session}")
             # timeouts check 
-            await item[2].check_for_timeouts()
+            await session.check_for_timeouts()
             
             # client message
-            await item[2].check_for_message()
-        
+            await session.check_for_message()
+
+            
+            
         # queue check
         await self.check_for_queue()
-
 
 # class QueueManager():
 #     def __init__(self):
