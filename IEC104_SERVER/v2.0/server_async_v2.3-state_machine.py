@@ -162,10 +162,10 @@ class ServerIEC104():
                               writer,
                               self.session_params )
             self.queue = self.add_new_client_session((client_address, client_port, new_session))
-            self.session = self.queue.Select_active_session(new_session)
+            self.active_session = self.queue.Select_active_session(new_session)
             print(f"Spojení navázáno: s {client_address, client_port}, (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
             
-            request = await self.session.handle_messages()
+            request = await self.active_session.handle_messages()
             if request:
                 await self.queue.handle_apdu(request)
     
