@@ -101,7 +101,7 @@ class QueueManager():
                     if apdu.get_type_int() == acpi.TESTFR_CON:
                         pass
                                 
-            self.session.update_state_machine(apdu)
+           
 
         print(f"Finish async handle_apdu")
 
@@ -257,7 +257,21 @@ class QueueManager():
         else:
             return None
     
- 
+    async def check_clients(self):
+        
+        # .get_sessions_tuple() = tuple (ip, port, session)
+        for item in self.get_sessions_tuple():
+                        
+            print(f"bezi - {item[2]}")
+            # timeouts check 
+            await item[2].check_for_timeouts()
+            
+            # client message
+            await item[2].check_for_message()
+        
+        # queue check
+        await self.check_for_queue()
+
 
 # class QueueManager():
 #     def __init__(self):
@@ -265,31 +279,31 @@ class QueueManager():
 #         self.response_queue = QueueManager()
 #         self.request_callbacks = {}
 
-    def enqueue_request(self, request_data, callback):
-        request_id = self.generate_request_id()
-        self.request_queue.put((request_id, request_data))
-        self.request_callbacks[request_id] = callback
-        return request_id
+    # def enqueue_request(self, request_data, callback):
+    #     request_id = self.generate_request_id()
+    #     self.request_queue.put((request_id, request_data))
+    #     self.request_callbacks[request_id] = callback
+    #     return request_id
 
-    def generate_request_id(self):
-        # Tato metoda by mohla generovat unikátní identifikátory pro požadavky
-        return str(time.time())
+    # def generate_request_id(self):
+    #     # Tato metoda by mohla generovat unikátní identifikátory pro požadavky
+    #     return str(time.time())
 
-    def process_responses(self):
-        while not self.response_queue.empty():
-            response_id, response_data = self.response_queue.get()
-            if response_id in self.request_callbacks:
-                callback = self.request_callbacks.pop(response_id)
-                callback(response_data)
+    # def process_responses(self):
+    #     while not self.response_queue.empty():
+    #         response_id, response_data = self.response_queue.get()
+    #         if response_id in self.request_callbacks:
+    #             callback = self.request_callbacks.pop(response_id)
+    #             callback(response_data)
 
-    def simulate_server_response(self):
-        while True:
-            if not self.request_queue.empty():
-                request_id, request_data = self.request_queue.get()
-                # Simulace zpracování požadavku na straně serveru
-                response_data = f"Odpověď na {request_data}"
-                self.response_queue.put((request_id, response_data))
-            time.sleep(2)
+    # def simulate_server_response(self):
+    #     while True:
+    #         if not self.request_queue.empty():
+    #             request_id, request_data = self.request_queue.get()
+    #             # Simulace zpracování požadavku na straně serveru
+    #             response_data = f"Odpověď na {request_data}"
+    #             self.response_queue.put((request_id, response_data))
+    #         time.sleep(2)
     
     def __enter__():
         pass    

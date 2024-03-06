@@ -27,12 +27,8 @@ class ServerIEC104():
 
         self.ip = self.config_loader.config['server']['ip_address']
         self.port = self.config_loader.config['server']['port']
-        self.active_session = None
-        self.queue = None
         self.clients = []   # tuple (ip, queue)
         
-        self.loop = None
-        self.server = None
         self.lock = asyncio.Lock()
         self.no_overflow = 0
         
@@ -160,17 +156,18 @@ class ServerIEC104():
         client_address, client_port = writer.get_extra_info('peername')
         
         async with self.lock:
-            session = Session( client_address,
+            new_session = Session( client_address,
                               client_port,
                               reader,
                               writer,
                               self.session_params )
-            self.queue = self.add_new_client_session((client_address, client_port, session))
-            self.active_session = self.queue.Select_active_session(session)
+            self.queue = self.add_new_client_session((client_address, client_port, new_session))
+            self.session = self.queue.Select_active_session(new_session)
             print(f"Spojení navázáno: s {client_address, client_port}, (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
             
-            await self.active_session.handle_messages()
-
+            request = await self.session.handle_messages()
+            if request:
+                await self.queue.handle_apdu(request)
     
     
     
@@ -182,18 +179,8 @@ class ServerIEC104():
                 for client in self.clients:
                     
                     # client is tuple (ip, queue)
-                        # .get_sessions() is tuple (ip, port, session)
-                    for item in client[1].get_sessions():
-                        
-                        print(f"bezi - {item[2]}")
-                        # timeouts check 
-                        await item[2].check_for_timeouts()
-                        
-                        # client message
-                        await item[2].check_for_message()
-                    
                     # queue check
-                    await client[1].check_for_queue()
+                    await client[1].check_clients()
                 
                 self.no_overflow = self.no_overflow + 1
                 if self.no_overflow > 2:

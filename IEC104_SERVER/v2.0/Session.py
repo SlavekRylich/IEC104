@@ -142,17 +142,17 @@ class Session():
         if self.connection_state == StateConn.set_state('Connected'):
                 await self.handle_messages()
             
-    async def handle_messages(self, callback_func):
+    async def handle_messages(self):
         
         self.loop = asyncio.get_running_loop()
         try:
             while True:
                 print(f"Starting async handle_messages")
                 
-                header = await asyncio.wait_for(self.reader.read(2),timeout=2)
+                header = await asyncio.wait_for(self.reader.read(2),timeout=0.5)
                 
                 if not header:
-                    break
+                    return None
                 
                 start_byte, frame_length = header
                 
@@ -169,8 +169,8 @@ class Session():
                         #     self.loop.create_task(self.handle_U_format(new_apdu))
                         
                         print(f"Finish async handle_messages.")
-                        await callback_func(new_apdu)   #! zkousim zda bude fungovat
-                        await self.queue.handle_apdu(new_apdu)
+                        return new_apdu
+                        
                     
             # přijat nějaký neznámý formát
         except asyncio.TimeoutError:
@@ -180,6 +180,7 @@ class Session():
         except Exception as e:
             print(f"Exception {e}")
     
+                
     async def handle_U_format(self, apdu):
         apdu = apdu.get_type()
         
@@ -201,36 +202,6 @@ class Session():
     ## RESPONSES
     async def keepalive(self):
         frame = UFormat(acpi.TESTFR_ACT)
-        self.writer.write(frame.serialize())
-        await self.writer.drain()
-        
-    async def response_testdt_act(self):
-        frame = UFormat(acpi.TESTFR_ACT)
-        self.writer.write(frame.serialize())
-        await self.writer.drain()
-    
-    async def response_testdt_con(self):
-        frame = UFormat(acpi.TESTFR_CON)
-        self.writer.write(frame.serialize())
-        await self.writer.drain()
-    
-    async def response_startdt_act(self):
-        frame = UFormat(acpi.STARTDT_ACT)
-        self.writer.write(frame.serialize())
-        await self.writer.drain()
-    
-    async def response_startdt_con(self):
-        frame = UFormat(acpi.STARTDT_CON)
-        self.writer.write(frame.serialize())
-        await self.writer.drain()
-        
-    async def response_stopdt_act(self):
-        frame = UFormat(acpi.STOPDT_ACT)
-        self.writer.write(frame.serialize())
-        await self.writer.drain()
-        
-    async def response_stopdt_con(self):
-        frame = UFormat(acpi.STOPDT_CON)
         self.writer.write(frame.serialize())
         await self.writer.drain()
         
@@ -302,7 +273,7 @@ class Session():
         print(f"Finish async check_for_timeouts")
     
     
-    async def update_state_machine(self, fr = 0):
+    async def update_state_machine_server(self, fr = 0):
         print(f"Starting async update_state_machine")
         
         # set_connection_state()
@@ -399,6 +370,155 @@ class Session():
                 self.set_connection_state('Disconnected')
                 del self
                 
+        else:
+            self.set_transmission_state('Stopped')
+            self.set_connection_state('Disconnected')
+            pass
+        
+        print(f"Finish async update_state_machine")
+        
+    async def update_state_machine_client(self, fr = 0):
+        print(f"Starting async update_state_machine")
+        
+        # get_connection_state()
+            # 0 = Disconnected
+            # 1 = Connected
+        if self.get_connection_state('Connected'):
+            
+        # get_connection_state()
+            # 0 = Stopped
+            # 1 = Waiting_running
+            # 2 = Running
+            # 3 = Waiting_unconfirmed
+            # 4 = Waiting_stopped
+            
+            # correct format for next conditions 
+            if isinstance(fr, UFormat):
+                frame = fr.get_type_int()
+            
+            else:
+                frame = fr.get_type_in_word()   # 'S-format'
+                
+                
+            
+            #* STATE 1 - 
+            if self.get_transmission_state() == 'Stopped':
+                
+                # flag for start session is set
+                if self.get_flag_session() == 'start_session':
+                    
+                    # reset flag for start session
+                    self.set_flag_session(None)
+                    # send start act
+                    await self.response_startdt_act()
+                    # update state
+                    self.set_transmission_state('Waiting_running')
+                
+                
+                # t1_timeout or S-format or I-format   
+                if frame == 'S-format' or frame == 'I-format' or \
+                    self.get_flag_timeout_t1():
+                        
+                        # reset flag for t1_timeout
+                        self.set_flag_timeout_t1(0)
+                        # aktivni ukonceni
+                        self.set_flag_session('active_termination')
+                
+            
+            #* STATE 2 - 
+            if self.get_transmission_state() == 'Waiting_running':
+                
+                if frame == acpi.STARTDT_CON:
+                    self.set_transmission_state('Running')
+                    pass
+                
+                # t1_timeout or S-format or I-format   
+                if frame == 'S-format' or frame == 'I-format' or \
+                    self.get_flag_timeout_t1():
+                        
+                        # reset flag for t1_timeout
+                        self.set_flag_timeout_t1(0)
+                        # aktivni ukonceni
+                        self.set_flag_session('active_termination')
+                        
+                
+            #* STATE 3 - 
+            if self.get_transmission_state() == 'Running':
+                
+                # To pending_stopped
+                if self.get_flag_session() == 'stop_session' and \
+                    self.queue.isBlank_send_queue():
+                        
+                        # reset flag for start session
+                        self.set_flag_session(None)
+                        # send start act
+                        await self.response_stopdt_act()
+                        # update state
+                        self.set_transmission_state('Waiting_stopped')
+                
+                # To pending_unconfirmed
+                if self.get_flag_session() == 'stop_session' and \
+                    not self.queue.isBlank_send_queue():
+                        
+                        # reset flag for start session
+                        self.set_flag_session(None)
+                        # send start act
+                        await self.response_stopdt_act()
+                        # update state
+                        self.set_transmission_state('Waiting_unconfirmed')
+                
+                # t1_timeout    
+                if self.get_flag_timeout_t1():
+                    
+                    # reset flag for t1_timeout
+                    self.set_flag_timeout_t1(0)
+                    # aktivni ukonceni
+                    self.set_flag_session('active_termination')
+                    
+            
+            #* STATE 4 
+            if self.get_transmission_state() == 'Waiting_unconfirmed':
+                
+                if frame == acpi.STOPDT_CON:
+                    self.set_transmission_state('Stopped')
+                
+                if  (frame == 'I-format' or frame == 'S-format' ) and \
+                    self.queue.isBlank_send_queue():
+                        self.set_transmission_state('Waiting_stopped')
+                  
+                # t1_timeout    
+                if self.get_flag_timeout_t1():
+                    
+                    # reset flag for t1_timeout
+                    self.set_flag_timeout_t1(0)
+                    # aktivni ukonceni
+                    self.set_flag_session('active_termination')
+                    
+                    
+            #* STATE 5 
+            if self.get_transmission_state() == 'Waiting_stopped':
+                
+                if frame == acpi.STOPDT_CON:
+                    self.set_transmission_state('Stopped')
+                
+                # t1_timeout    
+                if self.get_flag_timeout_t1():
+                    
+                    # reset flag for t1_timeout
+                    self.set_flag_timeout_t1(0)
+                    # aktivni ukonceni
+                    self.set_flag_session('active_termination')
+                 
+                    
+            # default condition if active_termination is set
+            if self.get_flag_session() == 'active_termination':
+                
+                # unset active_termination 
+                self.set_flag_session(None)
+                self.set_transmission_state('Stopped')
+                self.set_connection_state('Disconnected')
+                del self
+                   
         else:
             self.set_transmission_state('Stopped')
             self.set_connection_state('Disconnected')
