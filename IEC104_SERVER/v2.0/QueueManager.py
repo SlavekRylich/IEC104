@@ -30,25 +30,32 @@ class QueueManager():
             return True
     async def check_events_server(self): 
         
-        for session in self.get_sessions():
-            
-            await session.check_for_timeouts()
-            
-            request = await session.handle_messages()
-            await session.update_state_machine_server()
-            if request:
-                # ulozit do queue
-                # kontrolovat queue, zda je potřeba neco poslat
-                return request
-    
+        if self.check_alive_sessions():
+        
+            for session in self.get_sessions():
+                
+                await session.check_for_timeouts()
+                
+                request = await session.handle_messages()
+                if request:
+                    # ulozit do queue
+                    # kontrolovat queue, zda je potřeba neco poslat
+                    
+                    await session.update_state_machine_server(request)
+                    return request
+                
+                await session.update_state_machine_server()
+        
     async def check_events_client(self): 
+        
+        
+        self.check_alive_sessions()
         
         for session in self.get_sessions():
             
             await session.check_for_timeouts()
             
             request = await session.handle_messages()
-            
             if request:
                 # ulozit do queue
                 # kontrolovat queue, zda je potřeba neco poslat
@@ -56,7 +63,21 @@ class QueueManager():
                 return request
             
             await session.update_state_machine_client()
-            
+    
+    
+    # remove session from sessions list if is not connected
+    def check_alive_sessions(self):
+        for session in self.sessions:
+            if session.get_connection_state() != 'CONNECTED':
+                del session
+                self.sessions.remove(session)
+                
+                
+        if len(self.sessions) > 0:
+            return True
+        return False
+    
+    
     async def handle_apdu(self, apdu):
         
         print(f"Starting async handle_apdu with {apdu}")

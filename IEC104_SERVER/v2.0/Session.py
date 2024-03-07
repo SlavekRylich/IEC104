@@ -58,6 +58,7 @@ class Session():
         # param for select session
         self.priority = 0
         
+        # inical states
         self.connection_state = StateConn.set_state('CONNECTED')
         self.transmission_state = StateTrans.set_state('STOPPED')
         
@@ -96,7 +97,7 @@ class Session():
         return self.priority
     
     def add_queue(self, queue):
-        self.queue = queue
+            self.queue = queue
     
     # 0 = DISCONNECTED
     # 1 = CONNECTED
@@ -177,9 +178,12 @@ class Session():
                         # if isinstance(new_apdu, UFormat):
                         #     self.loop.create_task(self.handle_U_format(new_apdu))
                         
+                        print(f"{time.ctime()} - Přijat rámec: {new_apdu}")
                         print(f"Finish async handle_messages.")
+                        
                         return new_apdu
             else:
+                print(f"doslo k tomuto vubec nekdy?")
                 return None
                         
                     
@@ -203,9 +207,6 @@ class Session():
         elif apdu == acpi.TESTFR_ACT:
             await self.response_testdt_con()
             
-    async def send_message(self, message):
-        # Odeslat zprávu na hlavní nebo záložní spojení
-        pass
     
     
     ##############################################
@@ -219,6 +220,7 @@ class Session():
     ## SEND FRAME
         
     async def send_frame(self,frame):
+        print(f"{time.ctime()} - Send frame: {frame}")
         self.writer.write(frame.serialize())
         await self.writer.drain()
     
@@ -279,8 +281,11 @@ class Session():
         if time_now - last_timestamp > self.timeout_t3:
             frame = self.generate_testdt_act()
             await self.send_frame(frame)
+            
             # self.loop.create_task()
-        
+        print(f"*******************************")
+        print(f"\t {time.time() - last_timestamp}")
+        print(f"*******************************")
         print(f"Finish async check_for_timeouts")
     
     
@@ -385,12 +390,14 @@ class Session():
                 
                 self.set_transmission_state('STOPPED')
                 self.set_connection_state('DISCONNECTED')
-                del self
                 
         else:
             self.set_transmission_state('STOPPED')
             self.set_connection_state('DISCONNECTED')
-            pass
+            
+        
+        print(f"{self.get_connection_state()}")
+        print(f"{self.get_transmission_state()}")
         
         print(f"Finish async update_state_machine_server")
         
@@ -542,12 +549,15 @@ class Session():
                 self.set_flag_session(None)
                 self.set_transmission_state('STOPPED')
                 self.set_connection_state('DISCONNECTED')
-                del self
                    
         else:
             self.set_transmission_state('STOPPED')
             self.set_connection_state('DISCONNECTED')
-            pass
+            
+               
+        
+        print(f"{self.get_connection_state()}")
+        print(f"{self.get_transmission_state()}")
         
         print(f"Finish async update_state_machine_client")
 

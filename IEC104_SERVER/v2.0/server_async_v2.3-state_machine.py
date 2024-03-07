@@ -137,7 +137,7 @@ class ServerIEC104():
         async with self.server:
             print(f"Naslouchám na {self.ip}:{self.port}")
             await self.server.serve_forever()
-            
+            await periodic_task
         #     async with asyncio.TaskGroup() as group:
         #         group.create_task(self.server.serve_forever())
         #         group.create_task(self.periodic_event_check())
@@ -155,33 +155,41 @@ class ServerIEC104():
         new_session,self.queue = self.add_new_session( reader, writer)
         
         self.active_session = self.queue.Select_active_session(new_session)
-        
-        print(f"Spojení navázáno: s {self.active_session.get_ip(), self.active_session.get_port()},\
-                (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
-        
-        request = await self.active_session.handle_messages()
-        if request:
-            await self.queue.handle_apdu(request)
+        if isinstance(self.active_session, Session):
+            
+            print(f"Spojení navázáno: s {self.active_session.get_ip(), self.active_session.get_port()},\
+                    (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
+            
+            request = await self.active_session.handle_messages()
+            if request:
+                await self.queue.handle_apdu(request)
     
     
+    # tady sem skoncil
+    def check_alive_clients(self):
+        for queue in self.queues:
+            if isinstance(queue, QueueManager):
+                if not queue.check_alive_sessions():
+                    del queue
     
     async def periodic_event_check(self):
         print(f"Starting async periodic event check.")
         try:
             while True:
                 # update timers in all sessions instances
-                for queue in self.queues:
-                    
-                    # client is tuple (ip, queue)
-                    # queue check
-                    await queue.check_events_server()
+                if self.check_alive_clients():
+                    for queue in self.queues:
+                        if isinstance(queue, QueueManager):
+                        # client is tuple (ip, queue)
+                        # queue check
+                            await queue.check_events_server()
                 
                 # log doesnt spam console
                 self.no_overflow = self.no_overflow + 1
                 if self.no_overflow > 2:
                     self.no_overflow = 0
                         
-                    print(f"Timer bezi ")
+                    print(f"\r.")
                     
                    
                 # new client connected

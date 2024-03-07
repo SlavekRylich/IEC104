@@ -49,6 +49,7 @@ class IEC104Client(object):
         self.no_overflow = 0
         # self.loop = asyncio.get_event_loop()
         
+        self.wait_for_response = True
                     
         self.data2 = struct.pack(f"{'B' * 10}", 
                                     0x65, # start byte
@@ -159,23 +160,22 @@ class IEC104Client(object):
             
             # přidá novou session a zároveň vybere aktivní session
             self.active_session = await self.new_session(ip, port)
+            if isinstance(self.active_session, Session.Session):
             
-            
-            # tuple (ip, port, queue)
-            self.queues.append(self.queue)
-            
-            # set start session flag
-            self.active_session.set_flag_session('START_SESSION')
-            await self.handle_response()
-            
-            
-            self.task = loop.create_task(self.periodic_event_check())
-            
-            # self.task_main = self.loop.create_task(self.main())
-            
-            # async with asyncio.TaskGroup() as group:
-            #     group.create_task(self.periodic_event_check())
-                # group.create_task()
+                # tuple (ip, port, queue)
+                self.queues.append(self.queue)
+                
+                # set start session flag
+                self.active_session.set_flag_session('START_SESSION')
+                
+                
+                await self.periodic_event_check()
+                
+                # self.task_main = self.loop.create_task(self.main())
+                
+                # async with asyncio.TaskGroup() as group:
+                #     group.create_task(self.periodic_event_check())
+                    # group.create_task()
             
             
         except Exception as e:
@@ -196,6 +196,7 @@ class IEC104Client(object):
                             
                             frame = self.active_session.generate_startdt_act()
                             await self.active_session.send_frame(frame)
+                            
                             
                             # resp = await self.active_session.handle_messages()
                             # if resp:
@@ -265,12 +266,11 @@ class IEC104Client(object):
                     
                     response = await self.active_session.handle_messages()
                     if response:
-                        self.active_session.update_state_machine_client(response)
-                        pass
-                    
-                else:
-                    
-                    pass
+                        await self.active_session.update_state_machine_client(response)
+                
+                self.wait_for_response = False
+                
+                
         except asyncio.CancelledError:
             print(f"CancelledError")
             pass
@@ -375,12 +375,16 @@ class IEC104Client(object):
                 
                 
                 for queue in self.queues:
-                        
-                        resp = await queue.check_events_client()
-                        if resp:
-                            await self.handle_response()
-                        
+                        if isinstance(queue, QueueManager):
+                            resp = await queue.check_events_client()
+                            if resp:
+                                self.wait_for_response = True
+                                pass
                 
+                if self.wait_for_response:
+                    await self.handle_response()
+                    
+                    
                     # queue check
                     # self.loop.create_task(self.queue.check_for_queue())
                 
@@ -391,7 +395,6 @@ class IEC104Client(object):
                         
                         # musí se UI volat periodicky? 
                         # self.loop.create_task(self.main())
-                await self.task
                 # new client connected
                     # is check automaticaly by serve.forever() 
                 print(f"Timer bezi")
@@ -401,9 +404,6 @@ class IEC104Client(object):
             print(f"TimeoutError {e}")
             pass
         
-        except asyncio.CancelledError as e:
-            print(f"CancelledError {e}")
-            pass
         except Exception as e:
             print(f"Exception {e}")
 
