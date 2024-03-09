@@ -23,6 +23,7 @@ class QueueManager():
         self._queue = asyncio.Queue()
         # tuple (ip, port, session)
         self._sessions: List[Session]= []
+        self._sessions_new: List[Session]= []
         self._VR = 0
         self._VS = 0
         self._ack = 0
@@ -32,6 +33,24 @@ class QueueManager():
         self._session = None
         self._ip = ip
         
+        
+    def add_message(self,message):
+        self._queue.put_nowait(message)
+        
+    @property
+    async def message(self):
+        return await self._queue.get()
+    
+    async def on_message_sent(self, message_id):
+        pass
+    
+    async def run(self):
+        while True:
+            message = await self._queue.get()
+            for session in self._sessions():
+                await session.send_message(message)
+                await asyncio.sleep(0.1)   
+    
     @property
     def ip(self):
         return self._ip

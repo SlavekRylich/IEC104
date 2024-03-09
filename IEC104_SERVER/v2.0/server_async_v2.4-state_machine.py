@@ -12,6 +12,8 @@ from Session import Session
 from QueueManager import QueueManager 
 from Timeout import Timeout
 from State import StateConn,StateTrans
+from IncomingQueueManager import IncomingQueueManager
+from OutgoingQueueManager import OutgoingQueueManager
 
 
 LISTENER_LIMIT = 5
@@ -52,7 +54,9 @@ class ServerIEC104():
         except Exception as e:
             print(e)
     
-    
+        
+        self._incoming_queue = IncomingQueueManager()
+        self._outgoing_queue = OutgoingQueueManager()
     
         """Returned value:
         """
@@ -136,7 +140,11 @@ class ServerIEC104():
             session.add_queue(new_queue)
             return session,new_queue    # returt this queue
         
-    # Main function
+    async def listen(self):
+        self._server = asyncio.start_server(self.handle_client,
+                                            self.ip,
+                                            self.port)
+        
     async def start(self):
         
         
@@ -240,12 +248,19 @@ class ServerIEC104():
     async def close(self):
         self._loop.close()
 
+
+    # Main function
+async def main():
+    server = ServerIEC104()
+    await server.listen()
+    await server.run()
         
 if __name__ == '__main__':
     
     server = ServerIEC104()
     try:
-        asyncio.run(server.start())
+        # asyncio.run(server.start())
+        asyncio.run(main())
 
     except KeyboardInterrupt:
         pass
