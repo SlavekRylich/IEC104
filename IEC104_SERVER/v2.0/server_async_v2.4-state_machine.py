@@ -33,7 +33,7 @@ class ServerIEC104():
         self.port = self.config_loader.config['server']['port']
         
         self.queues = []  
-        self.clients = {}
+        self.clients: dict[QueueManager] = {}
         
         self.lock = asyncio.Lock()
         self.no_overflow = 0
@@ -140,17 +140,15 @@ class ServerIEC104():
     async def start(self):
         
         
-        periodic_task = self._loop.create_task(self.periodic_event_check())
+        # periodic_task = self._loop.create_task(self.periodic_event_check())
         # periodic_task = loop.run_forever(self.periodic_event_check)
         
-        self.server = await asyncio.start_server(
+        self._server = await asyncio.start_server(
             self.handle_client, self.ip, self.port
             )
         
         print(f"Naslouchám na {self.ip}:{self.port}")
-        await asyncio.gather(
-            self.periodic_event_check(),
-            self.server.serve_forever()),
+        await asyncio.gather(self._server.serve_forever())
         
         #     async with asyncio.TaskGroup() as group:
         #         group.create_task(self.server.serve_forever())
@@ -159,21 +157,41 @@ class ServerIEC104():
                 # log start server
             # )
 
-
+    """
+    Handle client.
+    Args: reader, writer
+    """
     async def handle_client(self, reader, writer):
         
-        new_session, self.queue = self.add_new_session(reader, writer)
         
-        self.active_session = self.queue.Select_active_session(new_session)
-        if isinstance(self.active_session, Session):
+        client_address, client_port = writer.get_extra_info('peername')
+        
+        """
+        Create queue if not exist for that client.
+        """
+        if client_address not in self.clients:
+            self.clients[client_address] = QueueManager()
             
-            print(f"Spojení navázáno: s {self.active_session.ip, self.active_session.port},\
-                    (Celkem spojení: {self.queue.get_number_of_connected_sessions()}))")
-            
-            request = await self.active_session.handle_messages()
-            if request:
-                await self.queue.handle_apdu(request)
+        session = Session(client_address,
+                            client_port,
+                            reader,
+                            writer,
+                            self.session_params,
+                            self.clients[client_address])
+        
+        print(f"Spojení navázáno: s {client_address, client_port},\
+                    (Celkem spojení: \
+                        {self.clients[client_address].get_number_of_connected_sessions()}))")
+        session.start()  
+
+        
+        request = await self.active_session.handle_messages()
+        if request:
+            await self.queue.handle_apdu(request)
     
+    async def run(self):
+        await self._server
+        await asyncio.gather(*[session.run() for session in self.clients.values()])
     
     # tady sem skoncil
     def check_alive_clients(self):

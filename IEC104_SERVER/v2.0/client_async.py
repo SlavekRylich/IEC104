@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-
 # import readline
 import os
-import socket
-import binascii
 import sys
-from Parser import Parser
-from QueueManager import QueueManager
-import acpi
 import struct
 import logging
-from config_loader import ConfigLoader
-import threading
-import Frame
 import time
+import asyncio
+
+from Parser import Parser
+from QueueManager import QueueManager
+from config_loader import ConfigLoader
 import Session
 from IFormat import IFormat
 from SFormat import SFormat
 from UFormat import UFormat
-import asyncio
-import time
+
 
 
 
@@ -49,7 +45,7 @@ class IEC104Client(object):
         self.no_overflow = 0
         # self.loop = asyncio.get_event_loop()
         
-        self.wait_for_response = True
+        self.start_sequence = True
                     
         self.data2 = struct.pack(f"{'B' * 10}", 
                                     0x65, # start byte
@@ -64,7 +60,7 @@ class IEC104Client(object):
                                     0x05,   # 3. ridici pole
         )
         
-        self.data_list = [self.data1, self.data2]     # define static data
+        self.data_list = [self.data2, self.data2]     # define static data
         
         config_loader = ConfigLoader('./v2.0/config_parameters.json')
 
@@ -154,7 +150,7 @@ class IEC104Client(object):
         loop = asyncio.get_event_loop_policy().get_event_loop()
         self.set_loop(loop)
         
-        self.queue = QueueManager(ip, port)       
+        self.queue = QueueManager(ip)       
         try:
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
             
@@ -166,7 +162,7 @@ class IEC104Client(object):
                 self.queues.append(self.queue)
                 
                 # set start session flag
-                self.active_session.set_flag_session('START_SESSION')
+                self.active_session.flag_session = 'START_SESSION'
                 
                 
                 await self.periodic_event_check()
@@ -183,19 +179,24 @@ class IEC104Client(object):
             
  
     async def handle_response(self):
+        
+        
+        print(f"Starting async handle_response with ")
         try:
             if isinstance(self.active_session, Session.Session):
+                
                 # STATE MACHINE
-                if self.active_session.get_connection_state() == 'CONNECTED':
+                if self.active_session.connection_state == 'CONNECTED':
                     
                     #* STATE 1
-                    if self.active_session.get_transmission_state() == 'STOPPED':
+                    if self.active_session.transmission_state == 'STOPPED':
                         
                         # send start act
-                        if self.active_session.get_flag_session() == 'START_SESSION':
+                        if self.active_session.flag_session == 'START_SESSION':
                             
-                            frame = self.active_session.generate_startdt_act()
-                            await self.active_session.send_frame(frame)
+                            if self.start_sequence:
+                                frame = self.active_session.generate_startdt_act()
+                                await self.active_session.send_frame(frame)
                             
                             
                             # resp = await self.active_session.handle_messages()
@@ -212,7 +213,7 @@ class IEC104Client(object):
                             
                     
                     #* STATE 2
-                    if self.active_session.get_transmission_state() == 'WAITING_RUNNING':
+                    if self.active_session.transmission_state == 'WAITING_RUNNING':
                         # else send testdt frame 
                         
                         frame = self.active_session.generate_testdt_act()
@@ -221,11 +222,13 @@ class IEC104Client(object):
                             await asyncio.sleep(0.5)
                     
                     #* STATE 3
-                    if self.active_session.get_transmission_state() == 'RUNNING':
+                    if self.active_session.transmission_state == 'RUNNING':
+                        
                         # for cyklus for send I frame with random data
                         for frame in self.data_list:
                                 # list of data
-                                await self.active_session.send_frame(frame)
+                                data = self.queue.generate_i_frame(frame)
+                                await self.active_session.send_frame(data)
                                 await asyncio.sleep(0.5)
                                 
                         # check if response is ack with S format
@@ -238,7 +241,7 @@ class IEC104Client(object):
                             await asyncio.sleep(0.5)
                     
                     #* STATE 4
-                    if self.active_session.get_transmission_state() == 'WAITING_UNCONFIRMED':
+                    if self.active_session.transmission_state == 'WAITING_UNCONFIRMED':
                         # do not send new I frame, but check if response are I,S or U formats
                         # send testdt frame 
                         frame = self.active_session.generate_testdt_act()
@@ -252,7 +255,7 @@ class IEC104Client(object):
                         await self.active_session.send_frame(frame)
                     
                     #* STATE 5
-                    if self.active_session.get_transmission_state() == 'WAITING_STOPPED':
+                    if self.active_session.transmission_state == 'WAITING_STOPPED':
                         # # do not send new I frame, but check if response are I,S or U formats
                         # send testdt frame 
                         frame = self.active_session.generate_testdt_act()
@@ -268,7 +271,7 @@ class IEC104Client(object):
                     if response:
                         await self.active_session.update_state_machine_client(response)
                 
-                self.wait_for_response = False
+                self.start_sequence = False
                 
                 
         except asyncio.CancelledError:
@@ -280,7 +283,7 @@ class IEC104Client(object):
  
 
     async def check_for_message(self):
-        if self.active_session.get_connection_state() == 'CONNECTED':
+        if self.active_session.connection_state() == 'CONNECTED':
                 self.loop.create_task(self.active_session.handle_messages())
     
         
@@ -378,10 +381,9 @@ class IEC104Client(object):
                         if isinstance(queue, QueueManager):
                             resp = await queue.check_events_client()
                             if resp:
-                                self.wait_for_response = True
+                                await self.handle_response()
                                 pass
-                
-                if self.wait_for_response:
+                if self.start_sequence:
                     await self.handle_response()
                     
                     
@@ -390,9 +392,10 @@ class IEC104Client(object):
                 
                 # UI se nebude volat tak často jako ostatní metody
                 self.no_overflow = self.no_overflow + 1
-                if self.no_overflow > 2:
+                if self.no_overflow > 3:
                         self.no_overflow = 0
                         
+                        await self.handle_response()
                         # musí se UI volat periodicky? 
                         # self.loop.create_task(self.main())
                 # new client connected

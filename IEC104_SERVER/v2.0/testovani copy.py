@@ -1,53 +1,64 @@
-import asyncio
-import random
-import time
+class Server:
+    def __init__(self):
+        self._clients = {}
 
+    def listen(self, host, port):
+        self._server = asyncio.start_server(self.on_new_connection, host, port)
 
-async def worker(name, queue):
-    while True:
-        # Get a "work item" out of the queue.
-        sleep_for = await queue.get()
+    async def on_new_connection(self, reader, writer):
+        ip_address = reader.get_extra_info('peername')[0]
+        if ip_address not in self._clients:
+            self._clients[ip_address] = QueueManager()
+        session = Session(reader, writer, self._clients[ip_address])
+        session.start()
 
-        # Sleep for the "sleep_for" seconds.
-        await asyncio.sleep(sleep_for)
+    async def run(self):
+        await self._server
+        await asyncio.gather(*[session.run() for session in self._clients.values()])
 
-        # Notify the queue that the "work item" has been processed.
-        queue.task_done()
+class QueueManager:
+    def __init__(self):
+        self._sessions = []
+        self._queue = Queue()
 
-        print(f'{name} has slept for {sleep_for:.2f} seconds')
+    def add_message(self, message):
+        self._queue.put_nowait(message)
 
+    async def get_message(self):
+        return await self._queue.get()
 
-async def main():
-    # Create a queue that we will use to store our "workload".
-    queue = asyncio.Queue()
+    async def on_message_sent(self, message_id):
+        # Zpracuje potvrzení o doručení zprávy
+        pass
 
-    # Generate random timings and put them into the queue.
-    total_sleep_time = 0
-    for _ in range(20):
-        sleep_for = random.uniform(0.05, 1.0)
-        total_sleep_time += sleep_for
-        queue.put_nowait(sleep_for)
+    async def run(self):
+        while True:
+            message = await self._queue.get()
+            for session in self._sessions:
+                await session.send_message(message)
 
-    # Create three worker tasks to process the queue concurrently.
-    tasks = []
-    for i in range(3):
-        task = asyncio.create_task(worker(f'worker-{i}', queue))
-        tasks.append(task)
+class Session:
+    def __init__(self, reader, writer, queue_manager):
+        self._reader = reader
+        self._writer = writer
+        self._queue_manager = queue_manager
 
-    # Wait until the queue is fully processed.
-    started_at = time.monotonic()
-    await queue.join()
-    total_slept_for = time.monotonic() - started_at
+    def start(self):
+        asyncio.create_task(self.on_data_received())
+        asyncio.create_task(self.run())
 
-    # Cancel our worker tasks.
-    for task in tasks:
-        task.cancel()
-    # Wait until all worker tasks are cancelled.
-    await asyncio.gather(*tasks, return_exceptions=True)
+    async def on_data_received(self):
+        while True:
+            data = await self._reader.read(1024)
+            frame = Frame.parse(data)
+            # Zpracuje přijatý frame
 
-    print('====')
-    print(f'3 workers slept in parallel for {total_slept_for:.2f} seconds')
-    print(f'total expected sleep time: {total_sleep_time:.2f} seconds')
+    async def send_message(self, message):
+        data = message.serialize()
+        self._writer.write(data)
 
+    async def run(self):
+        while True:
+            await asyncio.sleep(1)
+            # Zkontroluje, zda klient neodeslal data
 
-asyncio.run(main())
