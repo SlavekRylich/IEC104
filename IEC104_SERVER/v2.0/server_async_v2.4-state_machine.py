@@ -146,8 +146,6 @@ class ServerIEC104():
                                             self.port)
         
     async def start(self):
-        
-        
         # periodic_task = self._loop.create_task(self.periodic_event_check())
         # periodic_task = loop.run_forever(self.periodic_event_check)
         
@@ -199,7 +197,8 @@ class ServerIEC104():
     
     async def run(self):
         await self._server
-        await asyncio.gather(*[session.run() for session in self.clients.values()])
+        # await asyncio.gather(*[session.run() for session in self.clients.values()])
+        await asyncio.gather(*[queue.run() for queue in self.clients.values()])
     
     # tady sem skoncil
     def check_alive_clients(self):

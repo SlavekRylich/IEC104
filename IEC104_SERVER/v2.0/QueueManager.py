@@ -8,6 +8,8 @@ from Frame import Frame
 from IFormat import IFormat
 from SFormat import SFormat
 from UFormat import UFormat
+from IncomingQueueManager import IncomingQueueManager
+from OutgoingQueueManager import OutgoingQueueManager
 
 class QueueManager():
     """
@@ -33,6 +35,35 @@ class QueueManager():
         self._session = None
         self._ip = ip
         
+        self._in_queue = IncomingQueueManager()
+        self._out_queue = OutgoingQueueManager()
+        
+    @property
+    def in_queue(self):
+        return self._in_queue
+    
+    @property
+    def out_queue(self):
+        return self._out_queue
+        
+    async def run(self):
+        while True:
+            message = await self._in_queue.on_message_received()
+            await asyncio.gather(*[session.run() for session in self._sessions])
+    
+    def add_message(self, message):
+        self._queue.put_nowait(message)
+
+    async def get_message(self):
+        return await self._queue.get()
+    
+    @property
+    def size(self):
+        return self._queue.__sizeof__
+    
+    @property
+    def is_Empty(self):
+        return self._queue.empty
         
     def add_message(self,message):
         self._queue.put_nowait(message)

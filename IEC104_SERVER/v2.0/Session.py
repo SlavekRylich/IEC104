@@ -7,6 +7,8 @@ from Frame import Frame
 from Parser import Parser
 from State import StateConn,StateTrans
 from UFormat import UFormat
+from IncomingQueueManager import IncomingQueueManager
+from OutgoingQueueManager import OutgoingQueueManager
 
 LISTENER_LIMIT=5
 # Konfigurace logování
@@ -33,13 +35,19 @@ class Session():
     _id = 0
     _instances = []
     
-    def __init__(self, ip, port, reader, writer, session_params=0, queue = None):
+    def __init__(self, ip, port, reader, writer,
+                 session_params=0, queue = None,
+                 in_queue: IncomingQueueManager = 0,
+                 out_queue: OutgoingQueueManager = 0):
+        
         self._reader = reader
         self._writer = writer
         self._ip = ip
         self._port = port
         self._timestamp = time.time()
         self._queue = queue
+        self._incomming_queue = in_queue
+        self._outgoing_queue = out_queue
         
         # flag_session = 'START_SESSION'
         # flag_session = 'STOP_SESSION'
@@ -225,6 +233,9 @@ class Session():
                         
                         print(f"Finish async handle_messages.")
                         
+                        
+                        self._incomming_queue.receive(new_apdu)
+                        
                         return new_apdu
             else:
                 print(f"doslo k tomuto vubec nekdy?")
@@ -251,10 +262,17 @@ class Session():
     ################################################
     ## SEND FRAME
         
-    async def send_frame(self,frame: Frame):
-        print(f"{time.ctime()} - Send frame: {frame}")
-        self._writer.write(frame.serialize())
-        await self._writer.drain()
+    async def send_frame(self,frame: Frame = 0):
+        if not frame:
+            print(f"{time.ctime()} - Send frame: {frame}")
+            self._writer.write(frame.serialize())
+            await self._writer.drain()
+        else:
+            frame = await self._outgoing_queue.get_message()
+            if frame:
+                self._writer.write(frame.serialize())
+                await self._writer.drain()
+                
         
     async def send_data(self,data):
         print(f"{time.ctime()} - Send data: {data}")
