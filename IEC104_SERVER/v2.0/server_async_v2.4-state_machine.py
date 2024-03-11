@@ -176,7 +176,7 @@ class ServerIEC104():
         Create queue if not exist for that client.
         """
         if client_address not in self.clients:
-            self.clients[client_address] = QueueManager()
+            self.clients[client_address] = QueueManager(client_address)
             
         session = Session(client_address,
                             client_port,
@@ -191,9 +191,11 @@ class ServerIEC104():
         session.start()  
 
         
-        request = await self.active_session.handle_messages()
-        if request:
-            await self.queue.handle_apdu(request)
+        # request = await self.active_session.handle_messages()
+        # if request:
+        #     await self.queue.handle_apdu(request)
+            
+            
     
     async def run(self):
         await self._server

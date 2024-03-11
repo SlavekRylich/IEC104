@@ -79,15 +79,25 @@ class Session():
         Session._instances.append(self)
         
     def start(self):
-        asyncio.create_task(self.handle_messages())
-        asyncio.create_task(self.run())
+        self.task_handle_messages = asyncio.create_task(self.handle_messages())
+        self.task_send_frame = asyncio.create_task(self.send_frame())
+        self.task_run = asyncio.create_task(self.run())
             
     async def run(self):
         while True:
             # periodic tasks for session
             # check if client send any data
+            
+            # třída session si kontroluje zda se nachází data v outgoing_queue
+            # pokud ano, vyjme je z fronty, uloží si je do bufferu a pošle klientovi
+            # příchozí zprávy zase ukládá do příchozí fronty
+            # pokud je příchozí zpráva potvrzením již zaslané, kontroluje a maže zprávu 
+            # z bufferu
+            
             await asyncio.sleep(1)
-            # await self.handle_messages()
+            await self.task_handle_messages
+            await self.task_send_frame
+            await self.task_run
         
     @property    
     def k(self):
@@ -234,7 +244,7 @@ class Session():
                         print(f"Finish async handle_messages.")
                         
                         
-                        self._incomming_queue.receive(new_apdu)
+                        self._incomming_queue.on_message_received(new_apdu)
                         
                         return new_apdu
             else:

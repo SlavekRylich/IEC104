@@ -16,10 +16,11 @@ class IncomingQueueManager():
         self._in_queue = asyncio.Queue(maxsize=256)
     
     
-    async def on_message_received(self, message):
+    async def on_message_received(self, message: Frame):
         # Zpracuje zprávu z příchozí fronty
         # ...
         # Odeslat potvrzení klientovi
+        self.receive(message)
         pass
     
     async def receive(self, message):
@@ -33,15 +34,3 @@ class IncomingQueueManager():
         return self._in_queue.empty
     
     
-    async def handle_messages(self, session: Session):
-        try:
-            new_apdu = await session.handle_messages()
-            if new_apdu:
-                self.receive(new_apdu)
-            
-             
-        except asyncio.TimeoutError:
-            print(f'Klient {self} neposlal žádná data.')
-            
-        except Exception as e:
-            print(f"Exception {e}")

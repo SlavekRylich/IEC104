@@ -48,8 +48,9 @@ class QueueManager():
         
     async def run(self):
         while True:
+            # kontrola zda není něco ve frontě k odeslání 
             message = await self._in_queue.on_message_received()
-            await asyncio.gather(*[session.run() for session in self._sessions])
+            # await asyncio.gather(*[session.run() for session in self._sessions])
     
     def add_message(self, message):
         self._queue.put_nowait(message)

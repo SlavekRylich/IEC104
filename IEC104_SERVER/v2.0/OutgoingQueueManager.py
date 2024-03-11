@@ -10,6 +10,7 @@ class OutgoingQueueManager(QueueManager):
         # Zpracuje potvrzení o doručení
         # ...
         # Odstranit zprávu z dočasného úložiště
+        self.get_message()
         pass
     
     async def get_message(self):
