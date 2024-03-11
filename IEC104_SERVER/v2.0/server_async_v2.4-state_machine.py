@@ -39,7 +39,7 @@ class ServerIEC104():
         
         self.lock = asyncio.Lock()
         self.no_overflow = 0
-        self._loop = asyncio.get_event_loop_policy().get_event_loop()
+        # self._loop = asyncio.get_event_loop_policy().get_event_loop()
 
         # load configuration parameters
         try:
@@ -141,9 +141,11 @@ class ServerIEC104():
             return session,new_queue    # returt this queue
         
     async def listen(self):
-        self._server = asyncio.start_server(self.handle_client,
+        print(f"Naslouchám na {self.ip}:{self.port}")
+        self._server = await asyncio.start_server(self.handle_client,
                                             self.ip,
                                             self.port)
+        
         
     async def start(self):
         # periodic_task = self._loop.create_task(self.periodic_event_check())
@@ -183,7 +185,10 @@ class ServerIEC104():
                             reader,
                             writer,
                             self.session_params,
-                            self.clients[client_address])
+                            self.clients[client_address],
+                            self.clients[client_address].in_queue,
+                            self.clients[client_address].out_queue,
+                            self.clients[client_address].packet_buffer)
         
         print(f"Spojení navázáno: s {client_address, client_port},\
                     (Celkem spojení: \
@@ -198,9 +203,9 @@ class ServerIEC104():
             
     
     async def run(self):
-        await self._server
+        # await self._server
         # await asyncio.gather(*[session.run() for session in self.clients.values()])
-        await asyncio.gather(*[queue.run() for queue in self.clients.values()])
+        await asyncio.gather(self._server.serve_forever(),*[queue.run() for queue in self.clients.values()])
     
     # tady sem skoncil
     def check_alive_clients(self):

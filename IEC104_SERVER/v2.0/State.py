@@ -11,6 +11,7 @@ class StateConn(Enum):
     def set_state(cls, state):
         return cls(state)
 
+    
     def get_state(self):
         return self.value
     

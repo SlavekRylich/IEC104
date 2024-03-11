@@ -18,25 +18,25 @@ class SFormat(Frame):
         fourth = (self.rsn >> 7) & 0xFF
         
             # Doplnění délky do hlavičky
-        packed_header = struct.pack(f"{'B' * (self.header_length + 2)}", 
-                                    Frame.start_byte, # start byte
-                                    self.total_length,  # Total Length pouze hlavička
+        packed_header = struct.pack(f"{'B' * (self.__header_length + 2)}", 
+                                    Frame.__start_byte, # start byte
+                                    self.__total_length,  # Total Length pouze hlavička
                                     1,   # 1. ridici pole
                                     0,  # 2. ridici pole
                                     third,   # 3. ridici pole
                                     fourth,  # 4. ridici pole
         )
-        self.structure = packed_header
-        return self.structure
+        self.__structure = packed_header
+        return self.__structure
     
      
-     #property
-    def get_rsn(self):
+    @property
+    def rsn(self):
         return self.rsn
             
     
-     #rsn.setter
-    def set_rsn(self, rsn):
+    @rsn.setter
+    def rsn(self, rsn):
         self.rsn = rsn
         
     def increment_rsn(self):
@@ -44,5 +44,5 @@ class SFormat(Frame):
         
         
     def __str__(self):
-        return f"Typ: {self.type_in_word}, Data in bytes: {self.serialize()}"
+        return f"Typ: {self.__type_in_word}, Data in bytes: {self.serialize()}"
     

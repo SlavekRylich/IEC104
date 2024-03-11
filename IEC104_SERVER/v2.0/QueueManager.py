@@ -1,8 +1,6 @@
-from ast import List
 import asyncio
 
 import acpi
-from Session import Session
 from Frame import Frame
 
 from IFormat import IFormat
@@ -10,6 +8,7 @@ from SFormat import SFormat
 from UFormat import UFormat
 from IncomingQueueManager import IncomingQueueManager
 from OutgoingQueueManager import OutgoingQueueManager
+from Packet_buffer import PacketBuffer
 
 class QueueManager():
     """
@@ -24,8 +23,8 @@ class QueueManager():
         """
         self._queue = asyncio.Queue()
         # tuple (ip, port, session)
-        self._sessions: List[Session]= []
-        self._sessions_new: List[Session]= []
+        self._sessions= []
+        self._sessions_new= []
         self._VR = 0
         self._VS = 0
         self._ack = 0
@@ -37,6 +36,7 @@ class QueueManager():
         
         self._in_queue = IncomingQueueManager()
         self._out_queue = OutgoingQueueManager()
+        self._packet_buffer = PacketBuffer()
         
     @property
     def in_queue(self):
@@ -45,11 +45,27 @@ class QueueManager():
     @property
     def out_queue(self):
         return self._out_queue
+    
+    @property
+    def packet_buffer(self):
+        return self._packet_buffer
+    
+    
         
     async def run(self):
         while True:
-            # kontrola zda není něco ve frontě k odeslání 
-            message = await self._in_queue.on_message_received()
+            # kontrola zda není něco ve frontě přijmu
+            # pokud ano předá ke zpracování pro server, další zacházení s daty
+            # poté kontrola zda není něco ve frontě k odeslání,
+            if not self._in_queue.is_Empty():
+                message = await self._in_queue.get_message()
+                self.handle_apdu(message)
+                
+            # vyprazdnuje se v Session
+            if not self._out_queue.is_Empty():
+                pass
+                
+            
             # await asyncio.gather(*[session.run() for session in self._sessions])
     
     def add_message(self, message):
@@ -147,104 +163,98 @@ class QueueManager():
     async def handle_apdu(self, apdu):
         
         print(f"Starting async handle_apdu with {apdu}")
-        if isinstance(self._session, Session):
+        # if isinstance(self._session, Session):
             
-            if self._session.transmission_state == 'STOPPED':
-                
-                if isinstance(apdu, UFormat):
-                    if apdu.get_type_int() != acpi.STARTDT_ACT:
-                        
-                        if apdu.get_type_int() == acpi.TESTFR_ACT:
-                            frame = self._session.generate_testdt_con()
-                            await self._session.send_frame(frame)
-                        
-                        if apdu.get_type_int() == acpi.TESTFR_CON:
-                            pass
-                        
-                
-            if self._session.transmission_state == 'RUNNING':
-                        
-                if isinstance(apdu, IFormat):
+        if self._session.transmission_state == 'STOPPED':
+            
+            if isinstance(apdu, UFormat):
+                if apdu._type_int() != acpi.STARTDT_ACT:
                     
-                    if (apdu.get_ssn() - self._VR) > 1:
-                        
-                        # chyba sekvence
-                        # vyslat S-format s posledním self.VR
-                        frame = self.generate_s_frame()
-                        await self._session.send_frame(frame)
-                        self._session.flag_session = 'ACTIVE_TERMINATION'
-                        # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
-                        
-                    else:
-                        self._recv_queue.append(apdu)
-                        self.incrementVR()
-                        self.ack(apdu.get_rsn())
-                        await self.clear_acked_recv_queue()
+                    if apdu._type_int() == acpi.TESTFR_ACT:
+                        frame = self.generate_testdt_con()
+                        await self._out_queue.to_send(frame)
+                        # await self._session.send_frame(frame)
                     
-                    if (self._VR - self._ack) >= self._session.w:
-                        frame = self.generate_s_frame()
-                        await self._session.send_frame(frame)
+                    if apdu._type_int() == acpi.TESTFR_CON:
+                        pass
                     
-                if isinstance(apdu, SFormat):
-                    self.ack(apdu.get_rsn())
-                    await self.clear_acked_send_queue()
-                
-                if isinstance(apdu, UFormat):
-                    if apdu.get_type_int() != acpi.STOPDT_ACT:
-                        
-                        if apdu.get_type_int() == acpi.TESTFR_ACT:
-                            frame = self._session.generate_testdt_con()
-                            await self._session.send_frame(frame)
-                        
-                        if apdu.get_type_int() == acpi.TESTFR_CON:
-                            pass
-                
-                #vysílat vygenerovanou odpoved v odesilaci frontě -> implementovat do Session
-                if self.isResponse():
-                    for item in self.recv_queue():
-                        self.writer.write(item.serialize())
-                        await self.writer.drain()
-                        
-                        # here is important k parameter
-                        
             
-            
-            if self._session.transmission_state == 'WAITING_UNCONFIRMED':
-                
-                if isinstance(apdu, SFormat):
-                    self.ack(apdu.get_rsn())
-                    self.clear_acked_send_queue()
-                
-                if isinstance(apdu, UFormat):
+        if self._session.transmission_state == 'RUNNING':
                     
-                    if apdu.get_type_int() != acpi.STOPDT_ACT:
-                        
-                        if apdu.get_type_int() == acpi.TESTFR_ACT:
-                            frame = self._session.generate_testdt_con()
-                            await self._session.send_frame(frame)
-                        
-                        if apdu.get_type_int() == acpi.TESTFR_CON:
-                            pass
-                                    
+            if isinstance(apdu, IFormat):
+                
+                if (apdu.ssn() - self._VR) > 1:
+                    
+                    # chyba sekvence
+                    # vyslat S-format s posledním self.VR
+                    frame = self.generate_s_frame()
+                    await self._out_queue.to_send(frame)
+                    # await self._session.send_frame(frame)
+                    self._session.flag_session = 'ACTIVE_TERMINATION'
+                    # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
+                    
+                else:
+                    self.incrementVR()
+                    self.ack = apdu.rsn()
+                    await self._packet_buffer.clear_group_less_than(self._ack)
+                    # await self.clear_acked_recv_queue()
+                
+                if (self._VR - self._ack) >= self._session.w:
+                    frame = self.generate_s_frame()
+                    await self._out_queue.to_send(frame)
+                    # await self._session.send_frame(frame)
+                
+            if isinstance(apdu, SFormat):
+                self.ack = apdu.rsn()
+                await self._packet_buffer.clear_group_less_than(self._ack)
+                # await self.clear_acked_send_queue()
             
+            if isinstance(apdu, UFormat):
+                if apdu._type_int() != acpi.STOPDT_ACT:
+                    
+                    if apdu._type_int() == acpi.TESTFR_ACT:
+                        frame = self.generate_testdt_con()
+                        await self._out_queue.to_send(frame)
+                        # await self._session.send_frame(frame)
+                    
+                    if apdu._type_int() == acpi.TESTFR_CON:
+                        pass
             
-            await self._session.update_state_machine_server(apdu)                
-            print(f"Finish async handle_apdu")
+            #vysílat vygenerovanou odpoved v odesilaci frontě -> implementovat do Session
+            if self.isResponse():
+                for item in self.recv_queue():
+                    self.writer.write(item.serialize())
+                    await self.writer.drain()
+                    
+                    # here is important k parameter
+                    
+        
+        
+        if self._session.transmission_state == 'WAITING_UNCONFIRMED':
+            
+            if isinstance(apdu, SFormat):
+                self.ack = apdu.rsn()
+                await self._packet_buffer.clear_group_less_than(self._ack)
+                # self.clear_acked_send_queue()
+            
+            if isinstance(apdu, UFormat):
+                
+                if apdu._type_int() != acpi.STOPDT_ACT:
+                    
+                    if apdu._type_int() == acpi.TESTFR_ACT:
+                        frame = self.generate_testdt_con()
+                        await self._out_queue.to_send(frame)
+                        # await self._session.send_frame(frame)
+                    
+                    if apdu._type_int() == acpi.TESTFR_CON:
+                        pass
+                                
+        
+        
+        # await self._session.update_state_machine_server(apdu)                
+        print(f"Finish async handle_apdu")
 
-    async def handle_send_queue(self):
-        """
-        Vyprázdní frontu odesílání dat odesláním všech položek.
-        """
-        for frame in self._send_queue:
-            
-            # move to sended queue
-            self._sended_queue.append(frame)
-            # remove frame from send queue
-            self._send_queue.remove(frame)
-            # send frame
-            frame = await self._session.send_frame(frame)
-            
-           
+   
     def isResponse(self):
         return False        
     
@@ -305,44 +315,8 @@ class QueueManager():
     @property
     def sessions(self):
         return self._sessions
-        
-    def insert_send_queue(self, packet):
-        self._send_queue.append(packet)
-        
-    def insert_recv_queue(self, packet):
-        self._recv_queue.append(packet)
     
-    def isBlank_send_queue(self):
-        for item in self._send_queue:
-            return False
-        return True
-    
-    def isBlank_recv_queue(self):
-        for item in self._recv_queue:
-            return False
-        return True
-    
-    @property
-    def send_queue(self):
-        return self._send_queue
-    
-    @property
-    def recv_queue(self):
-        return self._recv_queue
-    
-    
-    def clear_acked_send_queue(self):
-        for item in self._send_queue:
-            if item.get_ssn() <= self._ack:
-                self._send_queue.remove(item)
-                
-    async def clear_acked_recv_queue(self):
-        for item in self._recv_queue:
-            if item.get_ssn() <= self._ack:
-                self._recv_queue.remove(item)
-            
-    def get_len_recv_queue(self):
-        return len(self._recv_queue)
+   
     
     def incrementVR(self):
         self._VR = self._VR + 1
@@ -366,12 +340,32 @@ class QueueManager():
     def VS(self):
         return self._VS
     
+    ################################################
+    # GENERATE U FRAME
+    
+    def generate_testdt_act(self):
+        return UFormat(acpi.TESTFR_ACT)
+    
+    def generate_testdt_con(self):
+        return UFormat(acpi.TESTFR_CON)
+    
+    def generate_startdt_act(self):
+        return UFormat(acpi.STARTDT_ACT)
+    
+    def generate_startdt_con(self):
+        return UFormat(acpi.STARTDT_CON)
+        
+    def generate_stopdt_act(self):
+        return UFormat(acpi.STOPDT_ACT)
+        
+    def generate_stopdt_con(self):
+        return UFormat(acpi.STOPDT_CON)
+    
     def Uformat_response(self, frame: Frame):
         frame = frame.get_type()
         
         if (frame == acpi.STARTDT_ACT):
             return UFormat(acpi.STARTDT_CON)
-            return acpi.STARTDT_CON
         
         elif frame == acpi.STARTDT_CON:
             return None

@@ -3,26 +3,31 @@ import time
 
 
 from Frame import Frame
-from QueueManager import QueueManager
-from Parser import Parser
-from Session import Session
 
     
 class PacketBuffer:
     def __init__(self):
         self._buffer: dict[Frame] = {}
 
-    def add_packet(self, packet_id, packet):
-        self._buffer[packet_id] = packet
+    def add_frame(self, frame_id, frame):
+        self._buffer[frame_id] = frame
 
-    def get_packet(self, packet_id):
-        return self._buffer.get(packet_id)
+    def get_frame(self, frame_id):
+        return self._buffer.get(frame_id)
 
-    def remove_packet(self, packet_id):
-        del self._buffer[packet_id]
+    def remove_frame(self, frame_id):
+        del self._buffer[frame_id]
 
-    def has_packet(self, packet_id):
-        return packet_id in self._buffer
+    def has_frame(self, frame_id):
+        return frame_id in self._buffer
+    
+    def clear_group_less_than(self, frame_id):
+        for frame in self._buffer.values():
+            if frame.get_id() <= frame_id:
+                del self._buffer[frame.get_id()]
+    
+    def is_empty(self):
+        return len(self._buffer) == 0
 
     def clear(self):
         self._buffer.clear()

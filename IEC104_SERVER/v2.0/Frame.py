@@ -7,39 +7,41 @@ import acpi
 class Frame:
 # třídní proměná pro uchování unikátní id každé instance
     _id = 0
-    instances = []
-    start_byte = acpi.START_BYTE
+    _instances = []
+    __start_byte = acpi.START_BYTE
 
     def __init__(self, type='Frame'):
-        self.header_length = acpi.ACPI_HEADER_LENGTH
-        self.total_length = self.header_length
-        self.structure = None
-        self.type_in_word = type
+        self.__header_length = acpi.ACPI_HEADER_LENGTH
+        self.__total_length = self.__header_length
+        self.__structure = None
+        self.__type_in_word = type
         Frame._id += 1
         self._id = Frame._id
-        Frame.instances.append(self)
+        Frame._instances.append(self)
         
     def is_structured(self):
-        if not self.structure:
+        if not self.__structure:
             return False
         return True
-        
+    
+    @property
     def get_id(self):
         return self._id
     
-    def get_type_in_word(self):
-         return self.type_in_word
+    @property
+    def __type_in_word(self):
+         return self.__type_in_word
 
     @classmethod
     def remove_instance(cls, id = 0, instance = None):
         instances_to_remove = []
         
-        for inst in cls.instances:
+        for inst in cls._instances:
             if inst._id == id or inst == instance:
                 instances_to_remove.append(inst)
 
         for inst in instances_to_remove:
-            cls.instances.remove(inst)
+            cls._instances.remove(inst)
 
         return instances_to_remove
 
@@ -47,48 +49,50 @@ class Frame:
     def remove_instance(cls, id = 0, instance = None):
         if not id:  # zde rezerva*
             if instance: 
-                cls.instances.remove(instance)
+                cls._instances.remove(instance)
                 return True
             else:
                 return False
         
-        if id < len(cls.instances):
-            del cls.instances[id]
+        if id < len(cls._instances):
+            del cls._instances[id]
             return True
         else:
             return False
         
     def get_all_instances(cls):
-        return cls.instances
+        return cls._instances
 
     def serialize(self):
         return False    # it will return false because method is overrided
         
-            
-    def get_length(self):
-        return self.total_length
+    @property
+    def length(self):
+        return self.__total_length
 
     # opravit korektne, toto je spatny vypocet delky!!!
-        #length.setter
-    def set_length(self, length):
-        self.total_length += length
+    @length.setter
+    def length(self, length):
+        self.__total_length += length
 
         
     def get_length_of_data(self):
-        return self.total_length - acpi.ACPI_HEADER_LENGTH
+        return self.__total_length - acpi.ACPI_HEADER_LENGTH
 
-    # vraci strukturu ramce
-        
-    def get_structure(self):
+    
+    @property 
+    def __structure(self):
         # here is specify format for each format 
-        return self.structure
+        return self.__structure
+    
+    @__structure.setter 
+    def __structure(self, structure):
+        # here is specify format for each format 
+        self.__structure = structure
 
-        #structure.deleter
-    def rem_structure(self):
-        del self.structure
 
     def __str__(self):
-        return f"Typ: {self.type_in_word}, Data in bytes: {self.serialize()}"
+        return f"Typ: {self.__type_in_word}, Data in bytes: {self.serialize()}"
 
 
 

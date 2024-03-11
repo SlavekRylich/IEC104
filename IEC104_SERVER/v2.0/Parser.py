@@ -42,7 +42,7 @@ class Parser:
             # STARTDT ACT
             if first_byte == acpi.STARTDT_ACT:
                 
-                new_instance.set_type(acpi.STARTDT_ACT)
+                new_instance._type(acpi.STARTDT_ACT)
                 
                 return new_instance
                 
@@ -51,27 +51,27 @@ class Parser:
             # STOPDT ACT
             elif first_byte == acpi.STOPDT_ACT:
                 
-                new_instance.set_type(acpi.STOPDT_ACT)
+                new_instance._type(acpi.STOPDT_ACT)
                 
                 return new_instance
                 
             # TESTDT ACT
             elif first_byte == acpi.TESTFR_ACT:
-                new_instance.set_type(acpi.TESTFR_ACT)
+                new_instance._type(acpi.TESTFR_ACT)
                 return new_instance
             
             elif first_byte == acpi.STARTDT_CON:
-                new_instance.set_type(acpi.STARTDT_CON)
+                new_instance._type(acpi.STARTDT_CON)
                 return new_instance
             
             # STOPDT ACT
             elif first_byte == acpi.STOPDT_CON:
-                new_instance.set_type(acpi.STOPDT_CON)
+                new_instance._type(acpi.STOPDT_CON)
                 return new_instance
             
             # TESTDT ACT
             elif first_byte == acpi.TESTFR_CON:
-                new_instance.set_type(acpi.TESTFR_CON)
+                new_instance._type(acpi.TESTFR_CON)
                 return new_instance
             
             else:

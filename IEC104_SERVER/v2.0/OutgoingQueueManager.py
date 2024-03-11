@@ -1,7 +1,6 @@
 import asyncio
-from QueueManager import QueueManager
 
-class OutgoingQueueManager(QueueManager):
+class OutgoingQueueManager():
     
     def __init__(self):
         self._out_queue = asyncio.Queue()
@@ -14,10 +13,10 @@ class OutgoingQueueManager(QueueManager):
         pass
     
     async def get_message(self):
-        return await self._out_queue.get()
+        return await self._out_queue.get_nowait()
     
-    async def receive(self, message):
-            self._out_queue.put_nowait(message)
+    async def to_send(self, message):
+            await self._out_queue.put_nowait(message)
             
     def size(self):
         return self._out_queue.__sizeof__

@@ -195,7 +195,7 @@ class IEC104Client(object):
                         if self.active_session.flag_session == 'START_SESSION':
                             
                             if self.start_sequence:
-                                frame = self.active_session.generate_startdt_act()
+                                frame = self.queue.generate_startdt_act()
                                 await self.active_session.send_frame(frame)
                             
                             
@@ -206,7 +206,7 @@ class IEC104Client(object):
                         else:
                             # send 2x testdt frame 
                             
-                            frame = self.active_session.generate_testdt_act()
+                            frame = self.queue.generate_testdt_act()
                             for i in range(0,2):
                                 await self.active_session.send_frame(frame)
                                 await asyncio.sleep(0.5)
@@ -216,7 +216,7 @@ class IEC104Client(object):
                     if self.active_session.transmission_state == 'WAITING_RUNNING':
                         # else send testdt frame 
                         
-                        frame = self.active_session.generate_testdt_act()
+                        frame = self.queue.generate_testdt_act()
                         for i in range(0,2):
                             await self.active_session.send_frame(frame)
                             await asyncio.sleep(0.5)
@@ -235,7 +235,7 @@ class IEC104Client(object):
                         
                         
                         # send testdt frame 
-                        frame = self.active_session.generate_testdt_act()
+                        frame = self.queue.generate_testdt_act()
                         for i in range(0,2):
                             await self.active_session.send_frame(frame)
                             await asyncio.sleep(0.5)
@@ -244,27 +244,27 @@ class IEC104Client(object):
                     if self.active_session.transmission_state == 'WAITING_UNCONFIRMED':
                         # do not send new I frame, but check if response are I,S or U formats
                         # send testdt frame 
-                        frame = self.active_session.generate_testdt_act()
+                        frame = self.queue.generate_testdt_act()
                         for i in range(0,2):
                             await self.active_session.send_frame(frame)
                             await asyncio.sleep(0.5)
                         
                         
                         # check if response is stopdt con
-                        frame = self.active_session.generate_stopdt_con()
+                        frame = self.queue.generate_stopdt_con()
                         await self.active_session.send_frame(frame)
                     
                     #* STATE 5
                     if self.active_session.transmission_state == 'WAITING_STOPPED':
                         # # do not send new I frame, but check if response are I,S or U formats
                         # send testdt frame 
-                        frame = self.active_session.generate_testdt_act()
+                        frame = self.queue.generate_testdt_act()
                         for i in range(0,2):
                             await self.active_session.send_frame(frame)
                             await asyncio.sleep(0.5)
                                 
                         # check if response is stopdt con
-                        frame = self.active_session.generate_stopdt_con()
+                        frame = self.queue.generate_stopdt_con()
                         await self.active_session.send_frame(frame)
                     
                     response = await self.active_session.handle_messages()
@@ -283,7 +283,7 @@ class IEC104Client(object):
  
 
     async def check_for_message(self):
-        if self.active_session.connection_state() == 'CONNECTED':
+        if self.active_session.connection_state == 'CONNECTED':
                 self.loop.create_task(self.active_session.handle_messages())
     
         
