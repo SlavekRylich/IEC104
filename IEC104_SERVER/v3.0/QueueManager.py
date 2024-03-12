@@ -306,17 +306,7 @@ class QueueManager():
                 list.append(session)   
         return list
     
-    def del_session(self, sess):
-        # Získat seznam všech tasků
-        tasks = asyncio.all_tasks()
-
-        # Filtrovat tasky podle třídy
-        session_tasks = [task for task in tasks if task.get_name().startswith("session")]
-        queue_manager_tasks = [task for task in tasks if task.get_name().startswith("queue_manager")]
-
-        # Zrušit tasky
-        for task in session_tasks:
-            task.cancel()
+    async def del_session(self, sess):
 
         for session in self._sessions:
             if session == sess:

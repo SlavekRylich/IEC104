@@ -1958,3 +1958,28 @@ Traceback (most recent call last):
 RuntimeError: Task cannot await on itself: <Task pending name='Task-9' coro=<Session.run() running at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:106>>
 2024-03-12 11:37:05,916 - DEBUG - Using proactor: IocpProactor
 2024-03-12 11:37:12,279 - DEBUG - Using proactor: IocpProactor
+2024-03-12 15:35:38,799 - DEBUG - Using proactor: IocpProactor
+2024-03-12 15:35:44,749 - DEBUG - Using proactor: IocpProactor
+2024-03-12 15:35:57,883 - DEBUG - Using proactor: IocpProactor
+2024-03-12 15:35:57,898 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1128 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2288.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py", line 384, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2288.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 437, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x00000194CDA0AD90>>
+2024-03-12 15:36:01,634 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<Session.run() done, defined at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
