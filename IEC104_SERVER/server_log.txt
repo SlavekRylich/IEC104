@@ -1898,3 +1898,63 @@ Traceback (most recent call last):
     self._writer.write(frame.serialize())
                        ^^^^^^^^^^^^^^^
 AttributeError: 'int' object has no attribute 'serialize'
+2024-03-12 10:42:31,186 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:43:22,658 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:43:32,149 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:43:53,907 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:44:15,486 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Session.run() done, defined at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:92> exception=AttributeError("'int' object has no attribute 'serialize'")>
+Traceback (most recent call last):
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 105, in run
+    await self.task_send_frame
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 282, in send_frame
+    self._writer.write(frame.serialize())
+                       ^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'serialize'
+2024-03-12 10:45:10,599 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:45:19,712 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:51:14,081 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:51:17,552 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:51:20,424 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Session.run() done, defined at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:92> exception=AttributeError("'int' object has no attribute 'serialize'")>
+Traceback (most recent call last):
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 105, in run
+    await self.task_send_frame
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 282, in send_frame
+    self._writer.write(frame.serialize())
+                       ^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'serialize'
+2024-03-12 10:52:15,294 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:52:18,729 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:52:21,013 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Session.run() done, defined at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:92> exception=AttributeError("'int' object has no attribute 'serialize'")>
+Traceback (most recent call last):
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 105, in run
+    await self.task_send_frame
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 282, in send_frame
+    self._writer.write(frame.serialize())
+                       ^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'serialize'
+2024-03-12 10:52:50,225 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:52:52,799 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:52:54,770 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Session.run() done, defined at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:92> exception=AttributeError("'int' object has no attribute 'serialize'")>
+Traceback (most recent call last):
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 105, in run
+    await self.task_send_frame
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 282, in send_frame
+    self._writer.write(frame.serialize())
+                       ^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'serialize'
+2024-03-12 10:54:45,140 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:54:52,816 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:56:13,388 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:56:16,190 - DEBUG - Using proactor: IocpProactor
+2024-03-12 10:56:20,449 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Session.run() done, defined at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:92> exception=RuntimeError("Task cannot await on itself: <Task pending name='Task-9' coro=<Session.run() running at d:\\skola\\6.semestr\\bakalarska_prace\\IEC104\\IEC104_SERVER\\v3.0\\Session.py:106>>")>
+Traceback (most recent call last):
+  File "d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 106, in run
+    await self.task_run
+RuntimeError: Task cannot await on itself: <Task pending name='Task-9' coro=<Session.run() running at d:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:106>>
+2024-03-12 11:37:05,916 - DEBUG - Using proactor: IocpProactor
+2024-03-12 11:37:12,279 - DEBUG - Using proactor: IocpProactor
