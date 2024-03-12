@@ -22,7 +22,7 @@ class ServerIEC104():
     """
     Class for server IEC 104 protocol.
     """
-    def __init__(self): 
+    def __init__(self, event): 
         """
         Constructor for server IEC 104 protocol.
         Args: None
@@ -34,6 +34,7 @@ class ServerIEC104():
         self.ip = self.config_loader.config['server']['ip_address']
         self.port = self.config_loader.config['server']['port']
         
+        self._event = event
         self.queues = [] 
         self.tasks = [] 
         self.clients: dict[QueueManager] = {}
@@ -203,7 +204,7 @@ class ServerIEC104():
             print(f"Spojení navázáno: s {client_address, client_port}, "
                         "(Celkem spojení: "
                             f"{queue.get_number_of_connected_sessions()}))")
-            await session.start()  
+            session.start()  
 
         
         # request = await self.active_session.handle_messages()
@@ -268,7 +269,8 @@ class ServerIEC104():
 
     # Main function
 async def main():
-    server = ServerIEC104()
+    event = asyncio.Event()
+    server = ServerIEC104(event)
     await server.listen()
     await server.run()
         

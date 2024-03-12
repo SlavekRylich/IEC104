@@ -1983,3 +1983,956 @@ Traceback (most recent call last):
     await self.task_timeouts
           ^^^^^^^^^^^^^^^^^^
 AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 17:54:04,173 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:54:29,444 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:54:58,536 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:54:58,536 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=564 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x0000023F44BAC710>>
+2024-03-12 17:55:00,958 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 183, in handle_client
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 214, in run
+    await asyncio.gather(*[queue.run() for queue in self.clients.values()])
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 102, in run
+    message = await self._queue.get()
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\queues.py", line 158, in get
+    await getter
+asyncio.exceptions.CancelledError
+2024-03-12 17:55:01,033 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 17:56:06,761 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:56:28,057 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:56:32,278 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:56:43,637 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:56:43,646 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=516 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CA840>>
+2024-03-12 17:57:21,116 - DEBUG - Using proactor: IocpProactor
+2024-03-12 17:57:39,294 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=520 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CA8A0>>
+2024-03-12 18:01:19,983 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:01:29,612 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=516 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CA9C0>>
+2024-03-12 18:01:41,832 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:01:43,109 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=532 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CAC60>>
+2024-03-12 18:03:11,913 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:03:11,922 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=536 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CB830>>
+2024-03-12 18:04:52,751 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:04:52,762 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=540 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CBA40>>
+2024-03-12 18:08:11,180 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:08:11,190 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=536 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CB8C0>>
+2024-03-12 18:24:05,658 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:24:05,672 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=488 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CBBC0>>
+2024-03-12 18:24:39,977 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:24:39,991 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=336 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CBD40>>
+2024-03-12 18:25:20,891 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:25:20,900 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=516 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA219CBE90>>
+2024-03-12 18:26:07,186 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:26:07,195 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=488 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA21A74050>>
+2024-03-12 18:26:19,049 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:26:19,058 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=532 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA21A74170>>
+2024-03-12 18:26:43,956 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:26:43,966 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=520 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA21A74350>>
+2024-03-12 18:28:13,304 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:28:13,313 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=524 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA21A74260>>
+2024-03-12 18:29:06,810 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:29:06,820 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=536 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA21A74620>>
+2024-03-12 18:30:14,842 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:30:14,846 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=528 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002AA21A74770>>
+2024-03-12 18:30:21,333 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 183, in handle_client
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 214, in run
+    await asyncio.gather(*[queue.run() for queue in self.clients.values()])
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 102, in run
+    message = await self._queue.get()
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\queues.py", line 158, in get
+    await getter
+asyncio.exceptions.CancelledError
+2024-03-12 18:30:21,349 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,354 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-17' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,359 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-23' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,364 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-29' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,369 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-35' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,373 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-41' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,378 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-47' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,383 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-53' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,387 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-59' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,392 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-65' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,399 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-101' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,404 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-95' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,408 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-89' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,412 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-83' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,417 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-77' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:30:21,421 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-71' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 18:32:09,007 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:32:13,643 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:32:25,295 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:33:07,854 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=948 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x00000230708FDA90>>
+2024-03-12 18:33:19,643 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:33:23,039 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:35:47,556 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:36:03,665 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:36:15,700 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:36:43,411 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:36:57,189 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:36:57,199 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=468 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000001ACD542A960>>
+2024-03-12 18:38:52,258 - DEBUG - Using proactor: IocpProactor
+2024-03-12 18:38:52,268 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=480 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 202, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000001ACD31EB3E0>>
+2024-03-12 19:18:19,098 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:18:57,774 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 183, in handle_client
+    self.clients[client_address] = QueueManager(client_address)
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 214, in run
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 102, in run
+    message = await self._queue.get()
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\queues.py", line 158, in get
+    await getter
+asyncio.exceptions.CancelledError
+2024-03-12 19:18:57,801 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-17' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 19:18:57,805 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'Session' object has no attribute 'task_timeouts'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 108, in run
+    await self.task_timeouts
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'task_timeouts'
+2024-03-12 19:19:02,689 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:19:08,253 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:19:57,559 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:20:00,517 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:20:14,169 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=816 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000001A46582E960>>
+2024-03-12 19:20:43,276 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:20:50,087 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:21:07,550 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1120 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000001A90A29B860>>
+2024-03-12 19:21:23,098 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:21:26,740 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:21:41,113 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=600 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x0000018B5DAE27B0>>
+2024-03-12 19:26:35,859 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:26:40,055 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:27:19,692 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:27:21,088 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:27:33,204 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=88 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002660D0DA6C0>>
+2024-03-12 19:30:13,297 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:30:20,159 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:31:25,471 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:31:28,654 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:32:44,610 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=588 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x0000026D957535C0>>
+2024-03-12 19:38:29,349 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:38:33,736 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:38:39,836 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=752 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000001F96A7E30B0>>
+2024-03-12 19:40:45,732 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:40:48,845 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:40:52,359 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1000 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x0000023F0D0F5670>>
+2024-03-12 19:41:51,210 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:41:55,772 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:42:19,675 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=828 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x00000256E2F2E9F0>>
+2024-03-12 19:43:43,770 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:43:47,289 - DEBUG - Using proactor: IocpProactor
+2024-03-12 19:43:53,248 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1008 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000001B852771BB0>>
+2024-03-12 20:25:34,421 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:25:50,726 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:25:55,545 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:25:59,454 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=872 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 91, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x0000027C11BADAF0>>
+2024-03-12 20:29:42,577 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:29:45,892 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:29:48,794 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=828 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 91, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x000002B23DC7BC50>>
+2024-03-12 20:34:38,379 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:34:52,401 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:34:56,552 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=372 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 91, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x0000020C16CD3920>>
+2024-03-12 20:37:07,006 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:37:14,146 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:37:14,157 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=512 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 91, in start
+    self.task_timeouts = asyncio.create_task(self.check_for_timeouts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 420, in create_task
+    task = loop.create_task(coro)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 456, in create_task
+    task = tasks.Task(coro, loop=self, name=name, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a coroutine was expected, got <bound method Session.check_for_timeouts of <Session.Session object at 0x0000018782E1A840>>
+2024-03-12 20:40:35,542 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:40:37,395 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:40:41,352 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'coroutine' object has no attribute 'get_type_in_word'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 106, in run
+    await self.update_state_machine_server(resp)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 385, in update_state_machine_server
+    frame = fr.get_type_in_word()   # S-format
+            ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'coroutine' object has no attribute 'get_type_in_word'
+2024-03-12 20:41:22,773 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:41:27,271 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:42:16,222 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:42:19,667 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:43:28,547 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:43:39,375 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:45:16,504 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:45:20,555 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:46:46,799 - DEBUG - Using proactor: IocpProactor
+2024-03-12 20:46:49,328 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:44:20,015 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:44:23,948 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:44:28,234 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'coroutine' object has no attribute 'get_type_in_word'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 106, in run
+    await self.update_state_machine_server(resp)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 385, in update_state_machine_server
+    frame = fr.get_type_in_word()   # S-format
+            ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'coroutine' object has no attribute 'get_type_in_word'
+2024-03-12 21:46:55,789 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:46:59,230 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:47:13,778 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:48:10,496 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-18' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'coroutine' object has no attribute 'get_type_in_word'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 106, in run
+    if resp:
+        ^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 385, in update_state_machine_server
+    else:
+          
+AttributeError: 'coroutine' object has no attribute 'get_type_in_word'
+2024-03-12 21:48:10,510 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<Session.run() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py:94> exception=AttributeError("'coroutine' object has no attribute 'get_type_in_word'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 106, in run
+    if resp:
+        ^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 385, in update_state_machine_server
+    else:
+          
+AttributeError: 'coroutine' object has no attribute 'get_type_in_word'
+2024-03-12 21:48:17,620 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:48:21,582 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:48:51,300 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:48:54,353 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:50:21,627 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:50:24,782 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:52:38,240 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:52:45,872 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:55:41,817 - DEBUG - Using proactor: IocpProactor
+2024-03-12 21:55:44,084 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:10:45,891 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:10:49,385 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:11:15,158 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:11:17,807 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:11:47,234 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:11:50,839 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:11:50,844 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=528 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 93, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 113, in run
+    await self.update_state_machine_server(resp)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 393, in update_state_machine_server
+    frame = fr.get_type_in_word()   # S-format
+            ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'coroutine' object has no attribute 'get_type_in_word'
+2024-03-12 22:12:16,268 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:12:18,327 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:12:18,832 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=520 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 93, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 120, in run
+    tasks = await asyncio.all_tasks()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object set can't be used in 'await' expression
+2024-03-12 22:13:55,428 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:13:57,720 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:13:58,234 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=312 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 93, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 120, in run
+    tasks = await asyncio.all_tasks()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object set can't be used in 'await' expression
+2024-03-12 22:14:23,259 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:14:25,394 - DEBUG - Using proactor: IocpProactor
+2024-03-12 22:14:25,899 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=516 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 93, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 121, in run
+    tasks = await asyncio.all_tasks()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object set can't be used in 'await' expression

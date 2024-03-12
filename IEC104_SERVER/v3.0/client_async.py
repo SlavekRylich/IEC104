@@ -131,7 +131,11 @@ class IEC104Client(object):
                                             self.server_port,
                                             self.reader,
                                             self.writer,
-                                            self.session_params )
+                                            self.session_params,
+                                            self.queue,
+                                            self._in_queue,
+                                            self._out_queue,
+                                            self._packet_buffer)
             
             new_session.add_queue(self.queue)
             self.queue.add_session(new_session)
@@ -150,7 +154,11 @@ class IEC104Client(object):
         loop = asyncio.get_event_loop_policy().get_event_loop()
         self.set_loop(loop)
         
-        self.queue = QueueManager(ip)       
+        self.queue = QueueManager(ip)
+        self._in_queue = self.queue.in_queue 
+        self._out_queue = self.queue.out_queue  
+        self._packet_buffer = self.queue.packet_buffer
+            
         try:
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
             

@@ -53,7 +53,6 @@ class QueueManager():
     
         
     async def run(self):
-        while True:
             print(f"QueueManager_run()")
             # kontrola zda není něco ve frontě přijmu
             # pokud ano předá ke zpracování pro server, další zacházení s daty
@@ -67,9 +66,7 @@ class QueueManager():
                 pass
             
             await asyncio.sleep(0.5)
-            
-            
-                
+              
             
             # await asyncio.gather(*[session.run() for session in self._sessions])
     
@@ -97,13 +94,7 @@ class QueueManager():
     async def on_message_sent(self, message_id):
         pass
     
-    async def run(self):
-        while True:
-            message = await self._queue.get()
-            for session in self._sessions():
-                await session.send_message(message)
-                await asyncio.sleep(0.1)   
-    
+   
     @property
     def ip(self):
         return self._ip
@@ -141,16 +132,18 @@ class QueueManager():
             for session in self.sessions:
                 
                 await session.check_for_timeouts()
-                
-                request = await session.handle_messages()
-                if request:
-                    # ulozit do queue
-                    # kontrolovat queue, zda je potřeba neco poslat
-                    await session.update_state_machine_client(request)
-                    return request
-                
-                await session.update_state_machine_client()
-    
+                try:
+                    request = await session.handle_messages()
+                    if request:
+                        # ulozit do queue
+                        # kontrolovat queue, zda je potřeba neco poslat
+                        await session.update_state_machine_client(request)
+                        return request
+                    
+                    await session.update_state_machine_client()
+                except Exception as e:
+                    print(f"Exception {e}")
+                    pass
     
     # remove session from sessions list if is not connected
     def check_alive_sessions(self):
@@ -306,7 +299,7 @@ class QueueManager():
                 list.append(session)   
         return list
     
-    async def del_session(self, sess):
+    def del_session(self, sess):
 
         for session in self._sessions:
             if session == sess:
@@ -393,7 +386,7 @@ class QueueManager():
     async def check_events(self):
         
         # .get_sessions_tuple() = tuple (ip, port, session)
-        for session in self.sessions():
+        for session in self.sessions:
                         
             print(f"bezi - {session}")
             # timeouts check 
