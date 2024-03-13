@@ -2936,3 +2936,1122 @@ Traceback (most recent call last):
     tasks = await asyncio.all_tasks()
             ^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: object set can't be used in 'await' expression
+2024-03-13 15:03:13,431 - DEBUG - Using proactor: IocpProactor
+2024-03-13 15:03:19,584 - DEBUG - Using proactor: IocpProactor
+2024-03-13 15:03:20,084 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=312 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 120, in run
+    tasks = await asyncio.all_tasks()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object set can't be used in 'await' expression
+2024-03-13 15:04:44,917 - DEBUG - Using proactor: IocpProactor
+2024-03-13 15:04:49,347 - DEBUG - Using proactor: IocpProactor
+2024-03-13 15:05:11,721 - DEBUG - Using proactor: IocpProactor
+2024-03-13 15:05:15,716 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 122, in run
+    await asyncio.sleep(0.5) # kritický bod pro rychlost aplikace
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 15:05:15,731 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 122, in run
+    await asyncio.sleep(0.5) # kritický bod pro rychlost aplikace
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 16:01:38,658 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:01:41,994 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:01:48,113 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 92, in start
+    await self.run()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 122, in run
+    await asyncio.sleep(0.5) # kritický bod pro rychlost aplikace
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 16:02:40,501 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:02:42,620 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:02:49,236 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:03:08,137 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=516>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 95, in start
+    await asyncio.gather(self.task_handle_messages,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 854, in gather
+    outer = _GatheringFuture(children, loop=loop)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 712, in __init__
+    super().__init__(loop=loop)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1989, in get_debug
+    def get_debug(self):
+    
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2024-03-13 16:03:09,854 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:03:11,759 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:08:24,808 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=312 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 94, in start
+    while True:
+          ^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2024-03-13 16:08:24,824 - ERROR - Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 94, in start
+    while True:
+          ^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem
+2024-03-13 16:08:26,892 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<main() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py:274> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-13 16:08:28,208 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:08:30,448 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:08:33,446 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=524 read=<_OverlappedFuture finished result=0>>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 96, in start
+    await asyncio.gather(self.task_handle_messages,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 731, in gather
+    def gather(*coros_or_futures, return_exceptions=False):
+    
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2024-03-13 16:12:24,383 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:12:26,906 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:12:31,516 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5' coro=<ServerIEC104.handle_client() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py:174> exception=KeyboardInterrupt()>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 282, in <module>
+    asyncio.run(main())
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 193, in run
+    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 62, in __exit__
+    self.close()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 70, in close
+    _cancel_all_tasks(loop)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 205, in _cancel_all_tasks
+    loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=True))
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 96, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 318, in send_frame
+    print(f"Stop send_frame_task()")
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2024-03-13 16:12:31,522 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<main() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py:274> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-13 16:13:47,742 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:13:50,382 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:13:53,572 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5' coro=<ServerIEC104.handle_client() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py:174> exception=KeyboardInterrupt()>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 282, in <module>
+    asyncio.run(main())
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 193, in run
+    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 62, in __exit__
+    self.close()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 70, in close
+    _cancel_all_tasks(loop)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 205, in _cancel_all_tasks
+    loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=True))
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 96, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1971, in _run_once
+    handle._run()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 305, in send_frame
+    print(f"Start send_frame_task()")
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2024-03-13 16:13:53,578 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<main() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py:274> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-13 16:15:23,864 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:15:25,850 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:15:28,101 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 96, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 304, in send_frame
+    await asyncio.sleep(0.2) # kritický bod pro rychlost ap
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 16:21:08,111 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:21:10,157 - DEBUG - Using proactor: IocpProactor
+2024-03-13 16:21:13,360 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 98, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 306, in send_frame
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost ap
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 17:55:16,585 - DEBUG - Using proactor: IocpProactor
+2024-03-13 17:55:18,991 - DEBUG - Using proactor: IocpProactor
+2024-03-13 17:55:23,564 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:174>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 98, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 306, in send_frame
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost ap
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 18:02:53,637 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:02:55,812 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:03:16,183 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=528>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 208, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 349, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded
+2024-03-13 18:31:07,992 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:31:10,703 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:31:16,251 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:172>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:172>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 206, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 361, in update_state_machine_server
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 18:32:54,312 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:32:56,087 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:33:14,675 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 361, in update_state_machine_server
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 18:51:16,012 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:51:19,037 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:51:24,955 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 465, in update_state_machine_server
+    await asyncio.sleep(self._async_time)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 18:59:14,545 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:59:16,495 - DEBUG - Using proactor: IocpProactor
+2024-03-13 18:59:19,583 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 361, in update_state_machine_server
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 19:03:48,221 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:03:50,716 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:03:53,150 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 361, in update_state_machine_server
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 19:06:29,499 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:06:55,953 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:07:02,259 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 361, in update_state_machine_server
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 19:07:41,466 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:07:52,618 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:08:12,659 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=348 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 366, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded
+2024-03-13 19:08:27,107 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:08:44,141 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:08:47,140 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport closed>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 366, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded
+2024-03-13 19:09:04,169 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport closed>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 366, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded
+2024-03-13 19:10:07,610 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:10:27,624 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport closed>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 366, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded
+2024-03-13 19:10:49,339 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:11:09,851 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=484>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 366, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded
+2024-03-13 19:13:46,950 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:13:54,504 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...chine.py:173>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 671, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 638, in run_forever
+    self._run_once()
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\base_events.py", line 1933, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py", line 769, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 278, in send_frame
+    await asyncio.sleep(self._async_time) # kritický bod pro rychlost ap
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-03-13 19:15:19,859 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:15:30,579 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:15:37,543 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:15:57,698 - DEBUG - Using proactor: IocpProactor
+2024-03-13 19:15:57,986 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=528>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 366, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded
+2024-03-13 19:16:17,770 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=532 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\server_async_v2.4-state_machine.py", line 207, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 99, in start
+    await asyncio.gather(self.task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Session.py", line 349, in check_for_timeouts
+    frame = self._queue.generate_testdt_act()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\QueueManager.py", line 366, in generate_testdt_act
+    return UFormat(acpi.TESTFR_ACT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\UFormat.py", line 7, in __init__
+    super().__init__('U-format')
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 16, in __init__
+    self.__structure = None
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v3.0\Frame.py", line 91, in __structure
+    self.__structure = structure
+    ^^^^^^^^^^^^^^^^
+  [Previous line repeated 742 more times]
+RecursionError: maximum recursion depth exceeded

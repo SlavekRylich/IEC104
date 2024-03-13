@@ -24,8 +24,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 class IEC104Client(object):
     def __init__(self):
-        print(os.getcwd())
         self.queues = [] 
+        self.servers = {}
         self.data = 'vymyslena data'
         self.data1 = 0x65 + \
                     0x01 + \
@@ -43,7 +43,7 @@ class IEC104Client(object):
         
         self.loop = None
         self.no_overflow = 0
-        # self.loop = asyncio.get_event_loop()
+        self.async_time = 0.8
         
         self.start_sequence = True
                     
@@ -85,6 +85,9 @@ class IEC104Client(object):
         
         except Exception as e:
             print(e)
+            
+        
+        
     def set_loop(self, loop):
         self.loop = loop
     def load_params(self, config_loader):
@@ -97,7 +100,8 @@ class IEC104Client(object):
         if w > ((k*2)/3):  
             if w < 1 or w > 32767:
                 raise Exception("Wrong value range for \'w\' variable!")
-            print(f"Warning! Use value range for \'w\' less than 2/3 of \'k\'")
+            print(f"Warning! Use value range for "
+                  "\'w\' less than 2/3 of \'k\'")
         
         t0 = config_loader.config['server']['t0']
         if t0 < 1 or t0 > 255:
@@ -125,7 +129,8 @@ class IEC104Client(object):
                     )
             
             client_address, client_port =self.writer.get_extra_info('sockname')
-            print(f"Navázáno {client_address}:{client_port}-->{self.server_ip}:{self.server_port}")
+            print(f"Navázáno {client_address}:{client_port}"
+                  f"-->{self.server_ip}:{self.server_port}")
             
             new_session = Session.Session( self.server_ip,
                                             self.server_port,
@@ -137,7 +142,6 @@ class IEC104Client(object):
                                             self._out_queue,
                                             self._packet_buffer)
             
-            new_session.add_queue(self.queue)
             self.queue.add_session(new_session)
             self.active_session = self.queue.Select_active_session(new_session)
             return self.active_session
@@ -154,141 +158,39 @@ class IEC104Client(object):
         loop = asyncio.get_event_loop_policy().get_event_loop()
         self.set_loop(loop)
         
+        
         self.queue = QueueManager(ip)
         self._in_queue = self.queue.in_queue 
         self._out_queue = self.queue.out_queue  
         self._packet_buffer = self.queue.packet_buffer
+        self.task_queue = asyncio.create_task(self.queue.start())
             
         try:
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
             
             # přidá novou session a zároveň vybere aktivní session
             self.active_session = await self.new_session(ip, port)
+            
             if isinstance(self.active_session, Session.Session):
             
-                # tuple (ip, port, queue)
                 self.queues.append(self.queue)
+                self.servers[ip] = self.queue
+                
                 
                 # set start session flag
                 self.active_session.flag_session = 'START_SESSION'
                 
+                self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
+                self.task_hadnle_response = asyncio.create_task(self.handle_response())
+        
+                while True:
+                    await asyncio.gather(self.task_periodic_event_check, self.task_queue)
+                    await asyncio.sleep(self.async_time)
                 
-                await self.periodic_event_check()
-                
-                # self.task_main = self.loop.create_task(self.main())
-                
-                # async with asyncio.TaskGroup() as group:
-                #     group.create_task(self.periodic_event_check())
-                    # group.create_task()
-            
             
         except Exception as e:
             print(e) 
             
- 
-    async def handle_response(self):
-        
-        
-        print(f"Starting async handle_response with ")
-        try:
-            if isinstance(self.active_session, Session.Session):
-                
-                # STATE MACHINE
-                if self.active_session.connection_state == 'CONNECTED':
-                    
-                    #* STATE 1
-                    if self.active_session.transmission_state == 'STOPPED':
-                        
-                        # send start act
-                        if self.active_session.flag_session == 'START_SESSION':
-                            
-                            if self.start_sequence:
-                                frame = self.queue.generate_startdt_act()
-                                await self.active_session.send_frame(frame)
-                            
-                            
-                            # resp = await self.active_session.handle_messages()
-                            # if resp:
-                            #     if resp.get_type == acpi.STARTDT_ACT:
-                                    
-                        else:
-                            # send 2x testdt frame 
-                            
-                            frame = self.queue.generate_testdt_act()
-                            for i in range(0,2):
-                                await self.active_session.send_frame(frame)
-                                await asyncio.sleep(0.5)
-                            
-                    
-                    #* STATE 2
-                    if self.active_session.transmission_state == 'WAITING_RUNNING':
-                        # else send testdt frame 
-                        
-                        frame = self.queue.generate_testdt_act()
-                        for i in range(0,2):
-                            await self.active_session.send_frame(frame)
-                            await asyncio.sleep(0.5)
-                    
-                    #* STATE 3
-                    if self.active_session.transmission_state == 'RUNNING':
-                        
-                        # for cyklus for send I frame with random data
-                        for frame in self.data_list:
-                                # list of data
-                                data = self.queue.generate_i_frame(frame)
-                                await self.active_session.send_frame(data)
-                                await asyncio.sleep(0.5)
-                                
-                        # check if response is ack with S format
-                        
-                        
-                        # send testdt frame 
-                        frame = self.queue.generate_testdt_act()
-                        for i in range(0,2):
-                            await self.active_session.send_frame(frame)
-                            await asyncio.sleep(0.5)
-                    
-                    #* STATE 4
-                    if self.active_session.transmission_state == 'WAITING_UNCONFIRMED':
-                        # do not send new I frame, but check if response are I,S or U formats
-                        # send testdt frame 
-                        frame = self.queue.generate_testdt_act()
-                        for i in range(0,2):
-                            await self.active_session.send_frame(frame)
-                            await asyncio.sleep(0.5)
-                        
-                        
-                        # check if response is stopdt con
-                        frame = self.queue.generate_stopdt_con()
-                        await self.active_session.send_frame(frame)
-                    
-                    #* STATE 5
-                    if self.active_session.transmission_state == 'WAITING_STOPPED':
-                        # # do not send new I frame, but check if response are I,S or U formats
-                        # send testdt frame 
-                        frame = self.queue.generate_testdt_act()
-                        for i in range(0,2):
-                            await self.active_session.send_frame(frame)
-                            await asyncio.sleep(0.5)
-                                
-                        # check if response is stopdt con
-                        frame = self.queue.generate_stopdt_con()
-                        await self.active_session.send_frame(frame)
-                    
-                    response = await self.active_session.handle_messages()
-                    if response:
-                        await self.active_session.update_state_machine_client(response)
-                
-                self.start_sequence = False
-                
-                
-        except asyncio.CancelledError:
-            print(f"CancelledError")
-            pass
-        except Exception as e:
-            print(f"Exception {e}")
-    
- 
 
     async def check_for_message(self):
         if self.active_session.connection_state == 'CONNECTED':
@@ -385,14 +287,14 @@ class IEC104Client(object):
             while True:
                 
                 
-                for queue in self.queues:
-                        if isinstance(queue, QueueManager):
-                            resp = await queue.check_events_client()
-                            if resp:
-                                await self.handle_response()
-                                pass
-                if self.start_sequence:
-                    await self.handle_response()
+                # for queue in self.queues:
+                #         if isinstance(queue, QueueManager):
+                #             resp = await queue.check_events_client()
+                #             if resp:
+                #                 await self.handle_response()
+                #                 pass
+                # if self.start_sequence:
+                #     await self.handle_response()
                     
                     
                     # queue check
@@ -403,7 +305,7 @@ class IEC104Client(object):
                 if self.no_overflow > 3:
                         self.no_overflow = 0
                         
-                        await self.handle_response()
+                        await self.task_hadnle_response
                         # musí se UI volat periodicky? 
                         # self.loop.create_task(self.main())
                 # new client connected

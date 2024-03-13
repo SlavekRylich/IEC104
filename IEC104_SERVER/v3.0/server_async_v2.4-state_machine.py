@@ -40,7 +40,9 @@ class ServerIEC104():
         
         self.lock = asyncio.Lock()
         self.no_overflow = 0
-        # self._loop = asyncio.get_event_loop_policy().get_event_loop()
+        
+        self.async_time = 0.5
+        
 
         # load configuration parameters
         try:
@@ -50,14 +52,16 @@ class ServerIEC104():
             self.timeout_t2, \
             self.timeout_t3 = self.load_params(self.config_loader)
             
-            self.session_params = (self.k, self.w, self.timeout_t0, self.timeout_t1, self.timeout_t2, self.timeout_t3)
+            self.session_params = (self.k,
+                                   self.w,
+                                   self.timeout_t0,
+                                   self.timeout_t1,
+                                   self.timeout_t2,
+                                   self.timeout_t3)
         
         except Exception as e:
             print(e)
     
-        
-        self._incoming_queue = IncomingQueueManager()
-        self._outgoing_queue = OutgoingQueueManager()
     
         """Returned value:
         """
@@ -79,7 +83,8 @@ class ServerIEC104():
         if w > ((k*2)/3):  
             if w < 1 or w > 32767:
                 raise Exception("Wrong value range for \'w\' variable!")
-            print(f"Warning! Use value range for \'w\' less than 2/3 of \'k\'")
+            print(f"Warning! Use value range for "
+                  "\'w\' less than 2/3 of \'k\'")
         
         t0 = config_loader.config['server']['t0']
         if t0 < 1 or t0 > 255:
@@ -105,10 +110,13 @@ class ServerIEC104():
     def isResponse(self):
         pass
     
-    # pokud už nějaké spojení s daným klientem existuje, jen přidá toto spojení k frontě
+    # pokud už nějaké spojení s daným klientem existuje, 
+    # jen přidá toto spojení k frontě
     # jinak vytvoří novou frontu a přidá tam toto spojení
     # client = tuple (ip, port, queue)
-    def add_new_session(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+    def add_new_session(self,
+                        reader: asyncio.StreamReader,
+                        writer: asyncio.StreamWriter):
         
         client_address, client_port = writer.get_extra_info('peername')
         
@@ -150,8 +158,6 @@ class ServerIEC104():
         
         
     async def start(self):
-        # periodic_task = self._loop.create_task(self.periodic_event_check())
-        # periodic_task = loop.run_forever(self.periodic_event_check)
         
         self._server = await asyncio.start_server(
             self.handle_client, self.ip, self.port
@@ -159,13 +165,6 @@ class ServerIEC104():
         
         print(f"Naslouchám na {self.ip}:{self.port}")
         await asyncio.gather(self._server.serve_forever())
-        
-        #     async with asyncio.TaskGroup() as group:
-        #         group.create_task(self.server.serve_forever())
-        #         group.create_task(self.periodic_event_check())
-                
-                # log start server
-            # )
 
     """
     Handle client.
@@ -184,7 +183,7 @@ class ServerIEC104():
             queue = self.clients[client_address]
             
             if isinstance(queue, QueueManager):
-                self.tasks.append(asyncio.create_task(queue.run()))
+                self.tasks.append(asyncio.create_task(queue.start()))
         
         queue = self.clients[client_address]
         if isinstance(queue, QueueManager):
@@ -203,20 +202,20 @@ class ServerIEC104():
             print(f"Spojení navázáno: s {client_address, client_port}, "
                         "(Celkem spojení: "
                             f"{queue.get_number_of_connected_sessions()}))")
+            
+            
             await session.start()  
 
-        
-        # request = await self.active_session.handle_messages()
-        # if request:
-        #     await self.queue.handle_apdu(request)
-            
             
     
     async def run(self):
+        self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
+        
         while True:
-            for task in self.tasks:
-                await task
-            await asyncio.sleep(0.5)
+            await asyncio.gather(self.task_periodic_event_check,
+                                *(task for task in self.tasks))
+        
+            await asyncio.sleep(self.async_time)
     
     # tady sem skoncil
     def check_alive_clients(self):
@@ -229,29 +228,29 @@ class ServerIEC104():
         print(f"Starting async periodic event check.")
         try:
             while True:
-                # update timers in all sessions instances
-                if self.check_alive_clients():
-                    continue
-                for queue in self.queues:
+                # # update timers in all sessions instances
+                # if self.check_alive_clients():
+                #     continue
+                # for queue in self.queues:
                     
-                    if isinstance(queue, QueueManager):
-                    # client is tuple (ip, queue)
-                    # queue check
-                        await queue.check_events_server()
-                        print(f"--")
+                #     if isinstance(queue, QueueManager):
+                #     # client is tuple (ip, queue)
+                #     # queue check
+                #         await queue.check_events_server()
+                #         print(f"--")
                 
-                # log doesnt spam console
-                self.no_overflow = self.no_overflow + 1
-                if self.no_overflow > 2:
-                    self.no_overflow = 0
+                # # log doesnt spam console
+                # self.no_overflow = self.no_overflow + 1
+                # if self.no_overflow > 2:
+                #     self.no_overflow = 0
                         
-                    print(f"\r.")
+                #     print(f"\r.")
                     
                    
                 # new client connected
                     # is check automaticaly by serve.forever()
                 
-                await asyncio.sleep(1)
+                await asyncio.sleep(self.async_time)
         
             
         except TimeoutError as e :

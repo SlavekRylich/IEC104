@@ -53,7 +53,6 @@ class Session:
         self._incomming_queue = in_queue
         self._outgoing_queue = out_queue
         self._packet_buffer = packet_buffer
-        self._async_time = 0.5
         
         # flag_session = 'START_SESSION'
         # flag_session = 'STOP_SESSION'
@@ -80,29 +79,48 @@ class Session:
         self._transmission_state = StateTrans.set_state('STOPPED')
         
         
+        Session._id += 1
+        self._id = Session._id
+        Session._instances.append(self)
+        
+    async def start(self):
         print(f"Session.start()")
         self.task_handle_messages = asyncio.create_task(self.handle_messages())
         self.task_send_frame = asyncio.create_task(self.send_frame())
         self.task_state = asyncio.create_task(self.update_state_machine_server()) 
         self.task_timeouts = asyncio.create_task(self.check_for_timeouts())
-        
-        Session._id += 1
-        self._id = Session._id
-        Session._instances.append(self)
-        
-        
-    async def start(self):
-        
+        await self.run()
+            
+    async def run(self):
         while True:
-            print(f"Opakuje se ")
             
-            await asyncio.gather(self.task_handle_messages,
-                                 self.task_send_frame,
-                                 self.task_state,
-                                 self.task_timeouts)
+            print(f"run.start()")
+            # self.task_handle_messages = asyncio.create_task(self.handle_messages())
+            # self.task_send_frame = asyncio.create_task(self.send_frame())
+            # self.task_state = asyncio.create_task(self.update_state_machine_server()) 
+            # self.task_timeouts = asyncio.create_task(self.check_for_timeouts())
+            # periodic tasks for session
+            # check if client send any data
             
-            await asyncio.sleep(self._async_time)
-     
+            # třída session si kontroluje zda se nachází data v outgoing_queue
+            # pokud ano, vyjme je z fronty, uloží si je do bufferu a pošle klientovi
+            # příchozí zprávy zase ukládá do příchozí fronty
+            # pokud je příchozí zpráva potvrzením již zaslané, kontroluje a maže zprávu 
+            # z bufferu
+            resp = await self.task_handle_messages
+            if resp:
+                print(resp)
+                self.task_state_with_args = asyncio.create_task(self.update_state_machine_server(resp)) 
+                await self.task_state_with_args()
+            await self.task_send_frame
+            await self.task_timeouts
+            await self.task_state
+            # await self.task_run
+            
+            
+            print(f"run.finish()")
+            await asyncio.sleep(0.5) # kritický bod pro rychlost aplikace
+        
     @property    
     def k(self):
         return self._k
@@ -212,54 +230,52 @@ class Session:
         return None
     
     async def handle_messages(self):
-        while True:
-            await asyncio.sleep(self._async_time) # kritický bod pro rychlost ap    
-            # self.loop = asyncio.get_running_loop()
-            try:
-                print(f"Starting async handle_messages")
-                
-                # zde změřit zda timeout nedělá problém zbrždění
-                header = await asyncio.wait_for(self._reader.read(2),timeout=0.2)
-                
-                if header:
-                    start_byte, frame_length = header
-                    
-                    # identifikace IEC 104
-                    if start_byte == Frame.__start_byte:
-                        apdu = await self._reader.read(frame_length)
-                        print(f"{time.ctime()} - Received data: {apdu}")
-                        if len(apdu) == frame_length:
-                            new_apdu = Parser.parser(apdu,frame_length)
-                            
-                            
-                            
-                            # if isinstance(new_apdu, UFormat):
-                            #     self.loop.create_task(self.handle_U_format(new_apdu))
-                            
-                            print(f"{time.ctime()} - Receive frame: {new_apdu}")
-                            
-                            # aktualizace poslední aktivity 
-                            self.update_timestamp
-                            
-                            print(f"Finish async handle_messages.")
-                            
-                            
-                            self._incomming_queue.on_message_received(new_apdu)
-                            await self.update_state_machine_server
-                            
-                            return new_apdu
-                else:
-                    print(f"doslo k tomuto vubec nekdy?")
-                    return None
-                            
-                        
-                # přijat nějaký neznámý formát
-            except asyncio.TimeoutError:
-                print(f'Klient {self} neposlal žádná data.')
-                
-            except Exception as e:
-                print(f"Exception {e}")
         
+        # self.loop = asyncio.get_running_loop()
+        try:
+            print(f"Starting async handle_messages")
+            
+            # zde změřit zda timeout nedělá problém zbrždění
+            header = await asyncio.wait_for(self._reader.read(2),timeout=0.2)
+            
+            if header:
+                start_byte, frame_length = header
+                
+                # identifikace IEC 104
+                if start_byte == Frame.__start_byte:
+                    apdu = await self._reader.read(frame_length)
+                    print(f"{time.ctime()} - Received data: {apdu}")
+                    if len(apdu) == frame_length:
+                        new_apdu = Parser.parser(apdu,frame_length)
+                        
+                        
+                        
+                        # if isinstance(new_apdu, UFormat):
+                        #     self.loop.create_task(self.handle_U_format(new_apdu))
+                        
+                        print(f"{time.ctime()} - Receive frame: {new_apdu}")
+                        
+                        # aktualizace poslední aktivity 
+                        self.update_timestamp
+                        
+                        print(f"Finish async handle_messages.")
+                        
+                        
+                        self._incomming_queue.on_message_received(new_apdu)
+                        
+                        return new_apdu
+            else:
+                print(f"doslo k tomuto vubec nekdy?")
+                return None
+                        
+                    
+            # přijat nějaký neznámý formát
+        except asyncio.TimeoutError:
+            print(f'Klient {self} neposlal žádná data.')
+            
+        except Exception as e:
+            print(f"Exception {e}")
+    
                 
     
     
@@ -274,24 +290,22 @@ class Session:
     ## SEND FRAME
         
     async def send_frame(self,frame: Frame = 0):
-        while True:
-            await asyncio.sleep(self._async_time) # kritický bod pro rychlost ap    
-            print(f"Start send_frame_task()")
-            if frame:
-                print(f"{time.ctime()} - Send frame: {frame}")
+        print(f"Start send_frame_task()")
+        if frame:
+            print(f"{time.ctime()} - Send frame: {frame}")
+            self._writer.write(frame.serialize())
+            await self._writer.drain()
+        else:
+            if not self._outgoing_queue.is_Empty():
+                frame = await self._outgoing_queue.get_message()
+                
+                # add to packet buffer
+                self._packet_buffer.add_frame(frame.get_ssn(), frame)
                 self._writer.write(frame.serialize())
                 await self._writer.drain()
-            else:
-                if not self._outgoing_queue.is_Empty():
-                    frame = await self._outgoing_queue.get_message()
-                    
-                    # add to packet buffer
-                    self._packet_buffer.add_frame(frame.get_ssn(), frame)
-                    self._writer.write(frame.serialize())
-                    await self._writer.drain()
-            
-            
-            print(f"Stop send_frame_task()")
+        
+        
+        print(f"Stop send_frame_task()")
         
     async def send_data(self,data):
         print(f"{time.ctime()} - Send data: {data}")
@@ -322,43 +336,39 @@ class Session:
         return self._ip, self._port, self._connection_state, self._transmission_state, self._timeout
     
     async def check_for_timeouts(self):
-        while True:
-            await asyncio.sleep(self._async_time) # kritický bod pro rychlost ap    
-            print(f"Starting async check_for_timeouts")
-            
-            time_now = time.time()
-            last_timestamp = self.timestamp
-            
-            if time_now - last_timestamp > self._timeout_t0:
-                print(f'Client {self._ip}:{self._port} timed out and disconnected')
-                
-                
-            if time_now - last_timestamp > self._timeout_t1:
-                
-                self.flag_timeout_t1 = 1
-                print(f"Timeout t1 is set to 1")
-                
-                # raise TimeoutError(f"Timeout pro t1")
-                
-            if time_now - last_timestamp > self._timeout_t2:
-                if not self._packet_buffer.is_empty():
-                    resp = self._queue.generate_s_frame()
-                    await self.send_frame(resp)
-                
-            if time_now - last_timestamp > self._timeout_t3:
-                frame = self._queue.generate_testdt_act()
-                await self.send_frame(frame)
-                
-                # self.loop.create_task()
-            print(f"*******************************")
-            print(f"\t {time.time() - last_timestamp}")
-            print(f"*******************************")
-            print(f"Finish async check_for_timeouts")
+        print(f"Starting async check_for_timeouts")
         
+        time_now = time.time()
+        last_timestamp = self.timestamp
+        
+        if time_now - last_timestamp > self._timeout_t0:
+            print(f'Client {self._ip}:{self._port} timed out and disconnected')
+            
+            
+        if time_now - last_timestamp > self._timeout_t1:
+            
+            self.flag_timeout_t1 = 1
+            print(f"Timeout t1 is set to 1")
+            
+            # raise TimeoutError(f"Timeout pro t1")
+            
+        if time_now - last_timestamp > self._timeout_t2:
+            if not self._packet_buffer.is_empty():
+                resp = self._queue.generate_s_frame()
+                await self.send_frame(resp)
+            
+        if time_now - last_timestamp > self._timeout_t3:
+            frame = self._queue.generate_testdt_act()
+            await self.send_frame(frame)
+            
+            # self.loop.create_task()
+        print(f"*******************************")
+        print(f"\t {time.time() - last_timestamp}")
+        print(f"*******************************")
+        print(f"Finish async check_for_timeouts")
+    
     
     async def update_state_machine_server(self, fr = 0):
-        while True:
-            await asyncio.sleep(self._async_time) # kritický bod pro rychlost
             print(f"Starting async update_state_machine_server")
             
             # set_connection_state()
@@ -462,7 +472,7 @@ class Session:
             print(f"{self.connection_state}")
             print(f"{actual_transmission_state}")
             
-            await asyncio.sleep(self._async_time)
+            await asyncio.sleep(0.5)
             print(f"Finish async update_state_machine_server")
             
     async def update_state_machine_client(self, fr = 0):
@@ -622,7 +632,7 @@ class Session:
             print(f"{self.connection_state}")
             print(f"{actual_transmission_state}")
             
-            await asyncio.sleep(self._async_time)
+            await asyncio.sleep(0.5)
             print(f"Finish async update_state_machine_client")
 
     
