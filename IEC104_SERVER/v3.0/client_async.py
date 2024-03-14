@@ -45,7 +45,6 @@ class IEC104Client(object):
         self.no_overflow = 0
         self.async_time = 0.8
         
-        self.start_sequence = True
                     
         self.data2 = struct.pack(f"{'B' * 10}", 
                                     0x65, # start byte
@@ -181,7 +180,7 @@ class IEC104Client(object):
                 self.active_session.flag_session = 'START_SESSION'
                 
                 self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
-                self.task_hadnle_response = asyncio.create_task(self.handle_response())
+                self.task_handle_response = asyncio.create_task(self.queue.handle_response())
         
                 while True:
                     await asyncio.gather(self.task_periodic_event_check, self.task_queue)
@@ -189,7 +188,7 @@ class IEC104Client(object):
                 
             
         except Exception as e:
-            print(e) 
+            print(f"Exception: {e}") 
             
 
     async def check_for_message(self):
@@ -291,10 +290,10 @@ class IEC104Client(object):
                 #         if isinstance(queue, QueueManager):
                 #             resp = await queue.check_events_client()
                 #             if resp:
-                #                 await self.handle_response()
+                #                 await self.queue.handle_response()
                 #                 pass
                 # if self.start_sequence:
-                #     await self.handle_response()
+                #     await self.queue.handle_response()
                     
                     
                     # queue check
@@ -302,15 +301,15 @@ class IEC104Client(object):
                 
                 # UI se nebude volat tak často jako ostatní metody
                 self.no_overflow = self.no_overflow + 1
-                if self.no_overflow > 3:
+                if self.no_overflow > 2:
                         self.no_overflow = 0
                         
-                        await self.task_hadnle_response
+                        await self.task_handle_response
                         # musí se UI volat periodicky? 
                         # self.loop.create_task(self.main())
                 # new client connected
                     # is check automaticaly by serve.forever() 
-                print(f"Timer bezi")
+                        print(f"no_overflow bezi")
                 await asyncio.sleep(1)    
         
         except TimeoutError as e :

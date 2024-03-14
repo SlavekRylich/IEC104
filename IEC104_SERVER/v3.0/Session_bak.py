@@ -242,7 +242,7 @@ class Session:
                 start_byte, frame_length = header
                 
                 # identifikace IEC 104
-                if start_byte == Frame.__start_byte:
+                if start_byte == Frame._start_byte:
                     apdu = await self._reader.read(frame_length)
                     print(f"{time.ctime()} - Received data: {apdu}")
                     if len(apdu) == frame_length:
@@ -386,7 +386,7 @@ class Session:
                 # spravny format pro podminky 
                 if fr:
                     if isinstance(fr, UFormat):
-                        frame = fr._type_int()
+                        frame = fr.__type_int()
                     
                     else:
                         frame = fr.get_type_in_word()   # S-format
@@ -493,7 +493,7 @@ class Session:
                 # correct format for next conditions 
                 if fr:
                     if isinstance(fr, UFormat):
-                        frame = fr._type_int()
+                        frame = fr.__type_int()
                     
                     else:
                         frame = fr.get_type_in_word()   # 'S-format'

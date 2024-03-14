@@ -21,7 +21,7 @@ class PacketBuffer:
     def has_frame(self, frame_id):
         return frame_id in self._buffer
     
-    def clear_group_less_than(self, frame_id):
+    def clear_frames_less_than(self, frame_id):
         for frame in self._buffer.values():
             if frame.get_id() <= frame_id:
                 del self._buffer[frame.get_id()]

@@ -1,4 +1,5 @@
 import asyncio
+import struct
 
 import acpi
 from Frame import Frame
@@ -14,66 +15,89 @@ class QueueManager():
     """
     Class for queue manager.
     """
-    def __init__(self,ip):
+    def __init__(self,ip, whoami = 'client'):
         """
         Constructor for QueueManager.
 
         Args:
             ip (str): IP address.
         """
-        self._queue = asyncio.Queue()
+        self.__queue = asyncio.Queue()
         # tuple (ip, port, session)
-        self._sessions= []
-        self._sessions_new= []
-        self._VR = 0
-        self._VS = 0
-        self._ack = 0
-        self._send_queue = []
-        self._sended_queue = []
-        self._recv_queue = []
-        self._session = None
-        self._ip = ip
+        self.__sessions= []
+        self.__sessions_new= []
+        self.__VR = 0
+        self.__VS = 0
+        self.__ack = 0
+        self.__send_queue = []
+        self.__sended_queue = []
+        self.__recv_queue = []
+        self.__session = None
+        self.__ip = ip
         
-        self._in_queue = IncomingQueueManager()
-        self._out_queue = OutgoingQueueManager()
-        self._packet_buffer = PacketBuffer()
+        self.__whoami = whoami
         
-        self._async_time = 0.8
         
-        self.task_check_in_queue = asyncio.create_task(self.check_in_queue())
-        self.task_check_out_queue = asyncio.create_task(self.check_out_queue())
+        self.__start_sequence = True
+        
+        self.__in_queue = IncomingQueueManager()
+        self.__out_queue = OutgoingQueueManager()
+        self.__packet_buffer = PacketBuffer()
+        
+        self.__async_time = 0.8
+        
+        self.__task_check_in_queue = asyncio.create_task(self.check_in_queue())
+        self.__task_check_out_queue = asyncio.create_task(self.check_out_queue())
+        
+        self.data2 = struct.pack(f"{'B' * 10}", 
+                                    0x65, # start byte
+                                    0x01,  # Total Length pouze hlavička
+                                    0x0A,   # 1. ridici pole
+                                    0x00,  # 2. ridici pole
+                                    0x0C,   # 3. ridici pole
+                                    0x00,  # 4. ridici pole hlavička
+                                    0x00,   # 1. ridici pole
+                                    0x00,  # 2. ridici pole
+                                    0x00,   # 3. ridici pole
+                                    0x05,   # 3. ridici pole
+        )
+        
+        self.data_list = [self.data2, self.data2]     # define static data
         
         
     async def start(self):
         
         while True:
-            print(f"Opakuje se ")
             
-            await asyncio.gather(self.task_check_in_queue,
-                                 self.task_check_out_queue)
+            await asyncio.gather(self.__task_check_in_queue,
+                                 self.__task_check_out_queue)
             
-            await asyncio.sleep(self._async_time)    
+            await asyncio.sleep(self.__async_time)    
         
     @property
     def in_queue(self):
-        return self._in_queue
+        return self.__in_queue
     
     @property
     def out_queue(self):
-        return self._out_queue
+        return self.__out_queue
     
     @property
     def packet_buffer(self):
-        return self._packet_buffer
+        return self.__packet_buffer
     
     async def check_in_queue(self):
         while True:
             print(f"Starting_check_in_queue")
-            if not self._in_queue.is_Empty():
-                    message = await self._in_queue.get_message()
-                    await self.handle_apdu(message)
-            
-            await asyncio.sleep(self._async_time)
+            if not self.__in_queue.is_Empty():
+                    message = await self.__in_queue.get_message()
+                    if self.__whoami == 'server':
+                        await self.handle_apdu(message)
+                    else:
+                        await self.handle_response()
+                        
+                        
+            await asyncio.sleep(self.__async_time)
             print(f"Finish_check_in_queue")
     
     # is handled in session
@@ -81,35 +105,35 @@ class QueueManager():
         while True:
             
             print(f"Starting_check_out_queue")
-            if not self._out_queue.is_Empty():
+            if not self.__out_queue.is_Empty():
                     pass
                     # message = await self._out_queue.get_message()
                     # self.handle_apdu(message)
                     
-            await asyncio.sleep(self._async_time)
+            await asyncio.sleep(self.__async_time)
             print(f"Finish_check_out_queue")
         
     
     def add_message(self, message):
-        self._queue.put_nowait(message)
+        self.__queue.put_nowait(message)
 
     async def get_message(self):
-        return await self._queue.get()
+        return await self.__queue.get()
     
     @property
     def size(self):
-        return self._queue.__sizeof__
+        return self.__queue.__sizeof__
     
     @property
     def is_Empty(self):
-        return self._queue.empty
+        return self.__queue.empty
         
     def add_message(self,message):
-        self._queue.put_nowait(message)
+        self.__queue.put_nowait(message)
         
     @property
     async def message(self):
-        return await self._queue.get()
+        return await self.__queue.get()
     
     async def on_message_sent(self, message_id):
         pass
@@ -117,10 +141,10 @@ class QueueManager():
    
     @property
     def ip(self):
-        return self._ip
+        return self.__ip
     
     async def check_for_queue(self):
-        if self._queue.empty():
+        if self.__queue.empty():
             await asyncio.sleep(0.1)
             return False
         else:
@@ -167,13 +191,13 @@ class QueueManager():
     
     # remove session from sessions list if is not connected
     def check_alive_sessions(self):
-        for session in self._sessions:
+        for session in self.__sessions:
             if session.connection_state != 'CONNECTED':
                 del session
-                self._sessions.remove(session)
+                self.__sessions.remove(session)
                 
                 
-        if len(self._sessions) > 0:
+        if len(self.__sessions) > 0:
             return True
         return False
     
@@ -183,59 +207,59 @@ class QueueManager():
         print(f"Starting async handle_apdu with {apdu}")
         # if isinstance(self._session, Session):
             
-        if self._session.transmission_state == 'STOPPED':
+        if self.__session.transmission_state == 'STOPPED':
             
             if isinstance(apdu, UFormat):
-                if apdu._type_int() != acpi.STARTDT_ACT:
+                if apdu.type_int != acpi.STARTDT_ACT:
                     
-                    if apdu._type_int() == acpi.TESTFR_ACT:
+                    if apdu.type_int == acpi.TESTFR_ACT:
                         frame = self.generate_testdt_con()
-                        await self._out_queue.to_send(frame)
+                        await self.__out_queue.to_send(frame)
                         # await self._session.send_frame(frame)
                     
-                    if apdu._type_int() == acpi.TESTFR_CON:
+                    if apdu.type_int == acpi.TESTFR_CON:
                         pass
                     
             
-        if self._session.transmission_state == 'RUNNING':
+        if self.__session.transmission_state == 'RUNNING':
                     
             if isinstance(apdu, IFormat):
                 
-                if (apdu.ssn() - self._VR) > 1:
+                if (apdu.ssn - self.__VR) > 1:
                     
                     # chyba sekvence
                     # vyslat S-format s posledním self.VR
                     frame = self.generate_s_frame()
-                    await self._out_queue.to_send(frame)
+                    await self.__out_queue.to_send(frame)
                     # await self._session.send_frame(frame)
-                    self._session.flag_session = 'ACTIVE_TERMINATION'
+                    self.__session.flag_session = 'ACTIVE_TERMINATION'
                     # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
                     
                 else:
                     self.incrementVR()
-                    self.ack = apdu.rsn()
-                    await self._packet_buffer.clear_group_less_than(self._ack)
+                    self.ack = apdu.rsn
+                    await self.__packet_buffer.clear_frames_less_than(self.__ack)
                     # await self.clear_acked_recv_queue()
                 
-                if (self._VR - self._ack) >= self._session.w:
+                if (self.__VR - self.__ack) >= self.__session.w:
                     frame = self.generate_s_frame()
-                    await self._out_queue.to_send(frame)
+                    await self.__out_queue.to_send(frame)
                     # await self._session.send_frame(frame)
                 
             if isinstance(apdu, SFormat):
-                self.ack = apdu.rsn()
-                await self._packet_buffer.clear_group_less_than(self._ack)
+                self.ack = apdu.rsn
+                await self.__packet_buffer.clear_frames_less_than(self.__ack)
                 # await self.clear_acked_send_queue()
             
             if isinstance(apdu, UFormat):
-                if apdu._type_int() != acpi.STOPDT_ACT:
+                if apdu.type_int != acpi.STOPDT_ACT:
                     
-                    if apdu._type_int() == acpi.TESTFR_ACT:
+                    if apdu.type_int == acpi.TESTFR_ACT:
                         frame = self.generate_testdt_con()
-                        await self._out_queue.to_send(frame)
+                        await self.__out_queue.to_send(frame)
                         # await self._session.send_frame(frame)
                     
-                    if apdu._type_int() == acpi.TESTFR_CON:
+                    if apdu.type_int == acpi.TESTFR_CON:
                         pass
             
             #vysílat vygenerovanou odpoved v odesilaci frontě -> implementovat do Session
@@ -248,23 +272,23 @@ class QueueManager():
                     
         
         
-        if self._session.transmission_state == 'WAITING_UNCONFIRMED':
+        if self.__session.transmission_state == 'WAITING_UNCONFIRMED':
             
             if isinstance(apdu, SFormat):
-                self.ack = apdu.rsn()
-                await self._packet_buffer.clear_group_less_than(self._ack)
+                self.ack = apdu.rsn
+                await self.__packet_buffer.clear_frames_less_than(self.__ack)
                 # self.clear_acked_send_queue()
             
             if isinstance(apdu, UFormat):
                 
-                if apdu._type_int() != acpi.STOPDT_ACT:
+                if apdu.type_int != acpi.STOPDT_ACT:
                     
-                    if apdu._type_int() == acpi.TESTFR_ACT:
+                    if apdu.type_int == acpi.TESTFR_ACT:
                         frame = self.generate_testdt_con()
-                        await self._out_queue.to_send(frame)
+                        await self.__out_queue.to_send(frame)
                         # await self._session.send_frame(frame)
                     
-                    if apdu._type_int() == acpi.TESTFR_CON:
+                    if apdu.type_int == acpi.TESTFR_CON:
                         pass
                                 
         
@@ -275,21 +299,21 @@ class QueueManager():
     async def handle_response(self):
         
         
-        print(f"Starting async handle_response with ")
+        print(f"Starting async handle_response ")
         try:
                 
             # STATE MACHINE
-            if self._session.connection_state == 'CONNECTED':
+            if self.__session.connection_state == 'CONNECTED':
                 
                 #* STATE 1
-                if self._session.transmission_state == 'STOPPED':
+                if self.__session.transmission_state == 'STOPPED':
                     
                     # send start act
-                    if self._session.flag_session == 'START_SESSION':
+                    if self.__session.flag_session == 'START_SESSION':
                         
-                        if self.start_sequence:
-                            frame = self.queue.generate_startdt_act()
-                            await self._session.send_frame(frame)
+                        if self.__start_sequence:
+                            frame = self.generate_startdt_act()
+                            await self.__out_queue.to_send(frame)
                         
                         
                         # resp = await self._session.handle_messages()
@@ -299,72 +323,72 @@ class QueueManager():
                     else:
                         # send 2x testdt frame 
                         
-                        frame = self.queue.generate_testdt_act()
+                        frame = self.generate_testdt_act()
                         for i in range(0,2):
-                            await self._session.send_frame(frame)
+                            await self.__out_queue.to_send(frame)
                             await asyncio.sleep(0.5)
                         
                 
                 #* STATE 2
-                if self._session.transmission_state == 'WAITING_RUNNING':
+                if self.__session.transmission_state == 'WAITING_RUNNING':
                     # else send testdt frame 
                     
-                    frame = self.queue.generate_testdt_act()
+                    frame = self.generate_testdt_act()
                     for i in range(0,2):
-                        await self._session.send_frame(frame)
+                        await self.__out_queue.to_send(frame)
                         await asyncio.sleep(0.5)
                 
                 #* STATE 3
-                if self._session.transmission_state == 'RUNNING':
+                if self.__session.transmission_state == 'RUNNING':
                     
                     # for cyklus for send I frame with random data
                     for frame in self.data_list:
                             # list of data
-                            data = self.queue.generate_i_frame(frame)
-                            await self._session.send_frame(data)
+                            data = self.generate_i_frame(frame)
+                            await self.__out_queue.to_send(data)
                             await asyncio.sleep(0.5)
                             
                     # check if response is ack with S format
                     
                     
                     # send testdt frame 
-                    frame = self.queue.generate_testdt_act()
+                    frame = self.generate_testdt_act()
                     for i in range(0,2):
-                        await self._session.send_frame(frame)
+                        await self.__out_queue.to_send(frame)
                         await asyncio.sleep(0.5)
                 
                 #* STATE 4
-                if self._session.transmission_state == 'WAITING_UNCONFIRMED':
+                if self.__session.transmission_state == 'WAITING_UNCONFIRMED':
                     # do not send new I frame, but check if response are I,S or U formats
                     # send testdt frame 
-                    frame = self.queue.generate_testdt_act()
+                    frame = self.generate_testdt_act()
                     for i in range(0,2):
-                        await self._session.send_frame(frame)
+                        await self.__out_queue.to_send(frame)
                         await asyncio.sleep(0.5)
                     
                     
                     # check if response is stopdt con
-                    frame = self.queue.generate_stopdt_con()
-                    await self._session.send_frame(frame)
+                    frame = self.generate_stopdt_con()
+                    await self.__out_queue.to_send(frame)
                 
                 #* STATE 5
-                if self._session.transmission_state == 'WAITING_STOPPED':
+                if self.__session.transmission_state == 'WAITING_STOPPED':
                     # # do not send new I frame, but check if response are I,S or U formats
                     # send testdt frame 
-                    frame = self.queue.generate_testdt_act()
+                    frame = self.generate_testdt_act()
                     for i in range(0,2):
-                        await self._session.send_frame(frame)
+                        await self.__out_queue.to_send(frame)
                         await asyncio.sleep(0.5)
                             
                     # check if response is stopdt con
-                    frame = self.queue.generate_stopdt_con()
-                    await self._session.send_frame(frame)
+                    frame = self.generate_stopdt_con()
+                    await self.__out_queue.to_send(frame)
                 
-                response = await self._session.handle_messages()
-                if response:
-                    await self._session.update_state_machine_client(response)
+                # response = await self.__session.handle_messages()
+                # if response:
+                #     await self.__session.update_state_machine_client(response)
             
-            self.start_sequence = False
+            self.__start_sequence = False
                 
                 
         except asyncio.CancelledError:
@@ -378,86 +402,87 @@ class QueueManager():
     
     
     def add_session(self, session):
-        self._sessions.append(session)
+        self.__sessions.append(session)
+        self.__session = self.Select_active_session(session)
     
     def get_number_of_sessions(self):
         count = 0
-        for item in self._sessions:
+        for item in self.__sessions:
             count = count + 1
         return count
     
     def generate_i_frame(self,data):
-        new_i_format = IFormat(data, self._VS, self._VR)
+        new_i_format = IFormat(data, self.__VS, self.__VR)
         self.incrementVS()
         return new_i_format
     
     def generate_s_frame(self):
-        return SFormat(self._VR)
+        return SFormat(self.__VR)
     
     def Select_active_session(self, session):
         # logika výběru aktivního spojení
         # zatím ponechám jedno a to to poslední
         
         # self.sessions = (ip, port, session)
-        for session in self._sessions:
+        for session in self.__sessions:
             if session.connection_state == 'CONNECTED' and \
                 session.priority < 1:
-                    self._session = session
-                    return self._session
+                    self.__session = session
+                    return self.__session
     
     def get_number_of_connected_sessions(self):
         count = 0
-        for session in self._sessions:
+        for session in self.__sessions:
             if session.connection_state == 'CONNECTED':
                 count = count + 1
         return count
     
     def get_connected_sessions(self):
         list = []
-        for session in self._sessions:
+        for session in self.__sessions:
             if session.connection_state == 'CONNECTED':
                 list.append(session)   
         return list
     
     def del_session(self, sess):
 
-        for session in self._sessions:
+        for session in self.__sessions:
             if session == sess:
                 print(f"Remove by del_session: {session}")
-                return self._sessions.remove(session)
+                return self.__sessions.remove(session)
         return False
     
     def get_running_sessions(self):
-        for session in self._sessions:
+        for session in self.__sessions:
             if session.transmission_state == 'RUNNING':
                 return session
     @property
     def sessions(self):
-        return self._sessions
+        return self.__sessions
     
    
     
     def incrementVR(self):
-        self._VR = self._VR + 1
+        self.__VR = self.__VR + 1
     
     def incrementVS(self):
-        self._VS = self._VS + 1
+        self.__VS = self.__VS + 1
         
     @property
     def ack(self):
-        return self._ack
+        return self.__ack
     
     @ack.setter
     def ack(self, ack):
-        self._ack = ack
+        self.__ack = ack
     
     @property
     def VR(self):
-        return self._VR
+        return self.__VR
     
     @property
     def VS(self):
-        return self._VS
+        return self.__VS
     
     ################################################
     # GENERATE U FRAME
@@ -479,29 +504,6 @@ class QueueManager():
         
     def generate_stopdt_con(self):
         return UFormat(acpi.STOPDT_CON)
-    
-    def Uformat_response(self, frame: Frame):
-        frame = frame.get_type()
-        
-        if (frame == acpi.STARTDT_ACT):
-            return UFormat(acpi.STARTDT_CON)
-        
-        elif frame == acpi.STARTDT_CON:
-            return None
-        
-        elif frame == acpi.STOPDT_ACT:
-            return UFormat(acpi.STARTDT_CON)
-        
-        elif frame == acpi.STOPDT_CON:
-            return None
-        
-        elif frame == acpi.TESTFR_ACT:
-            return UFormat(acpi.TESTFR_CON)
-        
-        elif frame == acpi.TESTFR_CON:
-            return None
-        else:
-            return None
     
     async def check_events(self):
         

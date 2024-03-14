@@ -179,7 +179,7 @@ class ServerIEC104():
         Create queue if not exist for that client.
         """
         if client_address not in self.clients:
-            self.clients[client_address] = QueueManager(client_address)
+            self.clients[client_address] = QueueManager(client_address, 'server')
             queue = self.clients[client_address]
             
             if isinstance(queue, QueueManager):
@@ -196,7 +196,8 @@ class ServerIEC104():
                                 queue,
                                 queue.in_queue,
                                 queue.out_queue,
-                                queue.packet_buffer)
+                                queue.packet_buffer,
+                                'server')	
             
             queue.add_session(session)
             print(f"Spojení navázáno: s {client_address, client_port}, "

@@ -13,18 +13,18 @@ class IncomingQueueManager():
         self._in_queue = asyncio.Queue(maxsize=256)
     
     
-    async def on_message_received(self, message: Frame):
+    async def on_message(self, message: Frame):
         # Zpracuje zprávu z příchozí fronty
-        # ...
+        
         # Odeslat potvrzení klientovi
-        self.receive(message)
         pass
     
-    async def receive(self, message):
-            self._in_queue.put_nowait(message)
+    async def on_message_received(self, message: Frame):
+            print(f"Přišlo do příchozí fronty: {message}")
+            await self._in_queue.put(message)
             
     async def get_message(self):
-        return await self._in_queue.get_nowait()
+        return await self._in_queue.get()
     
     async def is_overflow(self):
         # return True if queue is greater than 90% of max size
@@ -33,10 +33,10 @@ class IncomingQueueManager():
         return False
     
     def size(self):
-        return self._in_queue.__sizeof__
+        return self._in_queue.__sizeof__()
     
     
     def is_Empty(self):
-        return self._in_queue.empty
+        return self._in_queue.empty()
     
     
