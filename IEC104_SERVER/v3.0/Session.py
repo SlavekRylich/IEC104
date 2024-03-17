@@ -90,7 +90,6 @@ class Session:
         self.__transmission_state = StateTrans.set_state('STOPPED')
         
         
-        print(f"Session.start()")
         self.__task_handle_messages = asyncio.create_task(self.handle_messages())
         self.__task_send_frame = asyncio.create_task(self.send_frame())
         
