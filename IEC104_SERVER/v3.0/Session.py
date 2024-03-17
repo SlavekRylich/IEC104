@@ -60,8 +60,10 @@ class Session:
         self.__whoami = whoami
         
         self.__local_queue = asyncio.Queue(maxsize=256)
-        self.__async_time = 0.5
         
+        # timing
+        self.__async_time = 0.5
+        self.__task_timeouts_time = 1
         
         # flag_session = 'START_SESSION'
         # flag_session = 'STOP_SESSION'
@@ -96,6 +98,7 @@ class Session:
             self.__task_state = asyncio.create_task(self.update_state_machine_server()) 
         else:
             self.__task_state = asyncio.create_task(self.update_state_machine_client())
+            
         self.__task_timeouts = asyncio.create_task(self.check_for_timeouts())
         
         Session.__id += 1
@@ -106,7 +109,7 @@ class Session:
     async def start(self):
         
         while True:
-                
+            print(f"Session.start() - toto se vypise pouze jednou.")
             await asyncio.gather(self.__task_handle_messages,
                                  self.__task_send_frame,
                                  self.__task_state,
@@ -252,13 +255,12 @@ class Session:
                             
                             await self.__incomming_queue.on_message_received(new_apdu)
                             self.__local_queue.put_nowait(new_apdu)
-                            print(f"vloženo do lokální fronty pro update: {new_apdu}")
                             
                             print(f"Finish async handle_messages.")
                             
                             # return new_apdu
                 else:
-                    print(f"doslo k tomuto vubec nekdy?")
+                    print(f"zadne prichozi zpravy")
                     
                             
                         
@@ -283,32 +285,32 @@ class Session:
         
     async def send_frame(self,frame: Frame = 0):
         while True:
-            await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap    
-            print(f"Start send_frame_task()")
-            # print("\x1b[31mToto je červený text.\x1b[0m")
-            if frame:
-                print(f"{time.ctime()} - Send frame: {frame}")
-                self.__writer.write(frame.serialize())
-                await self.__writer.drain()
-            else:
-                try:
-                    if not self.__outgoing_queue.is_Empty():
-                        print(f"posílá se neco z odchozí fronty")
-                        frame = await self.__outgoing_queue.get_message()
-                        
-                        # add to packet buffer
-                        if isinstance(frame, IFormat):
-                            self.__packet_buffer.add_frame(frame.ssn, frame)
-                        
-                        print(f"{time.ctime()} - Send frame: {frame}")
-                        self.__writer.write(frame.serialize())
-                        await self.__writer.drain()
-                        
-                        
-                except asyncio.QueueEmpty:
-                    print(f"problem v asynciu")
-                except Exception as e:
-                    print(f"Exception {e}")
+            try:
+                await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap    
+                print(f"Start send_frame_task()")
+                # print("\x1b[31mToto je červený text.\x1b[0m")
+                if frame:
+                    print(f"{time.ctime()} - Send frame: {frame}")
+                    self.__writer.write(frame.serialize())
+                    await self.__writer.drain()
+                else:
+                    
+                        if not self.__outgoing_queue.is_Empty():
+                            print(f"posílá se neco z odchozí fronty")
+                            frame = await self.__outgoing_queue.get_message()
+                            
+                            print(f"{time.ctime()} - Send frame: {frame}")
+                            self.__writer.write(frame.serialize())
+                            await self.__writer.drain()
+                   
+                # add to packet buffer
+                if isinstance(frame, IFormat):
+                    self.__packet_buffer.add_frame(frame.ssn, frame)  
+                          
+            except asyncio.QueueEmpty:
+                print(f"problem v asynciu")
+            except Exception as e:
+                print(f"Exception {e}")
             
             print(f"Stop send_frame_task()")
         
@@ -342,7 +344,7 @@ class Session:
     
     async def check_for_timeouts(self):
         while True:
-            await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap    
+            await asyncio.sleep(self.__task_timeouts_time) # kritický bod pro rychlost ap    
             print(f"Starting async check_for_timeouts")
             
             time_now = time.time()
@@ -362,11 +364,11 @@ class Session:
             if time_now - last_timestamp > self.__timeout_t2:
                 if not self.__packet_buffer.is_empty():
                     resp = self.__queue.generate_s_frame()
-                    await self.send_frame(resp)
+                    await self.__outgoing_queue.to_send(resp)
                 
             if time_now - last_timestamp > self.__timeout_t3:
                 frame = self.__queue.generate_testdt_act()
-                await self.send_frame(frame)
+                await self.__outgoing_queue.to_send(frame)
                 
                 # self.loop.create_task()
             print(f"*******************************")
@@ -375,120 +377,126 @@ class Session:
             print(f"Finish async check_for_timeouts")
         
     
-    async def update_state_machine_server(self, fr = 0):
+    async def update_state_machine_server(self, fr: Frame = 0):
         while True:
-            await asyncio.sleep(self.__async_time) # kritický bod pro rychlost
-            print(f"Starting async update_state_machine_server")
-            
-            # set_connection_state()
-                # 0 = DISCONNECTED
-                # 1 = CONNECTED
-            if self.connection_state == 'CONNECTED':
+            try:
+                await asyncio.sleep(self.__async_time) # kritický bod pro rychlost
+                print(f"Starting async update_state_machine_server")
                 
-            # get_connection_state()
-                # 0 = STOPPED
-                # 1= WAITING_RUNNING
-                # 2 = RUNNING
-                # 3 = WAITING_UNCONFIRMED
-                # 4 = WAITING_STOPPED
-                
-                if not self.__local_queue.empty():
-                    fr = self.__local_queue.get_nowait()
-                    print(f"použit z lokalni fronty pro update: {fr}")
-                
-                # spravny format pro podminky 
-                if fr:
-                    if isinstance(fr, UFormat):
-                        frame = fr.type_int
+                # set_connection_state()
+                    # 0 = DISCONNECTED
+                    # 1 = CONNECTED
+                if self.connection_state == 'CONNECTED':
+                    
+                # get_connection_state()
+                    # 0 = STOPPED
+                    # 1= WAITING_RUNNING
+                    # 2 = RUNNING
+                    # 3 = WAITING_UNCONFIRMED
+                    # 4 = WAITING_STOPPED
+                    
+                    if not self.__local_queue.empty():
+                        fr = self.__local_queue.get_nowait()
+                        print(f"použit z lokalni fronty pro update: {fr}")
+                    
+                    # spravny format pro podminky 
+                    if fr:
+                        if isinstance(fr, UFormat):
+                            frame = fr.type_int
+                        
+                        else:
+                            frame = fr.type_in_word   # S-format
+                    else:
+                        frame = 0
+                        
+                    actual_transmission_state = self.transmission_state
+                    
+                    # timeout t1
+                    if not self.flag_timeout_t1:
+                        
+                    
+                        #* STATE 1 
+                        if actual_transmission_state == 'STOPPED':
+                            
+                            if frame == acpi.STARTDT_ACT:
+                                self.transmission_state = 'RUNNING'
+                                new_frame = self.__queue.generate_startdt_con()
+                                await self.__outgoing_queue.to_send(new_frame)
+                            
+                            # S-format or I-format   
+                            if frame == 'S-format' or frame == 'I-format':
+                                    self.flag_session = 'ACTIVE_TERMINATION'
+                                    
+                        
+                        #* STATE 2 
+                        if actual_transmission_state == 'RUNNING':
+                            
+                            # if frame is stopdt act and send queue is blank
+                            if frame == acpi.STOPDT_ACT and \
+                                self.__packet_buffer.is_empty():
+                                    
+                                    # poslat STOPDT CON
+                                    self.transmission_state = 'STOPPED'
+                                    new_frame = self.__queue.generate_stopdt_con()
+                                    await self.__outgoing_queue.to_send(new_frame)
+                            
+                            
+                            # if frame is stopdt act and send queue is not blank
+                            if frame == acpi.STOPDT_ACT and \
+                                not self.__packet_buffer.is_empty():
+                                    
+                                    # poslat STOPDT CON
+                                    self.transmission_state = 'WAITING_UNCONFIRMED'
+                            
+                        
+                        #* STATE 3 
+                        if actual_transmission_state == 'WAITING_UNCONFIRMED':
+                            
+                            if frame == 'S-format' and \
+                                self.__packet_buffer.is_empty():
+                                    
+                                    # poslat STOPDT CON
+                                    self.transmission_state('STOPPED')
+                                    new_frame = self.__queue.generate_stopdt_con()
+                                    await self.__outgoing_queue.to_send(new_frame)
+                            
+                            # t1_timeout or S-format or I-format   
+                            if frame == 'I-format':
+                                self.flag_session('ACTIVE_TERMINATION')
                     
                     else:
-                        frame = fr.type_in_word   # S-format
+                        # reset flag_timeout_t1
+                        self.flag_timeout_t1 = 0
+                        print(f"Timeout t1 is set to 0")
+                        self.flag_session = 'ACTIVE_TERMINATION'    
+                    
+                    # default condition if ACTIVE_TERMINATION is set
+                    if self.flag_session == 'ACTIVE_TERMINATION':
+                        
+                        # unset ACTIVE_TERMINATION 
+                        self.flag_session = None
+                        
+                        self.transmission_state = 'STOPPED'
+                        self.connection_state = 'DISCONNECTED'
+                        
+                        # zde vyvolat odstranění session
+                        
+                        
                 else:
-                    frame = 0
-                    
-                actual_transmission_state = self.transmission_state
-                
-                # timeout t1
-                if not self.flag_timeout_t1:
-                    
-                
-                    #* STATE 1 
-                    if actual_transmission_state == 'STOPPED':
-                        
-                        
-                        if frame == acpi.STARTDT_ACT:
-                            self.transmission_state = 'RUNNING'
-                            new_frame = self.__queue.generate_startdt_con()
-                            await self.__outgoing_queue.to_send(new_frame)
-                        
-                        # t1_timeout or S-format or I-format   
-                        if frame == 'S-format' or frame == 'I-format':
-                                self.flag_session = 'ACTIVE_TERMINATION'
-                                
-                    
-                    #* STATE 2 
-                    if actual_transmission_state == 'RUNNING':
-                        
-                        # if frame is stopdt act and send queue is blank
-                        if frame == acpi.STOPDT_ACT and \
-                            self.__packet_buffer.is_empty():
-                                
-                                # poslat STOPDT CON
-                                self.transmission_state = 'STOPPED'
-                                new_frame = self.__queue.generate_stopdt_con()
-                                await self.__outgoing_queue.to_send(new_frame)
-                        
-                        
-                        # if frame is stopdt act and send queue is not blank
-                        if frame == acpi.STOPDT_ACT and \
-                            not self.__packet_buffer.is_empty():
-                                
-                                # poslat STOPDT CON
-                                self.transmission_state = 'WAITING_UNCONFIRMED'
-                        
-                    
-                    #* STATE 3 
-                    if actual_transmission_state == 'WAITING_UNCONFIRMED':
-                        
-                        if frame == 'S-format' and \
-                            self.__packet_buffer.is_empty():
-                                
-                                # poslat STOPDT CON
-                                self.transmission_state('STOPPED')
-                                new_frame = self.__queue.generate_stopdt_con()
-                                await self.__outgoing_queue.to_send(new_frame)
-                        
-                        # t1_timeout or S-format or I-format   
-                        if frame == 'I-format':
-                            self.flag_session('ACTIVE_TERMINATION')
-                
-                else:
-                    # reset flag_timeout_t1
-                    self.flag_timeout_t1 = 0
-                    print(f"Timeout t1 is set to 0")
-                    self.flag_session = 'ACTIVE_TERMINATION'    
-                
-                # default condition if ACTIVE_TERMINATION is set
-                if self.flag_session == 'ACTIVE_TERMINATION':
-                    
-                    # unset ACTIVE_TERMINATION 
-                    self.flag_session = None
-                    
                     self.transmission_state = 'STOPPED'
                     self.connection_state = 'DISCONNECTED'
                     
-            else:
-                self.transmission_state = 'STOPPED'
-                self.connection_state = 'DISCONNECTED'
                 
-            
-            print(f"{self.connection_state}")
-            print(f"{actual_transmission_state}")
-            
-            await asyncio.sleep(self.__async_time)
-            print(f"Finish async update_state_machine_server")
-            
-    async def update_state_machine_client(self, fr = 0):
+                print(f"{self.connection_state}")
+                print(f"{actual_transmission_state}")
+                
+                await asyncio.sleep(self.__async_time)
+                print(f"Finish async update_state_machine_server")
+                
+            except Exception as e:
+                print(f"Exception {e}")
+                
+    async def update_state_machine_client(self, fr: Frame = 0):
         while True:
             
             print(f"Starting async update_state_machine_client")
@@ -518,121 +526,100 @@ class Session:
                         frame = fr.type_in_word   # 'S-format'
                 else:
                     frame = 0
-                        
-                actual_transmission_state = self.transmission_state   
+                     
                 
-                #* STATE 1 - 
-                if actual_transmission_state == 'STOPPED':
+                # timeout t1
+                if not self.flag_timeout_t1:
+                   
+                    actual_transmission_state = self.transmission_state   
                     
-                    # flag for start session is set
-                    if self.flag_session == 'START_SESSION':
+                    #* STATE 1 - 
+                    if actual_transmission_state == 'STOPPED':
                         
-                        # reset flag for start session
-                        self.flag_session = None
-                        # send start act
-                        new_frame = self.__queue.generate_startdt_act()
-                        await self.__outgoing_queue.to_send(new_frame)
-                        # update state
-                        self.transmission_state = 'WAITING_RUNNING'
-                    
-                    
-                    # t1_timeout or S-format or I-format   
-                    if frame == 'S-format' or frame == 'I-format' or \
-                        self.flag_timeout_t1:
-                            
-                            # reset flag for t1_timeout
-                            self.flag_timeout_t1 = 0
-                            # aktivni ukonceni
-                            self.flag_session = 'ACTIVE_TERMINATION'
-                    
-                
-                #* STATE 2 - 
-                if actual_transmission_state == 'WAITING_RUNNING':
-                    
-                    if frame == acpi.STARTDT_CON:
-                        self.transmission_state = 'RUNNING'
-                    
-                    # t1_timeout or S-format or I-format   
-                    if frame == 'S-format' or frame == 'I-format' or \
-                        self.flag_timeout_t1:
-                            
-                            # reset flag for t1_timeout
-                            self.flag_timeout_t1 = 0
-                            # aktivni ukonceni
-                            self.flag_session = 'ACTIVE_TERMINATION'
-                            
-                    
-                #* STATE 3 - 
-                if actual_transmission_state == 'RUNNING':
-                    
-                    # To WAITING_STOPPED
-                    if self.flag_session == 'STOP_SESSION' and \
-                        self.__packet_buffer.is_empty():
+                        # flag for start session is set
+                        if self.flag_session == 'START_SESSION':
                             
                             # reset flag for start session
                             self.flag_session = None
-                            
-                            # send stopdt act
-                            new_frame = self.__queue.generate_stopdt_act()
+                            # send start act
+                            new_frame = self.__queue.generate_startdt_act()
                             await self.__outgoing_queue.to_send(new_frame)
                             # update state
-                            self.transmission_state = 'WAITING_STOPPED'
+                            self.transmission_state = 'WAITING_RUNNING'
+                        
+                        
+                        # t1_timeout or S-format or I-format   
+                        if frame == 'S-format' or frame == 'I-format':
+                                
+                                # aktivni ukonceni
+                                self.flag_session = 'ACTIVE_TERMINATION'
+                        
                     
-                    # To WAITING_UNCONFIRMED
-                    if self.flag_session == 'STOP_SESSION' and \
-                        not self.__packet_buffer.is_empty():
+                    #* STATE 2 - 
+                    if actual_transmission_state == 'WAITING_RUNNING':
+                        
+                        if frame == acpi.STARTDT_CON:
+                            self.transmission_state = 'RUNNING'
+                        
+                        # t1_timeout or S-format or I-format   
+                        if frame == 'S-format' or frame == 'I-format':
+                                
+                                # aktivni ukonceni
+                                self.flag_session = 'ACTIVE_TERMINATION'
+                                
+                        
+                    #* STATE 3 - 
+                    if actual_transmission_state == 'RUNNING':
+                        
+                        # To WAITING_STOPPED
+                        if self.flag_session == 'STOP_SESSION' and \
+                            self.__packet_buffer.is_empty():
+                                
+                                # reset flag for start session
+                                self.flag_session = None
+                                
+                                # send stopdt act
+                                new_frame = self.__queue.generate_stopdt_act()
+                                await self.__outgoing_queue.to_send(new_frame)
+                                # update state
+                                self.transmission_state = 'WAITING_STOPPED'
+                        
+                        # To WAITING_UNCONFIRMED
+                        if self.flag_session == 'STOP_SESSION' and \
+                            not self.__packet_buffer.is_empty():
+                                
+                                # reset flag for start session
+                                self.flag_session = None
+                                
+                                # send stopdt act
+                                new_frame = self.__queue.generate_stopdt_act()
+                                await self.__outgoing_queue.to_send(new_frame)
+                                # update state
+                                self.transmission_state = 'WAITING_UNCONFIRMED'
+                                                    
+                    
+                    #* STATE 4 
+                    if actual_transmission_state == 'WAITING_UNCONFIRMED':
+                        
+                        if frame == acpi.STOPDT_CON:
+                            self.transmission_state = 'STOPPED'
+                        
+                        if  (frame == 'I-format' or frame == 'S-format' ) and \
+                            self.__packet_buffer.is_empty():
+                                self.transmission_state = 'WAITING_STOPPED'
+                        
                             
-                            # reset flag for start session
-                            self.flag_session = None
-                            
-                            # send stopdt act
-                            new_frame = self.__queue.generate_stopdt_act()
-                            await self.__outgoing_queue.to_send(new_frame)
-                            # update state
-                            self.transmission_state = 'WAITING_UNCONFIRMED'
-                    
-                    # t1_timeout    
-                    if self.flag_timeout_t1:
+                    #* STATE 5 
+                    if actual_transmission_state == 'WAITING_STOPPED':
                         
-                        # reset flag for t1_timeout
-                        self.flag_timeout_t1 = 0
-                        # aktivni ukonceni
-                        self.flag_session = 'ACTIVE_TERMINATION'
+                        if frame == acpi.STOPDT_CON:
+                            self.transmission_state = 'STOPPED'
                         
-                
-                #* STATE 4 
-                if actual_transmission_state == 'WAITING_UNCONFIRMED':
-                    
-                    if frame == acpi.STOPDT_CON:
-                        self.transmission_state = 'STOPPED'
-                    
-                    if  (frame == 'I-format' or frame == 'S-format' ) and \
-                        self.__packet_buffer.is_empty():
-                            self.transmission_state = 'WAITING_STOPPED'
-                    
-                    # t1_timeout    
-                    if self.flag_timeout_t1:
-                        
-                        # reset flag for t1_timeout
-                        self.flag_timeout_t1 = 0
-                        # aktivni ukonceni
-                        self.flag_session = 'ACTIVE_TERMINATION'
-                        
-                        
-                #* STATE 5 
-                if actual_transmission_state == 'WAITING_STOPPED':
-                    
-                    if frame == acpi.STOPDT_CON:
-                        self.transmission_state = 'STOPPED'
-                    
-                    # t1_timeout    
-                    if self.flag_timeout_t1:
-                        
-                        # reset flag for t1_timeout
-                        self.flag_timeout_t1 = 0
-                        # aktivni ukonceni
-                        self.flag_session = 'ACTIVE_TERMINATION'
-                    
+                else:
+                    # reset flag_timeout_t1
+                    self.flag_timeout_t1 = 0
+                    print(f"Timeout t1 is set to 0")
+                    self.flag_session = 'ACTIVE_TERMINATION'            
                         
                 # default condition if ACTIVE_TERMINATION is set
                 if self.flag_session == 'ACTIVE_TERMINATION':

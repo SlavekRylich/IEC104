@@ -151,11 +151,18 @@ class ServerIEC104():
         
     async def listen(self):
         print(f"Naslouchám na {self.ip}:{self.port}")
-        self._server = await asyncio.start_server(self.handle_client,
-                                            self.ip,
-                                            self.port)
-        await self._server.serve_forever()
-        
+        try:
+            self._server = await asyncio.start_server(
+                                                self.handle_client,
+                                                self.ip,
+                                                self.port,
+                                                
+                                                )
+            
+            await self._server.serve_forever()
+            
+        except Exception as e:
+            print(e)
         
     async def start(self):
         
@@ -204,18 +211,25 @@ class ServerIEC104():
                         "(Celkem spojení: "
                             f"{queue.get_number_of_connected_sessions()}))")
             
-            
-            await session.start()  
-
+            try:
+                await session.start()  
+            except Exception as e:
+                print(f"Exception {e}")
+                pass
             
     
     async def run(self):
+        
         self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
         
         while True:
-            await asyncio.gather(self.task_periodic_event_check,
+            try:
+                await asyncio.gather(self.task_periodic_event_check,
                                 *(task for task in self.tasks))
-        
+            except Exception as e:
+                print(f"Exception {e}")
+                continue
+            
             await asyncio.sleep(self.async_time)
     
     # tady sem skoncil
@@ -226,9 +240,11 @@ class ServerIEC104():
                     del queue
     
     async def periodic_event_check(self):
-        print(f"Starting async periodic event check.")
-        try:
-            while True:
+        
+        while True:
+            print(f"Starting async server periodic event check.")
+            try:
+                pass
                 # # update timers in all sessions instances
                 # if self.check_alive_clients():
                 #     continue
@@ -250,16 +266,19 @@ class ServerIEC104():
                    
                 # new client connected
                     # is check automaticaly by serve.forever()
+            except TimeoutError as e :
+                print(f"TimeoutError {e}")
                 
-                await asyncio.sleep(self.async_time)
+    
+            except Exception as e:
+                print(f"Exception {e}")
+                
+            
+            print(f"Finish async server periodic event check.")
+            await asyncio.sleep(self.async_time*2)
         
             
-        except TimeoutError as e :
-            print(f"TimeoutError {e}")
-            pass
-    
-        except Exception as e:
-            print(f"Exception {e}")
+        
             
         
     async def close(self):
@@ -276,7 +295,6 @@ if __name__ == '__main__':
     
     server = ServerIEC104()
     try:
-        # asyncio.run(server.start())
         asyncio.run(main())
 
     except KeyboardInterrupt:

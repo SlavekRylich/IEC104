@@ -180,7 +180,7 @@ class IEC104Client(object):
                 self.active_session.flag_session = 'START_SESSION'
                 
                 self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
-                self.task_handle_response = asyncio.create_task(self.queue.handle_response())
+                self.task_handle_response = asyncio.create_task(self.queue.handle_response(self.active_session))
         
                 while True:
                     await asyncio.gather(self.task_periodic_event_check, self.task_queue)
@@ -310,7 +310,7 @@ class IEC104Client(object):
                 # new client connected
                     # is check automaticaly by serve.forever() 
                         print(f"no_overflow bezi")
-                await asyncio.sleep(1)    
+                await asyncio.sleep(self.async_time)    
         
         except TimeoutError as e :
             print(f"TimeoutError {e}")
