@@ -12,7 +12,7 @@ class IFormat(Frame):
     __class_ssn = 0
     __class_rsn = 0
     
-    def __init__(self, data, ssn=0, rsn=0):
+    def __init__(self, data, ssn=0, rsn=0, direction = 'OUT'):
         super().__init__('I-format')
         self.__ssn = ssn
         self.__rsn = rsn
@@ -20,6 +20,8 @@ class IFormat(Frame):
         self.__data_length = self.get_length_of_data()
         # zaokrouhlední dat na celé byty
         self._total_length += self.__data_length
+        
+        self._direction = direction
     
     # třídní atributy pro číslování rámců (dořešit v budoucnu)      
      # už nevím proč, nejspíš pokud bych to neřešil tak, že co packet to instance X formátu ?  
@@ -110,4 +112,4 @@ class IFormat(Frame):
         return self._structure
     
     def __str__(self):
-        return f"Typ: {self._type_in_word}, Data in bytes: {self.serialize()[:10]}"
+        return f"{self._direction} Typ: {self._type_in_word}, Data in bytes: {self.serialize()[:10]}"

@@ -22,7 +22,7 @@ class Parser:
             data = struct.unpack(f"{'B' * (length)}", apdu)
             asdu_data = data[acpi.ACPI_HEADER_LENGTH:]
             
-            new_instance = IFormat(asdu_data, ssn, rsn)
+            new_instance = IFormat(asdu_data, ssn, rsn, direction='IN')
             
             return new_instance
             
@@ -30,14 +30,14 @@ class Parser:
             
             rsn = (unpacked_apdu[3] << 7) + (unpacked_apdu[2] >> 1)
             
-            new_instance = SFormat(rsn)
+            new_instance = SFormat(rsn,direction='IN')
         
             return new_instance
             
         elif frame_format == "U":
             first_byte = unpacked_apdu[0]
             
-            new_instance = UFormat()
+            new_instance = UFormat(direction='IN')
             
             # STARTDT ACT
             if first_byte == acpi.STARTDT_ACT:

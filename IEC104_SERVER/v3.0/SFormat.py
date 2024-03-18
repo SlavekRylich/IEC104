@@ -3,10 +3,11 @@ import struct
 
 
 class SFormat(Frame):
-    def __init__(self, rsn = 0):
+    def __init__(self, rsn = 0, direction = 'OUT'):
         super().__init__('S-format')
         self._rsn = rsn
-    
+
+        self._direction = direction
     
     def serialize(self, rsn = 0):
         
@@ -36,7 +37,7 @@ class SFormat(Frame):
             
     
     @rsn.setter
-    def _rsn(self, rsn):
+    def rsn(self, rsn):
         self._rsn = rsn
         
     def increment_rsn(self):
@@ -44,5 +45,5 @@ class SFormat(Frame):
         
         
     def __str__(self):
-        return f"Typ: {self._type_in_word}, Data in bytes: {self.serialize()}"
+        return f"{self._direction} Typ: {self._type_in_word}, Data in bytes: {self.serialize()}"
     

@@ -198,7 +198,7 @@ class ServerIEC104():
                                 queue,
                                 queue.in_queue,
                                 queue.out_queue,
-                                queue.packet_buffer)
+                                queue.send_buffer)
             
             queue.add_session(session)
             print(f"Spojení navázáno: s {client_address, client_port}, "

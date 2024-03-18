@@ -20,11 +20,18 @@ class IncomingQueueManager():
         pass
     
     async def on_message_received(self, message: Frame):
+        try:
             print(f"Přišlo do příchozí fronty: {message}")
-            await self._in_queue.put(message)
+            self._in_queue.put_nowait(message)
+        except asyncio.QueueFull:
+            print(f"In_Queue is full.")
             
     async def get_message(self):
-        return await self._in_queue.get()
+        try:
+            res = self._in_queue.get_nowait()
+            return res
+        except asyncio.QueueEmpty:
+            print(f"No data on receive.")
     
     async def is_overflow(self):
         # return True if queue is greater than 90% of max size

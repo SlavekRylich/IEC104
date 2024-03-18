@@ -139,7 +139,8 @@ class IEC104Client(object):
                                             self.queue,
                                             self._in_queue,
                                             self._out_queue,
-                                            self._packet_buffer)
+                                            self._send_buffer,
+                                            self._recv_buffer)
             
             self.queue.add_session(new_session)
             self.active_session = self.queue.Select_active_session(new_session)
@@ -161,7 +162,8 @@ class IEC104Client(object):
         self.queue = QueueManager(ip)
         self._in_queue = self.queue.in_queue 
         self._out_queue = self.queue.out_queue  
-        self._packet_buffer = self.queue.packet_buffer
+        self._send_buffer = self.queue.send_buffer
+        self._recv_buffer = self.queue.recv_buffer
         self.task_queue = asyncio.create_task(self.queue.start())
             
         try:
@@ -179,11 +181,18 @@ class IEC104Client(object):
                 # set start session flag
                 self.active_session.flag_session = 'START_SESSION'
                 
-                self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
-                self.task_handle_response = asyncio.create_task(self.queue.handle_response(self.active_session))
+                self.task_periodic_event_check = asyncio.create_task(
+                    self.periodic_event_check()
+                    )
+                
+                self.task_handle_response = asyncio.create_task(
+                    self.queue.handle_response(self.active_session)
+                    )
         
                 while True:
-                    await asyncio.gather(self.task_periodic_event_check, self.task_queue)
+                    await asyncio.gather(self.task_periodic_event_check,
+                                         self.task_queue)
+                    
                     await asyncio.sleep(self.async_time)
                 
             
@@ -228,12 +237,12 @@ class IEC104Client(object):
                         
                     elif user_input == "I" or user_input == "i":
                         i_format_data = u_format = await self.get_user_input(f"zadejte data:")
-                        frame = await self.queue.generate_i_frame(i_format_data)
+                        frame = await self.queue.generate_i_frame(i_format_data,self.active_session)
                         # napsat natvrdo nějaké funkce z ASDU
                         await self.active_session.send_frame(frame)
                     
                     elif user_input == "S" or user_input == "s":
-                        frame = await self.queue.generate_s_frame()
+                        frame = await self.queue.generate_s_frame(self.active_session)
                         await self.active_session.send_frame(frame)
                         pass
                     

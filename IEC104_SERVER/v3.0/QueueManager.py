@@ -42,7 +42,8 @@ class QueueManager():
         
         self.__in_queue = IncomingQueueManager()
         self.__out_queue = OutgoingQueueManager()
-        self.__packet_buffer = PacketBuffer()
+        self.__send_buffer = PacketBuffer()
+        self.__recv_buffer = PacketBuffer()
         
         self.__async_time = 0.8
         
@@ -51,16 +52,16 @@ class QueueManager():
         self.__task_check_new_data = asyncio.create_task(self.isResponse())
         
         self.data2 = struct.pack(f"{'B' * 10}", 
-                                    0x65, # start byte
-                                    0x01,  # Total Length pouze hlavička
-                                    0x0A,   # 1. ridici pole
-                                    0x00,  # 2. ridici pole
-                                    0x0C,   # 3. ridici pole
-                                    0x00,  # 4. ridici pole hlavička
-                                    0x00,   # 1. ridici pole
-                                    0x00,  # 2. ridici pole
-                                    0x00,   # 3. ridici pole
-                                    0x05,   # 3. ridici pole
+                                    0x65, 
+                                    0x01,  
+                                    0x0A,   
+                                    0x00,  
+                                    0x0C,   
+                                    0x00,  
+                                    0x00,   
+                                    0x00, 
+                                    0x00,  
+                                    0x05,   
         )
         
         self.data_list = [self.data2, self.data2]     # define static data
@@ -87,8 +88,12 @@ class QueueManager():
         return self.__out_queue
     
     @property
-    def packet_buffer(self):
-        return self.__packet_buffer
+    def send_buffer(self):
+        return self.__send_buffer
+    
+    @property
+    def recv_buffer(self):
+        return self.__recv_buffer
     
     async def check_in_queue(self):
         while True:
@@ -96,6 +101,9 @@ class QueueManager():
                 print(f"Starting_check_in_queue")
                 if not self.__in_queue.is_Empty():
                         message = await self.__in_queue.get_message()
+                        if isinstance(message, IFormat):
+                            self.__recv_buffer.add_frame(message.ssn,message)
+                            
                         if self.__whoami == 'server':
                             await self.handle_apdu(self.__session,message)
                         else:
@@ -238,7 +246,7 @@ class QueueManager():
                     
                     # chyba sekvence
                     # vyslat S-format s posledním self.VR
-                    frame = self.generate_s_frame()
+                    frame = await self.generate_s_frame(session)
                     await self.__out_queue.to_send(frame)
                     # await self._session.send_frame(frame)
                     session.flag_session = 'ACTIVE_TERMINATION'
@@ -247,19 +255,19 @@ class QueueManager():
                 else:
                     self.incrementVR()
                     self.ack = apdu.rsn
-                    await self.__packet_buffer.clear_frames_less_than(self.__ack)
+                    self.__send_buffer.clear_frames_less_than(self.__ack)
                     
-                    # odpověď stejnymi daty jen pro testovani 
-                    new_apdu = self.generate_i_frame(apdu.data)
-                    await self.__out_queue.to_send(new_apdu)
+                    # # odpověď stejnymi daty jen pro testovani 
+                    # new_apdu = self.generate_i_frame(apdu.data)
+                    # await self.__out_queue.to_send(new_apdu)
                 
-                if (self.__VR - self.__ack) >= session.w:
-                    frame = self.generate_s_frame()
+                if self.__recv_buffer.__len__() >= session.w:
+                    frame = await self.generate_s_frame(session)
                     await self.__out_queue.to_send(frame)
                 
             if isinstance(apdu, SFormat):
                 self.ack = apdu.rsn
-                await self.__packet_buffer.clear_frames_less_than(self.__ack)
+                self.__send_buffer.clear_frames_less_than(self.__ack)
             
             if isinstance(apdu, UFormat):
                 if apdu.type_int == acpi.TESTFR_ACT:
@@ -271,7 +279,7 @@ class QueueManager():
             
             if isinstance(apdu, SFormat):
                 self.ack = apdu.rsn
-                await self.__packet_buffer.clear_frames_less_than(self.__ack)
+                self.__send_buffer.clear_frames_less_than(self.__ack)
                 # self.clear_acked_send_queue()
             
             if isinstance(apdu, UFormat):
@@ -318,20 +326,26 @@ class QueueManager():
                 if actual_transmission_state == 'RUNNING':
                     
                     # for cyklus for send I frame with random data
-                    for frame in self.data_list:
+                    for data in self.data_list:
                             # list of data
-                            data = self.generate_i_frame(frame)
-                            await self.__out_queue.to_send(data)
+                            frame = self.generate_i_frame(data, session)
+                            await self.__out_queue.to_send(frame)
                             await asyncio.sleep(1.5)
                             
                     # check if response is ack with S format
                     
+                    if self.__recv_buffer.__len__() >= session.w:
+                        frame = await self.generate_s_frame(session)
+                        await self.__out_queue.to_send(frame)
                     
                     # send testdt frame 
                     frame = self.generate_testdt_act()
                     for i in range(0,2):
                         await self.__out_queue.to_send(frame)
                         await asyncio.sleep(2.5)
+                        
+                    await asyncio.sleep(10)
+                    session.flag_session = 'STOP_SESSION'
                 
                 #* STATE 4
                 if actual_transmission_state == 'WAITING_UNCONFIRMED':
@@ -342,7 +356,7 @@ class QueueManager():
                         await self.__out_queue.to_send(frame)
                         await asyncio.sleep(2.5)
                     
-                    session.flag_session = 'STOP_SESSION'
+                    # session.flag_session = 'STOP_SESSION'
                 
                 #* STATE 5
                 if actual_transmission_state == 'WAITING_STOPPED':
@@ -381,12 +395,15 @@ class QueueManager():
             count = count + 1
         return count
     
-    def generate_i_frame(self,data):
+    def generate_i_frame(self,data, session):
+        session.update_timestamp_t2()
         new_i_format = IFormat(data, self.__VS, self.__VR)
         self.incrementVS()
         return new_i_format
     
-    def generate_s_frame(self):
+    async def generate_s_frame(self, session):
+        session.update_timestamp_t2()
+        await self.__recv_buffer.clear_frames_less_than(self.__VR)
         return SFormat(self.__VR)
     
     def Select_active_session(self, session):

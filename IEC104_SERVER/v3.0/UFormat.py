@@ -3,12 +3,14 @@ import struct
 import acpi
 
 class UFormat(Frame):
-    def __init__(self, type = None):
+    def __init__(self, type = None, direction = 'OUT'):
         super().__init__('U-format')
         self.__type_int = type        
         self.__type_of_Uformat_Str = ''
         if type:
             self.type = type
+            
+        self._direction = direction
         
     @property
     def type(self):
@@ -61,4 +63,4 @@ class UFormat(Frame):
     
     
     def __str__(self):
-        return f"Typ: {self._type_in_word}, U-format: {self.__type_of_Uformat_Str}"
+        return f"ID: {self._id}, {self._direction} Typ: {self._type_in_word}: {self.__type_of_Uformat_Str}"

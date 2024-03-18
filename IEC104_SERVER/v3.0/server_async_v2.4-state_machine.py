@@ -203,7 +203,8 @@ class ServerIEC104():
                                 queue,
                                 queue.in_queue,
                                 queue.out_queue,
-                                queue.packet_buffer,
+                                queue.send_buffer,
+                                queue.recv_buffer,
                                 'server')	
             
             queue.add_session(session)
