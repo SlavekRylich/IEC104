@@ -39,6 +39,9 @@ class ServerIEC104():
         self.clients: dict[QueueManager] = {}
         
         self.lock = asyncio.Lock()
+        
+        self.__event = asyncio.Event()
+        
         self.no_overflow = 0
         
         self.async_time = 0.5
@@ -201,10 +204,7 @@ class ServerIEC104():
                                 writer,
                                 self.session_params,
                                 queue,
-                                queue.in_queue,
-                                queue.out_queue,
-                                queue.send_buffer,
-                                queue.recv_buffer,
+                                self.__event,
                                 'server')	
             
             queue.add_session(session)

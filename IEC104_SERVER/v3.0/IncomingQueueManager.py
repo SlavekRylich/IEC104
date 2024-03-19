@@ -28,7 +28,7 @@ class IncomingQueueManager():
             
     async def get_message(self):
         try:
-            res = self._in_queue.get_nowait()
+            res = await self._in_queue.get()
             return res
         except asyncio.QueueEmpty:
             print(f"No data on receive.")

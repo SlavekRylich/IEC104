@@ -40,6 +40,7 @@ class IEC104Client(object):
         
         
         
+        self.__event = asyncio.Event()
         
         self.loop = None
         self.no_overflow = 0
@@ -137,10 +138,8 @@ class IEC104Client(object):
                                             self.writer,
                                             self.session_params,
                                             self.queue,
-                                            self._in_queue,
-                                            self._out_queue,
-                                            self._send_buffer,
-                                            self._recv_buffer)
+                                            self.__event,
+                                            'client')
             
             self.queue.add_session(new_session)
             self.active_session = self.queue.Select_active_session(new_session)
@@ -217,6 +216,7 @@ class IEC104Client(object):
             print(e)
             return None
    
+   # nepoužívá se 
     async def main(self):
         """
         Hlavní funkce UI.

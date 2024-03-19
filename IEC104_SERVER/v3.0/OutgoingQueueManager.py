@@ -11,11 +11,10 @@ class OutgoingQueueManager():
         # Odstranit zprávu z dočasného úložiště
         pass
     
-    def get_message(self):
+    async def get_message(self):
         try:
-            res = self._out_queue.get_nowait()
-            self._out_queue.task_done()
-            return res
+            result = await self._out_queue.get()
+            return result
         except asyncio.QueueEmpty:
             print(f"No data to send.")
     
@@ -23,7 +22,6 @@ class OutgoingQueueManager():
         try:
             print(f"Přišlo do odchozí fronty: {message}")
             self._out_queue.put_nowait(message)
-            
         except asyncio.QueueFull:
             print(f"Out_Queue is full.")
             

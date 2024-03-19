@@ -97,6 +97,7 @@ class QueueManager():
     
     async def check_in_queue(self):
         while True:
+            
             try:
                 print(f"Starting_check_in_queue")
                 if not self.__in_queue.is_Empty():
@@ -107,6 +108,7 @@ class QueueManager():
                         if self.__whoami == 'server':
                             await self.handle_apdu(self.__session,message)
                         else:
+                            await self.handle_apdu(self.__session,message)
                             await self.handle_response(self.__session)
                             
             except Exception as e:
@@ -115,23 +117,23 @@ class QueueManager():
             await asyncio.sleep(self.__async_time)
             print(f"Finish_check_in_queue")
     
+    
     # is handled in session
     async def check_out_queue(self):    
         while True:
+            
             try:
                 print(f"Starting_check_out_queue")
                 if not self.__out_queue.is_Empty():
                         pass
                         # message = await self._out_queue.get_message()
                         # self.handle_apdu(message)
-                        
-                await asyncio.sleep(self.__async_time)
-                print(f"Finish_check_out_queue")
                 
             except Exception as e:
                 print(f"Exception {e}") 
                 
-    
+            await asyncio.sleep(self.__async_time)
+            print(f"Finish_check_out_queue")
                     
         
     
@@ -222,7 +224,7 @@ class QueueManager():
             return True
         return False
     
-    
+    # for client and server
     async def handle_apdu(self,session, apdu):
         
         print(f"Starting async handle_apdu with {apdu}")
@@ -230,13 +232,14 @@ class QueueManager():
         
         actual_transmission_state = session.transmission_state
             
-        if actual_transmission_state == 'STOPPED':
+        if actual_transmission_state == 'STOPPED' or\
+            actual_transmission_state == 'WAITING_RUNNING':
             
             if isinstance(apdu, UFormat):
                 if apdu.type_int == acpi.TESTFR_ACT:
                     frame = self.generate_testdt_con()
                     await self.__out_queue.to_send(frame)
-                
+        
                     
         if actual_transmission_state == 'RUNNING':
                     
@@ -275,12 +278,45 @@ class QueueManager():
                     await self.__out_queue.to_send(frame)
                 
         
-        if actual_transmission_state == 'WAITING_UNCONFIRMED':
+        if actual_transmission_state == 'WAITING_UNCONFIRMED' and\
+            session.whoami == 'server':
             
             if isinstance(apdu, SFormat):
                 self.ack = apdu.rsn
                 self.__send_buffer.clear_frames_less_than(self.__ack)
                 # self.clear_acked_send_queue()
+            
+            if isinstance(apdu, UFormat):
+                
+                if apdu.type_int == acpi.TESTFR_ACT:
+                    frame = self.generate_testdt_con()
+                    await self.__out_queue.to_send(frame)
+                    
+        if session.whoami == 'client' and\
+            (actual_transmission_state == 'WAITING_UNCONFIRMED' or\
+            actual_transmission_state == 'WAITING_STOPPED'):
+                
+            if (apdu.ssn - self.__VR) > 1:
+                    
+                    # chyba sekvence
+                    # vyslat S-format s posledním self.VR
+                    frame = await self.generate_s_frame(session)
+                    await self.__out_queue.to_send(frame)
+                    session.flag_session = 'ACTIVE_TERMINATION'
+                    # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
+                    
+            else:
+                self.incrementVR()
+                self.ack = apdu.rsn
+                self.__send_buffer.clear_frames_less_than(self.__ack)
+            
+            if self.__recv_buffer.__len__() >= session.w:
+                frame = await self.generate_s_frame(session)
+                await self.__out_queue.to_send(frame)
+                
+            if isinstance(apdu, SFormat):
+                self.ack = apdu.rsn
+                self.__send_buffer.clear_frames_less_than(self.__ack)
             
             if isinstance(apdu, UFormat):
                 
