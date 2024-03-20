@@ -29,7 +29,7 @@ class ServerIEC104():
         Returns: None
         Exceptions: None
         """
-        self.config_loader = ConfigLoader('./v3.0/config_parameters.json')
+        self.config_loader = ConfigLoader('./v4.0/config_parameters.json')
 
         self.ip = self.config_loader.config['server']['ip_address']
         self.port = self.config_loader.config['server']['port']
@@ -39,8 +39,6 @@ class ServerIEC104():
         self.clients: dict[QueueManager] = {}
         
         self.lock = asyncio.Lock()
-        
-        # self.__event = asyncio.Event()
         
         self.no_overflow = 0
         
@@ -66,15 +64,6 @@ class ServerIEC104():
             print(e)
     
     
-        """Returned value:
-        """
-    @property
-    def event_loop(self):
-        return self._loop
-    
-    @event_loop.setter
-    def event_loop(self, loop):
-        self._loop = loop
         
     def load_params(self, config_loader):
         
@@ -112,46 +101,7 @@ class ServerIEC104():
     
     def isResponse(self):
         pass
-    
-    # pokud už nějaké spojení s daným klientem existuje, 
-    # jen přidá toto spojení k frontě
-    # jinak vytvoří novou frontu a přidá tam toto spojení
-    # client = tuple (ip, port, queue)
-    def add_new_session(self,
-                        reader: asyncio.StreamReader,
-                        writer: asyncio.StreamWriter):
-        
-        client_address, client_port = writer.get_extra_info('peername')
-        
-        session = Session( client_address,
-                            client_port,
-                            reader,
-                            writer,
-                            self.session_params )
-        
-        # no client in queues yet
-        if  not self.queues:
-            new_queue = QueueManager(client_address)
-            new_queue.add_session(session)
-            self.queues.append(new_queue)
-            session.add_queue(new_queue)
-            return session,new_queue    # returt this queue
-        
-        else:
-            # existující klienti, přiřadí danému klientovi další spojení
-            for queue in self.queues:
-                if queue.get_ip() == client_address:
-                    queue.add_session(session)
-                    session.add_queue(queue)
-                    return session,queue  # returt this queue
-                
-            # nový klient, přiřadí mu spojení
-            new_queue = QueueManager()
-            new_queue.add_session(session)
-            self.queues.append(new_queue)
-            session.add_queue(new_queue)
-            return session,new_queue    # returt this queue
-        
+   
     async def listen(self):
         print(f"Naslouchám na {self.ip}:{self.port}")
         try:
@@ -236,13 +186,7 @@ class ServerIEC104():
                 continue
             
             await asyncio.sleep(self.async_time)
-    
-    # tady sem skoncil
-    def check_alive_clients(self):
-        for queue in self.queues:
-            if isinstance(queue, QueueManager):
-                if not queue.check_alive_sessions():
-                    del queue
+   
     
     async def periodic_event_check(self):
         
@@ -283,9 +227,6 @@ class ServerIEC104():
             await asyncio.sleep(self.async_time*2)
         
             
-        
-            
-        
     async def close(self):
         self._loop.close()
 

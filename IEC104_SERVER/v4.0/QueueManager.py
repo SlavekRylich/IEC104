@@ -131,7 +131,8 @@ class QueueManager():
                         
             await asyncio.sleep(self.__async_time)
             print(f"Finish_check_in_queue")
-    
+            session = None
+            message = None
     
     # is handled in session
     async def check_out_queue(self):    
@@ -180,52 +181,6 @@ class QueueManager():
     @property
     def ip(self):
         return self.__ip
-    
-    async def check_for_queue(self):
-        if self.__queue.empty():
-            await asyncio.sleep(0.1)
-            return False
-        else:
-            return True
-        
-    async def check_events_server(self): 
-        
-        if self.check_alive_sessions():
-        
-            for session in self.sessions():
-                
-                await session.check_for_timeouts()
-                
-                request = await session.handle_messages()
-                if request:
-                    await self.handle_apdu(request)
-                    # ulozit do queue
-                    # kontrolovat queue, zda je potřeba neco poslat
-                    
-                    await session.update_state_machine_server(request)
-                    return request
-                
-                await session.update_state_machine_server()
-        
-    async def check_events_client(self): 
-        
-        if self.check_alive_sessions():
-        
-            for session in self.sessions:
-                
-                await session.check_for_timeouts()
-                try:
-                    request = await session.handle_messages()
-                    if request:
-                        # ulozit do queue
-                        # kontrolovat queue, zda je potřeba neco poslat
-                        await session.update_state_machine_client(request)
-                        return request
-                    
-                    await session.update_state_machine_client()
-                except Exception as e:
-                    print(f"Exception {e}")
-                    pass
     
     # remove session from sessions list if is not connected
     def check_alive_sessions(self):
@@ -339,7 +294,7 @@ class QueueManager():
                     frame = self.generate_testdt_con()
                     await self.__out_queue.to_send((session,frame))
                                 
-                    
+                  
         print(f"Finish async handle_apdu")
 
     async def handle_response(self, session):
@@ -396,7 +351,8 @@ class QueueManager():
                         await asyncio.sleep(2.5)
                         
                     await asyncio.sleep(10)
-                    session.flag_session = 'STOP_SESSION'
+                    session.flag_session = 'STOP_SESSION' 
+                    print(f"nastaven priznak 'STOP_SESSION'")
                 
                 #* STATE 4
                 if actual_transmission_state == 'WAITING_UNCONFIRMED':
@@ -543,21 +499,6 @@ class QueueManager():
     def generate_stopdt_con(self):
         return UFormat(acpi.STOPDT_CON)
     
-    async def check_events(self):
-        
-        # .get_sessions_tuple() = tuple (ip, port, session)
-        for session in self.sessions:
-                        
-            print(f"bezi - {session}")
-            # timeouts check 
-            await session.check_for_timeouts()
-            
-            # client message
-            await session.check_for_message()
-
-        # queue check
-        await self.check_for_queue()
-        
     def __enter__():
         pass    
     

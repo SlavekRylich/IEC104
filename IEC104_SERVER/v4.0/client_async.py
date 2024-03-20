@@ -62,7 +62,7 @@ class IEC104Client(object):
         
         self.data_list = [self.data2, self.data2]     # define static data
         
-        config_loader = ConfigLoader('./v3.0/config_parameters.json')
+        config_loader = ConfigLoader('./v4.0/config_parameters.json')
 
         self.server_ip = config_loader.config['server']['ip_address']
         self.server_port = config_loader.config['server']['port']
@@ -196,96 +196,6 @@ class IEC104Client(object):
             
         except Exception as e:
             print(f"Exception: {e}") 
-            
-
-    async def check_for_message(self):
-        if self.active_session.connection_state == 'CONNECTED':
-                self.loop.create_task(self.active_session.handle_messages())
-    
-        
-    async def get_user_input(self, prompt):
-        """
-        Získá vstup od uživatele.
-        """
-        try:
-            # readline.set_completer(None)
-            # readline.set_completion_display_matches(False)
-            return await asyncio.get_event_loop().run_in_executor(None, input, prompt)
-        except Exception as e:
-            print(e)
-            return None
-   
-   # nepoužívá se 
-    async def main(self):
-        """
-        Hlavní funkce UI.
-        """
-        if isinstance(self.active_session, Session.Session):
-            try:
-                
-                while True:
-                    # Získá vstup od uživatele
-                    user_input = await self.get_user_input("I\nS\nU\n\
-                        Vyberte formát rámce, který chcete poslet na server: ")
-
-                    # Zpracujte vstup
-                    if user_input == "quit":
-                        break
-                    elif user_input == "help":
-                        print("Dostupné příkazy: quit, help")
-                        
-                    elif user_input == "I" or user_input == "i":
-                        i_format_data = u_format = await self.get_user_input(f"zadejte data:")
-                        frame = await self.queue.generate_i_frame(i_format_data,self.active_session)
-                        # napsat natvrdo nějaké funkce z ASDU
-                        await self.active_session.send_frame(frame)
-                    
-                    elif user_input == "S" or user_input == "s":
-                        frame = await self.queue.generate_s_frame(self.active_session)
-                        await self.active_session.send_frame(frame)
-                        pass
-                    
-                    elif user_input == "U" or user_input == "u":
-                        u_format = await self.get_user_input(f"start_act\n\
-                            start_con\n\
-                            stop_act\n\
-                            stop_con\n\
-                            testdt_act\n\
-                            testdt_con\n\
-                            ")
-                        if u_format == "start_act":
-                            await self.active_session.response_startdt_act()
-                            pass
-                        
-                        if u_format == "start_con":
-                            await self.active_session.response_startdt_con()
-                            pass
-                        
-                        if u_format == "stop_act":
-                            await self.active_session.response_stopdt_act()
-                            pass
-                        
-                        if u_format == "stop_con":
-                            await self.active_session.response_stopdt_con()
-                            pass
-                        
-                        if u_format == "testdt_act":
-                            await self.active_session.response_testdt_act()
-                            pass
-                        
-                        if u_format == "testdt_con":
-                            await self.active_session.response_testdt_con()
-                            pass
-                        
-                        if u_format == "quit":
-                            pass
-                    else:
-                        print(f"Neznámý příkaz: {user_input}")
-                    
-                    await self.task
-            
-            except Exception as e:
-                print(f"Chyba: {e}")
             
    
     async def periodic_event_check(self):

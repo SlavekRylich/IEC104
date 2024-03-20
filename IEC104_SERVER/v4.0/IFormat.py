@@ -112,4 +112,4 @@ class IFormat(Frame):
         return self._structure
     
     def __str__(self):
-        return f"{self._direction} Typ: {self._type_in_word}, Data in bytes: {self.serialize()[:4]}..."
+        return f"ID: {self._id}, {self._direction} Typ: {self._type_in_word}, Data in bytes: {self.serialize()[:4]}..."

@@ -353,13 +353,6 @@ class Session:
                 
             print(f"Stop send_frame_task()")
         
-    async def send_data(self,data):
-        print(f"{time.ctime()} - Send data: {data}")
-        self.__writer.write(data)
-        await self.__writer.drain()
-    
-    
-        
     @property
     def is_connected(self):
         if self.__connection_state == StateConn.set_state('CONNECTED'):
@@ -373,9 +366,6 @@ class Session:
     @timeout.setter
     def timeout(self, timeout):
         self._timeout = timeout
-        
-    async def on_connection_lost(self):
-        pass
         
     @property
     def connection_info(self):
@@ -499,7 +489,7 @@ class Session:
                                 not self.__send_buffer.is_empty():
                                                                         
                                     # ack all received_I-formats
-                                    new_frame = self.__queue.generate_s_frame()
+                                    new_frame = await self.__queue.generate_s_frame(self)
                                     await self.__outgoing_queue.to_send((self,new_frame))
                                     
                                     # poslat STOPDT CON
@@ -509,8 +499,11 @@ class Session:
                         #* STATE 3 
                         if actual_transmission_state == 'WAITING_UNCONFIRMED':
                             
-                            if frame == 'S-format' and \
-                                self.__send_buffer.is_empty():
+                            # if frame == 'S-format' and \
+                            #     self.__send_buffer.is_empty():
+                            
+                            # myslim ze tato podminka je spravna
+                            if self.__send_buffer.is_empty():
                                                                         
                                     # poslat STOPDT CON
                                     new_frame = self.__queue.generate_stopdt_con()
@@ -637,16 +630,14 @@ class Session:
                         #* STATE 3 - 
                         if actual_transmission_state == 'RUNNING':
                             
-                            # To WAITING_STOPPED
-                            if self.flag_session == 'STOP_SESSION' and \
-                                self.__send_buffer.is_empty():
+                            # END RUNNING
+                            if self.flag_session == 'STOP_SESSION':
+                                
+                                # To WAITING_STOPPED
+                                if self.__send_buffer.is_empty():
                                     
                                     # reset flag for start session
                                     self.flag_session = None
-                                    
-                                    # ack all received_I-formats
-                                    new_frame = self.__queue.generate_s_frame()
-                                    await self.__outgoing_queue.to_send((self,new_frame))
                                     
                                     # send stopdt act
                                     new_frame = self.__queue.generate_stopdt_act()
@@ -654,12 +645,15 @@ class Session:
                                     # update state
                                     self.transmission_state = 'WAITING_STOPPED'
                             
-                            # To WAITING_UNCONFIRMED
-                            if self.flag_session == 'STOP_SESSION' and \
-                                not self.__send_buffer.is_empty():
+                                # To WAITING_UNCONFIRMED
+                                if not self.__send_buffer.is_empty():
                                     
                                     # reset flag for start session
                                     self.flag_session = None
+                                    
+                                    # ack all received_I-formats
+                                    new_frame = await self.__queue.generate_s_frame(self)
+                                    await self.__outgoing_queue.to_send((self,new_frame))
                                     
                                     # send stopdt act
                                     new_frame = self.__queue.generate_stopdt_act()
