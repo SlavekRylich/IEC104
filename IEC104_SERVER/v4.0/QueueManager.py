@@ -22,9 +22,8 @@ class QueueManager():
         Args:
             ip (str): IP address.
         """
-        self.__queue = asyncio.Queue()
-        # tuple (ip, port, session)
-        self.__sessions= []
+        # Session
+        self.__sessions = []
         self.__VR = 0
         self.__VS = 0
         self.__ack = 0
@@ -152,31 +151,6 @@ class QueueManager():
             print(f"Finish_check_out_queue")
                     
         
-    
-    def add_message(self, message):
-        self.__queue.put_nowait(message)
-
-    async def get_message(self):
-        return await self.__queue.get()
-    
-    @property
-    def size(self):
-        return self.__queue.__sizeof__
-    
-    @property
-    def is_Empty(self):
-        return self.__queue.empty
-        
-    def add_message(self,message):
-        self.__queue.put_nowait(message)
-        
-    @property
-    async def message(self):
-        return await self.__queue.get()
-    
-    async def on_message_sent(self, message_id):
-        pass
-    
    
     @property
     def ip(self):
@@ -266,24 +240,25 @@ class QueueManager():
             (actual_transmission_state == 'WAITING_UNCONFIRMED' or\
             actual_transmission_state == 'WAITING_STOPPED'):
                 
-            if (apdu.ssn - self.__VR) > 1:
-                    
-                    # chyba sekvence
-                    # vyslat S-format s posledním self.VR
+            if isinstance(apdu, IFormat): 
+                   
+                if (apdu.ssn - self.__VR) > 1:
+                        # chyba sekvence
+                        # vyslat S-format s posledním self.VR
+                        frame = await self.generate_s_frame(session)
+                        await self.__out_queue.to_send((session,frame))
+                        session.flag_session = 'ACTIVE_TERMINATION'
+                        # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
+                        
+                else:
+                    self.incrementVR()
+                    self.ack = apdu.rsn
+                    await self.__send_buffer.clear_frames_less_than(self.__ack)
+                
+                if self.__recv_buffer.__len__() >= session.w:
                     frame = await self.generate_s_frame(session)
                     await self.__out_queue.to_send((session,frame))
-                    session.flag_session = 'ACTIVE_TERMINATION'
-                    # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
                     
-            else:
-                self.incrementVR()
-                self.ack = apdu.rsn
-                await self.__send_buffer.clear_frames_less_than(self.__ack)
-            
-            if self.__recv_buffer.__len__() >= session.w:
-                frame = await self.generate_s_frame(session)
-                await self.__out_queue.to_send((session,frame))
-                
             if isinstance(apdu, SFormat):
                 self.ack = apdu.rsn
                 await self.__send_buffer.clear_frames_less_than(self.__ack)
@@ -443,7 +418,8 @@ class QueueManager():
         for session in self.__sessions:
             if session == sess:
                 print(f"Remove by del_session: {session}")
-                return self.__sessions.remove(session)
+                self.__sessions.remove(session)
+                return True
         return False
     
     def get_running_sessions(self):

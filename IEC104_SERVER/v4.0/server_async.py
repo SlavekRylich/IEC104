@@ -111,7 +111,6 @@ class ServerIEC104():
                                                 self.port,
                                                 )
             
-            await self._server.serve_forever()
             
         except Exception as e:
             print(e)
@@ -181,6 +180,8 @@ class ServerIEC104():
             try:
                 await asyncio.gather(self.task_periodic_event_check,
                                 *(task for task in self.tasks))
+                
+                await self._server.serve_forever()
             except Exception as e:
                 print(f"Exception {e}")
                 continue

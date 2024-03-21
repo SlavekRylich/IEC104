@@ -95,7 +95,7 @@ class Session:
         
         # timing of tasks
         self.__async_time = 0.5
-        self.__task_timeouts_time = 0.8
+        self.__time_for_task_timeouts = 0.8
         
         # timeouts
         self.__timestamp_t0 = Timeout(self.__timeout_t0)
@@ -166,6 +166,7 @@ class Session:
     
     @flag_session.setter
     def flag_session(self, flag):
+        print(f"flag_session_set {flag}")
         self.__flag_session = flag
         
     @property
@@ -184,7 +185,12 @@ class Session:
     def whoami(self):
         return self.__whoami
     
-    def add_queue(self, queue):
+    @property
+    def queue(self):
+            return self.__queue
+        
+    @queue.setter
+    def queue(self, queue):
             self.__queue = queue
     
     @property
@@ -349,7 +355,7 @@ class Session:
                 frame = None
                 
                 # update timer t1, after frame
-                self.__timestamp_t1.start()
+                # self.__timestamp_t1.start()
                 
             print(f"Stop send_frame_task()")
         
@@ -373,18 +379,21 @@ class Session:
     
     async def check_for_timeouts(self):
         while True:
-            await asyncio.sleep(self.__task_timeouts_time) # kritický bod pro rychlost ap    
+            await asyncio.sleep(self.__time_for_task_timeouts) # kritický bod pro rychlost ap    
             print(f"Starting async check_for_timeouts")
             
             allow_event_signal = 0
             
             # TIMEOUT T0 
             if self.__timestamp_t0.timed_out:
+                print(f"Timer t0 timed_out")
                 allow_event_signal = 1
                 print(f'Client {self.__ip}:{self.__port} timed out and disconnected')
+                self.flag_session = 'ACTIVE_TERMINATION'
                 
             # TIMEOUT T1    
             if self.__timestamp_t1.timed_out:
+                print(f"Timer t1 timed_out")
                 allow_event_signal = 1
                 self.flag_timeout_t1 = 1
                 print(f"Timeout t1 is set to 1")
@@ -392,6 +401,7 @@ class Session:
                 
             # TIMEOUT T2     
             if self.__timestamp_t2.timed_out:
+                print(f"Timer t2 timed_out")
                 allow_event_signal = 1
                 if not self.__recv_buffer.is_empty():
                     resp = await self.__queue.generate_s_frame(self)
@@ -399,6 +409,7 @@ class Session:
                     
             # TIMEOUT T3     
             if self.__timestamp_t3.timed_out:
+                print(f"Timer t3 timed_out")
                 allow_event_signal = 1 
                 frame = self.__queue.generate_testdt_act()
                 await self.__outgoing_queue.to_send((self,frame))
@@ -475,8 +486,10 @@ class Session:
                         if actual_transmission_state == 'RUNNING':
                             
                             # if frame is stopdt act and send queue is blank
-                            if frame == acpi.STOPDT_ACT and \
-                                self.__send_buffer.is_empty():
+                            if frame == acpi.STOPDT_ACT:
+                                
+                                if self.__recv_buffer.is_empty() and\
+                                    self.__send_buffer.is_empty():
                                     
                                     new_frame = self.__queue.generate_stopdt_con()
                                     await self.__outgoing_queue.to_send((self,new_frame))
@@ -484,35 +497,36 @@ class Session:
                                     self.transmission_state = 'STOPPED'
                             
                             
-                            # if frame is stopdt act and send queue is not blank
-                            if frame == acpi.STOPDT_ACT and \
-                                not self.__send_buffer.is_empty():
-                                                                        
-                                    # ack all received_I-formats
-                                    new_frame = await self.__queue.generate_s_frame(self)
-                                    await self.__outgoing_queue.to_send((self,new_frame))
+                                else:# if frame is stopdt act and send queue is not blank
+                                    if not self.__recv_buffer.is_empty(): 
+                                        
+                                        # ack all received_I-formats
+                                        new_frame = await self.__queue.generate_s_frame(self)
+                                        await self.__outgoing_queue.to_send((self,new_frame))
                                     
-                                    # poslat STOPDT CON
                                     self.transmission_state = 'WAITING_UNCONFIRMED'
                             
                         
                         #* STATE 3 
                         if actual_transmission_state == 'WAITING_UNCONFIRMED':
                             
-                            # if frame == 'S-format' and \
-                            #     self.__send_buffer.is_empty():
-                            
-                            # myslim ze tato podminka je spravna
-                            if self.__send_buffer.is_empty():
-                                                                        
+                            if frame == 'S-format':
+                                if self.__send_buffer.is_empty() and \
+                                    self.__recv_buffer.is_empty():
+                                           
                                     # poslat STOPDT CON
                                     new_frame = self.__queue.generate_stopdt_con()
                                     await self.__outgoing_queue.to_send((self,new_frame))
                                     
                                     # change state to 'STOPPED'
                                     self.transmission_state = 'STOPPED'
-                            
-                            # t1_timeout or S-format or I-format   
+
+                                if not self.__recv_buffer.is_empty(): 
+                                        # ack all received_I-formats
+                                        new_frame = await self.__queue.generate_s_frame(self)
+                                        await self.__outgoing_queue.to_send((self,new_frame))
+                                
+                            #  I-format   
                             if frame == 'I-format':
                                 self.flag_session = 'ACTIVE_TERMINATION'
                     
@@ -532,6 +546,9 @@ class Session:
                         self.connection_state = 'DISCONNECTED'
                         
                         # zde vyvolat odstranění session
+                        # del self
+                        # self.queue.del_session(self)
+                        await self.delete_self()
                         
                         
                 else:
@@ -632,29 +649,28 @@ class Session:
                             
                             # END RUNNING
                             if self.flag_session == 'STOP_SESSION':
+                                                                
+                                # reset flag for start session
+                                self.flag_session = None
                                 
                                 # To WAITING_STOPPED
-                                if self.__send_buffer.is_empty():
-                                    
-                                    # reset flag for start session
-                                    self.flag_session = None
-                                    
+                                if self.__recv_buffer.is_empty() and \
+                                    self.__send_buffer.is_empty():
+                                                                        
                                     # send stopdt act
                                     new_frame = self.__queue.generate_stopdt_act()
                                     await self.__outgoing_queue.to_send((self,new_frame))
                                     # update state
                                     self.transmission_state = 'WAITING_STOPPED'
                             
-                                # To WAITING_UNCONFIRMED
-                                if not self.__send_buffer.is_empty():
-                                    
-                                    # reset flag for start session
-                                    self.flag_session = None
-                                    
-                                    # ack all received_I-formats
-                                    new_frame = await self.__queue.generate_s_frame(self)
-                                    await self.__outgoing_queue.to_send((self,new_frame))
-                                    
+                                else: 
+                                    # To WAITING_UNCONFIRMED
+                                    if not self.__recv_buffer.is_empty():
+                                                                            
+                                        # ack all received_I-formats
+                                        new_frame = await self.__queue.generate_s_frame(self)
+                                        await self.__outgoing_queue.to_send((self,new_frame))
+                                        
                                     # send stopdt act
                                     new_frame = self.__queue.generate_stopdt_act()
                                     await self.__outgoing_queue.to_send((self,new_frame))
@@ -669,7 +685,9 @@ class Session:
                                 self.transmission_state = 'STOPPED'
                             
                             if  (frame == 'I-format' or frame == 'S-format' ) and \
-                                self.__send_buffer.is_empty():
+                                (self.__send_buffer.is_empty() and \
+                                     self.__recv_buffer.is_empty()):
+                                         
                                     self.transmission_state = 'WAITING_STOPPED'
                             
                                 
@@ -692,6 +710,8 @@ class Session:
                         self.flag_session = None
                         self.transmission_state = 'STOPPED'
                         self.connection_state = 'DISCONNECTED'
+                        # del self
+                        await self.delete_self()
                         
                 else:
                     pass
@@ -705,13 +725,23 @@ class Session:
                 
             except Exception as e:
                 print(f"Exception {e}")
+                
+    async def delete_self(self):
+        self.queue.del_session(self)
+        self.__task_handle_messages.cancel()
+        self.__task_send_frame.cancel()
+        self.__task_state.cancel()
+        self.__task_timeouts.cancel()
+
+        await asyncio.gather(self.__task_handle_messages,
+                             self.__task_send_frame,
+                             self.__task_state,
+                             self.__task_timeouts,
+                             return_exceptions=True)
+        del self
+        
     
-    def __del__(self):
-        print(f"odstraneni: {self}")
-        if self:
-            return self.__queue.del_session(self)
-        return False
-    
+        
     def __enter__(self):
         pass
     def __str__(self):
