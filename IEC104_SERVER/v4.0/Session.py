@@ -84,6 +84,10 @@ class Session:
         # flag_timeout_t1 = 1 - timeout 
         self.__flag_timeout_t1 = 0
         
+        
+        # flag for delete self
+        self.__flag_delete = False
+        
         # Parameters from config file
         self.__k = session_params[0]
         self.__w = session_params[1]
@@ -129,7 +133,7 @@ class Session:
         
     async def start(self):
         
-        while True:
+        # while True:
             print(f"Session.start() - toto se vypise pouze jednou.")
             await asyncio.gather(self.__task_handle_messages,
                                  self.__task_send_frame,
@@ -138,7 +142,7 @@ class Session:
             # if self.__tasks:
             #     await asyncio.gather(*(task for task in self.__tasks))
             
-            await asyncio.sleep(self.__async_time)
+            # await asyncio.sleep(self.__async_time)
      
     @property    
     def k(self):
@@ -235,6 +239,7 @@ class Session:
             return True
         else:
             return False
+    
     def update_timestamp_t2(self):
         self.__timestamp_t2.start()
         
@@ -253,6 +258,9 @@ class Session:
     ## RECEIVE FRAME
     async def handle_messages(self):
         while True:
+            if self.__flag_delete:
+                break
+            
             # await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap 
             await asyncio.sleep(0.01) # kritický bod pro rychlost ap 
             try:
@@ -313,6 +321,9 @@ class Session:
     ## SEND FRAME
     async def send_frame(self,frame: Frame = None):
         while True:
+            if self.__flag_delete:
+                break
+            
             try:
                 # await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap    
                 print(f"Start send_frame_task()")
@@ -379,6 +390,9 @@ class Session:
     
     async def check_for_timeouts(self):
         while True:
+            if self.__flag_delete:
+                break
+            
             await asyncio.sleep(self.__time_for_task_timeouts) # kritický bod pro rychlost ap    
             print(f"Starting async check_for_timeouts")
             
@@ -428,6 +442,8 @@ class Session:
     
     async def update_state_machine_server(self, fr: Frame = None):
         while True:
+            if self.__flag_delete:
+                break
             
             # wait for allow
             await self.__event_update.wait()
@@ -569,6 +585,8 @@ class Session:
                 
     async def update_state_machine_client(self, fr: Frame = None):
         while True:
+            if self.__flag_delete:
+                break
             
             # wait for allow
             await self.__event_update.wait()
@@ -725,19 +743,18 @@ class Session:
                 
             except Exception as e:
                 print(f"Exception {e}")
+        
+        self.__task_state.resu
                 
     async def delete_self(self):
+        self.__flag_delete = True
         self.queue.del_session(self)
-        self.__task_handle_messages.cancel()
-        self.__task_send_frame.cancel()
-        self.__task_state.cancel()
-        self.__task_timeouts.cancel()
 
-        await asyncio.gather(self.__task_handle_messages,
-                             self.__task_send_frame,
-                             self.__task_state,
-                             self.__task_timeouts,
-                             return_exceptions=True)
+        await asyncio.gather(self.__task_handle_messages.cancel(),
+                            self.__task_send_frame.cancel(),
+                            self.__task_state.cancel(),
+                            self.__task_timeouts.cancel(),
+                            return_exceptions=True)
         del self
         
     

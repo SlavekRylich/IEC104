@@ -14769,3 +14769,142 @@ task: <Task pending name='Task-7' coro=<QueueManager.check_in_queue() running at
 task: <Task pending name='Task-8' coro=<QueueManager.check_out_queue() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\QueueManager.py:150> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
 2024-03-21 21:59:12,065 - ERROR - Task was destroyed but it is pending!
 task: <Task pending name='Task-10' coro=<QueueManager.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\QueueManager.py:74> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()]>>
+2024-03-23 14:00:59,442 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:01:17,353 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:01:48,075 - ERROR - Exception in callback Task.task_wakeup(<Future finished result=None>)
+handle: <Handle Task.task_wakeup(<Future finished result=None>)>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 721, in cancel
+    if child.cancel(msg=msg):
+       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 721, in cancel
+    if child.cancel(msg=msg):
+       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 721, in cancel
+    if child.cancel(msg=msg):
+       ^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 495 more times]
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py", line 717, in cancel
+    if self.done():
+       ^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object
+2024-03-23 14:01:48,150 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\server_async.py", line 168, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 134, in start
+    await asyncio.gather(self.__task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 263, in handle_messages
+    header = await self.__reader.read(2)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 710, in read
+    await self._wait_for_data('read')
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 542, in _wait_for_data
+    await self._waiter
+asyncio.exceptions.CancelledError
+2024-03-23 14:01:56,461 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\windows_events.py:561> wait_for=<_OverlappedFuture cancelled>>
+2024-03-23 14:01:56,466 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-13' coro=<Session.update_state_machine_server() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py:551> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767, gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-23 14:01:56,467 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-7' coro=<QueueManager.check_in_queue() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\QueueManager.py:111> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-23 14:01:56,467 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-8' coro=<QueueManager.check_out_queue() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\QueueManager.py:150> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\tasks.py:767]>
+2024-03-23 14:01:56,467 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-10' coro=<QueueManager.start() running at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\QueueManager.py:74> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()]>>
+2024-03-23 14:05:41,981 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:05:45,133 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:06:15,891 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\server_async.py", line 168, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 134, in start
+    await asyncio.gather(self.__task_handle_messages,
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 263, in handle_messages
+    header = await self.__reader.read(2)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 710, in read
+    await self._wait_for_data('read')
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 542, in _wait_for_data
+    await self._waiter
+asyncio.exceptions.CancelledError
+2024-03-23 14:18:40,521 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:18:45,087 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:19:15,844 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\server_async.py", line 168, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 138, in start
+    await asyncio.gather(self.__task_handle_messages,
+asyncio.exceptions.CancelledError
+2024-03-23 14:49:52,484 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:49:57,062 - DEBUG - Using proactor: IocpProactor
+2024-03-23 14:50:27,879 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\server_async.py", line 168, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 138, in start
+    await asyncio.gather(self.__task_handle_messages,
+asyncio.exceptions.CancelledError
+2024-03-23 17:43:36,516 - DEBUG - Using proactor: IocpProactor
+2024-03-23 17:43:41,894 - DEBUG - Using proactor: IocpProactor
+2024-03-23 17:44:12,576 - ERROR - Exception in callback StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248
+handle: <Handle StreamReaderProtocol.connection_made.<locals>.callback(<Task cancell...async.py:131>>) at C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py:248>
+Traceback (most recent call last):
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\slary\.pyenv\pyenv-win\versions\3.12.1\Lib\asyncio\streams.py", line 249, in callback
+    exc = task.exception()
+          ^^^^^^^^^^^^^^^^
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\server_async.py", line 168, in handle_client
+    await session.start()
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 138, in start
+    await asyncio.gather(self.__task_handle_messages,
+asyncio.exceptions.CancelledError
+2024-03-23 17:44:31,325 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-8' coro=<Session.update_state_machine_client() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py:586> exception=AttributeError("'_asyncio.Task' object has no attribute 'resu'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 747, in update_state_machine_client
+    self.__task_state.resu
+AttributeError: '_asyncio.Task' object has no attribute 'resu'
+2024-03-23 18:06:46,029 - DEBUG - Using proactor: IocpProactor
+2024-03-23 18:07:41,329 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-8' coro=<Session.update_state_machine_client() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py:586> exception=AttributeError("'_asyncio.Task' object has no attribute 'resu'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 747, in update_state_machine_client
+    self.__task_state.resu
+AttributeError: '_asyncio.Task' object has no attribute 'resu'
+2024-03-23 18:07:44,363 - DEBUG - Using proactor: IocpProactor
+2024-03-23 18:07:49,170 - DEBUG - Using proactor: IocpProactor
+2024-03-23 18:08:20,666 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-8' coro=<Session.update_state_machine_client() done, defined at d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py:586> exception=AttributeError("'_asyncio.Task' object has no attribute 'resu'")>
+Traceback (most recent call last):
+  File "d:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\v4.0\Session.py", line 747, in update_state_machine_client
+    self.__task_state.resu
+AttributeError: '_asyncio.Task' object has no attribute 'resu'

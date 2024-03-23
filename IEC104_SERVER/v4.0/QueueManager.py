@@ -32,6 +32,8 @@ class QueueManager():
         
         self.__whoami = whoami
         
+        # flag for delete queue because no it hasn't no session
+        self.__flag_delete = False
         
         self.__start_sequence = True
         
@@ -47,9 +49,6 @@ class QueueManager():
         
         self.__async_time = 0.8
         
-        self.__task_check_in_queue = asyncio.create_task(self.check_in_queue())
-        self.__task_check_out_queue = asyncio.create_task(self.check_out_queue())
-        self.__task_check_new_data = asyncio.create_task(self.isResponse())
         
         self.data2 = struct.pack(f"{'B' * 10}", 
                                     0x65, 
@@ -69,15 +68,24 @@ class QueueManager():
         
     async def start(self):
         
-        while True:
-            try:
-                await asyncio.gather(self.__task_check_in_queue,
-                                 self.__task_check_out_queue,
-                                 self.__task_check_new_data)
-            except Exception as e:
-                print(f"Exception {e}")
-                
-            await asyncio.sleep(self.__async_time)    
+        self.__task_check_in_queue = asyncio.create_task(self.check_in_queue())
+        self.__task_check_out_queue = asyncio.create_task(self.check_out_queue())
+        self.__task_check_new_data = asyncio.create_task(self.isResponse())
+        self.__task_check_sessions = asyncio.create_task(self.check_alive_sessions())
+        
+        
+        try:
+            await asyncio.gather(self.__task_check_in_queue,
+                            self.__task_check_out_queue,
+                            self.__task_check_new_data,
+                            self.__task_check_sessions)
+        except Exception as e:
+            print(f"Exception {e}")
+            
+            # await asyncio.sleep(self.__async_time)    
+    @property
+    def flag_delete(self):
+        return self.__flag_delete
     
     @property
     def event_in(self,):
@@ -105,6 +113,9 @@ class QueueManager():
     
     async def check_in_queue(self):
         while True:
+            if self.__flag_delete:
+                break
+            
             try:
                 print(f"Starting_check_in_queue")
                 
@@ -136,6 +147,8 @@ class QueueManager():
     # is handled in session
     async def check_out_queue(self):    
         while True:
+            if self.__flag_delete:
+                break
             
             try:
                 print(f"Starting_check_out_queue")
@@ -157,16 +170,26 @@ class QueueManager():
         return self.__ip
     
     # remove session from sessions list if is not connected
-    def check_alive_sessions(self):
-        for session in self.__sessions:
-            if session.connection_state != 'CONNECTED':
-                del session
-                self.__sessions.remove(session)
+    async def check_alive_sessions(self):
+        while True: 
+            if not self.__sessions:
+                break
+            await asyncio.sleep(self.__async_time)
+            
+        self.delete_self()
+        
+    async def delete_self(self):
+        self.__flag_delete = True
+        self.queue.del_session(self)
+
+        await asyncio.gather(self.__task_handle_messages.cancel(),
+                            self.__task_send_frame.cancel(),
+                            self.__task_state.cancel(),
+                            self.__task_timeouts.cancel(),
+                            return_exceptions=True)
+        del self          
                 
                 
-        if len(self.__sessions) > 0:
-            return True
-        return False
     
     # for client and server
     async def handle_apdu(self,session, apdu):

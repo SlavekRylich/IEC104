@@ -187,11 +187,10 @@ class IEC104Client(object):
                     self.queue.handle_response(self.active_session)
                     )
         
-                while True:
-                    await asyncio.gather(self.task_periodic_event_check,
-                                         self.task_queue)
-                    
-                    await asyncio.sleep(self.async_time)
+                await asyncio.gather(self.task_periodic_event_check,
+                                        self.task_queue)
+                
+                # await asyncio.sleep(self.async_time)
                 
             
         except Exception as e:
@@ -239,7 +238,7 @@ class IEC104Client(object):
 
 if __name__ == "__main__":
     
-    host = "127.0.0.1"
+    host = "192.168.1.142"
     port = 2404
     
     client = IEC104Client()

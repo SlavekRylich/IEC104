@@ -142,6 +142,10 @@ class ServerIEC104():
             
             if isinstance(queue, QueueManager):
                 self.tasks.append(asyncio.create_task(queue.start()))
+                self.task_check_alive_queue = asyncio.create_task(
+                                            queue.check_alive_sessions(),
+                                            )
+                self.tasks.append(self.task_check_alive_queue)
         
         queue = self.clients[client_address]
         if isinstance(queue, QueueManager):
@@ -176,17 +180,17 @@ class ServerIEC104():
         
         self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
         
-        while True:
-            try:
-                await asyncio.gather(self.task_periodic_event_check,
-                                *(task for task in self.tasks))
-                
-                await self._server.serve_forever()
-            except Exception as e:
-                print(f"Exception {e}")
-                continue
+        # while True:
+        try:
+            await asyncio.gather(self.task_periodic_event_check,
+                            *(task for task in self.tasks))
             
-            await asyncio.sleep(self.async_time)
+            await self._server.serve_forever()
+        except Exception as e:
+            print(f"Exception {e}")
+                # continue
+            
+            # await asyncio.sleep(self.async_time)
    
     
     async def periodic_event_check(self):
@@ -194,6 +198,8 @@ class ServerIEC104():
         while True:
             print(f"Starting async server periodic event check.")
             try:
+                if self.task_check_alive_queue.done():
+                    pass
                 pass
                 # # update timers in all sessions instances
                 # if self.check_alive_clients():
