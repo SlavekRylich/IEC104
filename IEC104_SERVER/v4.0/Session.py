@@ -37,8 +37,8 @@ class Session:
     """Class for session.
     """
     # třídní proměná pro uchování unikátní id každé instance
-    __id = 0
-    __instances = []
+    _id = 0
+    _instances = []
     
     def __init__(self, 
                  ip,
@@ -55,8 +55,9 @@ class Session:
         self.__ip = ip
         self.__port = port
         
-        self.__event_in = queue.event_in
-        self.__event_out = queue.event_out
+        self.__event_queue_in = queue.event_in
+        self.__shared_event_queue_out = queue.event_out
+        self.__event_queue_out = asyncio.Event()
         self.__event_update = asyncio.Event()
         
         
@@ -86,6 +87,9 @@ class Session:
         
         
         # flag for delete self
+        self.__flag_stop_tasks = False
+        
+        # flag for stop tasks
         self.__flag_delete = False
         
         # Parameters from config file
@@ -108,7 +112,7 @@ class Session:
         self.__timestamp_t3 = Timeout(self.__timeout_t3)
         
         
-        # param for select session
+        # parameter for select session
         self.__priority = 0
         
         # inical states
@@ -116,33 +120,25 @@ class Session:
         self.__transmission_state = StateTrans.set_state('STOPPED')
         
         # Tasks
-        self.__task_handle_messages = asyncio.create_task(self.handle_messages())
-        self.__task_send_frame = asyncio.create_task(self.send_frame())
+        self.__tasks = []
+        self.__tasks.append(asyncio.create_task(self.handle_messages()))
+        self.__tasks.append(asyncio.create_task(self.send_frame()))
         
         if self.__whoami == 'server':
-            self.__task_state = asyncio.create_task(self.update_state_machine_server()) 
+            self.__tasks.append(asyncio.create_task(self.update_state_machine_server()) )
         else:
-            self.__task_state = asyncio.create_task(self.update_state_machine_client())
+            self.__tasks.append(asyncio.create_task(self.update_state_machine_client()))
             
-        self.__task_timeouts = asyncio.create_task(self.check_for_timeouts())
+        self.__tasks.append(asyncio.create_task(self.check_for_timeouts()))
         
-        Session.__id += 1
-        self.__id = Session.__id
-        Session.__instances.append(self)
+        Session._id += 1
+        self.__id = Session._id
+        Session._instances.append(self)
         
-        
+    
     async def start(self):
         
-        # while True:
-            print(f"Session.start() - toto se vypise pouze jednou.")
-            await asyncio.gather(self.__task_handle_messages,
-                                 self.__task_send_frame,
-                                 self.__task_state,
-                                 self.__task_timeouts)
-            # if self.__tasks:
-            #     await asyncio.gather(*(task for task in self.__tasks))
-            
-            # await asyncio.sleep(self.__async_time)
+            await asyncio.gather(*self.__tasks)
      
     @property    
     def k(self):
@@ -163,6 +159,19 @@ class Session:
     @property
     def id(self):
         return self.__id
+    
+    @property
+    def event_queue_out(self):
+        return self.__event_queue_out
+    
+    @property
+    def flag_delete(self):
+        return self.__flag_delete
+    
+    @flag_delete.setter
+    def flag_delete(self, flag):
+        print(f"Nastaven flag_delete na {flag}")
+        self.__flag_delete = flag
     
     @property
     def flag_session(self):
@@ -229,13 +238,13 @@ class Session:
     def remove_instance(cls, id = 0, instance = None):
         if not id:  # zde rezerva*
             if instance: 
-                cls.__instances.remove(instance)
+                cls._instances.remove(instance)
                 return True
             else:
                 return False
         
-        if id < len(cls.__instances):
-            del cls.__instances[id]
+        if id < len(cls._instances):
+            del cls._instances[id]
             return True
         else:
             return False
@@ -245,11 +254,11 @@ class Session:
         
     @classmethod
     def get_all_instances(cls):
-        return cls.__instances
+        return cls._instances
     
     @classmethod
     def get_instance(cls, id: int):
-        for inst in cls.__instances:
+        for inst in cls._instances:
             if inst.id == id:
                 return inst
         return None
@@ -257,12 +266,9 @@ class Session:
     ################################################
     ## RECEIVE FRAME
     async def handle_messages(self):
-        while True:
-            if self.__flag_delete:
-                break
+        while not self.__flag_stop_tasks:
             
-            # await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap 
-            await asyncio.sleep(0.01) # kritický bod pro rychlost ap 
+            await asyncio.sleep(0.01) # kritický bod pro rychlost aplikace 
             try:
                 print(f"Starting async handle_messages")
                 
@@ -282,19 +288,21 @@ class Session:
                             
                             print(f"{time.ctime()} - Receive frame: {new_apdu}")
                             
-                            
-                            
                             # aktualizace poslední aktivity 
                             self.__timestamp_t0.start()
                             self.__timestamp_t1.start()
                             self.__timestamp_t2.start()
                             self.__timestamp_t3.start()
                             
-                            await self.__incomming_queue.on_message_received((self, new_apdu))
+                            # put into local queue for handle message by update_state
                             self.__local_queue.put_nowait(new_apdu)
                             
                             # allow to event
                             self.__event_update.set()
+                            
+                            # put into incomming queue for handle message by QueueManager
+                            self.__incomming_queue.on_message_received((self, new_apdu))
+                            
                             
                             print(f"Finish async handle_messages.")
                             
@@ -320,16 +328,16 @@ class Session:
     ################################################
     ## SEND FRAME
     async def send_frame(self,frame: Frame = None):
-        while True:
-            if self.__flag_delete:
-                break
+        while not self.__flag_stop_tasks:
             
             try:
                 # await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap    
-                print(f"Start send_frame_task()")
+                await self.__event_queue_out.wait()
+                self.__event_queue_out.clear()
                 
-                await self.__event_out.wait()
-                self.__event_out.clear()
+                # await self.__shared_event_queue_out.wait()
+                # self.__shared_event_queue_out.clear()
+                print(f"Start send_frame_task()")
                 
                 # print("\x1b[31mToto je červený text.\x1b[0m")
                 if frame is not None:
@@ -389,11 +397,8 @@ class Session:
         return self.__ip, self.__port, self.__connection_state, self.__transmission_state, self._timeout
     
     async def check_for_timeouts(self):
-        while True:
-            if self.__flag_delete:
-                break
-            
-            await asyncio.sleep(self.__time_for_task_timeouts) # kritický bod pro rychlost ap    
+        while not self.__flag_stop_tasks:
+              
             print(f"Starting async check_for_timeouts")
             
             allow_event_signal = 0
@@ -419,40 +424,33 @@ class Session:
                 allow_event_signal = 1
                 if not self.__recv_buffer.is_empty():
                     resp = await self.__queue.generate_s_frame(self)
-                    await self.__outgoing_queue.to_send((self,resp))
+                    self.__outgoing_queue.to_send((self,resp), self.__event_queue_out)
                     
             # TIMEOUT T3     
             if self.__timestamp_t3.timed_out:
                 print(f"Timer t3 timed_out")
                 allow_event_signal = 1 
                 frame = self.__queue.generate_testdt_act()
-                await self.__outgoing_queue.to_send((self,frame))
+                self.__outgoing_queue.to_send((self,frame), self.__event_queue_out)
             
             if allow_event_signal:
                 # allow to event
                 self.__event_update.set()  
                 
-                
-            # self.loop.create_task()
-            print(f"*******************************")
-            # print(f"\t {str(time.time() - last_timestamp)[:5]}")
-            print(f"*******************************")
-            print(f"Finish async check_for_timeouts")
+            print(f"Finish async check_for_timeouts")    
+            await asyncio.sleep(self.__time_for_task_timeouts) # kritický bod pro rychlost ap  
+            
         
     
     async def update_state_machine_server(self, fr: Frame = None):
-        while True:
-            if self.__flag_delete:
-                break
+        while not self.__flag_stop_tasks:
             
             # wait for allow
             await self.__event_update.wait()
             self.__event_update.clear()
+            print(f"Starting async update_state_machine_server")
             
             try:
-                await asyncio.sleep(self.__async_time) # kritický bod pro rychlost
-                print(f"Starting async update_state_machine_server")
-                
                 # set_connection_state()
                     # 0 = DISCONNECTED
                     # 1 = CONNECTED
@@ -469,7 +467,7 @@ class Session:
                         fr = await self.__local_queue.get()
                         print(f"použit z lokalni fronty pro update: {fr}")
                     
-                    # spravny format pro podminky 
+                    # correct format for conditions
                     if fr:
                         if isinstance(fr, UFormat):
                             frame = fr.type_int
@@ -491,7 +489,7 @@ class Session:
                             if frame == acpi.STARTDT_ACT:
                                 self.transmission_state = 'RUNNING'
                                 new_frame = self.__queue.generate_startdt_con()
-                                await self.__outgoing_queue.to_send((self,new_frame))
+                                self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                             
                             # S-format or I-format   
                             if frame == 'S-format' or frame == 'I-format':
@@ -508,7 +506,7 @@ class Session:
                                     self.__send_buffer.is_empty():
                                     
                                     new_frame = self.__queue.generate_stopdt_con()
-                                    await self.__outgoing_queue.to_send((self,new_frame))
+                                    self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                     # poslat STOPDT CON
                                     self.transmission_state = 'STOPPED'
                             
@@ -518,7 +516,7 @@ class Session:
                                         
                                         # ack all received_I-formats
                                         new_frame = await self.__queue.generate_s_frame(self)
-                                        await self.__outgoing_queue.to_send((self,new_frame))
+                                        self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                     
                                     self.transmission_state = 'WAITING_UNCONFIRMED'
                             
@@ -532,7 +530,7 @@ class Session:
                                            
                                     # poslat STOPDT CON
                                     new_frame = self.__queue.generate_stopdt_con()
-                                    await self.__outgoing_queue.to_send((self,new_frame))
+                                    self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                     
                                     # change state to 'STOPPED'
                                     self.transmission_state = 'STOPPED'
@@ -540,7 +538,7 @@ class Session:
                                 if not self.__recv_buffer.is_empty(): 
                                         # ack all received_I-formats
                                         new_frame = await self.__queue.generate_s_frame(self)
-                                        await self.__outgoing_queue.to_send((self,new_frame))
+                                        self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                 
                             #  I-format   
                             if frame == 'I-format':
@@ -562,9 +560,9 @@ class Session:
                         self.connection_state = 'DISCONNECTED'
                         
                         # zde vyvolat odstranění session
-                        # del self
+                        
+                        self.__flag_stop_tasks = True
                         # self.queue.del_session(self)
-                        await self.delete_self()
                         
                         
                 else:
@@ -580,13 +578,11 @@ class Session:
             except Exception as e:
                 print(f"Exception {e}")
             
-            finally:
-                pass
+        
+        self.delete_self()
                 
     async def update_state_machine_client(self, fr: Frame = None):
-        while True:
-            if self.__flag_delete:
-                break
+        while not self.__flag_stop_tasks:
             
             # wait for allow
             await self.__event_update.wait()
@@ -637,7 +633,7 @@ class Session:
                                 self.flag_session = None
                                 # send start act
                                 new_frame = self.__queue.generate_startdt_act()
-                                await self.__outgoing_queue.to_send((self,new_frame))
+                                self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                 # update state
                                 self.transmission_state = 'WAITING_RUNNING'
                             
@@ -677,7 +673,7 @@ class Session:
                                                                         
                                     # send stopdt act
                                     new_frame = self.__queue.generate_stopdt_act()
-                                    await self.__outgoing_queue.to_send((self,new_frame))
+                                    self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                     # update state
                                     self.transmission_state = 'WAITING_STOPPED'
                             
@@ -687,11 +683,11 @@ class Session:
                                                                             
                                         # ack all received_I-formats
                                         new_frame = await self.__queue.generate_s_frame(self)
-                                        await self.__outgoing_queue.to_send((self,new_frame))
+                                        self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                         
                                     # send stopdt act
                                     new_frame = self.__queue.generate_stopdt_act()
-                                    await self.__outgoing_queue.to_send((self,new_frame))
+                                    self.__outgoing_queue.to_send((self,new_frame), self.__event_queue_out)
                                     # update state
                                     self.transmission_state = 'WAITING_UNCONFIRMED'
                                                         
@@ -728,9 +724,8 @@ class Session:
                         self.flag_session = None
                         self.transmission_state = 'STOPPED'
                         self.connection_state = 'DISCONNECTED'
-                        # del self
-                        await self.delete_self()
                         
+                        self.__flag_stop_tasks = True
                 else:
                     pass
                     
@@ -744,25 +739,27 @@ class Session:
             except Exception as e:
                 print(f"Exception {e}")
         
-        self.__task_state.resu
+        
+        # del self
+        self.delete_self()        
                 
-    async def delete_self(self):
+    def delete_self(self):
+        for task in self.__tasks:
+            try:
+                task.cancel()
+                        
+            except asyncio.CancelledError:
+                # Zpracování zrušení tasků
+                print(f"Zrušení tasku proběhlo úspěšně!")
+            
         self.__flag_delete = True
-        self.queue.del_session(self)
-
-        await asyncio.gather(self.__task_handle_messages.cancel(),
-                            self.__task_send_frame.cancel(),
-                            self.__task_state.cancel(),
-                            self.__task_timeouts.cancel(),
-                            return_exceptions=True)
-        del self
         
     
         
     def __enter__(self):
         pass
     def __str__(self):
-        return (f"SessionID: {self.__id}, ip: {self.__ip}, port: {self.__port}, connected: {self.is_connected}")
+        return (f"SessionID: {self.id}, ip: {self.ip}, port: {self.port}, connected: {self.is_connected}")
        
         
     def __exit__(*exc_info):

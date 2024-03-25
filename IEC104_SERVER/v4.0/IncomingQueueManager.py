@@ -13,13 +13,13 @@ class IncomingQueueManager():
         self._in_queue = asyncio.Queue(maxsize=256)
         
         if event is not None:
-            self.__event_in = event
+            self.__event_queue_in = event
     
-    async def on_message_received(self, message_tuple: tuple[any, Frame]):
+    def on_message_received(self, message_tuple: tuple[any, Frame]):
         try:
             print(f"Přišlo do příchozí fronty: {message_tuple[1]}")
             self._in_queue.put_nowait(message_tuple)
-            self.__event_in.set()
+            self.__event_queue_in.set()
             
         except asyncio.QueueFull:
             print(f"In_Queue is full.")

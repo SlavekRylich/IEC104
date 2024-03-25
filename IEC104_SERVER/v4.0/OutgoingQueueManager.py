@@ -8,7 +8,7 @@ class OutgoingQueueManager():
         self._out_queue = asyncio.Queue(maxsize=256)
         
         if event is not None:
-            self.__event_out = event
+            self.__event_queue_out = event
     
     async def get_message(self, event: asyncio.Event = None):
         try:
@@ -17,11 +17,14 @@ class OutgoingQueueManager():
         except asyncio.QueueEmpty:
             print(f"No data to send.")
     
-    async def to_send(self, message_tuple: tuple[any, Frame]):
+    def to_send(self, message_tuple: tuple[any, Frame], event: asyncio.Event):
         try:
             print(f"Přišlo do odchozí fronty: {message_tuple[1]}")
             self._out_queue.put_nowait(message_tuple)
-            self.__event_out.set()
+            if event:
+                event.set()
+            else:
+                self.__event_queue_out.set()
             
         except asyncio.QueueFull:
             print(f"Out_Queue is full.")

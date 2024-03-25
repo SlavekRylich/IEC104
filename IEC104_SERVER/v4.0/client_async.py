@@ -24,7 +24,6 @@ logging.basicConfig(level=logging.DEBUG)
 
 class IEC104Client(object):
     def __init__(self):
-        self.queues = [] 
         self.servers = {}
         self.data = 'vymyslena data'
         self.data1 = 0x65 + \
@@ -132,6 +131,7 @@ class IEC104Client(object):
             print(f"Navázáno {client_address}:{client_port}"
                   f"-->{self.server_ip}:{self.server_port}")
             
+            
             new_session = Session.Session( self.server_ip,
                                             self.server_port,
                                             self.reader,
@@ -172,7 +172,6 @@ class IEC104Client(object):
             
             if isinstance(self.active_session, Session.Session):
             
-                self.queues.append(self.queue)
                 self.servers[ip] = self.queue
                 
                 
@@ -186,9 +185,13 @@ class IEC104Client(object):
                 self.task_handle_response = asyncio.create_task(
                     self.queue.handle_response(self.active_session)
                     )
-        
+                
+                self.task_check_alive_queue = asyncio.create_task(
+                                            self.queue.check_alive_sessions(),
+                                            )
                 await asyncio.gather(self.task_periodic_event_check,
-                                        self.task_queue)
+                                        self.task_queue,
+                                        self.task_check_alive_queue)
                 
                 # await asyncio.sleep(self.async_time)
                 
@@ -199,46 +202,39 @@ class IEC104Client(object):
    
     async def periodic_event_check(self):
         print(f"Starting async periodic event check.")
-        try:
-            while True:
-                
-                
-                # for queue in self.queues:
-                #         if isinstance(queue, QueueManager):
-                #             resp = await queue.check_events_client()
-                #             if resp:
-                #                 await self.queue.handle_response()
-                #                 pass
-                # if self.start_sequence:
-                #     await self.queue.handle_response()
-                    
-                    
-                    # queue check
-                    # self.loop.create_task(self.queue.check_for_queue())
-                
+        while True:
+            print(f"Starting async server periodic event check.")
+            try:
+                # delete queue if no session is connected
+                if len(self.servers) != 0:
+                    if self.task_check_alive_queue.done():
+                        
+                        for value in list(self.servers.values()):
+                            if isinstance(value, QueueManager):
+                                if value.flag_delete:
+                                    del self.servers[value.ip]
+            
                 # UI se nebude volat tak často jako ostatní metody
                 self.no_overflow = self.no_overflow + 1
                 if self.no_overflow > 2:
                         self.no_overflow = 0
                         
                         await self.task_handle_response
-                        # musí se UI volat periodicky? 
-                        # self.loop.create_task(self.main())
-                # new client connected
-                    # is check automaticaly by serve.forever() 
                         print(f"no_overflow bezi")
+                        
                 await asyncio.sleep(self.async_time)    
-        
-        except TimeoutError as e :
-            print(f"TimeoutError {e}")
-            pass
-        
-        except Exception as e:
-            print(f"Exception {e}")
+    
+            except TimeoutError as e :
+                print(f"TimeoutError {e}")
+                pass
+            
+            except Exception as e:
+                print(f"Exception {e}")
 
 if __name__ == "__main__":
     
-    host = "192.168.1.142"
+    # host = "192.168.1.142"
+    host = "127.0.0.1"
     port = 2404
     
     client = IEC104Client()

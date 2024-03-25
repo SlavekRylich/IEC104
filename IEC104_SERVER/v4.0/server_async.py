@@ -1,4 +1,5 @@
 # Import required modules
+import gc
 import sys
 import time
 import asyncio
@@ -10,10 +11,6 @@ from Parser import Parser
 from config_loader import ConfigLoader
 from Session import Session
 from QueueManager import QueueManager 
-from Timeout import Timeout
-from State import StateConn,StateTrans
-from IncomingQueueManager import IncomingQueueManager
-from OutgoingQueueManager import OutgoingQueueManager
 
 
 LISTENER_LIMIT = 5
@@ -34,14 +31,13 @@ class ServerIEC104():
         self.ip = self.config_loader.config['server']['ip_address']
         self.port = self.config_loader.config['server']['port']
         
-        self.queues = [] 
         self.tasks = [] 
-        self.clients: dict[QueueManager] = {}
+        self.clients: dict[str, QueueManager] = {}
         
-        self.lock = asyncio.Lock()
         
         self.no_overflow = 0
         
+        # central sleep time
         self.async_time = 0.5
         
 
@@ -53,6 +49,7 @@ class ServerIEC104():
             self.timeout_t2, \
             self.timeout_t3 = self.load_params(self.config_loader)
             
+            # save parameters into tuple 
             self.session_params = (self.k,
                                    self.w,
                                    self.timeout_t0,
@@ -99,7 +96,7 @@ class ServerIEC104():
    
     
     
-    def isResponse(self):
+    def send(self):
         pass
    
     async def listen(self):
@@ -114,16 +111,6 @@ class ServerIEC104():
             
         except Exception as e:
             print(e)
-        
-    async def start(self):
-        
-        self._server = await asyncio.start_server(
-            self.handle_client, self.ip, self.port
-            )
-        
-        print(f"Naslouchám na {self.ip}:{self.port}")
-        await asyncio.gather(self._server.serve_forever())
-
     """
     Handle client.
     Args: reader, writer
@@ -138,10 +125,13 @@ class ServerIEC104():
         """
         if client_address not in self.clients:
             self.clients[client_address] = QueueManager(client_address, 'server')
+            print(f"vytvorena nova fronta")
             queue = self.clients[client_address]
             
             if isinstance(queue, QueueManager):
                 self.tasks.append(asyncio.create_task(queue.start()))
+                
+                # get own reference for check_alive_sessions in QueueManager class
                 self.task_check_alive_queue = asyncio.create_task(
                                             queue.check_alive_sessions(),
                                             )
@@ -151,9 +141,6 @@ class ServerIEC104():
         if isinstance(queue, QueueManager):
             
             
-            # event_in = asyncio.Event()
-            # event_out = asyncio.Event()
-            # events = (event_in, event_out)
             
             session = Session(client_address,
                                 client_port,
@@ -163,7 +150,7 @@ class ServerIEC104():
                                 queue,
                                 'server')	
             
-            queue.add_session(session)
+            queue.add_session(session,)
             print(f"Spojení navázáno: s {client_address, client_port}, "
                         "(Celkem spojení: "
                             f"{queue.get_number_of_connected_sessions()}))")
@@ -186,6 +173,7 @@ class ServerIEC104():
                             *(task for task in self.tasks))
             
             await self._server.serve_forever()
+            
         except Exception as e:
             print(f"Exception {e}")
                 # continue
@@ -198,34 +186,37 @@ class ServerIEC104():
         while True:
             print(f"Starting async server periodic event check.")
             try:
-                if self.task_check_alive_queue.done():
-                    pass
-                pass
-                # # update timers in all sessions instances
-                # if self.check_alive_clients():
-                #     continue
-                # for queue in self.queues:
-                    
-                #     if isinstance(queue, QueueManager):
-                #     # client is tuple (ip, queue)
-                #     # queue check
-                #         await queue.check_events_server()
-                #         print(f"--")
-                
-                # # log doesnt spam console
-                # self.no_overflow = self.no_overflow + 1
-                # if self.no_overflow > 2:
-                #     self.no_overflow = 0
+                # delete queue if no session is connected
+                if len(self.clients) != 0:
+                    if self.task_check_alive_queue.done():
                         
-                #     print(f"\r.")
+                        for value in list(self.clients.values()):
+                            if isinstance(value, QueueManager):
+                                if value.flag_delete:
+                                    result_value = self.clients.pop(value.ip)
+                                    del result_value
+                                    print(f"oddelano fronta ze slovniku")
                     
-                   
-                # new client connected
-                    # is check automaticaly by serve.forever()
-            except TimeoutError as e :
-                print(f"TimeoutError {e}")
+                #     print(f"\r.")
+                print(len(self.clients))
+                gc.collect()
+                objects = gc.get_objects()
                 
-    
+                for value in list(self.clients.values()):
+                            if isinstance(value, QueueManager):
+                                print(f"value: {value}")
+                found = False
+                for obj in objects:
+                    if isinstance(obj, QueueManager):
+                        print(obj)
+                        found = True
+                        
+                if found:
+                    print(f"Instatnce queue stale existuje")
+                    
+                else:
+                    print(f"Instatnce queue byla odstranena")
+                    
             except Exception as e:
                 print(f"Exception {e}")
                 
