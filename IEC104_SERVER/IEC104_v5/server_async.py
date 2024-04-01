@@ -1,5 +1,6 @@
 # Import required modules
 import gc
+import logging
 import sys
 import time
 import asyncio
@@ -12,7 +13,12 @@ from config_loader import ConfigLoader
 from Session import Session
 from QueueManager import QueueManager
 
-LISTENER_LIMIT = 5
+# Konfigurace logování
+logging.basicConfig(
+    filename='server_log.txt',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 
 class ServerIEC104:
@@ -27,6 +33,8 @@ class ServerIEC104:
         Returns: None
         Exceptions: None
         """
+        self.task_check_alive_queue = None
+        self._server = None
         self.config_loader = ConfigLoader('./v4.0/config_parameters.json')
 
         self.ip = self.config_loader.config['server']['ip_address']
@@ -95,13 +103,13 @@ class ServerIEC104:
 
     async def listen(self):
         print(f"Naslouchám na {self.ip}:{self.port}")
+        logging.info(f"Naslouchám na {self.ip}:{self.port}")
         try:
             self._server = await asyncio.start_server(
                 self.handle_client,
                 self.ip,
                 self.port,
             )
-
 
         except Exception as e:
             print(e)
@@ -110,55 +118,68 @@ class ServerIEC104:
     Handle client.
     Args: reader, writer
     """
-
-    async def handle_client(self, reader, writer):
-
-        client_address, client_port = writer.get_extra_info('peername')
-
+    async def handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
         """
-        Create queue if not exist for that client.
+        This function is called when a new client connects to the server. It creates a new QueueManager object for the client if one does not already exist, and adds it to the self.clients dictionary.
+        Args:
+            reader (asyncio.StreamReader): A stream reader for the incoming data from the client.
+            writer (asyncio.StreamWriter): A stream writer for sending data to the client.
         """
-        if client_address not in self.clients:
-            self.clients[client_address] = QueueManager(client_address, 'server')
-            print(f"vytvorena nova fronta")
-            queue = self.clients[client_address]
+        client_addr = writer.get_extra_info('peername')[0]
+        """
+        Get the IP address of the client that connected to the server.
+        """
+        if client_addr not in self.clients:
+            self.clients[client_addr] = QueueManager(client_addr, 'server')
+            print(f"Created new queue for client {client_addr}")
+            logging.info(f"Created new queue for client {client_addr}")
+            queue = self.clients[client_addr]
 
             if isinstance(queue, QueueManager):
+                # Start the queue processing task
                 self.tasks.append(asyncio.create_task(queue.start()))
 
-                # get own reference for check_alive_sessions in QueueManager class
+                # Get a reference to the task that checks for inactive sessions
                 self.task_check_alive_queue = asyncio.create_task(
-                    queue.check_alive_sessions(),
+                    queue.check_alive_sessions()
                 )
                 self.tasks.append(self.task_check_alive_queue)
 
-        queue = self.clients[client_address]
+        queue = self.clients[client_addr]
 
+        # Get the functions to call for handling incoming APDU packets and timeout events
         callback_handle_apdu = queue.handle_apdu
-        callback_timeouts = queue.handle_timeout
+        callback_timeouts = (
+            queue.handle_timeout_t0,
+            queue.handle_timeout_t1,
+            queue.handle_timeout_t2,
+            queue.handle_timeout_t3,
+        )
+
         if isinstance(queue, QueueManager):
+            # Create a new Session object for the client
+            session = Session(
+                client_addr,
+                client_port,
+                reader,
+                writer,
+                self.session_params,
+                callback_handle_apdu,
+                callback_timeouts,
+                'server'
+            )
 
-            session = Session(client_address,
-                              client_port,
-                              reader,
-                              writer,
-                              self.session_params,
-                              queue,
-                              callback_handle_apdu,
-                              callback_timeouts,
-                              'server')
-
-            queue.add_session(session, )
-            print(f"Spojení navázáno: s {client_address, client_port}, "
-                  "(Celkem spojení: "
-                  f"{queue.get_number_of_connected_sessions()}))")
+            # Add the session to the queue
+            queue.add_session(session)
+            print(f"Connection established with {client_addr}:{client_port} "
+                  f"(Total connections: {queue.get_number_of_connected_sessions()})")
 
             try:
+                # Start the session
                 await session.start()
 
             except Exception as e:
-                print(f"Exception {e}")
-                pass
+                print(f"Exception: {e}")
 
     async def run(self):
 
@@ -226,9 +247,9 @@ class ServerIEC104:
 
 
 async def main():
-    server = ServerIEC104()
-    await server.listen()
-    await server.run()
+    my_server = ServerIEC104()
+    await my_server.listen()
+    await my_server.run()
 
 
 if __name__ == '__main__':

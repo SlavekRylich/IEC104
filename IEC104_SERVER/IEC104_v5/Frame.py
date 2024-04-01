@@ -9,11 +9,11 @@ class Frame:
     _instances = []
     _start_byte = acpi.START_BYTE
 
-    def __init__(self, type='Frame'):
+    def __init__(self, type_frame='Frame'):
         self._header_length = acpi.ACPI_HEADER_LENGTH
         self._total_length = self._header_length
         self._structure = None
-        self._type_in_word = type
+        self._type_in_word = type_frame
         self._direction = None
 
         Frame._id += 1
@@ -34,11 +34,11 @@ class Frame:
         return self._type_in_word
 
     @classmethod
-    def remove_instance(cls, id=0, instance=None):
+    def remove_instance(cls, id_instance=0, instance=None):
         instances_to_remove = []
 
         for inst in cls._instances:
-            if inst._id == id or inst == instance:
+            if inst._id == id_instance or inst == instance:
                 instances_to_remove.append(inst)
 
         for inst in instances_to_remove:
@@ -47,20 +47,21 @@ class Frame:
         return instances_to_remove
 
     @classmethod  # instance s indexem 0 neexistuje ( je rezevrována* )
-    def remove_instance(cls, id=0, instance=None):
-        if not id:  # zde rezerva*
+    def remove_instance(cls, id_instance=0, instance=None):
+        if not id_instance:  # zde rezerva*
             if instance:
                 cls._instances.remove(instance)
                 return True
             else:
                 return False
 
-        if id < len(cls._instances):
-            del cls._instances[id]
+        if id_instance < len(cls._instances):
+            del cls._instances[id_instance]
             return True
         else:
             return False
 
+    @classmethod
     def get_all_instances(cls):
         return cls._instances
 
@@ -117,8 +118,7 @@ class Frame:
                 break
             shift += 8
         return number
-
-
-@property
-def start_byte(self):
-    return self._start_byte
+    #
+    # @classmethod
+    # def start_byte(cls):
+    #     return Frame._start_byte
