@@ -35,7 +35,7 @@ class ServerIEC104:
         """
         self.task_check_alive_queue = None
         self._server = None
-        self.config_loader = ConfigLoader('./v4.0/config_parameters.json')
+        self.config_loader = ConfigLoader('../IEC104_v5/config_parameters.json')
 
         self.ip = self.config_loader.config['server']['ip_address']
         self.port = self.config_loader.config['server']['port']
@@ -125,7 +125,7 @@ class ServerIEC104:
             reader (asyncio.StreamReader): A stream reader for the incoming data from the client.
             writer (asyncio.StreamWriter): A stream writer for sending data to the client.
         """
-        client_addr = writer.get_extra_info('peername')[0]
+        client_addr, client_port = writer.get_extra_info('peername')
         """
         Get the IP address of the client that connected to the server.
         """
@@ -136,20 +136,21 @@ class ServerIEC104:
             queue = self.clients[client_addr]
 
             if isinstance(queue, QueueManager):
+                pass
                 # Start the queue processing task
-                self.tasks.append(asyncio.create_task(queue.start()))
+                # self.tasks.append(asyncio.create_task(queue.start()))
 
                 # Get a reference to the task that checks for inactive sessions
-                self.task_check_alive_queue = asyncio.create_task(
-                    queue.check_alive_sessions()
-                )
-                self.tasks.append(self.task_check_alive_queue)
+                # self.task_check_alive_queue = asyncio.create_task(
+                #     queue.check_alive_sessions()
+                # )
+                # self.tasks.append(self.task_check_alive_queue)
 
         queue = self.clients[client_addr]
 
         # Get the functions to call for handling incoming APDU packets and timeout events
-        callback_handle_apdu = queue.handle_apdu
-        callback_timeouts = (
+        callback_handle_apdu = queue.on_handle_message
+        callback_timeouts_tuple = (
             queue.handle_timeout_t0,
             queue.handle_timeout_t1,
             queue.handle_timeout_t2,
@@ -165,7 +166,8 @@ class ServerIEC104:
                 writer,
                 self.session_params,
                 callback_handle_apdu,
-                callback_timeouts,
+                callback_timeouts_tuple,
+                queue.send_buffer,
                 'server'
             )
 
@@ -182,18 +184,18 @@ class ServerIEC104:
                 print(f"Exception: {e}")
 
     async def run(self):
+        pass
+        # self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
 
-        self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
-
-        # while True:
-        try:
-            await asyncio.gather(self.task_periodic_event_check,
-                                 *(task for task in self.tasks))
-
-            await self._server.serve_forever()
-
-        except Exception as e:
-            print(f"Exception {e}")
+        # # while True:
+        # try:
+        #     await asyncio.gather(self.task_periodic_event_check,
+        #                          *(task for task in self.tasks))
+        #
+        await self._server.serve_forever()
+        #
+        # except Exception as e:
+        #     print(f"Exception {e}")
             # continue
 
             # await asyncio.sleep(self.async_time)

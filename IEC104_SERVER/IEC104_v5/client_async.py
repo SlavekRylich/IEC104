@@ -21,6 +21,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 class IEC104Client(object):
     def __init__(self):
+        self.task_check_alive_queue = None
         self.queue = None
         self.active_session = None
         self.servers = {}
@@ -57,7 +58,7 @@ class IEC104Client(object):
 
         self.data_list = [self.data2, self.data2]  # define static data
 
-        config_loader = ConfigLoader('./v4.0/config_parameters.json')
+        config_loader = ConfigLoader('../IEC104_v5/config_parameters.json')
 
         self.server_ip = config_loader.config['server']['ip_address']
         self.server_port = config_loader.config['server']['port']
@@ -125,11 +126,13 @@ class IEC104Client(object):
             print(f"Navázáno {client_address}:{client_port}"
                   f"-->{self.server_ip}:{self.server_port}")
 
-            callback_handle_apdu = self.queue.handle_apdu
-            callback_timeouts = (self.queue.handle_timeout_t0,
-                                 self.queue.handle_timeout_t1,
-                                 self.queue.handle_timeout_t2,
-                                 self.queue.handle_timeout_t3)
+            callback_handle_apdu = self.queue.on_handle_message
+            callback_timeouts_tuple = (
+                self.queue.handle_timeout_t0,
+                self.queue.handle_timeout_t1,
+                self.queue.handle_timeout_t2,
+                self.queue.handle_timeout_t3,
+            )
 
             new_session = Session.Session(self.server_ip,
                                           self.server_port,
@@ -137,7 +140,8 @@ class IEC104Client(object):
                                           self.writer,
                                           self.session_params,
                                           callback_handle_apdu,
-                                          callback_timeouts,
+                                          callback_timeouts_tuple,
+                                          self.queue.send_buffer,
                                           'client')
 
             self.queue.add_session(new_session)
@@ -160,7 +164,7 @@ class IEC104Client(object):
         self._out_queue = self.queue.out_queue
         self._send_buffer = self.queue.send_buffer
         self._recv_buffer = self.queue.recv_buffer
-        self.task_queue = asyncio.create_task(self.queue.start())
+        # self.task_queue = asyncio.create_task(self.queue.start())
 
         try:
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
@@ -178,18 +182,21 @@ class IEC104Client(object):
                     self.periodic_event_check()
                 )
 
-                self.task_handle_response = asyncio.create_task(
-                    self.queue.handle_response_for_client(self.active_session)
-                )
+                # self.task_handle_response = asyncio.create_task(
+                #     self.queue.handle_response_for_client(self.active_session)
+                # )
 
-                self.task_check_alive_queue = asyncio.create_task(
-                    self.queue.check_alive_sessions(),
-                )
-                await asyncio.gather(self.task_periodic_event_check,
-                                     self.task_queue,
-                                     self.task_check_alive_queue)
+                # self.task_check_alive_queue = asyncio.create_task(
+                #     self.queue.check_alive_sessions(),
+                # )
+                # await asyncio.gather(self.task_periodic_event_check,
+                #                      self.task_queue,
+                #                      self.task_check_alive_queue)
+
+                await asyncio.gather(self.task_periodic_event_check)
 
                 # await asyncio.sleep(self.async_time)
+                await self.active_session.start()
 
         except Exception as e:
             print(f"Exception: {e}")
@@ -213,7 +220,7 @@ class IEC104Client(object):
                 if self.no_overflow > 2:
                     self.no_overflow = 0
 
-                    await self.task_handle_response
+                    # await self.task_handle_response
                     print(f"no_overflow bezi")
 
                 await asyncio.sleep(self.async_time)
@@ -225,6 +232,7 @@ class IEC104Client(object):
             except Exception as e:
                 print(f"Exception {e}")
 
+            await asyncio.sleep(self.async_time)
 
 if __name__ == "__main__":
 

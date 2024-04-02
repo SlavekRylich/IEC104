@@ -1,0 +1,69 @@
+2024-04-02 21:55:56,794 - DEBUG - Using proactor: IocpProactor
+2024-04-02 21:55:56,800 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-02 21:56:22,977 - DEBUG - Using proactor: IocpProactor
+2024-04-02 21:56:22,978 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-02 21:57:29,038 - DEBUG - Using proactor: IocpProactor
+2024-04-02 21:57:29,039 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-02 21:58:11,684 - DEBUG - Using proactor: IocpProactor
+2024-04-02 21:58:11,687 - INFO - Created new queue for client 127.0.0.1
+2024-04-02 22:04:59,515 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:04:59,516 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-02 22:05:01,699 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:05:01,702 - INFO - Created new queue for client 127.0.0.1
+2024-04-02 22:05:28,952 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 866, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-02 22:05:28,954 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 883, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-02 22:05:36,216 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 860, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-02 22:05:36,218 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 866, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-02 22:05:36,219 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 883, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-02 22:07:51,936 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:07:51,937 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-02 22:07:54,916 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:07:54,920 - INFO - Created new queue for client 127.0.0.1
+2024-04-02 22:10:14,615 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:10:14,617 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-02 22:10:32,895 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:10:32,898 - INFO - Created new queue for client 127.0.0.1
+2024-04-02 22:12:56,426 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:12:56,428 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-02 22:12:59,208 - DEBUG - Using proactor: IocpProactor
+2024-04-02 22:12:59,212 - INFO - Created new queue for client 127.0.0.1

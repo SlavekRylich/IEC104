@@ -90,12 +90,13 @@ class QueueManager:
 
     async def start(self):
         try:
-            self.__tasks.append(asyncio.create_task(self.check_in_queue()))
-            # self.__tasks.append(asyncio.create_task(self.check_out_queue()))
-            self.__tasks.append(asyncio.create_task(self.isResponse()))
-            self.__tasks.append(asyncio.create_task(self.check_alive_sessions()))
+            pass
+            # self.__tasks.append(asyncio.create_task(self.check_in_queue()))
+            # # self.__tasks.append(asyncio.create_task(self.check_out_queue()))
+            # self.__tasks.append(asyncio.create_task(self.isResponse()))
+            # self.__tasks.append(asyncio.create_task(self.check_alive_sessions()))
 
-            await asyncio.gather(*self.__tasks)
+            # await asyncio.gather(*self.__tasks)
         except Exception as e:
             print(f"Exception {e}")
 
@@ -163,6 +164,43 @@ class QueueManager:
             session = None
             message = None
 
+    async def on_handle_message(self, session: Session, apdu: Frame = None):
+        """
+        This function is triggered when a new message is received. Redirects apdu for handle apdu and update state session
+        or if apdu is None then it be update state session only.
+
+        Args:
+            session (Session): The session that received the message.
+            apdu (Frame): The APDU frame that was received.
+
+        Returns:
+            None
+
+        """
+        if apdu is not None:
+
+            # if apdu is Iformat save to buffer for acknowledgment
+            if isinstance(apdu, IFormat):
+                self.__recv_buffer.add_frame(apdu.ssn, apdu)
+
+            if self.__whoami == 'server':
+                await self.update_state_machine_server(session)
+                await self.handle_apdu(session, apdu)
+            else:
+                await self.handle_response_for_client(session)
+                await self.handle_apdu(session, apdu)
+                await self.handle_response_for_client(session)
+
+        else:
+            if self.__whoami == 'server':
+                await self.update_state_machine_server(session)
+            else:
+                await self.update_state_machine_client(session)
+                await self.handle_response_for_client(session)
+
+        await asyncio.sleep(self.__async_time)
+        print(f"Finish_check_in_queue")
+
     # is handled in session
     async def check_out_queue(self):
         while not self.__flag_stop_tasks:
@@ -227,7 +265,7 @@ class QueueManager:
         self.__flag_delete = True
 
     # for client and server
-    async def handle_apdu(self, session, apdu):
+    async def handle_apdu(self, session: Session, apdu: Frame = None):
 
         print(f"Starting async handle_apdu with {apdu}")
         # if isinstance(self._session, Session):
