@@ -1,0 +1,66 @@
+2024-04-03 21:34:44,350 - INFO - Toto je informaèní zpráva
+2024-04-03 21:34:44,350 - WARNING - Toto je varovná zpráva
+2024-04-03 21:34:44,350 - ERROR - Toto je chybová zpráva
+2024-04-03 21:34:44,361 - INFO - Toto je informaèní zpráva
+2024-04-03 21:34:44,361 - WARNING - Toto je varovná zpráva
+2024-04-03 21:34:44,361 - ERROR - Toto je chybová zpráva
+2024-04-03 21:34:44,361 - INFO - Toto je informaèní zpráva
+2024-04-03 21:34:44,361 - WARNING - Toto je varovná zpráva
+2024-04-03 21:34:44,361 - ERROR - Toto je chybová zpráva
+2024-04-03 21:34:44,362 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:34:44,363 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:34:47,223 - INFO - Toto je informaèní zpráva
+2024-04-03 21:34:47,223 - WARNING - Toto je varovná zpráva
+2024-04-03 21:34:47,223 - ERROR - Toto je chybová zpráva
+2024-04-03 21:34:47,223 - INFO - Toto je informaèní zpráva
+2024-04-03 21:34:47,224 - WARNING - Toto je varovná zpráva
+2024-04-03 21:34:47,224 - ERROR - Toto je chybová zpráva
+2024-04-03 21:34:47,231 - INFO - Toto je informaèní zpráva
+2024-04-03 21:34:47,231 - WARNING - Toto je varovná zpráva
+2024-04-03 21:34:47,231 - ERROR - Toto je chybová zpráva
+2024-04-03 21:34:47,232 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:34:47,234 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:35:05,837 - INFO - Toto je informaèní zpráva
+2024-04-03 21:35:05,837 - WARNING - Toto je varovná zpráva
+2024-04-03 21:35:05,837 - ERROR - Toto je chybová zpráva
+2024-04-03 21:35:05,839 - INFO - Toto je informaèní zpráva
+2024-04-03 21:35:05,839 - WARNING - Toto je varovná zpráva
+2024-04-03 21:35:05,839 - ERROR - Toto je chybová zpráva
+2024-04-03 21:35:05,839 - INFO - Toto je informaèní zpráva
+2024-04-03 21:35:05,839 - WARNING - Toto je varovná zpráva
+2024-04-03 21:35:05,839 - ERROR - Toto je chybová zpráva
+2024-04-03 21:35:05,840 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:35:05,841 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:35:08,177 - INFO - Toto je informaèní zpráva
+2024-04-03 21:35:08,177 - WARNING - Toto je varovná zpráva
+2024-04-03 21:35:08,177 - ERROR - Toto je chybová zpráva
+2024-04-03 21:35:08,177 - INFO - Toto je informaèní zpráva
+2024-04-03 21:35:08,177 - WARNING - Toto je varovná zpráva
+2024-04-03 21:35:08,178 - ERROR - Toto je chybová zpráva
+2024-04-03 21:35:08,183 - INFO - Toto je informaèní zpráva
+2024-04-03 21:35:08,183 - WARNING - Toto je varovná zpráva
+2024-04-03 21:35:08,183 - ERROR - Toto je chybová zpráva
+2024-04-03 21:35:08,184 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:35:08,187 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:36:21,585 - INFO - Toto je informaèní zpráva
+2024-04-03 21:36:21,585 - WARNING - Toto je varovná zpráva
+2024-04-03 21:36:21,585 - ERROR - Toto je chybová zpráva
+2024-04-03 21:36:21,587 - INFO - Toto je informaèní zpráva
+2024-04-03 21:36:21,587 - WARNING - Toto je varovná zpráva
+2024-04-03 21:36:21,587 - ERROR - Toto je chybová zpráva
+2024-04-03 21:36:21,587 - INFO - Toto je informaèní zpráva
+2024-04-03 21:36:21,587 - WARNING - Toto je varovná zpráva
+2024-04-03 21:36:21,588 - ERROR - Toto je chybová zpráva
+2024-04-03 21:36:21,588 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:36:21,588 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:36:23,432 - INFO - Toto je informaèní zpráva
+2024-04-03 21:36:23,432 - WARNING - Toto je varovná zpráva
+2024-04-03 21:36:23,432 - ERROR - Toto je chybová zpráva
+2024-04-03 21:36:23,432 - INFO - Toto je informaèní zpráva
+2024-04-03 21:36:23,432 - WARNING - Toto je varovná zpráva
+2024-04-03 21:36:23,432 - ERROR - Toto je chybová zpráva
+2024-04-03 21:36:23,438 - INFO - Toto je informaèní zpráva
+2024-04-03 21:36:23,438 - WARNING - Toto je varovná zpráva
+2024-04-03 21:36:23,438 - ERROR - Toto je chybová zpráva
+2024-04-03 21:36:23,439 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:36:23,441 - INFO - Created new queue for client 127.0.0.1

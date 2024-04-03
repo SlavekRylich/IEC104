@@ -1,9 +1,11 @@
-from Frame import Frame
 import struct
+
 import acpi
+from Frame import Frame
 
 
 class UFormat(Frame):
+
     def __init__(self, type_frame=None, direction='OUT'):
         super().__init__('U-format')
         self.__type_int = type_frame
@@ -51,16 +53,16 @@ class UFormat(Frame):
             self.type = type_frame
 
             # Doplnění délky do hlavičky
-        packed_header = struct.pack(f"{'B' * (self._header_length + 2)}",
-                                    Frame.start_byte,  # start byte
-                                    self._total_length,  # Total Length pouze hlavička
-                                    self.__type_int,  # 1. ridici pole
-                                    0,  # 2. ridici pole
-                                    0,  # 3. ridici pole
-                                    0,  # 4. ridici pole
-                                    )
-        self._structure = packed_header
-        return packed_header
+        packet = struct.pack(f"{'B' * (self._header_length + 2)}",
+                             Frame.start_byte(),  # start byte
+                             self._total_length,  # Total Length pouze hlavička
+                             self.__type_int,  # 1. ridici pole
+                             0,  # 2. ridici pole
+                             0,  # 3. ridici pole
+                             0,  # 4. ridici pole
+                             )
+        self._structure = packet
+        return packet
 
     def __str__(self):
         return f"ID: {self.id}, {self._direction} Typ: {self.type_in_word}: {self.type_of_Uformat_Str}"

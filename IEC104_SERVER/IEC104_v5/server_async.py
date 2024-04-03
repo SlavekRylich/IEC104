@@ -13,12 +13,17 @@ from config_loader import ConfigLoader
 from Session import Session
 from QueueManager import QueueManager
 
-# Konfigurace logování
+# Nastavení úrovně logování
 logging.basicConfig(
-    filename='server_log.txt',
+    filename='server_async.txt',
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
+# Logování zprávy
+logging.info("Toto je informační zpráva")
+logging.warning("Toto je varovná zpráva")
+logging.error("Toto je chybová zpráva")
 
 
 class ServerIEC104:
@@ -118,6 +123,7 @@ class ServerIEC104:
     Handle client.
     Args: reader, writer
     """
+
     async def handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
         """
         This function is called when a new client connects to the server. It creates a new QueueManager object for the client if one does not already exist, and adds it to the self.clients dictionary.
@@ -196,9 +202,9 @@ class ServerIEC104:
         #
         # except Exception as e:
         #     print(f"Exception {e}")
-            # continue
+        # continue
 
-            # await asyncio.sleep(self.async_time)
+        # await asyncio.sleep(self.async_time)
 
     async def periodic_event_check(self):
 

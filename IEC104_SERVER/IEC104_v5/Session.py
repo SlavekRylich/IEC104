@@ -14,13 +14,19 @@ from State import StateConn, StateTrans
 # from Packet_buffer import PacketBuffer
 # from Timeout import Timeout
 
-
-# Konfigurace logování
+# Nastavení úrovně logování
 logging.basicConfig(
-    filename='server_log.txt',
+    filename='session.txt',
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
+# Logování zprávy
+logging.info("Toto je informační zpráva")
+logging.warning("Toto je varovná zpráva")
+logging.error("Toto je chybová zpráva")
+
+
 
 
 # # Příklad logování
@@ -54,8 +60,8 @@ class Session:
         # features of session
         self.__reader = reader
         self.__writer = writer
-        self.__ip = ip
-        self.__port = port
+        self.__ip_dst = ip
+        self.__port_dst = port
 
         # callback
         self.__callback_handle_apdu = callback_handle_apdu
@@ -158,15 +164,19 @@ class Session:
 
     @property
     def ip(self):
-        return self.__ip
+        return self.__ip_dst
 
     @property
     def port(self):
-        return self.__port
+        return self.__port_dst
 
     @property
     def id(self):
         return self.__id
+
+    @property
+    def flag_stop_tasks(self):
+        return self.__flag_stop_tasks
 
     @property
     def event_queue_out(self):
@@ -272,8 +282,8 @@ class Session:
     ################################################
     ## RECEIVE FRAME
     async def handle_messages(self):
-        # while not self.__flag_stop_tasks:
-        if not self.__flag_stop_tasks:
+        while not self.__flag_stop_tasks:
+        # if not self.__flag_stop_tasks:
 
             # await asyncio.sleep(0.01)  # kritický bod pro rychlost aplikace
             try:
@@ -282,19 +292,18 @@ class Session:
                 # zde změřit zda timeout nedělá problém zbrždění
                 header = await asyncio.wait_for(self.__reader.read(2), timeout=self.__timeout_t1)
                 # header = await self.__reader.read(2)
-                header = await self.__reader.read(2)
 
                 if header:
                     start_byte, frame_length = header
 
                     # identifikace IEC 104
-                    if start_byte == Frame.start_byte:
+                    if start_byte == Frame.start_byte():
 
                         apdu = await self.__reader.read(frame_length)
                         if len(apdu) == frame_length:
                             new_apdu = Parser.parser(apdu, frame_length)
 
-                            print(f"{time.ctime()} - Receive frame: {new_apdu}")
+                            print(f"{time.strftime('%X')}-Received from port: {self.port} - frame: {new_apdu}")
 
                             # aktualizace poslední aktivity
                             # self.__timestamp_t0.start()
@@ -326,7 +335,7 @@ class Session:
                             new_apdu = None
                             frame_length = None
                             # return new_apdu
-                            self.__task = asyncio.ensure_future(self.handle_messages())
+                            # self.__task = asyncio.ensure_future(self.handle_messages())
                 else:
                     print(f"zadne prichozi zpravy")
 
@@ -335,14 +344,16 @@ class Session:
                     self.flag_session = 'ACTIVE_TERMINATION'
                     # allow to event
                     # self.__event_update.set()
-                    # break
+                    break
 
                     # přijat nějaký neznámý formát
+
             except asyncio.TimeoutError:
                 print(f'Klient {self} neposlal žádná data.')
                 # if session is still connect, specially in stopped state
-                if self.__connection_state is not 'DISCONNECTED':
-                    task = asyncio.ensure_future(self.handle_messages())
+                if self.__connection_state != 'DISCONNECTED':
+                    # task = asyncio.ensure_future(self.handle_messages())
+                    pass
 
             except Exception as e:
                 print(f"Exception v handle_messages {e}")
@@ -366,10 +377,8 @@ class Session:
 
                 # print("\x1b[31mToto je červený text.\x1b[0m")
                 if frame is not None:
-                    print(f"{time.ctime()} - Send frame: {frame}")
+                    print(f"{time.strftime('%X')}-Send to port: {self.port} - frame: {frame}")
                     self.__writer.write(frame.serialize())
-                    print("\x1b[31mToto již nikdy nevytiskne "
-                          "páč tu funkci nevolám s parametrem.\x1b[0m")
                     await self.__writer.drain()
 
                 # else:
@@ -392,7 +401,7 @@ class Session:
                 print(f"Exception {e}")
 
             # reset local var 
-            if frame:
+            if frame is not None:
                 frame = None
 
                 # update timer t1, after frame
@@ -408,7 +417,7 @@ class Session:
 
     @property
     def connection_info(self):
-        return self.__ip, self.__port, self.__connection_state, self.__transmission_state, self._timeout
+        return self.__ip_dst, self.__port_dst, self.__connection_state, self.__transmission_state, self._timeout
 
     # async def check_for_timeouts(self):
     #     while not self.__flag_stop_tasks:
@@ -748,7 +757,7 @@ class Session:
         pass
 
     def __str__(self):
-        return (f"SessionID: {self.id}, ip: {self.ip}, port: {self.port}, connected: {self.is_connected}")
+        return (f"SessionID: {self.id}, ip: {self.ip}, port: {self.port}, states: {self.connection_state}, {self.transmission_state}")
 
     def __exit__(*exc_info):
         pass

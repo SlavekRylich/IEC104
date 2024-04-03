@@ -64,9 +64,11 @@ class Frame:
     @classmethod
     def get_all_instances(cls):
         return cls._instances
-
+    def new_method(self):
+        pass
     def serialize(self):
-        return False  # it will return false because method is overrided
+        print(f"This never become")
+        # it will return false because method is overrided
 
     @property
     def length(self):
@@ -90,8 +92,9 @@ class Frame:
         # here is specify format for each format 
         self._structure = structure
 
-    def start_byte(self):
-        return self._start_byte
+    @classmethod
+    def start_byte(cls):
+        return acpi.START_BYTE
 
     def __str__(self):
         return f"Typ: {self._type_in_word}, Data in bytes: {self.serialize()}"

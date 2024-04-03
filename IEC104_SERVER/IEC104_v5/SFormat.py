@@ -1,4 +1,5 @@
 import struct
+
 from Frame import Frame
 
 
@@ -19,7 +20,7 @@ class SFormat(Frame):
 
         # Doplnění délky do hlavičky
         packed_header = struct.pack(f"{'B' * (self._header_length + 2)}",
-                                    Frame.start_byte,  # start byte
+                                    Frame.start_byte(),  # start byte
                                     self._total_length,  # Total Length pouze hlavička
                                     1,  # 1. ridici pole
                                     0,  # 2. ridici pole

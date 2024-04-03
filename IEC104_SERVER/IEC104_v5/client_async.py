@@ -15,8 +15,18 @@ from IFormat import IFormat
 from SFormat import SFormat
 from UFormat import UFormat
 
-LOG = logging.getLogger()
-logging.basicConfig(level=logging.DEBUG)
+
+# Nastavení úrovně logování
+logging.basicConfig(
+    filename='client_async.txt',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+# Logování zprávy
+logging.info("Toto je informační zpráva")
+logging.warning("Toto je varovná zpráva")
+logging.error("Toto je chybová zpráva")
 
 
 class IEC104Client(object):
@@ -115,10 +125,10 @@ class IEC104Client(object):
 
         return k, w, t0, t1, t2, t3
 
-    async def new_session(self, ip, port):
+    async def new_session(self, ip, port_num):
         try:
             self.reader, self.writer = await asyncio.wait_for(
-                asyncio.open_connection(ip, port),
+                asyncio.open_connection(ip, port_num),
                 timeout=self.timeout_t0
             )
 
@@ -145,8 +155,9 @@ class IEC104Client(object):
                                           'client')
 
             self.queue.add_session(new_session)
-            self.active_session = self.queue.Select_active_session()
-            return self.active_session
+            # active_session = self.queue.Select_active_session()
+            active_session = new_session
+            return active_session
 
         except asyncio.TimeoutError:
             print(f"{time.ctime()} - Nastala chyba: {self.active_session}")
@@ -156,14 +167,11 @@ class IEC104Client(object):
 
     async def run_client(self, ip, port_num):
 
-        loop = asyncio.get_event_loop_policy().get_event_loop()
-        self.set_loop(loop)
-
-        self.queue = QueueManager(ip)
-        self._in_queue = self.queue.in_queue
-        self._out_queue = self.queue.out_queue
-        self._send_buffer = self.queue.send_buffer
-        self._recv_buffer = self.queue.recv_buffer
+        self.queue = QueueManager(ip, whoami='client')
+        # self._in_queue = self.queue.in_queue
+        # self._out_queue = self.queue.out_queue
+        # self._send_buffer = self.queue.send_buffer
+        # self._recv_buffer = self.queue.recv_buffer
         # self.task_queue = asyncio.create_task(self.queue.start())
 
         try:
@@ -178,13 +186,13 @@ class IEC104Client(object):
                 # set start session flag
                 self.active_session.flag_session = 'START_SESSION'
 
-                self.task_periodic_event_check = asyncio.create_task(
-                    self.periodic_event_check()
-                )
-
-                # self.task_handle_response = asyncio.create_task(
-                #     self.queue.handle_response_for_client(self.active_session)
+                # self.task_periodic_event_check = asyncio.create_task(
+                #     self.periodic_event_check()
                 # )
+
+                self.task_handle_response = asyncio.create_task(
+                    self.queue.handle_response_for_client(self.active_session)
+                )
 
                 # self.task_check_alive_queue = asyncio.create_task(
                 #     self.queue.check_alive_sessions(),
@@ -192,11 +200,13 @@ class IEC104Client(object):
                 # await asyncio.gather(self.task_periodic_event_check,
                 #                      self.task_queue,
                 #                      self.task_check_alive_queue)
-
-                await asyncio.gather(self.task_periodic_event_check)
+                # #
+                # await asyncio.gather(self.task_periodic_event_check)
 
                 # await asyncio.sleep(self.async_time)
+
                 await self.active_session.start()
+                await self.task_handle_response
 
         except Exception as e:
             print(f"Exception: {e}")
@@ -233,6 +243,7 @@ class IEC104Client(object):
                 print(f"Exception {e}")
 
             await asyncio.sleep(self.async_time)
+
 
 if __name__ == "__main__":
 

@@ -87,7 +87,7 @@ class IFormat(Frame):
 
         # + 2 because start_byte and length
         packed_header = struct.pack(f"{'B' * (self._header_length + 2)}",
-                                    Frame._start_byte,  # start byte
+                                    Frame.start_byte(),  # start byte
                                     self._total_length,  # Total Length pouze hlavička
                                     first,  # 1. ridici pole
                                     second,  # 2. ridici pole

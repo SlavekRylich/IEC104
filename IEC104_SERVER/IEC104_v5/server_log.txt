@@ -67,3 +67,2153 @@ AttributeError: 'NoneType' object has no attribute 'send_frame'
 2024-04-02 22:12:56,428 - INFO - Naslouchám na 127.0.0.1:2404
 2024-04-02 22:12:59,208 - DEBUG - Using proactor: IocpProactor
 2024-04-02 22:12:59,212 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 14:54:10,254 - DEBUG - Using proactor: IocpProactor
+2024-04-03 14:54:10,258 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 14:54:17,265 - DEBUG - Using proactor: IocpProactor
+2024-04-03 14:54:17,268 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:01:46,351 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 860, in handle_timeout_t0
+    print(f"{actual_transmission_state}")
+            ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:01:46,361 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 866, in handle_timeout_t1
+    print(f"Exception {e}")
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:01:46,361 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 883, in handle_timeout_t3
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:01:47,874 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:01:47,876 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:01:50,193 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:01:50,196 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:04:19,229 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:04:19,231 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:06:39,102 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:06:39,104 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:06:42,306 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:06:42,308 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:07:05,395 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:07:05,396 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:07:14,744 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:07:14,751 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:07:37,555 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:07:37,557 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:07:40,131 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:07:40,133 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:08:10,959 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:08:11,505 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:09:43,895 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:09:43,898 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:09:43,898 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:09:45,398 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:09:45,400 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:09:53,453 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:10:01,858 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:15:52,762 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:15:52,764 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:15:52,765 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:15:55,484 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:15:55,485 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:16:05,294 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:16:05,301 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:17:49,187 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:17:49,189 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:17:49,189 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:17:50,923 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:17:50,924 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:17:54,135 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:17:54,138 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:18:49,913 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:18:49,915 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:18:49,916 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:18:52,476 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:18:52,478 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:18:55,453 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:18:55,456 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:19:30,376 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:19:30,377 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:19:30,378 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:19:31,820 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:19:31,822 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:19:34,551 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:19:34,554 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:23:37,723 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:44:46,577 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:45:45,616 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-120' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:45:45,618 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-121' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:45:45,618 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-123' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:45:45,618 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-14' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:45:45,619 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-15' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:45:45,619 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-17' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:45:45,620 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:45:45,620 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:45:45,620 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:45:47,481 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:45:47,482 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:46:09,061 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:46:09,067 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:48:45,570 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:50:14,570 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:50:38,716 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-31' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:50:38,717 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-33' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:50:38,718 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:50:38,718 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-21' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:50:38,719 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-23' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:50:38,719 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 15:50:38,720 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 15:50:38,720 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 15:51:02,017 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:51:02,019 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:51:04,657 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:51:04,660 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:51:23,116 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:51:23,121 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:51:28,280 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:51:28,285 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:51:47,370 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:55:00,221 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:55:00,226 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:55:03,031 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:55:03,036 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 15:56:16,612 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:56:16,617 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 15:56:18,718 - DEBUG - Using proactor: IocpProactor
+2024-04-03 15:56:18,722 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:01:11,908 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:01:11,909 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:01:13,774 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:01:13,777 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:01:13,778 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-16' coro=<QueueManager.on_handle_message() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py:167> exception=AttributeError("'Session' object has no attribute '_QueueManager__flag_stop_tasks'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 187, in on_handle_message
+    await self.update_state_machine_server(session)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 586, in update_state_machine_server
+    if not session.__flag_stop_tasks:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute '_QueueManager__flag_stop_tasks'
+2024-04-03 16:01:16,273 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-23' coro=<QueueManager.on_handle_message() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py:167> exception=AttributeError("'Session' object has no attribute '_QueueManager__flag_stop_tasks'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 187, in on_handle_message
+    await self.update_state_machine_server(session)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 586, in update_state_machine_server
+    if not session.__flag_stop_tasks:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute '_QueueManager__flag_stop_tasks'
+2024-04-03 16:01:28,775 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:01:28,806 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:01:33,785 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:01:33,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-15' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:01:43,783 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:01:43,784 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-12' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:01:56,352 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:01:56,353 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:01:56,353 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-22' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:07:25,902 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:07:25,907 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:07:28,761 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:07:28,766 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:08:00,097 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-16' coro=<QueueManager.on_handle_message() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py:167> exception=AttributeError("'Session' object has no attribute '_QueueManager__flag_stop_tasks'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 187, in on_handle_message
+    await self.update_state_machine_server(session)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 586, in update_state_machine_server
+    if not session.__flag_stop_tasks:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute '_QueueManager__flag_stop_tasks'
+2024-04-03 16:08:00,114 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:08:00,118 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:08:00,122 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:09:10,216 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-23' coro=<QueueManager.on_handle_message() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py:167> exception=AttributeError("'Session' object has no attribute '_QueueManager__flag_stop_tasks'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 187, in on_handle_message
+    await self.update_state_machine_server(session)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 586, in update_state_machine_server
+    if not session.__flag_stop_tasks:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute '_QueueManager__flag_stop_tasks'
+2024-04-03 16:13:35,273 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:13:35,274 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:13:37,764 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:13:37,766 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:13:52,783 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:13:52,785 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:13:57,235 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:14:26,887 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:14:26,888 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:14:59,230 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:14:59,238 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:15:14,248 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:15:19,245 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:15:25,994 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:15:29,249 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:15:30,986 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-15' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:15:40,997 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-12' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:17:21,080 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:17:21,081 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:17:21,081 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-22' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:17:22,927 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:17:22,929 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:17:25,505 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:17:25,511 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:17:40,516 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:17:40,519 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:17:45,512 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:17:45,513 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-15' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:17:55,521 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:17:55,522 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-12' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:18:46,716 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:18:58,663 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:18:58,664 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:18:58,664 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-22' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:13> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 15, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:35:16,640 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:35:16,642 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:35:19,464 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:35:19,467 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:45:11,624 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:45:11,626 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:45:15,784 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:45:15,786 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:47:16,677 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:47:16,678 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:47:20,368 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:47:20,377 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:47:44,746 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:47:44,758 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-24' coro=<Session.handle_messages() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Session.py:287> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py:764]>
+2024-04-03 16:47:44,758 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-4449' coro=<StreamReader.read() running at C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\streams.py:708> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[_release_waiter(<Future pendi...ask_wakeup()]>)() at C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py:431]>
+2024-04-03 16:47:45,608 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:47:45,610 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:47:51,008 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:47:51,014 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:48:29,506 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-18' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 874, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 16:48:29,508 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:48:29,509 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-21' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:48:29,509 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-32440' coro=<Session.handle_messages() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Session.py:287> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py:764]>
+2024-04-03 16:48:29,509 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-43538' coro=<StreamReader.read() running at C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\streams.py:708> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[_release_waiter(<Future pendi...ask_wakeup()]>)() at C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py:431]>
+2024-04-03 16:49:31,540 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:49:31,542 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:49:35,041 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:49:35,048 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:50:45,325 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:50:45,327 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:50:55,570 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:50:55,580 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:51:24,527 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:51:24,529 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:51:28,282 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:51:28,285 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 16:51:59,953 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-109' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 880, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 16:51:59,954 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-111' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 897, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 16:59:10,246 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:59:10,248 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 16:59:12,514 - DEBUG - Using proactor: IocpProactor
+2024-04-03 16:59:12,516 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 17:19:18,528 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:19:18,530 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 17:19:21,544 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:19:21,547 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 17:34:43,504 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-66' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 875, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 17:34:43,505 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-67' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 881, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 17:34:43,506 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-68' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'update_timestamp_t2'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 889, in handle_timeout_t2
+    new_frame = await self.generate_s_frame(session)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 495, in generate_s_frame
+    session.update_timestamp_t2()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'update_timestamp_t2'
+2024-04-03 17:34:43,506 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-69' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 898, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 17:34:45,007 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:34:45,009 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 17:34:47,854 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:34:47,857 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 17:40:29,943 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:40:29,945 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 17:40:32,045 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:40:32,048 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 17:40:54,444 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-67' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 882, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 17:40:54,445 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-68' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'update_timestamp_t2'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 890, in handle_timeout_t2
+    new_frame = await self.generate_s_frame(session)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 496, in generate_s_frame
+    session.update_timestamp_t2()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'update_timestamp_t2'
+2024-04-03 17:41:52,873 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:41:52,875 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 17:41:59,397 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:41:59,404 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 17:45:04,212 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-34' coro=<QueueManager.on_handle_message() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py:193> wait_for=<Future pending cb=[Task.task_wakeup()]>>
+2024-04-03 17:45:04,213 - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-26' coro=<QueueManager.on_handle_message() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py:193> wait_for=<Future pending cb=[Task.task_wakeup()]>>
+2024-04-03 17:45:04,213 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-41' coro=<QueueManager.on_handle_message() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py:167> exception=KeyboardInterrupt()>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\client_async.py", line 245, in <module>
+    asyncio.run(client.run_client(host, port))
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 189, in run
+    with Runner(debug=debug) as runner:
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 63, in __exit__
+    self.close()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 71, in close
+    _cancel_all_tasks(loop)
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 201, in _cancel_all_tasks
+    loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=True))
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 640, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 607, in run_forever
+    self._run_once()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 1922, in _run_once
+    handle._run()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 193, in on_handle_message
+    await self.handle_response_for_client(session)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 415, in handle_response_for_client
+    for data in self.data_list:
+  File "_pydevd_bundle\pydevd_cython_win32_311_64.pyx", line 1187, in _pydevd_bundle.pydevd_cython_win32_311_64.SafeCallWrapper.__call__
+  File "_pydevd_bundle\pydevd_cython_win32_311_64.pyx", line 627, in _pydevd_bundle.pydevd_cython_win32_311_64.PyDBFrame.trace_dispatch
+  File "_pydevd_bundle\pydevd_cython_win32_311_64.pyx", line 1103, in _pydevd_bundle.pydevd_cython_win32_311_64.PyDBFrame.trace_dispatch
+  File "_pydevd_bundle\pydevd_cython_win32_311_64.pyx", line 1065, in _pydevd_bundle.pydevd_cython_win32_311_64.PyDBFrame.trace_dispatch
+  File "_pydevd_bundle\pydevd_cython_win32_311_64.pyx", line 585, in _pydevd_bundle.pydevd_cython_win32_311_64.PyDBFrame.do_wait_suspend
+  File "C:\Program Files\JetBrains\PyCharm Community Edition 2023.3.5\plugins\python-ce\helpers\pydev\pydevd.py", line 1184, in do_wait_suspend
+    self._do_wait_suspend(thread, frame, event, arg, suspend_type, from_this_thread)
+  File "C:\Program Files\JetBrains\PyCharm Community Edition 2023.3.5\plugins\python-ce\helpers\pydev\pydevd.py", line 1199, in _do_wait_suspend
+    time.sleep(0.01)
+KeyboardInterrupt
+2024-04-03 17:45:08,597 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-10' coro=<Session.handle_messages() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Session.py:278> exception=KeyboardInterrupt()>
+Traceback (most recent call last):
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\server_async.py", line 254, in main
+    await my_server.run()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\server_async.py", line 195, in run
+    await self._server.serve_forever()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 369, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\server_async.py", line 261, in <module>
+    asyncio.run(main())
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 189, in run
+    with Runner(debug=debug) as runner:
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 63, in __exit__
+    self.close()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 71, in close
+    _cancel_all_tasks(loop)
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 201, in _cancel_all_tasks
+    loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=True))
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 640, in run_until_complete
+    self.run_forever()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 607, in run_forever
+    self._run_once()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 1922, in _run_once
+    handle._run()
+  File "C:\Users\slary\AppData\Local\Programs\Python\Python311\Lib\asyncio\events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Session.py", line 355, in handle_messages
+    print(f"Finish async handle_messages.")
+KeyboardInterrupt
+2024-04-03 17:45:08,602 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-81' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 876, in handle_timeout_t0
+    session.flag_session = 'ACTIVE_TERMINATION'
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 17:45:08,603 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-82' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 882, in handle_timeout_t1
+    print(f"Timeout t1 is set to 1")
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 17:45:08,605 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-83' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'update_timestamp_t2'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 890, in handle_timeout_t2
+    # self.__out_queue.to_send((self, resp), self.__event_queue_out)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 496, in generate_s_frame
+    await self.__recv_buffer.clear_frames_less_than(self.__VR)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'update_timestamp_t2'
+2024-04-03 17:45:08,605 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-84' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 899, in handle_timeout_t3
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 17:49:23,215 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:49:23,217 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 17:49:25,633 - DEBUG - Using proactor: IocpProactor
+2024-04-03 17:49:25,636 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 18:35:50,343 - DEBUG - Using selector: SelectSelector
+2024-04-03 18:35:50,344 - DEBUG - Using selector: SelectSelector
+2024-04-03 19:38:05,259 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5611' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 875, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 19:38:05,261 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5612' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 881, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 19:38:05,262 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5614' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 898, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 19:38:13,108 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:15,610 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:28,115 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:29,618 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:31,120 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:33,623 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:46,125 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:47,628 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:49,129 - WARNING - socket.send() raised exception.
+2024-04-03 19:38:51,631 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:04,134 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:05,636 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:07,124 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:09,625 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:22,127 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:23,630 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:25,133 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:27,634 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:40,137 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:41,640 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:43,142 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:45,645 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:58,147 - WARNING - socket.send() raised exception.
+2024-04-03 19:39:59,650 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:01,153 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:03,654 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:16,157 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:17,660 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:19,162 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:21,664 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:21,955 - DEBUG - Using proactor: IocpProactor
+2024-04-03 19:40:34,166 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:35,669 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:37,172 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:39,673 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:52,175 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:53,678 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:55,180 - WARNING - socket.send() raised exception.
+2024-04-03 19:40:57,682 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:10,185 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:11,687 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:13,188 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:15,690 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:28,192 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:29,694 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:31,196 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:33,699 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:46,202 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:47,705 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:49,207 - WARNING - socket.send() raised exception.
+2024-04-03 19:41:51,708 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:04,210 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:05,713 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:07,215 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:09,717 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:22,222 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:23,724 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:25,225 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:27,728 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:40,230 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:41,733 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:43,235 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:45,736 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:58,239 - WARNING - socket.send() raised exception.
+2024-04-03 19:42:59,741 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:01,242 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:03,744 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:16,246 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:17,748 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:19,250 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:21,751 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:34,253 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:35,755 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:37,256 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:39,757 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:52,261 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:53,763 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:55,265 - WARNING - socket.send() raised exception.
+2024-04-03 19:43:57,766 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:10,268 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:11,771 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:13,273 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:15,775 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:28,278 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:29,780 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:31,283 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:33,785 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:46,289 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:47,791 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:49,293 - WARNING - socket.send() raised exception.
+2024-04-03 19:44:51,795 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:04,298 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:05,800 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:07,303 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:09,805 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:22,307 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:23,809 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:25,311 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:27,814 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:40,317 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:41,819 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:43,321 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:45,823 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:58,325 - WARNING - socket.send() raised exception.
+2024-04-03 19:45:59,828 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:01,331 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:03,832 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:16,336 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:17,838 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:19,341 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:21,842 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:34,346 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:35,847 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:37,349 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:39,852 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:52,354 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:53,857 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:55,359 - WARNING - socket.send() raised exception.
+2024-04-03 19:46:57,860 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:10,363 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:11,866 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:13,369 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:15,870 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:28,372 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:29,874 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:31,376 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:33,877 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:46,381 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:47,884 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:49,386 - WARNING - socket.send() raised exception.
+2024-04-03 19:47:51,887 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:04,389 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:05,891 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:07,393 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:09,894 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:22,396 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:23,898 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:25,401 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:27,904 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:40,410 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:41,912 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:43,415 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:45,917 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:58,404 - WARNING - socket.send() raised exception.
+2024-04-03 19:48:59,906 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:01,409 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:03,912 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:16,415 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:17,916 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:19,418 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:21,919 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:34,422 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:35,923 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:37,426 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:39,928 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:52,431 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:53,934 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:55,421 - WARNING - socket.send() raised exception.
+2024-04-03 19:49:57,923 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:10,425 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:11,927 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:13,430 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:15,932 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:28,435 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:29,938 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:31,440 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:33,941 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:46,443 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:47,946 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:49,448 - WARNING - socket.send() raised exception.
+2024-04-03 19:50:51,950 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:04,453 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:05,954 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:07,456 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:09,957 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:22,460 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:23,963 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:25,464 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:27,965 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:40,467 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:41,969 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:43,470 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:45,972 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:58,475 - WARNING - socket.send() raised exception.
+2024-04-03 19:51:59,976 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:01,477 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:03,978 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:16,480 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:17,967 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:19,469 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:21,970 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:34,473 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:35,974 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:37,476 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:39,977 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:52,480 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:53,983 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:55,484 - WARNING - socket.send() raised exception.
+2024-04-03 19:52:57,985 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:10,488 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:11,989 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:13,492 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:15,993 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:28,496 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:29,982 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:31,484 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:33,985 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:46,487 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:47,990 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:49,491 - WARNING - socket.send() raised exception.
+2024-04-03 19:53:51,993 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:04,495 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:05,997 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:07,498 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:10,000 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:22,503 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:24,004 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:25,505 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:28,006 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:40,509 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:42,011 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:43,513 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:46,014 - WARNING - socket.send() raised exception.
+2024-04-03 19:54:58,517 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:00,019 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:01,521 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:04,024 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:16,527 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:18,013 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:19,516 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:22,017 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:34,519 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:36,022 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:37,523 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:40,024 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:52,527 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:54,028 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:55,529 - WARNING - socket.send() raised exception.
+2024-04-03 19:55:58,030 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:10,534 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:12,036 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:13,537 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:16,038 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:28,542 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:30,044 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:31,547 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:34,048 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:46,551 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:48,052 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:49,554 - WARNING - socket.send() raised exception.
+2024-04-03 19:56:52,055 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:04,557 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:06,059 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:07,561 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:10,062 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:22,564 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:24,066 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:25,567 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:28,070 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:40,574 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:42,076 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:43,578 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:46,080 - WARNING - socket.send() raised exception.
+2024-04-03 19:57:58,583 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:00,085 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:01,587 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:04,088 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:16,590 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:18,093 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:19,594 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:22,097 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:34,599 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:36,102 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:37,604 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:40,105 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:52,591 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:54,093 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:55,595 - WARNING - socket.send() raised exception.
+2024-04-03 19:58:58,097 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:10,600 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:12,102 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:13,604 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:16,105 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:28,608 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:30,111 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:31,612 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:34,114 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:46,618 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:48,120 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:49,622 - WARNING - socket.send() raised exception.
+2024-04-03 19:59:52,123 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:04,625 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:06,128 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:07,629 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:10,131 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:22,635 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:24,138 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:25,639 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:28,140 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:40,643 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:42,144 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:43,646 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:46,148 - WARNING - socket.send() raised exception.
+2024-04-03 20:00:58,650 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:00,151 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:01,654 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:04,155 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:16,658 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:18,160 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:19,662 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:22,164 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:34,668 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:36,169 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:37,672 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:40,173 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:52,675 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:54,178 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:55,679 - WARNING - socket.send() raised exception.
+2024-04-03 20:01:58,181 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:10,683 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:12,185 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:13,686 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:16,188 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:28,691 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:30,193 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:31,694 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:34,196 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:46,699 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:48,200 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:49,703 - WARNING - socket.send() raised exception.
+2024-04-03 20:02:52,204 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:04,707 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:06,209 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:07,711 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:10,213 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:22,716 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:24,217 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:25,719 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:28,220 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:40,722 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:42,224 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:43,725 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:46,226 - WARNING - socket.send() raised exception.
+2024-04-03 20:03:58,728 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:00,230 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:01,717 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:04,218 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:16,720 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:18,222 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:19,724 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:22,225 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:34,729 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:36,230 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:37,732 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:40,233 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:52,737 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:54,239 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:55,742 - WARNING - socket.send() raised exception.
+2024-04-03 20:04:58,243 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:10,747 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:12,249 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:13,752 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:16,253 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:28,754 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:30,255 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:31,757 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:34,259 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:46,762 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:48,263 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:49,764 - WARNING - socket.send() raised exception.
+2024-04-03 20:05:52,266 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:04,768 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:06,269 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:07,772 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:10,274 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:22,775 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:24,277 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:25,779 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:28,280 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:40,783 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:42,286 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:43,787 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:46,289 - WARNING - socket.send() raised exception.
+2024-04-03 20:06:58,792 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:00,294 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:01,795 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:04,297 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:16,799 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:18,301 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:19,803 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:22,305 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:34,807 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:36,308 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:37,796 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:40,297 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:52,800 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:54,303 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:55,805 - WARNING - socket.send() raised exception.
+2024-04-03 20:07:58,306 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:10,809 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:12,311 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:13,814 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:16,315 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:28,817 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:30,318 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:31,820 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:34,322 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:46,825 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:48,327 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:49,828 - WARNING - socket.send() raised exception.
+2024-04-03 20:08:52,330 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:04,831 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:06,333 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:07,835 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:10,337 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:22,840 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:24,343 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:25,845 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:28,346 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:40,848 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:42,350 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:43,852 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:46,353 - WARNING - socket.send() raised exception.
+2024-04-03 20:09:58,855 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:00,357 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:01,860 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:04,362 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:16,865 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:18,367 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:19,870 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:22,371 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:34,874 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:36,376 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:37,877 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:40,379 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:52,881 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:54,382 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:55,883 - WARNING - socket.send() raised exception.
+2024-04-03 20:10:58,385 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:10,888 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:12,390 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:13,891 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:16,393 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:28,896 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:30,399 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:31,901 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:34,403 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:46,906 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:48,408 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:49,911 - WARNING - socket.send() raised exception.
+2024-04-03 20:11:52,412 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:04,914 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:06,416 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:07,919 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:10,421 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:22,924 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:24,426 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:25,928 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:28,429 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:40,931 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:42,433 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:43,921 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:46,422 - WARNING - socket.send() raised exception.
+2024-04-03 20:12:58,925 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:00,426 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:01,928 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:04,430 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:16,932 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:18,435 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:19,936 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:22,438 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:34,941 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:36,443 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:37,946 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:40,447 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:52,949 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:54,452 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:55,954 - WARNING - socket.send() raised exception.
+2024-04-03 20:13:58,455 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:10,957 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:12,460 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:13,962 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:16,464 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:28,967 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:30,469 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:31,971 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:34,473 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:46,975 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:48,476 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:49,979 - WARNING - socket.send() raised exception.
+2024-04-03 20:14:52,480 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:04,966 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:06,468 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:07,970 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:10,472 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:22,974 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:24,476 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:25,978 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:28,479 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:40,982 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:42,484 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:43,986 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:46,487 - WARNING - socket.send() raised exception.
+2024-04-03 20:15:58,990 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:00,492 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:01,993 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:04,496 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:16,998 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:18,499 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:20,002 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:22,503 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:35,006 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:36,508 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:38,011 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:40,512 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:53,016 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:54,518 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:56,019 - WARNING - socket.send() raised exception.
+2024-04-03 20:16:58,521 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:11,024 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:12,526 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:14,027 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:16,528 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:29,030 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:30,532 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:32,034 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:34,535 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:47,038 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:48,541 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:50,042 - WARNING - socket.send() raised exception.
+2024-04-03 20:17:52,544 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:05,047 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:06,549 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:08,052 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:10,555 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:23,057 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:24,559 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:26,062 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:28,563 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:41,066 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:42,568 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:44,070 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:46,571 - WARNING - socket.send() raised exception.
+2024-04-03 20:18:59,073 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:00,575 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:02,077 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:04,579 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:17,081 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:18,583 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:20,084 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:22,586 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:35,090 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:36,593 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:38,095 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:40,596 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:53,099 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:54,601 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:56,102 - WARNING - socket.send() raised exception.
+2024-04-03 20:19:58,605 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:11,106 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:12,609 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:14,111 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:16,613 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:29,114 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:30,617 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:32,119 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:34,621 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:47,124 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:48,626 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:50,129 - WARNING - socket.send() raised exception.
+2024-04-03 20:20:52,630 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:05,133 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:06,635 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:08,137 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:10,639 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:23,142 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:24,645 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:26,147 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:28,648 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:41,152 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:42,654 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:44,157 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:46,658 - WARNING - socket.send() raised exception.
+2024-04-03 20:21:59,161 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:00,662 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:02,163 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:04,665 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:17,167 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:18,670 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:20,172 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:22,674 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:35,176 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:36,679 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:38,181 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:40,682 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:53,184 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:54,687 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:56,189 - WARNING - socket.send() raised exception.
+2024-04-03 20:22:58,690 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:11,192 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:12,694 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:14,195 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:16,697 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:29,199 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:30,700 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:32,202 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:34,704 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:47,206 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:48,709 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:50,211 - WARNING - socket.send() raised exception.
+2024-04-03 20:23:52,712 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:05,215 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:06,718 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:08,220 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:10,722 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:23,226 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:24,728 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:26,231 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:28,732 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:41,234 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:42,737 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:44,238 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:46,740 - WARNING - socket.send() raised exception.
+2024-04-03 20:24:59,242 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:00,745 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:02,247 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:04,748 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:17,249 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:18,751 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:20,252 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:22,754 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:35,258 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:36,760 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:38,262 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:40,763 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:53,264 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:54,765 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:56,268 - WARNING - socket.send() raised exception.
+2024-04-03 20:25:58,769 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:11,272 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:12,775 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:14,276 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:16,777 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:29,263 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:30,765 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:32,267 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:34,769 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:47,271 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:48,773 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:50,275 - WARNING - socket.send() raised exception.
+2024-04-03 20:26:52,777 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:05,281 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:06,782 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:08,285 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:10,787 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:23,288 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:24,791 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:26,292 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:28,795 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:41,297 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:42,799 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:44,301 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:46,802 - WARNING - socket.send() raised exception.
+2024-04-03 20:27:59,305 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:00,807 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:02,309 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:04,810 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:17,313 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:18,814 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:20,316 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:22,817 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:35,320 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:36,823 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:38,325 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:40,827 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:53,329 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:54,832 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:56,333 - WARNING - socket.send() raised exception.
+2024-04-03 20:28:58,835 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:11,337 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:12,839 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:14,341 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:16,842 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:29,345 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:30,847 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:32,349 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:34,851 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:47,353 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:48,855 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:50,356 - WARNING - socket.send() raised exception.
+2024-04-03 20:29:52,858 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:05,362 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:06,864 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:08,366 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:10,867 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:23,371 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:24,270 - DEBUG - Using proactor: IocpProactor
+2024-04-03 20:30:24,872 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:26,374 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:28,876 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:41,379 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:42,880 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:44,383 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:46,884 - WARNING - socket.send() raised exception.
+2024-04-03 20:30:59,388 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:00,890 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:02,391 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:04,892 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:17,395 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:18,896 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:20,399 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:22,901 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:35,403 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:36,905 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:38,407 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:40,908 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:53,411 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:54,913 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:56,414 - WARNING - socket.send() raised exception.
+2024-04-03 20:31:58,915 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:11,419 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:12,920 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:14,423 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:16,924 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:29,426 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:30,929 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:32,431 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:34,933 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:47,436 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:48,937 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:50,439 - WARNING - socket.send() raised exception.
+2024-04-03 20:32:52,940 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:05,443 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:06,945 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:08,446 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:10,949 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:23,451 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:24,953 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:26,455 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:28,957 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:41,458 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:42,961 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:44,462 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:46,963 - WARNING - socket.send() raised exception.
+2024-04-03 20:33:59,465 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:00,968 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:02,470 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:04,972 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:17,473 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:18,976 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:20,478 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:22,979 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:35,466 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:36,968 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:38,470 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:40,972 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:53,474 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:54,975 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:56,478 - WARNING - socket.send() raised exception.
+2024-04-03 20:34:58,979 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:11,481 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:12,982 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:14,484 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:16,986 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:29,488 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:30,990 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:32,492 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:34,993 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:47,495 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:48,997 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:50,499 - WARNING - socket.send() raised exception.
+2024-04-03 20:35:53,000 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:05,503 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:07,004 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:08,507 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:11,009 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:23,511 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:25,012 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:26,514 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:29,017 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:41,520 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:43,022 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:44,525 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:47,027 - WARNING - socket.send() raised exception.
+2024-04-03 20:36:59,513 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:01,015 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:02,518 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:05,020 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:17,522 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:19,023 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:20,524 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:23,026 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:35,529 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:37,031 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:38,532 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:41,034 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:53,536 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:55,038 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:56,540 - WARNING - socket.send() raised exception.
+2024-04-03 20:37:59,041 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:11,544 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:13,046 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:14,549 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:17,050 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:29,552 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:31,054 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:32,555 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:35,058 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:47,560 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:49,062 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:50,563 - WARNING - socket.send() raised exception.
+2024-04-03 20:38:53,065 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:05,568 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:07,069 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:08,571 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:11,073 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:23,576 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:25,078 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:26,580 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:29,081 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:41,584 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:43,086 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:44,588 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:47,089 - WARNING - socket.send() raised exception.
+2024-04-03 20:39:59,632 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:01,134 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:02,636 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:05,137 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:17,652 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:19,153 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:20,655 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:23,156 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:35,659 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:37,162 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:38,665 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:41,166 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:53,669 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:55,171 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:56,672 - WARNING - socket.send() raised exception.
+2024-04-03 20:40:59,174 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:11,676 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:13,177 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:14,680 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:17,182 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:29,689 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:31,191 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:32,692 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:35,194 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:47,697 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:49,198 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:50,700 - WARNING - socket.send() raised exception.
+2024-04-03 20:41:53,201 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:05,704 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:07,206 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:08,708 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:11,209 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:23,713 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:25,214 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:26,702 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:29,204 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:41,707 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:43,208 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:44,711 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:47,213 - WARNING - socket.send() raised exception.
+2024-04-03 20:42:59,715 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:01,218 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:02,719 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:05,220 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:17,722 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:19,225 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:20,726 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:23,228 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:35,733 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:37,235 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:38,736 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:41,239 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:53,741 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:55,243 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:56,746 - WARNING - socket.send() raised exception.
+2024-04-03 20:43:59,247 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:11,749 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:13,251 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:14,754 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:17,255 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:29,759 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:31,261 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:32,763 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:35,265 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:47,768 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:49,269 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:50,770 - WARNING - socket.send() raised exception.
+2024-04-03 20:44:53,271 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:05,773 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:07,275 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:08,776 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:11,278 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:23,795 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:25,297 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:26,799 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:29,301 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:41,803 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:43,306 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:44,807 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:47,310 - WARNING - socket.send() raised exception.
+2024-04-03 20:45:59,813 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:01,315 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:02,817 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:05,318 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:17,821 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:19,322 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:20,824 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:23,325 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:35,827 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:37,329 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:38,832 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:41,333 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:53,835 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:55,338 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:56,840 - WARNING - socket.send() raised exception.
+2024-04-03 20:46:59,342 - WARNING - socket.send() raised exception.
+2024-04-03 20:47:11,844 - WARNING - socket.send() raised exception.
+2024-04-03 20:47:13,347 - WARNING - socket.send() raised exception.
+2024-04-03 20:47:14,849 - WARNING - socket.send() raised exception.
+2024-04-03 20:47:17,351 - WARNING - socket.send() raised exception.
+2024-04-03 20:49:12,579 - DEBUG - Using proactor: IocpProactor
+2024-04-03 20:49:12,581 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 20:49:15,640 - DEBUG - Using proactor: IocpProactor
+2024-04-03 20:49:15,643 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 20:50:22,663 - DEBUG - Using proactor: IocpProactor
+2024-04-03 20:50:22,664 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 20:50:24,548 - DEBUG - Using proactor: IocpProactor
+2024-04-03 20:50:24,550 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 20:59:25,167 - DEBUG - Using proactor: IocpProactor
+2024-04-03 20:59:25,168 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 20:59:27,125 - DEBUG - Using proactor: IocpProactor
+2024-04-03 20:59:27,127 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:00:05,968 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:00:05,969 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:00:08,374 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:00:08,377 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:00:11,423 - DEBUG - Using selector: SelectSelector
+2024-04-03 21:00:11,425 - DEBUG - Using selector: SelectSelector
+2024-04-03 21:04:01,279 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-164' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 873, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 21:04:01,281 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-165' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 879, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 21:04:01,282 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-166' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'update_timestamp_t2'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 887, in handle_timeout_t2
+    new_frame = await self.generate_s_frame(session)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 495, in generate_s_frame
+    session.update_timestamp_t2()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'update_timestamp_t2'
+2024-04-03 21:04:01,282 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-167' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 896, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 21:04:01,283 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-207' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'ip'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 873, in handle_timeout_t0
+    print(f'Client {session.ip}:{session.port} timed out and disconnected')
+                    ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'ip'
+2024-04-03 21:04:01,283 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-208' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'flag_timeout_t1'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 879, in handle_timeout_t1
+    session.flag_timeout_t1 = 1
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'flag_timeout_t1'
+2024-04-03 21:04:01,284 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-210' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'send_frame'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 896, in handle_timeout_t3
+    await session.send_frame(new_frame)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send_frame'
+2024-04-03 21:04:02,345 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:04:02,346 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:04:04,369 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:04:04,372 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:07:02,602 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:07:02,604 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:07:04,587 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:07:04,590 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:07:41,306 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:07:41,307 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:07:43,199 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:07:43,201 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:10:44,416 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:10:44,418 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:10:46,176 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:10:46,179 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:11:05,667 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-44' coro=<Timer._job() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py:14> exception=AttributeError("'NoneType' object has no attribute 'update_timestamp_t2'")>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\Timer.py", line 16, in _job
+    await self._callback()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 887, in handle_timeout_t2
+    new_frame = await self.generate_s_frame(session)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\QueueManager.py", line 495, in generate_s_frame
+    session.update_timestamp_t2()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'update_timestamp_t2'
+2024-04-03 21:11:39,091 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:11:39,092 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:11:41,014 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:11:41,017 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:15:17,733 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:15:17,735 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:15:21,320 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:15:21,321 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:23:50,940 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:23:50,941 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:23:52,805 - INFO - Toto je informaèní zpráva
+2024-04-03 21:23:52,805 - WARNING - Toto je varovná zpráva
+2024-04-03 21:23:52,805 - ERROR - Toto je chybová zpráva
+2024-04-03 21:23:52,806 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:23:52,807 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:25:36,349 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:25:36,351 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:25:38,493 - INFO - Toto je informaèní zpráva
+2024-04-03 21:25:38,493 - WARNING - Toto je varovná zpráva
+2024-04-03 21:25:38,493 - ERROR - Toto je chybová zpráva
+2024-04-03 21:25:38,494 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:25:38,497 - INFO - Created new queue for client 127.0.0.1
+2024-04-03 21:29:41,191 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:29:41,193 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-03 21:29:43,014 - INFO - Toto je informaèní zpráva
+2024-04-03 21:29:43,014 - WARNING - Toto je varovná zpráva
+2024-04-03 21:29:43,014 - ERROR - Toto je chybová zpráva
+2024-04-03 21:29:43,014 - DEBUG - Using proactor: IocpProactor
+2024-04-03 21:29:43,017 - INFO - Created new queue for client 127.0.0.1
