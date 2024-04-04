@@ -36,3 +36,4 @@ def parse_i_frame(data):
 def parse_s_frame(data):
     rsn = struct.unpack_from('<2H', data)[1]
     return rsn >> 1
+

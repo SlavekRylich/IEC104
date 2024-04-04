@@ -1,14 +1,9 @@
 # Import required modules
 import gc
 import logging
-import sys
-import time
 import asyncio
 
-from IFormat import IFormat
-from SFormat import SFormat
-from UFormat import UFormat
-from Parser import Parser
+
 from config_loader import ConfigLoader
 from Session import Session
 from QueueManager import QueueManager
@@ -38,6 +33,7 @@ class ServerIEC104:
         Returns: None
         Exceptions: None
         """
+        self.__loop = None
         self.task_check_alive_queue = None
         self._server = None
         self.config_loader = ConfigLoader('../IEC104_v5/config_parameters.json')
@@ -126,10 +122,10 @@ class ServerIEC104:
 
     async def handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
         """
-        This function is called when a new client connects to the server. It creates a new QueueManager object for the client if one does not already exist, and adds it to the self.clients dictionary.
-        Args:
-            reader (asyncio.StreamReader): A stream reader for the incoming data from the client.
-            writer (asyncio.StreamWriter): A stream writer for sending data to the client.
+        This function is called when a new client connects to the server. It creates a new QueueManager object for
+        the client if one does not already exist, and adds it to the "self.clients" dictionary. Args: reader (
+        asyncio.StreamReader): A stream reader for the incoming data from the client. writer (asyncio.StreamWriter):
+        A stream writer for sending data to the client.
         """
         client_addr, client_port = writer.get_extra_info('peername')
         """
@@ -181,6 +177,8 @@ class ServerIEC104:
             queue.add_session(session)
             print(f"Connection established with {client_addr}:{client_port} "
                   f"(Total connections: {queue.get_number_of_connected_sessions()})")
+            logging.info(f"Connection established with {client_addr}:{client_port} "
+                         f"(Number of connections: {queue.get_number_of_connected_sessions()})")
 
             try:
                 # Start the session
@@ -188,8 +186,10 @@ class ServerIEC104:
 
             except Exception as e:
                 print(f"Exception: {e}")
+                logging.error(f"Exception: {e}")
 
     async def run(self):
+        self.__loop = asyncio.get_running_loop()
         pass
         # self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
 
@@ -210,6 +210,7 @@ class ServerIEC104:
 
         while True:
             print(f"Starting async server periodic event check.")
+            logging.debug(f"Starting async server periodic event check.")
             try:
                 # delete queue if no session is connected
                 if len(self.clients) != 0:
@@ -219,10 +220,10 @@ class ServerIEC104:
                             if isinstance(value, QueueManager):
                                 if value.flag_delete:
                                     result_value = self.clients.pop(value.ip)
+                                    print(f"oddelana fronta ze slovniku {result_value}")
+                                    logging.debug(f"oddelana fronta ze slovniku {result_value}")
                                     del result_value
-                                    print(f"oddelano fronta ze slovniku")
 
-                #     print(f"\r.")
                 print(len(self.clients))
                 gc.collect()
                 objects = gc.get_objects()
@@ -230,6 +231,8 @@ class ServerIEC104:
                 for value in list(self.clients.values()):
                     if isinstance(value, QueueManager):
                         print(f"value: {value}")
+                        logging.debug(f"value: {value}")
+
                 found = False
                 for obj in objects:
                     if isinstance(obj, QueueManager):
@@ -238,22 +241,27 @@ class ServerIEC104:
 
                 if found:
                     print(f"Instatnce queue stale existuje")
+                    logging.debug(f"Instatnce queue stale existuje")
 
                 else:
                     print(f"Instatnce queue byla odstranena")
+                    logging.debug(f"Instatnce queue byla odstranena")
 
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
             print(f"Finish async server periodic event check.")
+            logging.debug(f"Finish async server periodic event check.")
             await asyncio.sleep(self.async_time * 2)
 
     async def close(self):
-        self._loop.close()
+        self.__loop.close()
+        logging.info(f"Loop.close!")
+        logging.shutdown()
 
-    # Main function
 
-
+# Main function
 async def main():
     my_server = ServerIEC104()
     await my_server.listen()

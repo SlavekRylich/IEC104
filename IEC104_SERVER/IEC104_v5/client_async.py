@@ -31,6 +31,8 @@ logging.error("Toto je chybová zpráva")
 
 class IEC104Client(object):
     def __init__(self):
+        self.task_handle_response = None
+        self.__loop = None
         self.task_check_alive_queue = None
         self.queue = None
         self.active_session = None
@@ -135,6 +137,8 @@ class IEC104Client(object):
             client_address, client_port = self.writer.get_extra_info('sockname')
             print(f"Navázáno {client_address}:{client_port}"
                   f"-->{self.server_ip}:{self.server_port}")
+            logging.info(f"Navázáno {client_address}:{client_port}"
+                  f"-->{self.server_ip}:{self.server_port}")
 
             callback_handle_apdu = self.queue.on_handle_message
             callback_timeouts_tuple = (
@@ -161,12 +165,14 @@ class IEC104Client(object):
 
         except asyncio.TimeoutError:
             print(f"{time.ctime()} - Nastala chyba: {self.active_session}")
+            logging.error(f"{time.ctime()} - Nastala chyba: {self.active_session}")
             pass
         except Exception as e:
             print(e)
+            logging.error(f"Exception {e}")
 
     async def run_client(self, ip, port_num):
-
+        self.__loop = asyncio.get_running_loop()
         self.queue = QueueManager(ip, whoami='client')
         # self._in_queue = self.queue.in_queue
         # self._out_queue = self.queue.out_queue
@@ -176,6 +182,7 @@ class IEC104Client(object):
 
         try:
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
+            logging.debug(f"Vytáčím {self.server_ip}:{self.server_port}")
 
             # přidá novou session a zároveň vybere aktivní session
             self.active_session = await self.new_session(ip, port_num)
@@ -210,11 +217,12 @@ class IEC104Client(object):
 
         except Exception as e:
             print(f"Exception: {e}")
+            logging.error(f"Exception: {e}")
 
     async def periodic_event_check(self):
-        print(f"Starting async periodic event check.")
         while True:
             print(f"Starting async server periodic event check.")
+            logging.debug(f"Starting async server periodic event check.")
             try:
                 # delete queue if no session is connected
                 if len(self.servers) != 0:
@@ -232,15 +240,18 @@ class IEC104Client(object):
 
                     # await self.task_handle_response
                     print(f"no_overflow bezi")
+                    logging.debug(f"no_overflow bezi")
 
                 await asyncio.sleep(self.async_time)
 
             except TimeoutError as e:
                 print(f"TimeoutError {e}")
+                logging.error(f"TimeoutError {e}")
                 pass
 
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
             await asyncio.sleep(self.async_time)
 
@@ -248,6 +259,7 @@ class IEC104Client(object):
 if __name__ == "__main__":
 
     # host = "192.168.1.142"
+    # host = "192.168.1.136"
     host = "127.0.0.1"
     port = 2404
 
@@ -258,3 +270,4 @@ if __name__ == "__main__":
         pass
     finally:
         pass
+

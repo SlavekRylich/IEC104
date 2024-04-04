@@ -36,23 +36,16 @@ class Parser:
 
         elif frame_format == "U":
             first_byte = unpacked_apdu[0]
-
             new_instance = UFormat(direction='IN')
 
             # STARTDT ACT
             if first_byte == acpi.STARTDT_ACT:
-
                 new_instance.type = acpi.STARTDT_ACT
-
                 return new_instance
-
-
 
             # STOPDT ACT
             elif first_byte == acpi.STOPDT_ACT:
-
                 new_instance.type = acpi.STOPDT_ACT
-
                 return new_instance
 
             # TESTDT ACT
@@ -84,7 +77,6 @@ class Parser:
 
     @classmethod
     def what_format(cls, first_byte):
-
         first_byte = first_byte[0]
 
         if not (first_byte & 1):
@@ -99,3 +91,4 @@ class Parser:
         else:
             # print("Nejaky jiný format")
             return None
+

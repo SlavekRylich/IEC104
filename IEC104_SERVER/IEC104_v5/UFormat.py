@@ -52,7 +52,7 @@ class UFormat(Frame):
         if type_frame:
             self.type = type_frame
 
-            # Doplnění délky do hlavičky
+        # Doplnění délky do hlavičky
         packet = struct.pack(f"{'B' * (self._header_length + 2)}",
                              Frame.start_byte(),  # start byte
                              self._total_length,  # Total Length pouze hlavička
@@ -65,4 +65,8 @@ class UFormat(Frame):
         return packet
 
     def __str__(self):
-        return f"ID: {self.id}, {self._direction} Typ: {self.type_in_word}: {self.type_of_Uformat_Str}"
+        return (f"ID: {self.id},"
+                f" {self._direction},"
+                f" Typ: {self.type_in_word}:"
+                f" {self.type_of_Uformat_Str}")
+

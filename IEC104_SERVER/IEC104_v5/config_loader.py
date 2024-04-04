@@ -1,4 +1,6 @@
 import json
+import logging
+
 
 class ConfigLoader:
     def __init__(self, file_path):
@@ -12,10 +14,13 @@ class ConfigLoader:
             return config
         except FileNotFoundError:
             print(f"Config file '{self.file_path}' not found.")
+            logging.error(f"Config file '{self.file_path}' not found.")
             return None
         except json.JSONDecodeError:
             print(f"Error decoding JSON in config file '{self.file_path}'.")
+            logging.error(f"Error decoding JSON in config file '{self.file_path}'.")
             return None
+
 
 # Usage example
 if __name__ == "__main__":
@@ -25,10 +30,11 @@ if __name__ == "__main__":
         # load server config
         server_ip = config_loader.config['server']['ip_address']
         server_port = config_loader.config['server']['port']
-        
+
         # load client config
         client_ip = config_loader.config['client']['ip_address']
         client_port = config_loader.config['client']['port']
 
         print(f"Server IP: {server_ip}, Port: {server_port}")
         print(f"Client IP: {client_ip}, Port: {client_port}")
+

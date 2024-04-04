@@ -1,0 +1,46 @@
+2024-04-04 20:28:25,171 - INFO - Toto je informaèní zpráva
+2024-04-04 20:28:25,171 - WARNING - Toto je varovná zpráva
+2024-04-04 20:28:25,171 - ERROR - Toto je chybová zpráva
+2024-04-04 20:28:25,172 - DEBUG - Using proactor: IocpProactor
+2024-04-04 20:28:25,173 - INFO - Naslouchám na 127.0.0.1:2404
+2024-04-04 20:28:30,606 - DEBUG - NOVA INSTANCE QUEUE ID: 1
+2024-04-04 20:28:30,606 - INFO - Created new queue for client 127.0.0.1
+2024-04-04 20:28:30,607 - INFO - Connection established with 127.0.0.1:30051 (Number of connections: 1)
+2024-04-04 20:28:30,607 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:30,609 - INFO - 20:28:30-Received from 127.0.0.1:30051 - frame: ID: 1, IN, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:30,613 - DEBUG - Finish async handle_messages.
+2024-04-04 20:28:30,613 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:30,614 - DEBUG - Start on_handle_message
+2024-04-04 20:28:30,615 - DEBUG - Starting update_state_machine_server with: ID: 1, IN, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:31,415 - DEBUG - Finish async update_state_machine_server
+2024-04-04 20:28:31,415 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 1, IN, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:31,415 - DEBUG - Start send_frame_task()
+2024-04-04 20:28:31,416 - INFO - 20:28:31-Send to 127.0.0.1:30051 - frame: ID: 2, OUT, Typ: U-format: TESTDT CON
+2024-04-04 20:28:31,416 - DEBUG - Stop send_frame_task()
+2024-04-04 20:28:31,417 - DEBUG - Finish async handle_apdu
+2024-04-04 20:28:31,417 - DEBUG - Finish on_handle_message
+2024-04-04 20:28:31,419 - INFO - 20:28:31-Received from 127.0.0.1:30051 - frame: ID: 3, IN, Typ: U-format: STARTDT ACT
+2024-04-04 20:28:31,419 - DEBUG - Finish async handle_messages.
+2024-04-04 20:28:31,419 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:31,420 - DEBUG - Start on_handle_message
+2024-04-04 20:28:31,420 - DEBUG - Starting update_state_machine_server with: ID: 3, IN, Typ: U-format: STARTDT ACT
+2024-04-04 20:28:31,420 - DEBUG - CHANGE_TRANSMISSION_STATE: STOPPED -> RUNNING
+2024-04-04 20:28:31,420 - DEBUG - Start send_frame_task()
+2024-04-04 20:28:31,421 - INFO - 20:28:31-Send to 127.0.0.1:30051 - frame: ID: 4, OUT, Typ: U-format: STARTDT CON
+2024-04-04 20:28:31,421 - DEBUG - Stop send_frame_task()
+2024-04-04 20:28:32,222 - DEBUG - Finish async update_state_machine_server
+2024-04-04 20:28:32,222 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 3, IN, Typ: U-format: STARTDT ACT
+2024-04-04 20:28:32,222 - DEBUG - Finish async handle_apdu
+2024-04-04 20:28:32,223 - DEBUG - Finish on_handle_message
+2024-04-04 20:28:33,118 - INFO - 20:28:33-Received from 127.0.0.1:30051 - frame: ID: 5, IN, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:33,118 - DEBUG - Finish async handle_messages.
+2024-04-04 20:28:33,118 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:33,119 - DEBUG - Start on_handle_message
+2024-04-04 20:28:33,119 - DEBUG - Starting update_state_machine_server with: ID: 5, IN, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:33,919 - DEBUG - Finish async update_state_machine_server
+2024-04-04 20:28:33,919 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 5, IN, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:33,920 - DEBUG - Start send_frame_task()
+2024-04-04 20:28:33,920 - INFO - 20:28:33-Send to 127.0.0.1:30051 - frame: ID: 6, OUT, Typ: U-format: TESTDT CON
+2024-04-04 20:28:33,920 - DEBUG - Stop send_frame_task()
+2024-04-04 20:28:33,921 - DEBUG - Finish async handle_apdu
+2024-04-04 20:28:33,921 - DEBUG - Finish on_handle_message

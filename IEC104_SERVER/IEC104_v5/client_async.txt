@@ -1,0 +1,55 @@
+2024-04-04 20:28:30,596 - INFO - Toto je informaèní zpráva
+2024-04-04 20:28:30,599 - WARNING - Toto je varovná zpráva
+2024-04-04 20:28:30,600 - ERROR - Toto je chybová zpráva
+2024-04-04 20:28:30,601 - DEBUG - Using proactor: IocpProactor
+2024-04-04 20:28:30,604 - DEBUG - NOVA INSTANCE QUEUE ID: 1
+2024-04-04 20:28:30,604 - DEBUG - Vytáèím 127.0.0.1:2404
+2024-04-04 20:28:30,606 - INFO - Navázáno 127.0.0.1:30051-->127.0.0.1:2404
+2024-04-04 20:28:30,607 - DEBUG - flag_session_set START_SESSION
+2024-04-04 20:28:30,607 - DEBUG - Starting async handle_response 
+2024-04-04 20:28:30,607 - DEBUG - Start send_frame_task()
+2024-04-04 20:28:30,608 - INFO - 20:28:30-Send to 127.0.0.1:2404 - frame: ID: 1, OUT, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:30,608 - DEBUG - Stop send_frame_task()
+2024-04-04 20:28:30,609 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:31,416 - INFO - 20:28:31-Received from 127.0.0.1:2404 - frame: ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-04 20:28:31,417 - DEBUG - Finish async handle_messages.
+2024-04-04 20:28:31,417 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:31,417 - DEBUG - Start on_handle_message
+2024-04-04 20:28:31,418 - DEBUG - Starting update_state_machine_client with ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-04 20:28:31,418 - DEBUG - flag_session_set None
+2024-04-04 20:28:31,418 - DEBUG - Start send_frame_task()
+2024-04-04 20:28:31,418 - INFO - 20:28:31-Send to 127.0.0.1:2404 - frame: ID: 3, OUT, Typ: U-format: STARTDT ACT
+2024-04-04 20:28:31,419 - DEBUG - Stop send_frame_task()
+2024-04-04 20:28:31,419 - DEBUG - CHANGE_TRANSMISSION_STATE: STOPPED -> WAITING_RUNNING
+2024-04-04 20:28:31,419 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, WAITING_RUNNING
+2024-04-04 20:28:31,421 - INFO - 20:28:31-Received from 127.0.0.1:2404 - frame: ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-04 20:28:31,421 - DEBUG - Finish async handle_messages.
+2024-04-04 20:28:31,421 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:31,422 - DEBUG - Start on_handle_message
+2024-04-04 20:28:31,422 - DEBUG - Starting update_state_machine_client with ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-04 20:28:31,422 - DEBUG - CHANGE_TRANSMISSION_STATE: WAITING_RUNNING -> RUNNING
+2024-04-04 20:28:31,422 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-04 20:28:32,224 - DEBUG - Finish async update_state_machine_client
+2024-04-04 20:28:32,224 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-04 20:28:32,224 - DEBUG - Finish async handle_apdu
+2024-04-04 20:28:32,225 - DEBUG - Finish on_handle_message
+2024-04-04 20:28:32,225 - DEBUG - Finish async update_state_machine_client
+2024-04-04 20:28:32,225 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-04 20:28:32,225 - DEBUG - Finish async handle_apdu
+2024-04-04 20:28:32,225 - DEBUG - Finish on_handle_message
+2024-04-04 20:28:33,117 - DEBUG - Start send_frame_task()
+2024-04-04 20:28:33,117 - INFO - 20:28:33-Send to 127.0.0.1:2404 - frame: ID: 1, OUT, Typ: U-format: TESTDT ACT
+2024-04-04 20:28:33,118 - DEBUG - Stop send_frame_task()
+2024-04-04 20:28:33,921 - INFO - 20:28:33-Received from 127.0.0.1:2404 - frame: ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-04 20:28:33,921 - DEBUG - Finish async handle_messages.
+2024-04-04 20:28:33,921 - DEBUG - Starting async handle_messages
+2024-04-04 20:28:33,921 - DEBUG - Start on_handle_message
+2024-04-04 20:28:33,922 - DEBUG - Starting update_state_machine_client with ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-04 20:28:33,922 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-04 20:28:34,606 - DEBUG - zadne prichozi zpravy
+2024-04-04 20:28:34,606 - DEBUG - EOF - odpojeni klienta
+2024-04-04 20:28:34,607 - DEBUG - flag_session_set ACTIVE_TERMINATION
+2024-04-04 20:28:34,942 - DEBUG - Finish async update_state_machine_client
+2024-04-04 20:28:34,943 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-04 20:28:34,954 - DEBUG - Finish async handle_apdu
+2024-04-04 20:28:34,955 - DEBUG - Finish on_handle_message

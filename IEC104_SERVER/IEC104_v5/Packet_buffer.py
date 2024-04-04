@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import time
 
 
@@ -26,6 +27,7 @@ class PacketBuffer:
             if isinstance(frame, Frame):
                 if key <= frame_id:
                     print(f"del {key}, {frame}")
+                    logging.debug(f"del {key}, {frame}")
                     del self.__buffer[key]
     
     def get_list_from_buffer(self):

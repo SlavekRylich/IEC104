@@ -27,6 +27,7 @@ class ServerIEC104:
         Returns: None
         Exceptions: None
         """
+        self._server = None
         self.config_loader = ConfigLoader('./v4.0/config_parameters.json')
 
         self.ip = self.config_loader.config['server']['ip_address']

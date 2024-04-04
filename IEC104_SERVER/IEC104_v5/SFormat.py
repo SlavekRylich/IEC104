@@ -7,7 +7,6 @@ class SFormat(Frame):
     def __init__(self, rsn=0, direction='OUT'):
         super().__init__('S-format')
         self._rsn = rsn
-
         self._direction = direction
 
     def serialize(self, rsn=0):
@@ -42,4 +41,7 @@ class SFormat(Frame):
         self._rsn += 1
 
     def __str__(self):
-        return f"ID: {self.id} {self._direction} Typ: {self.type_in_word}, Data in bytes: {self.serialize()}"
+        return (f"ID: {self.id},"
+                f" {self._direction},"
+                f" Typ: {self.type_in_word},"
+                f" Data in bytes: {self.serialize()}")

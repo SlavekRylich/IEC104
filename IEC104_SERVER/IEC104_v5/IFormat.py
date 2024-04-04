@@ -40,12 +40,6 @@ class IFormat(Frame):
     def set_class_rsn(cls, rsn):
         cls.__class_rsn = rsn
 
-    def ssn_increment(self):
-        return self.__ssn + 1
-
-    def rsn_incremet(self):
-        return self.__rsn + 1
-
     @property
     def ssn(self):
         return self.__ssn
@@ -69,11 +63,9 @@ class IFormat(Frame):
     def get_length_of_data(self):
         return len(self.__data)
 
-    # property
     def set_data_from_structure(self, structure):
         self.__data = struct.unpack(f"{'B' * super().get_length_of_data()}", structure)
 
-    # property
     def structure(self):
         # here is specify format for each format 
         return self._structure
@@ -108,4 +100,8 @@ class IFormat(Frame):
         return self._structure
 
     def __str__(self):
-        return f"ID: {self.id}, {self._direction} Typ: {self.type_in_word}, Data in bytes: {self.serialize()[:4]}..."
+        return (f"ID: {self.id},"
+                f" {self._direction},"
+                f" Typ: {self.type_in_word},"
+                f" Data in bytes: {self.serialize()[:4]}...")
+

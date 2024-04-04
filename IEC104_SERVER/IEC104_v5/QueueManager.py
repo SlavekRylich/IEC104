@@ -13,18 +13,6 @@ from UFormat import UFormat
 from Packet_buffer import PacketBuffer
 from Session import Session
 
-# Nastavení úrovně logování
-logging.basicConfig(
-    filename='queuemanager.txt',
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-
-# Logování zprávy
-logging.info("Toto je informační zpráva")
-logging.warning("Toto je varovná zpráva")
-logging.error("Toto je chybová zpráva")
-
 
 class QueueManager:
     """
@@ -100,6 +88,7 @@ class QueueManager:
         self.__id = QueueManager.__id
         QueueManager.__instances.append(self)
         print(f"NOVA INSTANCE QUEUE ID: {self.__id}")
+        logging.debug(f"NOVA INSTANCE QUEUE ID: {self.__id}")
 
     async def start(self):
         try:
@@ -112,6 +101,7 @@ class QueueManager:
             # await asyncio.gather(*self.__tasks)
         except Exception as e:
             print(f"Exception {e}")
+            logging.error(f"Exception {e}")
 
             # await asyncio.sleep(self.__async_time)    
 
@@ -154,6 +144,7 @@ class QueueManager:
                 await self.__event_queue_in.wait()
                 self.__event_queue_in.clear()
                 print(f"Starting_check_in_queue")
+                logging.debug(f"Starting_check_in_queue")
 
                 if not self.__in_queue.is_Empty():
                     pass
@@ -170,9 +161,11 @@ class QueueManager:
 
                     await asyncio.sleep(self.__async_time)
                     print(f"Finish_check_in_queue")
+                    logging.debug(f"Finish_check_in_queue")
 
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
             session = None
             message = None
@@ -191,6 +184,8 @@ class QueueManager:
 
         """
         print(f"Start on_handle_message")
+        logging.debug(f"Start on_handle_message")
+
         if apdu is not None:
 
             # if apdu is Iformat save to buffer for acknowledgment
@@ -214,6 +209,7 @@ class QueueManager:
 
         # await asyncio.sleep(self.__async_time)
         print(f"Finish on_handle_message")
+        logging.debug(f"Finish on_handle_message")
 
     # is handled in session
     async def check_out_queue(self):
@@ -221,12 +217,17 @@ class QueueManager:
 
             try:
                 print(f"Starting_check_out_queue")
+                logging.debug(f"Starting_check_out_queue")
                 if not self.__out_queue.is_Empty():
                     pass
-                print(f"Finish_check_out_queue")
+
                 await asyncio.sleep(self.__async_time)
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
+
+            print(f"Finish_check_out_queue")
+            logging.debug(f"Finish_check_out_queue")
 
     @property
     def ip(self):
@@ -242,21 +243,25 @@ class QueueManager:
                     # if some session was but now is not
                     if self.__flag_no_sessions:
                         print(f"tady nastalo break")
+                        logging.debug(f"tady nastalo break")
                         self.__flag_stop_tasks = True
                         break
                     else:
                         await asyncio.sleep(self.__async_time)
                         print(f"tady nastalo continue")
+                        logging.debug(f"tady nastalo continue")
                         continue
                 else:
                     # some session is connected        
                     self.__flag_no_sessions = True
 
                     print(f"tady je pripojeny 1 a vic klientu")
+                    logging.debug(f"tady je pripojeny 1 a vic klientu")
                     # check if flag for delete session
                     for sess in self.__sessions:
                         if sess.flag_delete:
                             print(f"v session je nastaven priznak na delete")
+                            logging.debug(f"v session je nastaven priznak na delete")
                             self.__sessions.remove(sess)
                             del sess
 
@@ -264,6 +269,7 @@ class QueueManager:
 
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
         self.delete_self()
 
@@ -275,6 +281,7 @@ class QueueManager:
             except asyncio.CancelledError:
                 # Zpracování zrušení tasků
                 print(f"Zrušení tasku proběhlo úspěšně!")
+                logging.debug(f"Zrušení tasku proběhlo úspěšně!")
 
         self.__flag_delete = True
 
@@ -282,6 +289,7 @@ class QueueManager:
     async def handle_apdu(self, session: Session, apdu: Frame = None):
 
         print(f"Starting handle_apdu, clientID: {self.id}, sessionID: {session.id}, apdu: {apdu}")
+        logging.debug(f"Starting handle_apdu, clientID: {self.id}, sessionID: {session.id}, apdu: {apdu}")
         # if isinstance(self._session, Session):
 
         actual_transmission_state = session.transmission_state
@@ -386,10 +394,12 @@ class QueueManager:
                     await session.send_frame(frame)
 
         print(f"Finish async handle_apdu")
+        logging.debug(f"Finish async handle_apdu")
 
     async def handle_response_for_client(self, session: Session):
         while not self.__flag_stop_tasks:
             print(f"Starting async handle_response ")
+            logging.debug(f"Starting async handle_response ")
             actual_transmission_state = session.transmission_state
             session_event = session.event_queue_out
 
@@ -412,6 +422,7 @@ class QueueManager:
                             session.flag_session = 'START_SESSION'
                             self.__flag_start_sequence = False
                             print(f"flag_start_seq = False")
+                            logging.debug(f"flag_start_seq = False")
 
                     # * STATE 2
                     if actual_transmission_state == 'WAITING_RUNNING':
@@ -480,6 +491,7 @@ class QueueManager:
 
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
     async def isResponse(self):
         while not self.__flag_stop_tasks:
@@ -487,6 +499,7 @@ class QueueManager:
                 await asyncio.sleep(self.__async_time)
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
     def add_session(self, session):
         self.__sessions.append(session)
@@ -539,6 +552,7 @@ class QueueManager:
         for session in self.__sessions:
             if session == sess:
                 print(f"Remove by del_session: {session}")
+                logging.debug(f"Remove by del_session: {session}")
                 self.__sessions.remove(session)
                 return True
         return False
@@ -602,6 +616,7 @@ class QueueManager:
             # await self.__event_update.wait()
             # self.__event_update.clear()
             print(f"Starting update_state_machine_server with: {fr}")
+            logging.debug(f"Starting update_state_machine_server with: {fr}")
 
             try:
 
@@ -699,6 +714,7 @@ class QueueManager:
                         # reset flag_timeout_t1
                         session.flag_timeout_t1 = 0
                         print(f"Timeout t1 is set to 0")
+                        logging.debug(f"Timeout t1 is set to 0")
                         session.flag_session = 'ACTIVE_TERMINATION'
 
                         # default condition if ACTIVE_TERMINATION is set
@@ -721,9 +737,11 @@ class QueueManager:
 
                 await asyncio.sleep(self.__async_time)
                 print(f"Finish async update_state_machine_server")
+                logging.debug(f"Finish async update_state_machine_server")
 
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
         self.delete_self()
 
@@ -737,6 +755,7 @@ class QueueManager:
 
             try:
                 print(f"Starting update_state_machine_client with {fr}")
+                logging.debug(f"Starting update_state_machine_client with {fr}")
 
                 actual_transmission_state = session.transmission_state
 
@@ -856,6 +875,7 @@ class QueueManager:
                         # reset flag_timeout_t1
                         session.flag_timeout_t1 = 0
                         print(f"Timeout t1 is set to 0")
+                        logging.debug(f"Timeout t1 is set to 0")
                         session.flag_session = 'ACTIVE_TERMINATION'
 
                         # default condition if ACTIVE_TERMINATION is set
@@ -870,31 +890,39 @@ class QueueManager:
                     pass
 
                 print(f"{session}")
+                logging.info(f"{session}")
 
                 await asyncio.sleep(self.__async_time)
                 print(f"Finish async update_state_machine_client")
+                logging.debug(f"Finish async update_state_machine_client")
 
             except Exception as e:
                 print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
         # del self
         self.delete_self()
 
     async def handle_timeout_t0(self, session: Session = None):
         print(f"Timer t0 timed_out - {session}")
+        logging.debug(f"Timer t0 timed_out - {session}")
         allow_event_signal = 1
         print(f'Client {session.ip}:{session.port} timed out and disconnected')
+        logging.debug(f'Client {session.ip}:{session.port} timed out and disconnected')
         session.flag_session = 'ACTIVE_TERMINATION'
 
     async def handle_timeout_t1(self, session: Session = None):
         print(f"Timer t1 timed_out - {session}")
+        logging.debug(f"Timer t1 timed_out - {session}")
         allow_event_signal = 1
         session.flag_timeout_t1 = 1
         print(f"Timeout t1 is set to 1")
+        logging.debug(f"Timeout t1 is set to 1")
         # raise TimeoutError(f"Timeout pro t1")
 
     async def handle_timeout_t2(self, session: Session = None):
         print(f"Timer t2 timed_out - {session}")
+        logging.debug(f"Timer t2 timed_out - {session}")
         allow_event_signal = 1
         if not self.__recv_buffer.is_empty():
             new_frame = await self.generate_s_frame(session)
@@ -903,13 +931,16 @@ class QueueManager:
 
     async def handle_timeout_t3(self, session: Session = None):
         print(f"Timer t3 timed_out - {session}")
+        logging.debug(f"Timer t3 timed_out - {session}")
         allow_event_signal = 1
         new_frame = self.generate_testdt_act()
         # self.__out_queue.to_send((self, frame), self.__event_queue_out)
         await session.send_frame(new_frame)
 
     def __str__(self):
-        return f"Fronta: {self.ip}, ID: {self.id} připojeno: {len(self.sessions)} sessions"
+        return (f"Client: {self.ip},"
+                f" ID: {self.id},"
+                f" Num of sessions: {len(self.sessions)}")
 
     def __enter__(self):
         pass

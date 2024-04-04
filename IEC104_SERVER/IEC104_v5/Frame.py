@@ -64,8 +64,10 @@ class Frame:
     @classmethod
     def get_all_instances(cls):
         return cls._instances
+
     def new_method(self):
         pass
+
     def serialize(self):
         print(f"This never become")
         # it will return false because method is overrided
@@ -99,29 +101,3 @@ class Frame:
     def __str__(self):
         return f"Typ: {self._type_in_word}, Data in bytes: {self.serialize()}"
 
-    # nepoužito, mám to tu jen pro návod jak dostat data po bytech
-    def encode_varint(self, number):
-        """Zabalí číslo do varint."""
-        encoded_bytes = b""
-        while True:
-            byte = number & 0xFF
-            number >>= 8
-            encoded_bytes += struct.pack("B", byte)
-            if not number:
-                break
-        return encoded_bytes
-
-    def decode_varint(self, encoded_bytes):
-        """Rozbalí varint na číslo."""
-        number = 0
-        shift = 0
-        for byte in encoded_bytes:
-            number |= (byte & 0xFF) << shift
-            if not number:
-                break
-            shift += 8
-        return number
-    #
-    # @classmethod
-    # def start_byte(cls):
-    #     return Frame._start_byte
