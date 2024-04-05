@@ -70,7 +70,7 @@ class IEC104Client(object):
 
         self.data_list = [self.data2, self.data2]  # define static data
 
-        config_loader = ConfigLoader('../IEC104_v5/config_parameters.json')
+        config_loader = ConfigLoader('./config_parameters.json')
 
         self.server_ip = config_loader.config['server']['ip_address']
         self.server_port = config_loader.config['server']['port']

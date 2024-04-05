@@ -317,6 +317,8 @@ class QueueManager:
                     await session.send_frame(frame)
                     session.flag_session = 'ACTIVE_TERMINATION'
                     # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
+                    
+                    
 
                 else:
                     self.incrementVR()
@@ -916,6 +918,8 @@ class QueueManager:
         logging.debug(f"Timer t1 timed_out - {session}")
         allow_event_signal = 1
         session.flag_timeout_t1 = 1
+        self.on_handle_message(session)
+        
         print(f"Timeout t1 is set to 1")
         logging.debug(f"Timeout t1 is set to 1")
         # raise TimeoutError(f"Timeout pro t1")

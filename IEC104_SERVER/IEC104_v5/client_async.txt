@@ -53,3 +53,920 @@
 2024-04-04 20:28:34,943 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 5, IN, Typ: U-format: TESTDT CON
 2024-04-04 20:28:34,954 - DEBUG - Finish async handle_apdu
 2024-04-04 20:28:34,955 - DEBUG - Finish on_handle_message
+2024-04-05 09:24:37,702 - INFO - Toto je informaèní zpráva
+2024-04-05 09:24:37,703 - WARNING - Toto je varovná zpráva
+2024-04-05 09:24:37,703 - ERROR - Toto je chybová zpráva
+2024-04-05 09:24:37,703 - DEBUG - Using proactor: IocpProactor
+2024-04-05 09:24:37,705 - DEBUG - NOVA INSTANCE QUEUE ID: 1
+2024-04-05 09:24:37,705 - DEBUG - Vytáèím 127.0.0.1:2404
+2024-04-05 09:24:37,726 - INFO - Navázáno 127.0.0.1:40203-->127.0.0.1:2404
+2024-04-05 09:24:37,726 - DEBUG - flag_session_set START_SESSION
+2024-04-05 09:24:37,727 - DEBUG - Starting async handle_response 
+2024-04-05 09:24:37,727 - DEBUG - Start send_frame_task()
+2024-04-05 09:24:37,728 - INFO - 09:24:37-Send to 127.0.0.1:2404 - frame: ID: 1, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:24:37,728 - DEBUG - Stop send_frame_task()
+2024-04-05 09:24:37,729 - DEBUG - Starting async handle_messages
+2024-04-05 09:24:38,550 - INFO - 09:24:38-Received from 127.0.0.1:2404 - frame: ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:38,551 - DEBUG - Finish async handle_messages.
+2024-04-05 09:24:38,552 - DEBUG - Starting async handle_messages
+2024-04-05 09:24:38,552 - DEBUG - Start on_handle_message
+2024-04-05 09:24:38,554 - DEBUG - Starting update_state_machine_client with ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:38,554 - DEBUG - flag_session_set None
+2024-04-05 09:24:38,555 - DEBUG - Start send_frame_task()
+2024-04-05 09:24:38,557 - INFO - 09:24:38-Send to 127.0.0.1:2404 - frame: ID: 3, OUT, Typ: U-format: STARTDT ACT
+2024-04-05 09:24:38,558 - DEBUG - Stop send_frame_task()
+2024-04-05 09:24:38,559 - DEBUG - CHANGE_TRANSMISSION_STATE: STOPPED -> WAITING_RUNNING
+2024-04-05 09:24:38,559 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, WAITING_RUNNING
+2024-04-05 09:24:38,566 - INFO - 09:24:38-Received from 127.0.0.1:2404 - frame: ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-05 09:24:38,566 - DEBUG - Finish async handle_messages.
+2024-04-05 09:24:38,567 - DEBUG - Starting async handle_messages
+2024-04-05 09:24:38,568 - DEBUG - Start on_handle_message
+2024-04-05 09:24:38,569 - DEBUG - Starting update_state_machine_client with ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-05 09:24:38,570 - DEBUG - CHANGE_TRANSMISSION_STATE: WAITING_RUNNING -> RUNNING
+2024-04-05 09:24:38,570 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:24:39,360 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:24:39,361 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:39,362 - DEBUG - Finish async handle_apdu
+2024-04-05 09:24:39,362 - DEBUG - Finish on_handle_message
+2024-04-05 09:24:39,384 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:24:39,385 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-05 09:24:39,386 - DEBUG - Finish async handle_apdu
+2024-04-05 09:24:39,387 - DEBUG - Finish on_handle_message
+2024-04-05 09:24:40,244 - DEBUG - Start send_frame_task()
+2024-04-05 09:24:40,245 - INFO - 09:24:40-Send to 127.0.0.1:2404 - frame: ID: 1, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:24:40,246 - DEBUG - Stop send_frame_task()
+2024-04-05 09:24:41,072 - INFO - 09:24:41-Received from 127.0.0.1:2404 - frame: ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:41,073 - DEBUG - Finish async handle_messages.
+2024-04-05 09:24:41,074 - DEBUG - Starting async handle_messages
+2024-04-05 09:24:41,075 - DEBUG - Start on_handle_message
+2024-04-05 09:24:41,076 - DEBUG - Starting update_state_machine_client with ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:41,076 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:24:41,891 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:24:41,893 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:41,894 - DEBUG - Finish async handle_apdu
+2024-04-05 09:24:41,896 - DEBUG - Finish on_handle_message
+2024-04-05 09:24:42,761 - DEBUG - flag_session_set START_SESSION
+2024-04-05 09:24:42,764 - DEBUG - flag_start_seq = False
+2024-04-05 09:24:42,765 - DEBUG - Starting async handle_response 
+2024-04-05 09:24:42,767 - DEBUG - Start send_frame_task()
+2024-04-05 09:24:42,768 - INFO - 09:24:42-Send to 127.0.0.1:2404 - frame: ID: 6, OUT, Typ: I-format, Data in bytes: b'h\x0e\x00\x00'...
+2024-04-05 09:24:42,794 - DEBUG - Stop send_frame_task()
+2024-04-05 09:24:44,308 - DEBUG - Start send_frame_task()
+2024-04-05 09:24:44,309 - INFO - 09:24:44-Send to 127.0.0.1:2404 - frame: ID: 7, OUT, Typ: I-format, Data in bytes: b'h\x0e\x02\x00'...
+2024-04-05 09:24:44,313 - DEBUG - Stop send_frame_task()
+2024-04-05 09:24:45,821 - DEBUG - Start send_frame_task()
+2024-04-05 09:24:45,822 - INFO - 09:24:45-Send to 127.0.0.1:2404 - frame: ID: 8, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:24:45,823 - DEBUG - Stop send_frame_task()
+2024-04-05 09:24:46,633 - INFO - 09:24:46-Received from 127.0.0.1:2404 - frame: ID: 9, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:46,633 - DEBUG - Finish async handle_messages.
+2024-04-05 09:24:46,634 - DEBUG - Starting async handle_messages
+2024-04-05 09:24:46,634 - DEBUG - Start on_handle_message
+2024-04-05 09:24:46,635 - DEBUG - Starting update_state_machine_client with ID: 9, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:46,635 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:24:47,442 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:24:47,442 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 9, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:47,443 - DEBUG - Finish async handle_apdu
+2024-04-05 09:24:47,443 - DEBUG - Finish on_handle_message
+2024-04-05 09:24:48,342 - DEBUG - Start send_frame_task()
+2024-04-05 09:24:48,343 - INFO - 09:24:48-Send to 127.0.0.1:2404 - frame: ID: 8, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:24:48,344 - DEBUG - Stop send_frame_task()
+2024-04-05 09:24:49,163 - INFO - 09:24:49-Received from 127.0.0.1:2404 - frame: ID: 10, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:49,163 - DEBUG - Finish async handle_messages.
+2024-04-05 09:24:49,163 - DEBUG - Starting async handle_messages
+2024-04-05 09:24:49,163 - DEBUG - Start on_handle_message
+2024-04-05 09:24:49,163 - DEBUG - Starting update_state_machine_client with ID: 10, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:49,163 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:24:49,973 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:24:49,974 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 10, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:24:49,974 - DEBUG - Finish async handle_apdu
+2024-04-05 09:24:49,974 - DEBUG - Finish on_handle_message
+2024-04-05 09:24:59,162 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:25:00,870 - DEBUG - Starting async handle_response 
+2024-04-05 09:25:00,870 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:00,871 - INFO - 09:25:00-Send to 127.0.0.1:2404 - frame: ID: 11, OUT, Typ: I-format, Data in bytes: b'h\x0e\x04\x00'...
+2024-04-05 09:25:00,871 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:02,377 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:02,378 - INFO - 09:25:02-Send to 127.0.0.1:2404 - frame: ID: 12, OUT, Typ: I-format, Data in bytes: b'h\x0e\x06\x00'...
+2024-04-05 09:25:02,379 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:03,888 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:03,889 - INFO - 09:25:03-Send to 127.0.0.1:2404 - frame: ID: 13, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:25:03,889 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:04,159 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:25:04,160 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:25:04,180 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:04,180 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:04,707 - INFO - 09:25:04-Received from 127.0.0.1:2404 - frame: ID: 14, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:04,707 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:04,707 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:04,707 - DEBUG - Start on_handle_message
+2024-04-05 09:25:04,715 - DEBUG - Starting update_state_machine_client with ID: 14, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:04,715 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:05,525 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:05,525 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 14, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:05,525 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:05,525 - DEBUG - Finish on_handle_message
+2024-04-05 09:25:06,394 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:06,394 - INFO - 09:25:06-Send to 127.0.0.1:2404 - frame: ID: 13, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:25:06,394 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:07,202 - INFO - 09:25:07-Received from 127.0.0.1:2404 - frame: ID: 15, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:07,202 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:07,202 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:07,202 - DEBUG - Start on_handle_message
+2024-04-05 09:25:07,209 - DEBUG - Starting update_state_machine_client with ID: 15, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:07,209 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:08,018 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:08,019 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 15, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:08,019 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:08,020 - DEBUG - Finish on_handle_message
+2024-04-05 09:25:17,197 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:25:18,908 - DEBUG - Starting async handle_response 
+2024-04-05 09:25:18,909 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:18,910 - INFO - 09:25:18-Send to 127.0.0.1:2404 - frame: ID: 16, OUT, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
+2024-04-05 09:25:18,911 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:20,427 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:20,428 - INFO - 09:25:20-Send to 127.0.0.1:2404 - frame: ID: 17, OUT, Typ: I-format, Data in bytes: b'h\x0e\n\x00'...
+2024-04-05 09:25:20,429 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:21,937 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:21,937 - INFO - 09:25:21-Send to 127.0.0.1:2404 - frame: ID: 18, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:25:21,938 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:22,210 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:25:22,211 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:25:22,211 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:22,211 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:22,751 - INFO - 09:25:22-Received from 127.0.0.1:2404 - frame: ID: 19, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:22,751 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:22,752 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:22,752 - DEBUG - Start on_handle_message
+2024-04-05 09:25:22,752 - DEBUG - Starting update_state_machine_client with ID: 19, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:22,752 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:23,554 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:23,554 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 19, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:23,554 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:23,554 - DEBUG - Finish on_handle_message
+2024-04-05 09:25:24,451 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:24,452 - INFO - 09:25:24-Send to 127.0.0.1:2404 - frame: ID: 18, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:25:24,452 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:25,267 - INFO - 09:25:25-Received from 127.0.0.1:2404 - frame: ID: 20, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:25,267 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:25,267 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:25,275 - DEBUG - Start on_handle_message
+2024-04-05 09:25:25,275 - DEBUG - Starting update_state_machine_client with ID: 20, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:25,275 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:26,094 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:26,094 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 20, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:26,094 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:26,094 - DEBUG - Finish on_handle_message
+2024-04-05 09:25:35,284 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:25:36,971 - DEBUG - Starting async handle_response 
+2024-04-05 09:25:36,972 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:36,972 - INFO - 09:25:36-Send to 127.0.0.1:2404 - frame: ID: 21, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0c\x00'...
+2024-04-05 09:25:36,972 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:38,485 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:38,486 - INFO - 09:25:38-Send to 127.0.0.1:2404 - frame: ID: 22, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0e\x00'...
+2024-04-05 09:25:38,487 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:39,322 - INFO - 09:25:39-Received from 127.0.0.1:2404 - frame: ID: 23, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00\x10\x00'
+2024-04-05 09:25:39,322 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:39,322 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:39,322 - DEBUG - Start on_handle_message
+2024-04-05 09:25:39,322 - DEBUG - Starting update_state_machine_client with ID: 23, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00\x10\x00'
+2024-04-05 09:25:39,327 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:39,994 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:39,994 - INFO - 09:25:39-Send to 127.0.0.1:2404 - frame: ID: 24, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:25:39,994 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:40,144 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:40,145 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 23, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00\x10\x00'
+2024-04-05 09:25:40,145 - DEBUG - del 0, ID: 6, OUT, Typ: I-format, Data in bytes: b'h\x0e\x00\x00'...
+2024-04-05 09:25:40,145 - DEBUG - del 1, ID: 7, OUT, Typ: I-format, Data in bytes: b'h\x0e\x02\x00'...
+2024-04-05 09:25:40,145 - DEBUG - del 2, ID: 11, OUT, Typ: I-format, Data in bytes: b'h\x0e\x04\x00'...
+2024-04-05 09:25:40,145 - DEBUG - del 3, ID: 12, OUT, Typ: I-format, Data in bytes: b'h\x0e\x06\x00'...
+2024-04-05 09:25:40,145 - DEBUG - del 4, ID: 16, OUT, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
+2024-04-05 09:25:40,145 - DEBUG - del 5, ID: 17, OUT, Typ: I-format, Data in bytes: b'h\x0e\n\x00'...
+2024-04-05 09:25:40,150 - DEBUG - del 6, ID: 21, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0c\x00'...
+2024-04-05 09:25:40,150 - DEBUG - del 7, ID: 22, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0e\x00'...
+2024-04-05 09:25:40,150 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:40,150 - DEBUG - Finish on_handle_message
+2024-04-05 09:25:40,810 - INFO - 09:25:40-Received from 127.0.0.1:2404 - frame: ID: 25, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:40,810 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:40,810 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:40,814 - DEBUG - Start on_handle_message
+2024-04-05 09:25:40,814 - DEBUG - Starting update_state_machine_client with ID: 25, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:40,814 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:41,625 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:41,626 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 25, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:41,626 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:41,626 - DEBUG - Finish on_handle_message
+2024-04-05 09:25:42,513 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:42,514 - INFO - 09:25:42-Send to 127.0.0.1:2404 - frame: ID: 24, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:25:42,515 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:43,322 - INFO - 09:25:43-Received from 127.0.0.1:2404 - frame: ID: 26, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:43,322 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:43,322 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:43,326 - DEBUG - Start on_handle_message
+2024-04-05 09:25:43,326 - DEBUG - Starting update_state_machine_client with ID: 26, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:43,326 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:44,127 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:44,128 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 26, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:44,128 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:44,129 - DEBUG - Finish on_handle_message
+2024-04-05 09:25:53,332 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:25:55,037 - DEBUG - Starting async handle_response 
+2024-04-05 09:25:55,037 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:55,037 - INFO - 09:25:55-Send to 127.0.0.1:2404 - frame: ID: 27, OUT, Typ: I-format, Data in bytes: b'h\x0e\x10\x00'...
+2024-04-05 09:25:55,037 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:56,550 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:56,551 - INFO - 09:25:56-Send to 127.0.0.1:2404 - frame: ID: 28, OUT, Typ: I-format, Data in bytes: b'h\x0e\x12\x00'...
+2024-04-05 09:25:56,552 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:58,066 - DEBUG - Start send_frame_task()
+2024-04-05 09:25:58,066 - INFO - 09:25:58-Send to 127.0.0.1:2404 - frame: ID: 29, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:25:58,066 - DEBUG - Stop send_frame_task()
+2024-04-05 09:25:58,338 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:25:58,339 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:58,340 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:58,340 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:25:58,861 - INFO - 09:25:58-Received from 127.0.0.1:2404 - frame: ID: 30, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:58,861 - DEBUG - Finish async handle_messages.
+2024-04-05 09:25:58,861 - DEBUG - Starting async handle_messages
+2024-04-05 09:25:58,861 - DEBUG - Start on_handle_message
+2024-04-05 09:25:58,867 - DEBUG - Starting update_state_machine_client with ID: 30, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:58,867 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:25:59,674 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:25:59,676 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 30, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:25:59,677 - DEBUG - Finish async handle_apdu
+2024-04-05 09:25:59,677 - DEBUG - Finish on_handle_message
+2024-04-05 09:26:00,573 - DEBUG - Start send_frame_task()
+2024-04-05 09:26:00,574 - INFO - 09:26:00-Send to 127.0.0.1:2404 - frame: ID: 29, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:26:00,575 - DEBUG - Stop send_frame_task()
+2024-04-05 09:26:01,396 - INFO - 09:26:01-Received from 127.0.0.1:2404 - frame: ID: 31, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:01,396 - DEBUG - Finish async handle_messages.
+2024-04-05 09:26:01,401 - DEBUG - Starting async handle_messages
+2024-04-05 09:26:01,403 - DEBUG - Start on_handle_message
+2024-04-05 09:26:01,403 - DEBUG - Starting update_state_machine_client with ID: 31, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:01,403 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:26:02,207 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:26:02,208 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 31, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:02,209 - DEBUG - Finish async handle_apdu
+2024-04-05 09:26:02,209 - DEBUG - Finish on_handle_message
+2024-04-05 09:26:11,420 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:26:13,098 - DEBUG - Starting async handle_response 
+2024-04-05 09:26:13,099 - DEBUG - Start send_frame_task()
+2024-04-05 09:26:13,099 - INFO - 09:26:13-Send to 127.0.0.1:2404 - frame: ID: 32, OUT, Typ: I-format, Data in bytes: b'h\x0e\x14\x00'...
+2024-04-05 09:26:13,099 - DEBUG - Stop send_frame_task()
+2024-04-05 09:26:14,601 - DEBUG - Start send_frame_task()
+2024-04-05 09:26:14,602 - INFO - 09:26:14-Send to 127.0.0.1:2404 - frame: ID: 33, OUT, Typ: I-format, Data in bytes: b'h\x0e\x16\x00'...
+2024-04-05 09:26:14,604 - DEBUG - Stop send_frame_task()
+2024-04-05 09:26:16,107 - DEBUG - Start send_frame_task()
+2024-04-05 09:26:16,107 - INFO - 09:26:16-Send to 127.0.0.1:2404 - frame: ID: 34, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:26:16,107 - DEBUG - Stop send_frame_task()
+2024-04-05 09:26:16,411 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:26:16,411 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:26:16,411 - DEBUG - Finish async handle_messages.
+2024-04-05 09:26:16,411 - DEBUG - Starting async handle_messages
+2024-04-05 09:26:16,912 - INFO - 09:26:16-Received from 127.0.0.1:2404 - frame: ID: 35, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:16,912 - DEBUG - Finish async handle_messages.
+2024-04-05 09:26:16,912 - DEBUG - Starting async handle_messages
+2024-04-05 09:26:16,912 - DEBUG - Start on_handle_message
+2024-04-05 09:26:16,919 - DEBUG - Starting update_state_machine_client with ID: 35, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:16,919 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:26:17,732 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:26:17,733 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 35, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:17,734 - DEBUG - Finish async handle_apdu
+2024-04-05 09:26:17,734 - DEBUG - Finish on_handle_message
+2024-04-05 09:26:18,620 - DEBUG - Start send_frame_task()
+2024-04-05 09:26:18,620 - INFO - 09:26:18-Send to 127.0.0.1:2404 - frame: ID: 34, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:26:18,620 - DEBUG - Stop send_frame_task()
+2024-04-05 09:26:19,444 - INFO - 09:26:19-Received from 127.0.0.1:2404 - frame: ID: 36, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:19,444 - DEBUG - Finish async handle_messages.
+2024-04-05 09:26:19,444 - DEBUG - Starting async handle_messages
+2024-04-05 09:26:19,449 - DEBUG - Start on_handle_message
+2024-04-05 09:26:19,449 - DEBUG - Starting update_state_machine_client with ID: 36, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:19,449 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:26:20,252 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:26:20,253 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 36, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:26:20,253 - DEBUG - Finish async handle_apdu
+2024-04-05 09:26:20,253 - DEBUG - Finish on_handle_message
+2024-04-05 09:26:29,450 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:26:31,130 - DEBUG - Starting async handle_response 
+2024-04-05 09:26:31,130 - DEBUG - Start send_frame_task()
+2024-04-05 09:26:31,131 - INFO - 09:26:31-Send to 127.0.0.1:2404 - frame: ID: 37, OUT, Typ: I-format, Data in bytes: b'h\x0e\x18\x00'...
+2024-04-05 09:26:31,131 - DEBUG - Stop send_frame_task()
+2024-04-05 09:26:32,624 - DEBUG - Start send_frame_task()
+2024-04-05 09:26:32,625 - INFO - 09:26:32-Send to 127.0.0.1:2404 - frame: ID: 38, OUT, Typ: I-format, Data in bytes: b'h\x0e\x1a\x00'...
+2024-04-05 09:26:32,626 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:43,540 - INFO - Toto je informaèní zpráva
+2024-04-05 09:35:43,540 - WARNING - Toto je varovná zpráva
+2024-04-05 09:35:43,540 - ERROR - Toto je chybová zpráva
+2024-04-05 09:35:43,541 - DEBUG - Using proactor: IocpProactor
+2024-04-05 09:35:43,542 - DEBUG - NOVA INSTANCE QUEUE ID: 1
+2024-04-05 09:35:43,542 - DEBUG - Vytáèím 127.0.0.1:2404
+2024-04-05 09:35:43,543 - INFO - Navázáno 127.0.0.1:40293-->127.0.0.1:2404
+2024-04-05 09:35:43,544 - DEBUG - flag_session_set START_SESSION
+2024-04-05 09:35:43,544 - DEBUG - Starting async handle_response 
+2024-04-05 09:35:43,544 - DEBUG - Start send_frame_task()
+2024-04-05 09:35:43,545 - INFO - 09:35:43-Send to 127.0.0.1:2404 - frame: ID: 1, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:35:43,545 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:43,545 - DEBUG - Starting async handle_messages
+2024-04-05 09:35:44,359 - INFO - 09:35:44-Received from 127.0.0.1:2404 - frame: ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:44,359 - DEBUG - Finish async handle_messages.
+2024-04-05 09:35:44,360 - DEBUG - Starting async handle_messages
+2024-04-05 09:35:44,360 - DEBUG - Start on_handle_message
+2024-04-05 09:35:44,361 - DEBUG - Starting update_state_machine_client with ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:44,361 - DEBUG - flag_session_set None
+2024-04-05 09:35:44,361 - DEBUG - Start send_frame_task()
+2024-04-05 09:35:44,362 - INFO - 09:35:44-Send to 127.0.0.1:2404 - frame: ID: 3, OUT, Typ: U-format: STARTDT ACT
+2024-04-05 09:35:44,362 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:44,362 - DEBUG - CHANGE_TRANSMISSION_STATE: STOPPED -> WAITING_RUNNING
+2024-04-05 09:35:44,363 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, WAITING_RUNNING
+2024-04-05 09:35:44,368 - INFO - 09:35:44-Received from 127.0.0.1:2404 - frame: ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-05 09:35:44,368 - DEBUG - Finish async handle_messages.
+2024-04-05 09:35:44,369 - DEBUG - Starting async handle_messages
+2024-04-05 09:35:44,370 - DEBUG - Start on_handle_message
+2024-04-05 09:35:44,370 - DEBUG - Starting update_state_machine_client with ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-05 09:35:44,371 - DEBUG - CHANGE_TRANSMISSION_STATE: WAITING_RUNNING -> RUNNING
+2024-04-05 09:35:44,371 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:35:45,170 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:35:45,171 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 2, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:45,172 - DEBUG - Finish async handle_apdu
+2024-04-05 09:35:45,172 - DEBUG - Finish on_handle_message
+2024-04-05 09:35:45,173 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:35:45,174 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 4, IN, Typ: U-format: STARTDT CON
+2024-04-05 09:35:45,174 - DEBUG - Finish async handle_apdu
+2024-04-05 09:35:45,174 - DEBUG - Finish on_handle_message
+2024-04-05 09:35:46,052 - DEBUG - Start send_frame_task()
+2024-04-05 09:35:46,053 - INFO - 09:35:46-Send to 127.0.0.1:2404 - frame: ID: 1, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:35:46,054 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:46,876 - INFO - 09:35:46-Received from 127.0.0.1:2404 - frame: ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:46,877 - DEBUG - Finish async handle_messages.
+2024-04-05 09:35:46,877 - DEBUG - Starting async handle_messages
+2024-04-05 09:35:46,879 - DEBUG - Start on_handle_message
+2024-04-05 09:35:46,879 - DEBUG - Starting update_state_machine_client with ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:46,880 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:35:47,696 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:35:47,697 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 5, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:47,698 - DEBUG - Finish async handle_apdu
+2024-04-05 09:35:47,699 - DEBUG - Finish on_handle_message
+2024-04-05 09:35:48,550 - DEBUG - flag_session_set START_SESSION
+2024-04-05 09:35:48,551 - DEBUG - flag_start_seq = False
+2024-04-05 09:35:48,552 - DEBUG - Starting async handle_response 
+2024-04-05 09:35:48,552 - DEBUG - Start send_frame_task()
+2024-04-05 09:35:48,553 - INFO - 09:35:48-Send to 127.0.0.1:2404 - frame: ID: 6, OUT, Typ: I-format, Data in bytes: b'h\x0e\x00\x00'...
+2024-04-05 09:35:48,554 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:50,061 - DEBUG - Start send_frame_task()
+2024-04-05 09:35:50,063 - INFO - 09:35:50-Send to 127.0.0.1:2404 - frame: ID: 7, OUT, Typ: I-format, Data in bytes: b'h\x0e\x02\x00'...
+2024-04-05 09:35:50,063 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:50,883 - INFO - 09:35:50-Received from 127.0.0.1:2404 - frame: ID: 8, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00 \x00'
+2024-04-05 09:35:50,883 - DEBUG - Finish async handle_messages.
+2024-04-05 09:35:50,886 - DEBUG - Starting async handle_messages
+2024-04-05 09:35:50,887 - DEBUG - Start on_handle_message
+2024-04-05 09:35:50,888 - DEBUG - Starting update_state_machine_client with ID: 8, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00 \x00'
+2024-04-05 09:35:50,890 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:35:51,574 - DEBUG - Start send_frame_task()
+2024-04-05 09:35:51,574 - INFO - 09:35:51-Send to 127.0.0.1:2404 - frame: ID: 9, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:35:51,574 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:51,689 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:35:51,692 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 8, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00 \x00'
+2024-04-05 09:35:51,693 - DEBUG - del 0, ID: 6, OUT, Typ: I-format, Data in bytes: b'h\x0e\x00\x00'...
+2024-04-05 09:35:51,693 - DEBUG - del 1, ID: 7, OUT, Typ: I-format, Data in bytes: b'h\x0e\x02\x00'...
+2024-04-05 09:35:51,694 - DEBUG - Finish async handle_apdu
+2024-04-05 09:35:51,695 - DEBUG - Finish on_handle_message
+2024-04-05 09:35:52,380 - INFO - 09:35:52-Received from 127.0.0.1:2404 - frame: ID: 10, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:52,380 - DEBUG - Finish async handle_messages.
+2024-04-05 09:35:52,380 - DEBUG - Starting async handle_messages
+2024-04-05 09:35:52,382 - DEBUG - Start on_handle_message
+2024-04-05 09:35:52,382 - DEBUG - Starting update_state_machine_client with ID: 10, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:52,382 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:35:53,186 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:35:53,187 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 10, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:53,188 - DEBUG - Finish async handle_apdu
+2024-04-05 09:35:53,188 - DEBUG - Finish on_handle_message
+2024-04-05 09:35:54,084 - DEBUG - Start send_frame_task()
+2024-04-05 09:35:54,085 - INFO - 09:35:54-Send to 127.0.0.1:2404 - frame: ID: 9, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:35:54,087 - DEBUG - Stop send_frame_task()
+2024-04-05 09:35:54,908 - INFO - 09:35:54-Received from 127.0.0.1:2404 - frame: ID: 11, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:54,908 - DEBUG - Finish async handle_messages.
+2024-04-05 09:35:54,908 - DEBUG - Starting async handle_messages
+2024-04-05 09:35:54,908 - DEBUG - Start on_handle_message
+2024-04-05 09:35:54,913 - DEBUG - Starting update_state_machine_client with ID: 11, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:54,913 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:35:55,725 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:35:55,726 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 11, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:35:55,727 - DEBUG - Finish async handle_apdu
+2024-04-05 09:35:55,728 - DEBUG - Finish on_handle_message
+2024-04-05 09:36:04,915 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:36:06,590 - DEBUG - Starting async handle_response 
+2024-04-05 09:36:06,591 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:06,591 - INFO - 09:36:06-Send to 127.0.0.1:2404 - frame: ID: 12, OUT, Typ: I-format, Data in bytes: b'h\x0e\x04\x00'...
+2024-04-05 09:36:06,591 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:08,094 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:08,095 - INFO - 09:36:08-Send to 127.0.0.1:2404 - frame: ID: 13, OUT, Typ: I-format, Data in bytes: b'h\x0e\x06\x00'...
+2024-04-05 09:36:08,095 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:09,608 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:09,609 - INFO - 09:36:09-Send to 127.0.0.1:2404 - frame: ID: 14, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:36:09,609 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:09,916 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:36:09,917 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:36:09,917 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:09,917 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:10,426 - INFO - 09:36:10-Received from 127.0.0.1:2404 - frame: ID: 15, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:10,426 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:10,426 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:10,426 - DEBUG - Start on_handle_message
+2024-04-05 09:36:10,434 - DEBUG - Starting update_state_machine_client with ID: 15, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:10,434 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:36:11,247 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:36:11,248 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 15, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:11,249 - DEBUG - Finish async handle_apdu
+2024-04-05 09:36:11,250 - DEBUG - Finish on_handle_message
+2024-04-05 09:36:12,122 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:12,123 - INFO - 09:36:12-Send to 127.0.0.1:2404 - frame: ID: 14, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:36:12,123 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:12,934 - INFO - 09:36:12-Received from 127.0.0.1:2404 - frame: ID: 16, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:12,934 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:12,934 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:12,934 - DEBUG - Start on_handle_message
+2024-04-05 09:36:12,940 - DEBUG - Starting update_state_machine_client with ID: 16, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:12,940 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:36:13,753 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:36:13,753 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 16, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:13,753 - DEBUG - Finish async handle_apdu
+2024-04-05 09:36:13,753 - DEBUG - Finish on_handle_message
+2024-04-05 09:36:22,949 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:36:24,639 - DEBUG - Starting async handle_response 
+2024-04-05 09:36:24,640 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:24,640 - INFO - 09:36:24-Send to 127.0.0.1:2404 - frame: ID: 17, OUT, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
+2024-04-05 09:36:24,640 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:26,151 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:26,151 - INFO - 09:36:26-Send to 127.0.0.1:2404 - frame: ID: 18, OUT, Typ: I-format, Data in bytes: b'h\x0e\n\x00'...
+2024-04-05 09:36:26,151 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:27,654 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:27,655 - INFO - 09:36:27-Send to 127.0.0.1:2404 - frame: ID: 19, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:36:27,655 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:27,952 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:36:27,953 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:36:27,953 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:27,953 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:28,460 - INFO - 09:36:28-Received from 127.0.0.1:2404 - frame: ID: 20, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:28,460 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:28,460 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:28,460 - DEBUG - Start on_handle_message
+2024-04-05 09:36:28,467 - DEBUG - Starting update_state_machine_client with ID: 20, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:28,467 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:36:29,278 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:36:29,278 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 20, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:29,278 - DEBUG - Finish async handle_apdu
+2024-04-05 09:36:29,278 - DEBUG - Finish on_handle_message
+2024-04-05 09:36:30,153 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:30,153 - INFO - 09:36:30-Send to 127.0.0.1:2404 - frame: ID: 19, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:36:30,153 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:30,974 - INFO - 09:36:30-Received from 127.0.0.1:2404 - frame: ID: 21, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:30,974 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:30,974 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:30,974 - DEBUG - Start on_handle_message
+2024-04-05 09:36:30,980 - DEBUG - Starting update_state_machine_client with ID: 21, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:30,980 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:36:31,788 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:36:31,788 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 21, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:31,788 - DEBUG - Finish async handle_apdu
+2024-04-05 09:36:31,788 - DEBUG - Finish on_handle_message
+2024-04-05 09:36:40,978 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:36:42,679 - DEBUG - Starting async handle_response 
+2024-04-05 09:36:42,679 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:42,679 - INFO - 09:36:42-Send to 127.0.0.1:2404 - frame: ID: 22, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0c\x00'...
+2024-04-05 09:36:42,679 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:44,193 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:44,194 - INFO - 09:36:44-Send to 127.0.0.1:2404 - frame: ID: 23, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0e\x00'...
+2024-04-05 09:36:44,194 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:45,701 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:45,701 - INFO - 09:36:45-Send to 127.0.0.1:2404 - frame: ID: 24, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:36:45,701 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:45,973 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:36:45,974 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:36:45,974 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:45,974 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:46,523 - INFO - 09:36:46-Received from 127.0.0.1:2404 - frame: ID: 25, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:46,523 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:46,523 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:46,528 - DEBUG - Start on_handle_message
+2024-04-05 09:36:46,528 - DEBUG - Starting update_state_machine_client with ID: 25, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:46,528 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:36:47,348 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:36:47,349 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 25, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:47,349 - DEBUG - Finish async handle_apdu
+2024-04-05 09:36:47,349 - DEBUG - Finish on_handle_message
+2024-04-05 09:36:48,222 - DEBUG - Start send_frame_task()
+2024-04-05 09:36:48,223 - INFO - 09:36:48-Send to 127.0.0.1:2404 - frame: ID: 24, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:36:48,224 - DEBUG - Stop send_frame_task()
+2024-04-05 09:36:49,023 - INFO - 09:36:49-Received from 127.0.0.1:2404 - frame: ID: 26, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:49,023 - DEBUG - Finish async handle_messages.
+2024-04-05 09:36:49,023 - DEBUG - Starting async handle_messages
+2024-04-05 09:36:49,023 - DEBUG - Start on_handle_message
+2024-04-05 09:36:49,023 - DEBUG - Starting update_state_machine_client with ID: 26, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:49,023 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:36:49,834 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:36:49,834 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 26, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:36:49,834 - DEBUG - Finish async handle_apdu
+2024-04-05 09:36:49,834 - DEBUG - Finish on_handle_message
+2024-04-05 09:36:59,026 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:37:00,745 - DEBUG - Starting async handle_response 
+2024-04-05 09:37:00,745 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:00,745 - INFO - 09:37:00-Send to 127.0.0.1:2404 - frame: ID: 27, OUT, Typ: I-format, Data in bytes: b'h\x0e\x10\x00'...
+2024-04-05 09:37:00,745 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:02,262 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:02,262 - INFO - 09:37:02-Send to 127.0.0.1:2404 - frame: ID: 28, OUT, Typ: I-format, Data in bytes: b'h\x0e\x12\x00'...
+2024-04-05 09:37:02,262 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:03,099 - INFO - 09:37:03-Received from 127.0.0.1:2404 - frame: ID: 29, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x000\x00'
+2024-04-05 09:37:03,100 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:03,100 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:03,102 - DEBUG - Start on_handle_message
+2024-04-05 09:37:03,103 - DEBUG - Starting update_state_machine_client with ID: 29, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x000\x00'
+2024-04-05 09:37:03,103 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:03,772 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:03,773 - INFO - 09:37:03-Send to 127.0.0.1:2404 - frame: ID: 30, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:37:03,774 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:03,923 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:03,924 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 29, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x000\x00'
+2024-04-05 09:37:03,924 - DEBUG - del 2, ID: 12, OUT, Typ: I-format, Data in bytes: b'h\x0e\x04\x00'...
+2024-04-05 09:37:03,924 - DEBUG - del 3, ID: 13, OUT, Typ: I-format, Data in bytes: b'h\x0e\x06\x00'...
+2024-04-05 09:37:03,924 - DEBUG - del 4, ID: 17, OUT, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
+2024-04-05 09:37:03,924 - DEBUG - del 5, ID: 18, OUT, Typ: I-format, Data in bytes: b'h\x0e\n\x00'...
+2024-04-05 09:37:03,924 - DEBUG - del 6, ID: 22, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0c\x00'...
+2024-04-05 09:37:03,924 - DEBUG - del 7, ID: 23, OUT, Typ: I-format, Data in bytes: b'h\x0e\x0e\x00'...
+2024-04-05 09:37:03,924 - DEBUG - del 8, ID: 27, OUT, Typ: I-format, Data in bytes: b'h\x0e\x10\x00'...
+2024-04-05 09:37:03,930 - DEBUG - del 9, ID: 28, OUT, Typ: I-format, Data in bytes: b'h\x0e\x12\x00'...
+2024-04-05 09:37:03,930 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:03,933 - DEBUG - Finish on_handle_message
+2024-04-05 09:37:04,603 - INFO - 09:37:04-Received from 127.0.0.1:2404 - frame: ID: 31, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:04,603 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:04,603 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:04,603 - DEBUG - Start on_handle_message
+2024-04-05 09:37:04,611 - DEBUG - Starting update_state_machine_client with ID: 31, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:04,611 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:05,426 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:05,427 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 31, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:05,427 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:05,427 - DEBUG - Finish on_handle_message
+2024-04-05 09:37:06,296 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:06,296 - INFO - 09:37:06-Send to 127.0.0.1:2404 - frame: ID: 30, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:37:06,296 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:07,107 - INFO - 09:37:07-Received from 127.0.0.1:2404 - frame: ID: 32, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:07,107 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:07,107 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:07,107 - DEBUG - Start on_handle_message
+2024-04-05 09:37:07,113 - DEBUG - Starting update_state_machine_client with ID: 32, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:07,113 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:07,919 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:07,919 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 32, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:07,919 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:07,919 - DEBUG - Finish on_handle_message
+2024-04-05 09:37:17,126 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:37:18,800 - DEBUG - Starting async handle_response 
+2024-04-05 09:37:18,800 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:18,800 - INFO - 09:37:18-Send to 127.0.0.1:2404 - frame: ID: 33, OUT, Typ: I-format, Data in bytes: b'h\x0e\x14\x00'...
+2024-04-05 09:37:18,800 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:20,313 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:20,313 - INFO - 09:37:20-Send to 127.0.0.1:2404 - frame: ID: 34, OUT, Typ: I-format, Data in bytes: b'h\x0e\x16\x00'...
+2024-04-05 09:37:20,313 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:21,819 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:21,819 - INFO - 09:37:21-Send to 127.0.0.1:2404 - frame: ID: 35, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:37:21,819 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:22,117 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:37:22,117 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:22,117 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:22,117 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:37:22,621 - INFO - 09:37:22-Received from 127.0.0.1:2404 - frame: ID: 36, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:22,621 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:22,621 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:22,621 - DEBUG - Start on_handle_message
+2024-04-05 09:37:22,629 - DEBUG - Starting update_state_machine_client with ID: 36, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:22,629 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:23,442 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:23,442 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 36, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:23,442 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:23,442 - DEBUG - Finish on_handle_message
+2024-04-05 09:37:24,335 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:24,336 - INFO - 09:37:24-Send to 127.0.0.1:2404 - frame: ID: 35, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:37:24,336 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:25,141 - INFO - 09:37:25-Received from 127.0.0.1:2404 - frame: ID: 37, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:25,141 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:25,141 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:25,147 - DEBUG - Start on_handle_message
+2024-04-05 09:37:25,147 - DEBUG - Starting update_state_machine_client with ID: 37, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:25,147 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:25,964 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:25,965 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 37, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:25,965 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:25,965 - DEBUG - Finish on_handle_message
+2024-04-05 09:37:35,153 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:37:36,840 - DEBUG - Starting async handle_response 
+2024-04-05 09:37:36,840 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:36,840 - INFO - 09:37:36-Send to 127.0.0.1:2404 - frame: ID: 38, OUT, Typ: I-format, Data in bytes: b'h\x0e\x18\x00'...
+2024-04-05 09:37:36,840 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:38,355 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:38,355 - INFO - 09:37:38-Send to 127.0.0.1:2404 - frame: ID: 39, OUT, Typ: I-format, Data in bytes: b'h\x0e\x1a\x00'...
+2024-04-05 09:37:38,355 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:39,863 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:39,864 - INFO - 09:37:39-Send to 127.0.0.1:2404 - frame: ID: 40, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:37:39,865 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:40,159 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:37:40,159 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:40,159 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:40,159 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:37:40,673 - INFO - 09:37:40-Received from 127.0.0.1:2404 - frame: ID: 41, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:40,673 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:40,673 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:40,680 - DEBUG - Start on_handle_message
+2024-04-05 09:37:40,680 - DEBUG - Starting update_state_machine_client with ID: 41, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:40,680 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:41,492 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:41,492 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 41, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:41,492 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:41,492 - DEBUG - Finish on_handle_message
+2024-04-05 09:37:42,385 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:42,386 - INFO - 09:37:42-Send to 127.0.0.1:2404 - frame: ID: 40, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:37:42,386 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:43,199 - INFO - 09:37:43-Received from 127.0.0.1:2404 - frame: ID: 42, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:43,199 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:43,199 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:43,199 - DEBUG - Start on_handle_message
+2024-04-05 09:37:43,205 - DEBUG - Starting update_state_machine_client with ID: 42, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:43,205 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:44,022 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:44,022 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 42, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:44,022 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:44,022 - DEBUG - Finish on_handle_message
+2024-04-05 09:37:53,216 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:37:54,905 - DEBUG - Starting async handle_response 
+2024-04-05 09:37:54,906 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:54,906 - INFO - 09:37:54-Send to 127.0.0.1:2404 - frame: ID: 43, OUT, Typ: I-format, Data in bytes: b'h\x0e\x1c\x00'...
+2024-04-05 09:37:54,906 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:56,407 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:56,407 - INFO - 09:37:56-Send to 127.0.0.1:2404 - frame: ID: 44, OUT, Typ: I-format, Data in bytes: b'h\x0e\x1e\x00'...
+2024-04-05 09:37:56,407 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:57,912 - DEBUG - Start send_frame_task()
+2024-04-05 09:37:57,912 - INFO - 09:37:57-Send to 127.0.0.1:2404 - frame: ID: 45, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:37:57,912 - DEBUG - Stop send_frame_task()
+2024-04-05 09:37:58,225 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:37:58,226 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:37:58,227 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:58,227 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:58,731 - INFO - 09:37:58-Received from 127.0.0.1:2404 - frame: ID: 46, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:58,731 - DEBUG - Finish async handle_messages.
+2024-04-05 09:37:58,731 - DEBUG - Starting async handle_messages
+2024-04-05 09:37:58,731 - DEBUG - Start on_handle_message
+2024-04-05 09:37:58,734 - DEBUG - Starting update_state_machine_client with ID: 46, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:58,734 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:37:59,541 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:37:59,542 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 46, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:37:59,542 - DEBUG - Finish async handle_apdu
+2024-04-05 09:37:59,542 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:00,403 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:00,404 - INFO - 09:38:00-Send to 127.0.0.1:2404 - frame: ID: 45, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:38:00,405 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:01,215 - INFO - 09:38:01-Received from 127.0.0.1:2404 - frame: ID: 47, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:01,215 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:01,215 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:01,215 - DEBUG - Start on_handle_message
+2024-04-05 09:38:01,221 - DEBUG - Starting update_state_machine_client with ID: 47, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:01,222 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:02,033 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:02,034 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 47, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:02,034 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:02,034 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:11,227 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:38:12,906 - DEBUG - Starting async handle_response 
+2024-04-05 09:38:12,907 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:12,909 - INFO - 09:38:12-Send to 127.0.0.1:2404 - frame: ID: 48, OUT, Typ: I-format, Data in bytes: b'h\x0e \x00'...
+2024-04-05 09:38:12,909 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:14,412 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:14,412 - INFO - 09:38:14-Send to 127.0.0.1:2404 - frame: ID: 49, OUT, Typ: I-format, Data in bytes: b'h\x0e"\x00'...
+2024-04-05 09:38:14,412 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:15,234 - INFO - 09:38:15-Received from 127.0.0.1:2404 - frame: ID: 50, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00@\x00'
+2024-04-05 09:38:15,234 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:15,235 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:15,235 - DEBUG - Start on_handle_message
+2024-04-05 09:38:15,237 - DEBUG - Starting update_state_machine_client with ID: 50, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00@\x00'
+2024-04-05 09:38:15,238 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:15,921 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:15,922 - INFO - 09:38:15-Send to 127.0.0.1:2404 - frame: ID: 51, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:38:15,922 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:16,041 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:16,042 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 50, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00@\x00'
+2024-04-05 09:38:16,042 - DEBUG - del 10, ID: 33, OUT, Typ: I-format, Data in bytes: b'h\x0e\x14\x00'...
+2024-04-05 09:38:16,042 - DEBUG - del 11, ID: 34, OUT, Typ: I-format, Data in bytes: b'h\x0e\x16\x00'...
+2024-04-05 09:38:16,042 - DEBUG - del 12, ID: 38, OUT, Typ: I-format, Data in bytes: b'h\x0e\x18\x00'...
+2024-04-05 09:38:16,042 - DEBUG - del 13, ID: 39, OUT, Typ: I-format, Data in bytes: b'h\x0e\x1a\x00'...
+2024-04-05 09:38:16,042 - DEBUG - del 14, ID: 43, OUT, Typ: I-format, Data in bytes: b'h\x0e\x1c\x00'...
+2024-04-05 09:38:16,042 - DEBUG - del 15, ID: 44, OUT, Typ: I-format, Data in bytes: b'h\x0e\x1e\x00'...
+2024-04-05 09:38:16,042 - DEBUG - del 16, ID: 48, OUT, Typ: I-format, Data in bytes: b'h\x0e \x00'...
+2024-04-05 09:38:16,042 - DEBUG - del 17, ID: 49, OUT, Typ: I-format, Data in bytes: b'h\x0e"\x00'...
+2024-04-05 09:38:16,042 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:16,042 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:16,742 - INFO - 09:38:16-Received from 127.0.0.1:2404 - frame: ID: 52, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:16,742 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:16,742 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:16,748 - DEBUG - Start on_handle_message
+2024-04-05 09:38:16,748 - DEBUG - Starting update_state_machine_client with ID: 52, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:16,748 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:17,558 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:17,558 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 52, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:17,558 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:17,558 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:18,432 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:18,432 - INFO - 09:38:18-Send to 127.0.0.1:2404 - frame: ID: 51, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:38:18,432 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:19,239 - INFO - 09:38:19-Received from 127.0.0.1:2404 - frame: ID: 53, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:19,239 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:19,240 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:19,240 - DEBUG - Start on_handle_message
+2024-04-05 09:38:19,240 - DEBUG - Starting update_state_machine_client with ID: 53, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:19,241 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:20,057 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:20,058 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 53, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:20,058 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:20,058 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:29,246 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:38:30,940 - DEBUG - Starting async handle_response 
+2024-04-05 09:38:30,941 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:30,941 - INFO - 09:38:30-Send to 127.0.0.1:2404 - frame: ID: 54, OUT, Typ: I-format, Data in bytes: b'h\x0e$\x00'...
+2024-04-05 09:38:30,941 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:32,441 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:32,441 - INFO - 09:38:32-Send to 127.0.0.1:2404 - frame: ID: 55, OUT, Typ: I-format, Data in bytes: b'h\x0e&\x00'...
+2024-04-05 09:38:32,441 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:33,947 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:33,948 - INFO - 09:38:33-Send to 127.0.0.1:2404 - frame: ID: 56, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:38:33,948 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:34,245 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:38:34,245 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:34,245 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:34,246 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:38:34,751 - INFO - 09:38:34-Received from 127.0.0.1:2404 - frame: ID: 57, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:34,751 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:34,751 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:34,758 - DEBUG - Start on_handle_message
+2024-04-05 09:38:34,758 - DEBUG - Starting update_state_machine_client with ID: 57, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:34,758 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:35,571 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:35,571 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 57, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:35,571 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:35,572 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:36,461 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:36,461 - INFO - 09:38:36-Send to 127.0.0.1:2404 - frame: ID: 56, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:38:36,461 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:37,279 - INFO - 09:38:37-Received from 127.0.0.1:2404 - frame: ID: 58, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:37,279 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:37,279 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:37,279 - DEBUG - Start on_handle_message
+2024-04-05 09:38:37,286 - DEBUG - Starting update_state_machine_client with ID: 58, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:37,286 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:38,093 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:38,093 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 58, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:38,093 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:38,093 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:47,295 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:38:48,953 - DEBUG - Starting async handle_response 
+2024-04-05 09:38:48,953 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:48,953 - INFO - 09:38:48-Send to 127.0.0.1:2404 - frame: ID: 59, OUT, Typ: I-format, Data in bytes: b'h\x0e(\x00'...
+2024-04-05 09:38:48,953 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:50,453 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:50,454 - INFO - 09:38:50-Send to 127.0.0.1:2404 - frame: ID: 60, OUT, Typ: I-format, Data in bytes: b'h\x0e*\x00'...
+2024-04-05 09:38:50,454 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:51,956 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:51,956 - INFO - 09:38:51-Send to 127.0.0.1:2404 - frame: ID: 61, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:38:51,956 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:52,297 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:38:52,297 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:38:52,297 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:52,297 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:52,751 - INFO - 09:38:52-Received from 127.0.0.1:2404 - frame: ID: 62, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:52,751 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:52,751 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:52,758 - DEBUG - Start on_handle_message
+2024-04-05 09:38:52,758 - DEBUG - Starting update_state_machine_client with ID: 62, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:52,758 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:53,573 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:53,573 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 62, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:53,574 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:53,574 - DEBUG - Finish on_handle_message
+2024-04-05 09:38:54,465 - DEBUG - Start send_frame_task()
+2024-04-05 09:38:54,466 - INFO - 09:38:54-Send to 127.0.0.1:2404 - frame: ID: 61, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:38:54,466 - DEBUG - Stop send_frame_task()
+2024-04-05 09:38:55,278 - INFO - 09:38:55-Received from 127.0.0.1:2404 - frame: ID: 63, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:55,278 - DEBUG - Finish async handle_messages.
+2024-04-05 09:38:55,278 - DEBUG - Starting async handle_messages
+2024-04-05 09:38:55,284 - DEBUG - Start on_handle_message
+2024-04-05 09:38:55,284 - DEBUG - Starting update_state_machine_client with ID: 63, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:55,284 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:38:56,102 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:38:56,102 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 63, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:38:56,102 - DEBUG - Finish async handle_apdu
+2024-04-05 09:38:56,102 - DEBUG - Finish on_handle_message
+2024-04-05 09:39:05,291 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:39:06,987 - DEBUG - Starting async handle_response 
+2024-04-05 09:39:06,987 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:06,987 - INFO - 09:39:06-Send to 127.0.0.1:2404 - frame: ID: 64, OUT, Typ: I-format, Data in bytes: b'h\x0e,\x00'...
+2024-04-05 09:39:06,987 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:08,489 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:08,489 - INFO - 09:39:08-Send to 127.0.0.1:2404 - frame: ID: 65, OUT, Typ: I-format, Data in bytes: b'h\x0e.\x00'...
+2024-04-05 09:39:08,489 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:09,999 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:09,999 - INFO - 09:39:09-Send to 127.0.0.1:2404 - frame: ID: 66, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:39:09,999 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:10,289 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:39:10,290 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:39:10,290 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:10,291 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:10,826 - INFO - 09:39:10-Received from 127.0.0.1:2404 - frame: ID: 67, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:10,826 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:10,826 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:10,833 - DEBUG - Start on_handle_message
+2024-04-05 09:39:10,833 - DEBUG - Starting update_state_machine_client with ID: 67, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:10,835 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:39:11,642 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:39:11,643 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 67, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:11,643 - DEBUG - Finish async handle_apdu
+2024-04-05 09:39:11,643 - DEBUG - Finish on_handle_message
+2024-04-05 09:39:12,514 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:12,514 - INFO - 09:39:12-Send to 127.0.0.1:2404 - frame: ID: 66, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:39:12,514 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:13,340 - INFO - 09:39:13-Received from 127.0.0.1:2404 - frame: ID: 68, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:13,340 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:13,340 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:13,340 - DEBUG - Start on_handle_message
+2024-04-05 09:39:13,340 - DEBUG - Starting update_state_machine_client with ID: 68, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:13,340 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:39:14,153 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:39:14,154 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 68, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:14,154 - DEBUG - Finish async handle_apdu
+2024-04-05 09:39:14,154 - DEBUG - Finish on_handle_message
+2024-04-05 09:39:23,348 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:39:25,047 - DEBUG - Starting async handle_response 
+2024-04-05 09:39:25,047 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:25,047 - INFO - 09:39:25-Send to 127.0.0.1:2404 - frame: ID: 69, OUT, Typ: I-format, Data in bytes: b'h\x0e0\x00'...
+2024-04-05 09:39:25,047 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:26,559 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:26,559 - INFO - 09:39:26-Send to 127.0.0.1:2404 - frame: ID: 70, OUT, Typ: I-format, Data in bytes: b'h\x0e2\x00'...
+2024-04-05 09:39:26,559 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:27,375 - INFO - 09:39:27-Received from 127.0.0.1:2404 - frame: ID: 71, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00P\x00'
+2024-04-05 09:39:27,375 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:27,378 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:27,379 - DEBUG - Start on_handle_message
+2024-04-05 09:39:27,379 - DEBUG - Starting update_state_machine_client with ID: 71, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00P\x00'
+2024-04-05 09:39:27,379 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:39:28,077 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:28,077 - INFO - 09:39:28-Send to 127.0.0.1:2404 - frame: ID: 72, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:39:28,077 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:28,191 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:39:28,193 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 71, IN, Typ: S-format, Data in bytes: b'h\x04\x01\x00P\x00'
+2024-04-05 09:39:28,193 - DEBUG - del 18, ID: 54, OUT, Typ: I-format, Data in bytes: b'h\x0e$\x00'...
+2024-04-05 09:39:28,193 - DEBUG - del 19, ID: 55, OUT, Typ: I-format, Data in bytes: b'h\x0e&\x00'...
+2024-04-05 09:39:28,193 - DEBUG - del 20, ID: 59, OUT, Typ: I-format, Data in bytes: b'h\x0e(\x00'...
+2024-04-05 09:39:28,193 - DEBUG - del 21, ID: 60, OUT, Typ: I-format, Data in bytes: b'h\x0e*\x00'...
+2024-04-05 09:39:28,193 - DEBUG - del 22, ID: 64, OUT, Typ: I-format, Data in bytes: b'h\x0e,\x00'...
+2024-04-05 09:39:28,193 - DEBUG - del 23, ID: 65, OUT, Typ: I-format, Data in bytes: b'h\x0e.\x00'...
+2024-04-05 09:39:28,193 - DEBUG - del 24, ID: 69, OUT, Typ: I-format, Data in bytes: b'h\x0e0\x00'...
+2024-04-05 09:39:28,193 - DEBUG - del 25, ID: 70, OUT, Typ: I-format, Data in bytes: b'h\x0e2\x00'...
+2024-04-05 09:39:28,201 - DEBUG - Finish async handle_apdu
+2024-04-05 09:39:28,201 - DEBUG - Finish on_handle_message
+2024-04-05 09:39:28,888 - INFO - 09:39:28-Received from 127.0.0.1:2404 - frame: ID: 73, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:28,888 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:28,888 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:28,893 - DEBUG - Start on_handle_message
+2024-04-05 09:39:28,893 - DEBUG - Starting update_state_machine_client with ID: 73, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:28,893 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:39:29,708 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:39:29,708 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 73, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:29,709 - DEBUG - Finish async handle_apdu
+2024-04-05 09:39:29,709 - DEBUG - Finish on_handle_message
+2024-04-05 09:39:30,599 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:30,599 - INFO - 09:39:30-Send to 127.0.0.1:2404 - frame: ID: 72, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:39:30,599 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:31,405 - INFO - 09:39:31-Received from 127.0.0.1:2404 - frame: ID: 74, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:31,405 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:31,405 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:31,405 - DEBUG - Start on_handle_message
+2024-04-05 09:39:31,412 - DEBUG - Starting update_state_machine_client with ID: 74, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:31,412 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING
+2024-04-05 09:39:32,226 - DEBUG - Finish async update_state_machine_client
+2024-04-05 09:39:32,227 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 74, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:32,227 - DEBUG - Finish async handle_apdu
+2024-04-05 09:39:32,227 - DEBUG - Finish on_handle_message
+2024-04-05 09:39:41,410 - DEBUG - Timer t2 timed_out - None
+2024-04-05 09:39:43,102 - DEBUG - Starting async handle_response 
+2024-04-05 09:39:43,102 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:43,103 - INFO - 09:39:43-Send to 127.0.0.1:2404 - frame: ID: 75, OUT, Typ: I-format, Data in bytes: b'h\x0e4\x00'...
+2024-04-05 09:39:43,104 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:44,607 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:44,608 - INFO - 09:39:44-Send to 127.0.0.1:2404 - frame: ID: 76, OUT, Typ: I-format, Data in bytes: b'h\x0e6\x00'...
+2024-04-05 09:39:44,608 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:46,115 - DEBUG - Start send_frame_task()
+2024-04-05 09:39:46,116 - INFO - 09:39:46-Send to 127.0.0.1:2404 - frame: ID: 77, OUT, Typ: U-format: TESTDT ACT
+2024-04-05 09:39:46,117 - DEBUG - Stop send_frame_task()
+2024-04-05 09:39:46,421 - DEBUG - Klient SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING neposlal žádná data.
+2024-04-05 09:39:46,422 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:46,422 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:46,422 - DEBUG - Timer t1 timed_out - None
+2024-04-05 09:39:46,940 - INFO - 09:39:46-Received from 127.0.0.1:2404 - frame: ID: 78, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:46,941 - DEBUG - Finish async handle_messages.
+2024-04-05 09:39:46,942 - DEBUG - Starting async handle_messages
+2024-04-05 09:39:46,943 - DEBUG - Start on_handle_message
+2024-04-05 09:39:46,943 - DEBUG - Starting update_state_machine_client with ID: 78, IN, Typ: U-format: TESTDT CON
+2024-04-05 09:39:46,944 - INFO - SessionID: 1, ip: 127.0.0.1, port: 2404, states: CONNECTED, RUNNING

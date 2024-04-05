@@ -1,0 +1,9 @@
+2024-04-05 09:21:04,525 - INFO - Toto je informaèní zpráva
+2024-04-05 09:21:04,526 - WARNING - Toto je varovná zpráva
+2024-04-05 09:21:04,526 - ERROR - Toto je chybová zpráva
+2024-04-05 09:21:04,526 - ERROR - Config file '../IEC104_v5/config_parameters.json' not found.
+2024-04-05 09:22:00,529 - INFO - Toto je informaèní zpráva
+2024-04-05 09:22:00,529 - WARNING - Toto je varovná zpráva
+2024-04-05 09:22:00,529 - ERROR - Toto je chybová zpráva
+2024-04-05 09:22:00,539 - DEBUG - Using proactor: IocpProactor
+2024-04-05 09:22:00,555 - INFO - Naslouchám na 127.0.0.1:2404
