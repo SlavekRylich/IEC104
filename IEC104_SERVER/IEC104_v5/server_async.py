@@ -34,7 +34,7 @@ class ServerIEC104:
         """
         self.__loop: asyncio.get_running_loop() = None
         self.task_check_alive_queue = None
-        self._server: ServerIEC104() = None
+        self._server = None
         self.config_loader = ConfigLoader('./config_parameters.json')
 
         self.ip: str = self.config_loader.config['server']['ip_address']
@@ -131,8 +131,12 @@ class ServerIEC104:
         """
         Get the IP address of the client that connected to the server.
         """
+        callback = self.check_alive_clients
         if client_addr not in self.clients:
-            client_manager_class = ClientManager(client_addr, 'server')
+            client_manager_class = ClientManager(client_addr,
+                                                 port=None,
+                                                 callback_check_clients=callback,
+                                                 whoami='server')
             self.clients[client_addr] = client_manager_class
 
             print(f"Created new queue for client {client_addr}")
@@ -141,7 +145,7 @@ class ServerIEC104:
         client_manager_class: ClientManager = self.clients[client_addr]
 
         # Get the functions to call for handling incoming APDU packets and timeout events
-        callback_handle_apdu: client_manager_class.on_handle_message = client_manager_class.on_handle_message
+        callback_on_message_recv = client_manager_class.on_message_receive
         callback_timeouts_tuple: tuple = (
             client_manager_class.handle_timeout_t0,
             client_manager_class.handle_timeout_t1,
@@ -156,7 +160,7 @@ class ServerIEC104:
             reader,
             writer,
             self.session_params,
-            callback_handle_apdu,
+            callback_on_message_recv,
             callback_timeouts_tuple,
             client_manager_class.send_buffer,
             'server'
@@ -177,7 +181,7 @@ class ServerIEC104:
             print(f"Exception: {e}")
             logging.error(f"Exception: {e}")
 
-    async def run(self):
+    async def run(self) -> None:
         self.__loop = asyncio.get_running_loop()
         pass
         # self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
@@ -194,6 +198,30 @@ class ServerIEC104:
         # continue
 
         # await asyncio.sleep(self.async_time)
+    def check_alive_clients(self) -> bool:
+
+        # if is any client in list self.clients, check his flag for delete and remove it
+        if len(self.clients) > 0:
+            count: int = 0
+            for client in list(self.clients.values()):
+                if client.flag_delete:
+                    self.clients.pop(client.ip)
+                    logging.debug(f"deleted {client} from server")
+                    count += 1
+                if client is None:
+                    count += 1
+                    print(f"nastalo toto ? ")
+                    logging.debug(f"deleted {client} because it's None")
+            if count == 0:
+                logging.debug(f"last client was deleted")
+            print(count)
+            if len(list(self.clients)) > 0:
+                return True
+            else:
+                return False
+        else:
+            logging.debug(f"no clients on server")
+            return False
 
     async def periodic_event_check(self):
 

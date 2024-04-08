@@ -6,21 +6,21 @@ from Frame import Frame
 
 class UFormat(Frame):
 
-    def __init__(self, type_frame=None, direction='OUT'):
+    def __init__(self, type_frame: int = None, direction='OUT'):
         super().__init__('U-format')
-        self.__type_int = type_frame
-        self.__type_of_Uformat_Str = ''
+        self.__type_int: int = type_frame
+        self.__type_of_Uformat_Str: str = ''
         if type_frame:
-            self.type = type_frame
+            self.type: int = type_frame
 
-        self._direction = direction
+        self._direction: str = direction
 
     @property
-    def type(self):
+    def type(self) -> int:
         return self.__type_int
 
     @type.setter
-    def type(self, type_frame):
+    def type(self, type_frame: int) -> None:
         self.__type_int = type_frame
         if type_frame == acpi.STARTDT_ACT:
             self.__type_of_Uformat_Str = 'STARTDT ACT'
@@ -41,14 +41,14 @@ class UFormat(Frame):
             self.__type_of_Uformat_Str = 'TESTDT CON'
 
     @property
-    def type_of_Uformat_Str(self):
+    def type_of_Uformat_Str(self) -> str:
         return self.__type_of_Uformat_Str
 
     @property
-    def type_int(self):
+    def type_int(self) -> int:
         return self.__type_int
 
-    def serialize(self, type_frame=None):
+    def serialize(self, type_frame: int = None) -> bytes:
         if type_frame:
             self.type = type_frame
 
@@ -64,7 +64,7 @@ class UFormat(Frame):
         self._structure = packet
         return packet
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (f"ID: {self.id},"
                 f" {self._direction},"
                 f" Typ: {self.type_in_word}:"

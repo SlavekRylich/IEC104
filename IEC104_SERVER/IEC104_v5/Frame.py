@@ -1,4 +1,5 @@
 import struct
+from typing import List, Any
 
 import acpi
 
@@ -10,31 +11,31 @@ class Frame:
     _start_byte: int = acpi.START_BYTE
 
     def __init__(self, type_frame='Frame'):
-        self._header_length = acpi.ACPI_HEADER_LENGTH
-        self._total_length = self._header_length
+        self._header_length: int = acpi.ACPI_HEADER_LENGTH
+        self._total_length: int = self._header_length
         self._structure = None
-        self._type_in_word = type_frame
+        self._type_in_word: str = type_frame
         self._direction = None
 
         Frame._id += 1
-        self._id = Frame._id
+        self._id: int = Frame._id
         Frame._instances.append(self)
 
-    def is_structured(self):
+    def is_structured(self) -> bool:
         if not self.structure:
             return False
         return True
 
     @property
-    def id(self):
+    def id(self) -> int:
         return self._id
 
     @property
-    def type_in_word(self):
+    def type_in_word(self) -> str:
         return self._type_in_word
 
     @classmethod
-    def remove_instance(cls, id_instance=0, instance=None):
+    def remove_instance(cls, id_instance=0, instance=None) -> list['Frame']:
         instances_to_remove = []
 
         for inst in cls._instances:
@@ -47,7 +48,7 @@ class Frame:
         return instances_to_remove
 
     @classmethod  # instance s indexem 0 neexistuje ( je rezevrována* )
-    def remove_instance(cls, id_instance=0, instance=None):
+    def remove_instance(cls, id_instance=0, instance=None) -> bool:
         if not id_instance:  # zde rezerva*
             if instance:
                 cls._instances.remove(instance)
@@ -62,18 +63,18 @@ class Frame:
             return False
 
     @classmethod
-    def get_all_instances(cls):
+    def get_all_instances(cls) -> list:
         return cls._instances
 
-    def new_method(self):
+    def new_method(self) -> None:
         pass
 
-    def serialize(self):
+    def serialize(self) -> Any:
         print(f"This never become")
         # it will return false because method is overrided
 
     @property
-    def length(self):
+    def length(self) -> int:
         return self._total_length
 
     # opravit korektne, toto je spatny vypocet delky!!!
@@ -81,23 +82,23 @@ class Frame:
     def length(self, length):
         self._total_length += length
 
-    def get_length_of_data(self):
+    def get_length_of_data(self) -> int:
         return self._total_length - acpi.ACPI_HEADER_LENGTH
 
     @property
-    def structure(self):
+    def structure(self) -> bytes:
         # here is specify format for each format 
         return self._structure
 
     @structure.setter
-    def structure(self, structure):
+    def structure(self, structure) -> None:
         # here is specify format for each format 
         self._structure = structure
 
     @classmethod
-    def start_byte(cls):
+    def start_byte(cls) -> int:
         return acpi.START_BYTE
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Typ: {self._type_in_word}, Data in bytes: {self.serialize()}"
 

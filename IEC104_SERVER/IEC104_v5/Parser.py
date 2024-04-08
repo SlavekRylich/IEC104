@@ -9,29 +9,21 @@ from UFormat import UFormat
 
 class Parser:
     @classmethod
-    def parser(cls, apdu, length: int):
-
+    def parser(cls, apdu, length: int) -> IFormat | SFormat | UFormat | None:
         unpacked_apdu = struct.unpack(f"{'B' * (length)}", apdu)
-
         frame_format = Parser.what_format(unpacked_apdu)
 
         if frame_format == "I":
-
             ssn = (unpacked_apdu[1] << 7) + (unpacked_apdu[0] >> 1)
             rsn = (unpacked_apdu[3] << 7) + (unpacked_apdu[2] >> 1)
             data = struct.unpack(f"{'B' * (length)}", apdu)
             asdu_data = data[acpi.ACPI_HEADER_LENGTH:]
-
             new_instance = IFormat(asdu_data, ssn, rsn, direction='IN')
-
             return new_instance
 
         elif frame_format == "S":
-
             rsn = (unpacked_apdu[3] << 7) + (unpacked_apdu[2] >> 1)
-
             new_instance = SFormat(rsn, direction='IN')
-
             return new_instance
 
         elif frame_format == "U":
@@ -70,13 +62,12 @@ class Parser:
             else:
                 # nemělo by nikdy nastat
                 raise Exception(f"Nemelo by nastat")
-                return
 
         else:
             raise Exception("Přijat neznámí formát")
 
     @classmethod
-    def what_format(cls, first_byte):
+    def what_format(cls, first_byte: tuple) -> str | None:
         first_byte = first_byte[0]
 
         if not (first_byte & 1):
@@ -91,4 +82,3 @@ class Parser:
         else:
             # print("Nejaky jiný format")
             return None
-

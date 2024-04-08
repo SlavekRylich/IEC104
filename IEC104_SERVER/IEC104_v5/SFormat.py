@@ -4,12 +4,12 @@ from Frame import Frame
 
 
 class SFormat(Frame):
-    def __init__(self, rsn=0, direction='OUT'):
+    def __init__(self, rsn: int = 0, direction: str = 'OUT'):
         super().__init__('S-format')
-        self._rsn = rsn
-        self._direction = direction
+        self._rsn: int = rsn
+        self._direction: str = direction
 
-    def serialize(self, rsn=0):
+    def serialize(self, rsn: int = 0) -> bytes:
         if rsn:
             self._rsn = rsn
 
@@ -30,17 +30,17 @@ class SFormat(Frame):
         return self._structure
 
     @property
-    def rsn(self):
+    def rsn(self) -> int:
         return self._rsn
 
     @rsn.setter
-    def rsn(self, rsn):
+    def rsn(self, rsn: int) -> None:
         self._rsn = rsn
 
-    def increment_rsn(self):
+    def increment_rsn(self) -> None:
         self._rsn += 1
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (f"ID: {self.id},"
                 f" {self._direction},"
                 f" Typ: {self.type_in_word},"

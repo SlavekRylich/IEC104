@@ -30,7 +30,7 @@ class Session:
                  reader,
                  writer,
                  session_params: tuple = None,
-                 callback_handle_apdu=None,
+                 callback_on_message_recv=None,
                  callback_timeouts: tuple = None,
                  send_buffer: Packet_buffer = None,
                  whoami: str = 'client'):
@@ -42,7 +42,7 @@ class Session:
         self.__port_dst: int = port
 
         # callback
-        self.__callback_handle_apdu = callback_handle_apdu
+        self.__callback_on_message_recv = callback_on_message_recv
 
         # events
         # self.__event_queue_in = queue.event_in
@@ -93,6 +93,10 @@ class Session:
         self.__timer_t1 = Timer(session_params[3], callback_timeouts[1])
         self.__timer_t2 = Timer(session_params[4], callback_timeouts[2])
         self.__timer_t3 = Timer(session_params[5], callback_timeouts[3])
+        self.__timers: list[Timer] = [self.__timer_t0,
+                                      self.__timer_t1,
+                                      self.__timer_t2,
+                                      self.__timer_t3]
 
         # timing of tasks
         self.__async_time: float = 0.5
@@ -150,6 +154,10 @@ class Session:
     def flag_stop_tasks(self) -> bool:
         return self.__flag_stop_tasks
 
+    @flag_stop_tasks.setter
+    def flag_stop_tasks(self, value: bool) -> None:
+        self.__flag_stop_tasks = value
+
     @property
     def event_queue_out(self) -> asyncio.Event:
         return self.__event_queue_out
@@ -159,7 +167,7 @@ class Session:
         return self.__flag_delete
 
     @flag_delete.setter
-    def flag_delete(self, flag) -> None:
+    def flag_delete(self, flag: bool) -> None:
         print(f"Nastaven flag_delete na {flag}")
         logging.debug(f"Nastaven flag_delete na {flag}")
         self.__flag_delete = flag
@@ -170,8 +178,8 @@ class Session:
 
     @flag_session.setter
     def flag_session(self, flag) -> None:
-        print(f"flag_session_set {flag}")
-        logging.debug(f"flag_session_set {flag}")
+        print(f"flag_session_set {flag} - {self}")
+        logging.debug(f"flag_session_set {flag} - {self}")
         self.__flag_session = flag
 
     @property
@@ -179,7 +187,7 @@ class Session:
         return self.__flag_timeout_t1
 
     @flag_timeout_t1.setter
-    def flag_timeout_t1(self, flag) -> None:
+    def flag_timeout_t1(self, flag: int) -> None:
         self.__flag_timeout_t1 = flag
 
     @property
@@ -191,7 +199,7 @@ class Session:
         return self.__whoami
 
     @property
-    def connection_state(self) -> ConnectionState:
+    def connection_state(self) -> str:
         return self.__connection_state.get_state()
 
     # 0 = DISCONNECTED
@@ -203,7 +211,7 @@ class Session:
         self.__connection_state = ConnectionState.set_state(state)
 
     @property
-    def transmission_state(self) -> TransmissionState:
+    def transmission_state(self) -> str:
         return self.__transmission_state.get_state()
 
     # 0 = STOPPED
@@ -212,25 +220,23 @@ class Session:
     # 3 = WAITING_UNCONFIRMED
     # 4 = WAITING_STOPPED
     @transmission_state.setter
-    def transmission_state(self, state) -> None:
+    def transmission_state(self, state: str) -> None:
         print(f"CHANGE_TRANSMISSION_STATE: {self.__transmission_state} -> {state}")
         logging.debug(f"CHANGE_TRANSMISSION_STATE: {self.__transmission_state} -> {state}")
         self.__transmission_state = TransmissionState.set_state(state)
 
     @classmethod  # instance s indexem 0 neexistuje ( je rezevrována* )
-    def remove_instance(cls, id=0, instance=None) -> bool:
-        if not id:  # zde rezerva*
-            if instance:
-                cls._instances.remove(instance)
-                return True
-            else:
-                return False
-
-        if id < len(cls._instances):
-            del cls._instances[id]
+    def remove_instance(cls, id_num: int = 0, instance: 'Session' = None) -> bool:
+        if instance:
+            cls._instances.remove(instance)
             return True
         else:
             return False
+        # if id_num < len(cls._instances):
+        #     del cls._instances[id_num]
+        #     return True
+        # else:
+        #     return False
 
     def update_timestamp_t2(self) -> None:
         # self.__timestamp_t2.start()
@@ -294,7 +300,7 @@ class Session:
                             # self.__incomming_queue.on_message_received((self, new_apdu))
 
                             # handle apdu in QueueManager
-                            callback_task = asyncio.ensure_future(self.__callback_handle_apdu(self, new_apdu))
+                            asyncio.ensure_future(self.__callback_on_message_recv(self, new_apdu))
 
                             # reset local vars
                             header = None
@@ -312,6 +318,7 @@ class Session:
                     print(f"EOF - odpojeni klienta")
                     logging.debug(f"EOF - odpojeni klienta")
                     self.flag_session = 'ACTIVE_TERMINATION'
+                    asyncio.ensure_future(self.__callback_on_message_recv(self))
                     # allow to event
                     # self.__event_update.set()
                     break
@@ -397,6 +404,12 @@ class Session:
         return self.__ip_dst, self.__port_dst, self.__connection_state, self.__transmission_state
 
     def delete_self(self) -> None:
+
+        # flag for stop coroutines
+        self.flag_stop_tasks = True
+        # flag for delete instance by ClientManager
+        self.flag_delete = True
+
         for task in self.__tasks:
             try:
                 task.cancel()
@@ -406,7 +419,19 @@ class Session:
                 print(f"Zrušení tasku proběhlo úspěšně!")
                 logging.error(f"Zrušení tasku proběhlo úspěšně!")
 
-        self.__flag_delete = True
+        for timer_task in self.__timers:
+            try:
+                timer_task.cancel()
+            except asyncio.CancelledError:
+                # Zpracování zrušení tasků
+                print(f"Zrušení tasku proběhlo úspěšně!")
+                logging.error(f"Zrušení tasku proběhlo úspěšně!")
+
+        logging.debug(f"pred smazanim session: {self}")
+        Session.remove_instance(instance=self)
+        logging.debug(f"po smazani session: {self}")
+
+        del self
 
     def __enter__(self):
         pass
@@ -420,3 +445,5 @@ class Session:
 
     def __exit__(*exc_info):
         pass
+
+

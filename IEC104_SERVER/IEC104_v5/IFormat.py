@@ -1,4 +1,6 @@
 import struct
+from typing import Any
+
 # TypeError: module() takes at most 2 arguments (3 given)
 # Your error is happening because Object is a module, not a class. 
 # So your inheritance is screwy.
@@ -11,66 +13,66 @@ class IFormat(Frame):
     __class_ssn = 0
     __class_rsn = 0
 
-    def __init__(self, data, ssn=0, rsn=0, direction='OUT'):
+    def __init__(self, data, ssn: int = 0, rsn: int = 0, direction: str = 'OUT'):
         super().__init__('I-format')
-        self.__ssn = ssn
-        self.__rsn = rsn
+        self.__ssn: int = ssn
+        self.__rsn: int = rsn
         self.__data = data
-        self.__data_length = self.get_length_of_data()
+        self.__data_length: int = self.get_length_of_data()
         # zaokrouhlední dat na celé byty
         self._total_length += self.__data_length
 
-        self._direction = direction
+        self._direction: str = direction
 
     # třídní atributy pro číslování rámců (dořešit v budoucnu)      
     # už nevím proč, nejspíš pokud bych to neřešil tak, že co packet to instance X formátu ?
     @classmethod
-    def get_class_ssn(cls):
+    def get_class_ssn(cls) -> int:
         return cls.__class_ssn
 
     @classmethod
-    def set_class_ssn(cls, ssn):
+    def set_class_ssn(cls, ssn: int) -> None:
         cls.__class_ssn = ssn
 
     @classmethod
-    def get_class_rsn(cls):
+    def get_class_rsn(cls) -> int:
         return cls.__class_rsn
 
     @classmethod
-    def set_class_rsn(cls, rsn):
+    def set_class_rsn(cls, rsn: int) -> None:
         cls.__class_rsn = rsn
 
     @property
-    def ssn(self):
+    def ssn(self) -> int:
         return self.__ssn
 
     @ssn.setter
-    def ssn(self, ssn):
+    def ssn(self, ssn: int) -> None:
         self.__ssn = ssn
 
     @property
-    def rsn(self):
+    def rsn(self) -> int:
         return self.__rsn
 
     @rsn.setter
-    def rsn(self, rsn):
+    def rsn(self, rsn: int) -> None:
         self.__rsn = rsn
 
     @property
-    def data(self):
+    def data(self) -> bytes:
         return self.__data
 
-    def get_length_of_data(self):
+    def get_length_of_data(self) -> int:
         return len(self.__data)
 
-    def set_data_from_structure(self, structure):
+    def set_data_from_structure(self, structure) -> None:
         self.__data = struct.unpack(f"{'B' * super().get_length_of_data()}", structure)
 
-    def structure(self):
+    def structure(self) -> bytes:
         # here is specify format for each format 
         return self._structure
 
-    def serialize(self):
+    def serialize(self) -> bytes | Any:
         # here is specify format for I format
         first = (self.__ssn & 0x7F) << 1
         second = (self.__ssn >> 7) & 0xFF
@@ -99,7 +101,7 @@ class IFormat(Frame):
         self._structure = packed_header + self.__data
         return self._structure
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (f"ID: {self.id},"
                 f" {self._direction},"
                 f" Typ: {self.type_in_word},"
