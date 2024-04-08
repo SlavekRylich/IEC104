@@ -3,10 +3,9 @@ import gc
 import logging
 import asyncio
 
-
 from config_loader import ConfigLoader
 from Session import Session
-from QueueManager import QueueManager
+from ClientManager import ClientManager
 
 # Nastavení úrovně logování
 logging.basicConfig(
@@ -33,21 +32,21 @@ class ServerIEC104:
         Returns: None
         Exceptions: None
         """
-        self.__loop = None
+        self.__loop: asyncio.get_running_loop() = None
         self.task_check_alive_queue = None
-        self._server = None
+        self._server: ServerIEC104() = None
         self.config_loader = ConfigLoader('./config_parameters.json')
 
-        self.ip = self.config_loader.config['server']['ip_address']
-        self.port = self.config_loader.config['server']['port']
+        self.ip: str = self.config_loader.config['server']['ip_address']
+        self.port: int = self.config_loader.config['server']['port']
 
-        self.tasks = []
-        self.clients: dict[str, QueueManager] = {}
+        self.tasks: list = []
+        self.clients: dict[str, ClientManager] = {}
 
-        self.no_overflow = 0
+        self.no_overflow: int = 0
 
         # central sleep time
-        self.async_time = 0.5
+        self.async_time: float = 0.5
 
         # load configuration parameters
         try:
@@ -58,17 +57,17 @@ class ServerIEC104:
                 self.timeout_t3 = self.load_params(self.config_loader)
 
             # save parameters into tuple 
-            self.session_params = (self.k,
-                                   self.w,
-                                   self.timeout_t0,
-                                   self.timeout_t1,
-                                   self.timeout_t2,
-                                   self.timeout_t3)
+            self.session_params: tuple = (self.k,
+                                          self.w,
+                                          self.timeout_t0,
+                                          self.timeout_t1,
+                                          self.timeout_t2,
+                                          self.timeout_t3)
 
         except Exception as e:
             print(e)
 
-    def load_params(self, config_loader):
+    def load_params(self, config_loader: ConfigLoader) -> tuple:
 
         k = config_loader.config['server']['k']
         if k < 1 or k > 32767:
@@ -99,10 +98,10 @@ class ServerIEC104:
 
         return k, w, t0, t1, t2, t3
 
-    def send(self):
+    def send(self) -> None:
         pass
 
-    async def listen(self):
+    async def listen(self) -> None:
         print(f"Naslouchám na {self.ip}:{self.port}")
         logging.info(f"Naslouchám na {self.ip}:{self.port}")
         try:
@@ -120,7 +119,8 @@ class ServerIEC104:
     Args: reader, writer
     """
 
-    async def handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+    async def handle_client(self, reader: asyncio.StreamReader,
+                            writer: asyncio.StreamWriter) -> None:
         """
         This function is called when a new client connects to the server. It creates a new QueueManager object for
         the client if one does not already exist, and adds it to the "self.clients" dictionary. Args: reader (
@@ -132,24 +132,24 @@ class ServerIEC104:
         Get the IP address of the client that connected to the server.
         """
         if client_addr not in self.clients:
-            self.clients[client_addr] = QueueManager(client_addr, 'server')
+            client_manager_class = ClientManager(client_addr, 'server')
+            self.clients[client_addr] = client_manager_class
+
             print(f"Created new queue for client {client_addr}")
             logging.info(f"Created new queue for client {client_addr}")
-            queuemanager = self.clients[client_addr]
 
-
-        queuemanager: QueueManager = self.clients[client_addr]
+        client_manager_class: ClientManager = self.clients[client_addr]
 
         # Get the functions to call for handling incoming APDU packets and timeout events
-        callback_handle_apdu = queuemanager.on_handle_message
-        callback_timeouts_tuple = (
-            queuemanager.handle_timeout_t0,
-            queuemanager.handle_timeout_t1,
-            queuemanager.handle_timeout_t2,
-            queuemanager.handle_timeout_t3,
+        callback_handle_apdu: client_manager_class.on_handle_message = client_manager_class.on_handle_message
+        callback_timeouts_tuple: tuple = (
+            client_manager_class.handle_timeout_t0,
+            client_manager_class.handle_timeout_t1,
+            client_manager_class.handle_timeout_t2,
+            client_manager_class.handle_timeout_t3,
         )
 
-            # Create a new Session object for the client
+        # Create a new Session object for the client
         session = Session(
             client_addr,
             client_port,
@@ -158,16 +158,16 @@ class ServerIEC104:
             self.session_params,
             callback_handle_apdu,
             callback_timeouts_tuple,
-            queuemanager.send_buffer,
+            client_manager_class.send_buffer,
             'server'
         )
 
-            # Add the session to the queue
-        queuemanager.add_session(session)
+        # Add the session to the queue
+        client_manager_class.add_session(session)
         print(f"Connection established with {client_addr}:{client_port} "
-                f"(Total connections: {queuemanager.get_number_of_connected_sessions()})")
+              f"(Total connections: {client_manager_class.get_number_of_connected_sessions()})")
         logging.info(f"Connection established with {client_addr}:{client_port} "
-                        f"(Number of connections: {queuemanager.get_number_of_connected_sessions()})")
+                     f"(Number of connections: {client_manager_class.get_number_of_connected_sessions()})")
 
         try:
             # Start the session
@@ -206,7 +206,7 @@ class ServerIEC104:
                     if self.task_check_alive_queue.done():
 
                         for value in list(self.clients.values()):
-                            if isinstance(value, QueueManager):
+                            if isinstance(value, ClientManager):
                                 if value.flag_delete:
                                     result_value = self.clients.pop(value.ip)
                                     print(f"oddelana fronta ze slovniku {result_value}")
@@ -218,13 +218,13 @@ class ServerIEC104:
                 objects = gc.get_objects()
 
                 for value in list(self.clients.values()):
-                    if isinstance(value, QueueManager):
+                    if isinstance(value, ClientManager):
                         print(f"value: {value}")
                         logging.debug(f"value: {value}")
 
                 found = False
                 for obj in objects:
-                    if isinstance(obj, QueueManager):
+                    if isinstance(obj, ClientManager):
                         print(obj)
                         found = True
 
@@ -244,14 +244,15 @@ class ServerIEC104:
             logging.debug(f"Finish async server periodic event check.")
             await asyncio.sleep(self.async_time * 2)
 
-    async def close(self):
+    # Stop server
+    async def close(self) -> None:
         self.__loop.close()
         logging.info(f"Loop.close!")
         logging.shutdown()
 
 
 # Main function
-async def main():
+async def main() -> None:
     my_server = ServerIEC104()
     await my_server.listen()
     await my_server.run()

@@ -8,7 +8,7 @@ import time
 import asyncio
 
 from Parser import Parser
-from QueueManager import QueueManager
+from ClientManager import ClientManager
 from config_loader import ConfigLoader
 import Session
 from IFormat import IFormat
@@ -34,7 +34,7 @@ class IEC104Client(object):
         self.task_handle_response = None
         self.__loop = None
         self.task_check_alive_queue = None
-        self.queue = None
+        self.clientmanager = None
         self.active_session = None
         self.servers = {}
         self.data = 'vymyslena data'
@@ -140,12 +140,12 @@ class IEC104Client(object):
             logging.info(f"Navázáno {client_address}:{client_port}"
                   f"-->{self.server_ip}:{self.server_port}")
 
-            callback_handle_apdu = self.queue.on_handle_message
+            callback_handle_apdu = self.clientmanager.on_handle_message
             callback_timeouts_tuple = (
-                self.queue.handle_timeout_t0,
-                self.queue.handle_timeout_t1,
-                self.queue.handle_timeout_t2,
-                self.queue.handle_timeout_t3,
+                self.clientmanager.handle_timeout_t0,
+                self.clientmanager.handle_timeout_t1,
+                self.clientmanager.handle_timeout_t2,
+                self.clientmanager.handle_timeout_t3,
             )
 
             new_session = Session.Session(self.server_ip,
@@ -155,10 +155,10 @@ class IEC104Client(object):
                                           self.session_params,
                                           callback_handle_apdu,
                                           callback_timeouts_tuple,
-                                          self.queue.send_buffer,
+                                          self.clientmanager.send_buffer,
                                           'client')
 
-            self.queue.add_session(new_session)
+            self.clientmanager.add_session(new_session)
             # active_session = self.queue.Select_active_session()
             active_session = new_session
             return active_session
@@ -173,7 +173,7 @@ class IEC104Client(object):
 
     async def run_client(self, ip, port_num):
         self.__loop = asyncio.get_running_loop()
-        self.queue = QueueManager(ip, whoami='client')
+        self.clientmanager = ClientManager(ip, whoami='client')
         # self._in_queue = self.queue.in_queue
         # self._out_queue = self.queue.out_queue
         # self._send_buffer = self.queue.send_buffer
@@ -188,7 +188,7 @@ class IEC104Client(object):
             self.active_session = await self.new_session(ip, port_num)
 
             if isinstance(self.active_session, Session.Session):
-                self.servers[ip] = self.queue
+                self.servers[ip] = self.clientmanager
 
                 # set start session flag
                 self.active_session.flag_session = 'START_SESSION'
@@ -198,7 +198,7 @@ class IEC104Client(object):
                 # )
 
                 self.task_handle_response = asyncio.create_task(
-                    self.queue.handle_response_for_client(self.active_session)
+                    self.clientmanager.handle_response_for_client(self.active_session)
                 )
 
                 # self.task_check_alive_queue = asyncio.create_task(
@@ -229,7 +229,7 @@ class IEC104Client(object):
                     if self.task_check_alive_queue.done():
 
                         for value in list(self.servers.values()):
-                            if isinstance(value, QueueManager):
+                            if isinstance(value, ClientManager):
                                 if value.flag_delete:
                                     del self.servers[value.ip]
 

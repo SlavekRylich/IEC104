@@ -1,22 +1,22 @@
 from enum import Enum
 
 
-class StateConn(Enum):
-    DISCONNECTED = 'DISCONNECTED'
-    CONNECTED = 'CONNECTED'
+class ConnectionState(Enum):
+    DISCONNECTED: str = 'DISCONNECTED'
+    CONNECTED: str = 'CONNECTED'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     @classmethod
-    def set_state(cls, state):
+    def set_state(cls, state) -> 'ConnectionState':
         return cls(state)
 
     def get_state(self):
         return self.value
 
 
-class StateTrans(Enum):
+class TransmissionState(Enum):
     STOPPED = 'STOPPED'
     WAITING_RUNNING = 'WAITING_RUNNING'
     RUNNING = 'RUNNING'

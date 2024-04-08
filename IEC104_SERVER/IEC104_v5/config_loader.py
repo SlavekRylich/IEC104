@@ -1,13 +1,14 @@
 import json
 import logging
+from typing import Any
 
 
 class ConfigLoader:
-    def __init__(self, file_path):
+    def __init__(self, file_path: str):
         self.file_path = file_path
         self.config = self.load_config()
 
-    def load_config(self):
+    def load_config(self) -> Any | None:
         try:
             with open(self.file_path, 'r') as file:
                 config = json.load(file)

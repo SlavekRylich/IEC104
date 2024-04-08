@@ -5,9 +5,9 @@ import acpi
 
 class Frame:
     # třídní proměná pro uchování unikátní id každé instance
-    _id = 0
-    _instances = []
-    _start_byte = acpi.START_BYTE
+    _id: int = 0
+    _instances: list['Frame'] = []
+    _start_byte: int = acpi.START_BYTE
 
     def __init__(self, type_frame='Frame'):
         self._header_length = acpi.ACPI_HEADER_LENGTH
