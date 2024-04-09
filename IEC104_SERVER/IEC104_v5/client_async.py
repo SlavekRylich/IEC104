@@ -132,6 +132,7 @@ class IEC104Client(object):
             logging.info(f"Navázáno {client_address}:{client_port}"
                          f"-->{self.server_ip}:{self.server_port}")
 
+            # callback functions for class session
             callback_on_message_recv = self.client_manager.on_message_receive
             callback_timeouts_tuple = (
                 self.client_manager.handle_timeout_t0,
@@ -139,7 +140,6 @@ class IEC104Client(object):
                 self.client_manager.handle_timeout_t2,
                 self.client_manager.handle_timeout_t3,
             )
-
             new_session = Session.Session(self.server_ip,
                                           self.server_port,
                                           self.reader,
@@ -165,9 +165,12 @@ class IEC104Client(object):
 
     async def run_client(self, ip, port_num):
         self.__loop = asyncio.get_running_loop()
+
+        callback_only_for_client = self.handle_response_for_client
         self.client_manager = ClientManager(ip,
                                             port=None,
                                             callback_check_clients=None,
+                                            callback_only_for_client=callback_only_for_client,
                                             whoami='client')
         # self._in_queue = self.queue.in_queue
         # self._out_queue = self.queue.out_queue
@@ -180,35 +183,35 @@ class IEC104Client(object):
             logging.debug(f"Vytáčím {self.server_ip}:{self.server_port}")
 
             # přidá novou session a zároveň vybere aktivní session
-            self.active_session = await self.new_session(ip, port_num)
+            self.active_session: Session = await self.new_session(ip, port_num)
 
-            if isinstance(self.active_session, Session.Session):
-                self.servers[ip] = self.client_manager
+            self.servers[ip] = self.client_manager
 
-                # set start session flag
-                self.active_session.flag_session = 'START_SESSION'
+            # set start session flag
+            self.active_session.flag_session = 'START_SESSION'
 
-                # self.task_periodic_event_check = asyncio.create_task(
-                #     self.periodic_event_check()
-                # )
+            # self.task_periodic_event_check = asyncio.create_task(
+            #     self.periodic_event_check()
+            # )
 
-                self.task_handle_response = asyncio.create_task(
-                    self.client_manager.handle_response_for_client(self.active_session)
-                )
+            self.task_handle_response = asyncio.create_task(
+                # self.client_manager.handle_response_for_client(self.active_session)
+                self.handle_response_for_client(self.active_session)
+            )
 
-                # self.task_check_alive_queue = asyncio.create_task(
-                #     self.queue.check_alive_sessions(),
-                # )
-                # await asyncio.gather(self.task_periodic_event_check,
-                #                      self.task_queue,
-                #                      self.task_check_alive_queue)
-                # #
-                # await asyncio.gather(self.task_periodic_event_check)
+            # self.task_check_alive_queue = asyncio.create_task(
+            #     self.queue.check_alive_sessions(),
+            # )
+            # await asyncio.gather(self.task_periodic_event_check,
+            #                      self.task_queue,
+            #                      self.task_check_alive_queue)
+            # #
+            # await asyncio.gather(self.task_periodic_event_check)
 
-                # await asyncio.sleep(self.async_time)
+            # await asyncio.sleep(self.async_time)
 
-                await self.active_session.start()
-                await self.task_handle_response
+            await self.active_session.start()
+            await self.task_handle_response
 
         except Exception as e:
             print(f"Exception: {e}")
@@ -274,6 +277,110 @@ class IEC104Client(object):
                 logging.error(f"Exception {e}")
 
             await asyncio.sleep(self.async_time)
+
+    async def handle_response_for_client(self, session: Session) -> None:
+        while not self.client_manager.flag_stop_tasks:
+            print(f"Starting async handle_response ")
+            logging.debug(f"Starting async handle_response ")
+            actual_transmission_state = session.transmission_state
+            session_event = session.event_queue_out
+
+            try:
+
+                # STATE MACHINE
+                if session.connection_state == 'CONNECTED':
+
+                    # * STATE 1
+                    if actual_transmission_state == 'STOPPED':
+
+                        new_frame = self.client_manager.generate_testdt_act()
+                        for i in range(0, 2):
+                            # self.__out_queue.to_send((session, frame), session_event)
+                            task = asyncio.ensure_future(session.send_frame(new_frame))
+                            self.client_manager.add_task(task)
+                            await asyncio.sleep(2.5)
+
+                        # send start act
+                        if self.client_manager.flag_start_sequence:
+                            session.flag_session = 'START_SESSION'
+                            self.client_manager.flag_start_sequence = False
+                            print(f"flag_start_seq = False")
+                            logging.debug(f"flag_start_seq = False")
+
+                    # * STATE 2
+                    if actual_transmission_state == 'WAITING_RUNNING':
+                        # else send testdt frame
+
+                        new_frame = self.client_manager.generate_testdt_act()
+                        for i in range(0, 2):
+                            # self.__out_queue.to_send((session, frame), session_event)
+                            task = asyncio.ensure_future(session.send_frame(new_frame))
+                            self.client_manager.add_task(task)
+                            await asyncio.sleep(2.5)
+
+                    # * STATE 3
+                    if actual_transmission_state == 'RUNNING':
+
+                        # for cyklus for send I frame with random data
+                        for data in self.data_list:
+                            # list of data
+                            new_frame = self.client_manager.generate_i_frame(data, session)
+                            # self.__out_queue.to_send((session, frame), session_event)
+                            task = asyncio.ensure_future(session.send_frame(new_frame))
+                            self.client_manager.add_task(task)
+                            await asyncio.sleep(1.5)
+
+                        # check if response is ack with S format
+
+                        if self.client_manager.recv_buffer.__len__() >= session.w:
+                            new_frame = await self.client_manager.generate_s_frame(session)
+                            # self.__out_queue.to_send((session, frame), session_event)
+                            task = asyncio.ensure_future(session.send_frame(new_frame))
+                            self.client_manager.add_task(task)
+
+                        # send testdt frame
+                        new_frame = self.client_manager.generate_testdt_act()
+                        for i in range(0, 2):
+                            # self.__out_queue.to_send((session, frame), session_event)
+                            task = asyncio.ensure_future(session.send_frame(new_frame))
+                            self.client_manager.add_task(task)
+                            await asyncio.sleep(2.5)
+
+                        await asyncio.sleep(10)
+                        # session.flag_session = 'STOP_SESSION'
+                        # print(f"nastaven priznak 'STOP_SESSION'")
+
+                    # * STATE 4
+                    if actual_transmission_state == 'WAITING_UNCONFIRMED':
+                        # do not send new I frame, but check if response are I,S or U formats
+                        # send testdt frame
+                        new_frame = self.client_manager.generate_testdt_act()
+                        for i in range(0, 2):
+                            # self.__out_queue.to_send((session, frame), session_event)
+                            task = asyncio.ensure_future(session.send_frame(new_frame))
+                            self.client_manager.add_task(task)
+                            await asyncio.sleep(2.5)
+
+                        # session.flag_session = 'STOP_SESSION'
+
+                    # * STATE 5
+                    if actual_transmission_state == 'WAITING_STOPPED':
+                        # # do not send new I frame, but check if response are I,S or U formats
+                        # send testdt frame
+                        new_frame = self.client_manager.generate_testdt_act()
+                        for i in range(0, 2):
+                            # self.__out_queue.to_send((session, frame), session_event)
+                            task = asyncio.ensure_future(session.send_frame(new_frame))
+                            self.client_manager.add_task(task)
+                            await asyncio.sleep(2.5)
+
+                        # check if response is stopdt con
+                        # frame = self.generate_stopdt_con()
+                        # self.__out_queue.to_send((session,frame), session_event)
+
+            except Exception as e:
+                print(f"Exception {e}")
+                logging.error(f"Exception {e}")
 
 
 if __name__ == "__main__":

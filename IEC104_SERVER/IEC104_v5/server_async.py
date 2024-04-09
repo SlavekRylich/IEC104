@@ -136,7 +136,9 @@ class ServerIEC104:
             client_manager_class = ClientManager(client_addr,
                                                  port=None,
                                                  callback_check_clients=callback,
+                                                 callback_only_for_client=None,
                                                  whoami='server')
+
             self.clients[client_addr] = client_manager_class
 
             print(f"Created new queue for client {client_addr}")

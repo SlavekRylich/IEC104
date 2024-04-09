@@ -24,6 +24,7 @@ class ClientManager:
     def __init__(self, ip: str,
                  port: int = None,
                  callback_check_clients=None,
+                 callback_only_for_client=None,
                  whoami='client'):
         """
         Constructor for QueueManager.
@@ -42,6 +43,7 @@ class ClientManager:
         self.__ip: str = ip
         self.__port: int = port
 
+        self.__callback_only_for_client = callback_only_for_client
         self.__callback_check_alive_clients = callback_check_clients
 
         self.__whoami: str = whoami
@@ -158,6 +160,13 @@ class ClientManager:
     def id(self) -> int:
         return self.__id
 
+    @property
+    def tasks(self) -> list:
+        return self.__tasks
+
+    def add_task(self, value: asyncio.create_task) -> None:
+        self.__tasks.append(value)
+
     @classmethod
     def remove_instance(cls, id_num: int = 0, instance: 'ClientManager' = None) -> bool:
         if instance:
@@ -186,7 +195,7 @@ class ClientManager:
                         await self.handle_apdu(session, message)
                     else:
                         await self.handle_apdu(session, message)
-                        await self.handle_response_for_client(session)
+                        # await self.handle_response_for_client(session)
 
                     await asyncio.sleep(self.__async_time)
                     print(f"Finish_check_in_queue")
@@ -349,8 +358,9 @@ class ClientManager:
 
                 else:
                     self.incrementVR()
-                    self.ack = apdu.rsn
-                    await self.__send_buffer.clear_frames_less_than(self.__ack)
+                    if apdu.rsn > self.ack:
+                        self.ack = apdu.rsn
+                        await self.__send_buffer.clear_frames_less_than(self.__ack)
 
                     # # odpověď stejnymi daty jen pro testovani 
                     # new_apdu = self.generate_i_frame(apdu.data)
@@ -363,8 +373,9 @@ class ClientManager:
                     self.__tasks.append(task)
 
             if isinstance(apdu, SFormat):
-                self.ack = apdu.rsn
-                await self.__send_buffer.clear_frames_less_than(self.__ack)
+                if apdu.rsn > self.ack:
+                    self.ack = apdu.rsn
+                    await self.__send_buffer.clear_frames_less_than(self.__ack)
 
             if isinstance(apdu, UFormat):
                 if apdu.type_int == acpi.TESTFR_ACT:
@@ -377,9 +388,9 @@ class ClientManager:
                 session.whoami == 'server':
 
             if isinstance(apdu, SFormat):
-                self.ack = apdu.rsn
-                await self.__send_buffer.clear_frames_less_than(self.__ack)
-                # self.clear_acked_send_queue()
+                if apdu.rsn > self.ack:
+                    self.ack = apdu.rsn
+                    await self.__send_buffer.clear_frames_less_than(self.__ack)
 
             if isinstance(apdu, UFormat):
 
@@ -407,8 +418,9 @@ class ClientManager:
 
                 else:
                     self.incrementVR()
-                    self.ack = apdu.rsn
-                    await self.__send_buffer.clear_frames_less_than(self.__ack)
+                    if apdu.rsn > self.ack:
+                        self.ack = apdu.rsn
+                        await self.__send_buffer.clear_frames_less_than(self.__ack)
 
                 if self.__recv_buffer.__len__() >= session.w:
                     new_frame = await self.generate_s_frame(session)
@@ -417,11 +429,11 @@ class ClientManager:
                     self.__tasks.append(task)
 
             if isinstance(apdu, SFormat):
-                self.ack = apdu.rsn
-                await self.__send_buffer.clear_frames_less_than(self.__ack)
+                if apdu.rsn > self.ack:
+                    self.ack = apdu.rsn
+                    await self.__send_buffer.clear_frames_less_than(self.__ack)
 
             if isinstance(apdu, UFormat):
-
                 if apdu.type_int == acpi.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
                     # self.__out_queue.to_send((session, frame), session_event)
@@ -693,6 +705,16 @@ class ClientManager:
                         if actual_transmission_state == 'STOPPED':
 
                             if frame == acpi.STARTDT_ACT:
+
+                                # for backup connection -> send stopdt_act to other sessions
+                                for other_session in self.__sessions:
+                                    if other_session.connection_state == 'CONNECTED' and \
+                                            other_session.transmission_state != 'STOPPED':
+                                        new_frame = self.generate_stopdt_act()
+                                        task = asyncio.ensure_future(other_session.send_frame(new_frame))
+                                        self.__tasks.append(task)
+
+                                # ack startdt con
                                 session.transmission_state = 'RUNNING'
                                 new_frame = self.generate_startdt_con()
                                 # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
