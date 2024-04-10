@@ -34,7 +34,7 @@ class ServerIEC104:
         """
         self.__loop: asyncio.get_running_loop() = None
         self.task_check_alive_queue = None
-        self._server = None
+        self._server: ServerIEC104 | None = None
         self.config_loader = ConfigLoader('./config_parameters.json')
 
         self.ip: str = self.config_loader.config['server']['ip_address']

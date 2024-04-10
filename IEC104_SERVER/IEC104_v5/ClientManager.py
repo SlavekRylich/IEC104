@@ -25,7 +25,7 @@ class ClientManager:
                  port: int = None,
                  callback_check_clients=None,
                  callback_only_for_client=None,
-                 whoami='client'):
+                 whoami: str = 'client'):
         """
         Constructor for QueueManager.
 
@@ -33,13 +33,13 @@ class ClientManager:
             ip (str): IP address.
         """
         # Session
-        self.__out_queue = None
-        self.__in_queue = None
+        self.__out_queue: asyncio.Queue | None = None
+        self.__in_queue: asyncio.Queue | None = None
         self.__sessions: list['Session'] = []
         self.__VR: int = 0
         self.__VS: int = 0
         self.__ack: int = 0
-        self.__session = None
+        self.__session: Session | None = None
         self.__ip: str = ip
         self.__port: int = port
 
@@ -60,16 +60,16 @@ class ClientManager:
         self.__flag_start_sequence: bool = True
 
         # queues events
-        self.__event_queue_in = asyncio.Event()
-        self.__shared_event_queue_out = asyncio.Event()
+        self.__event_queue_in: asyncio.Event = asyncio.Event()
+        self.__shared_event_queue_out: asyncio.Event = asyncio.Event()
 
         # queues 
         # self.__in_queue = IncomingQueueManager(self.__event_queue_in)
         # self.__out_queue = OutgoingQueueManager(self.__shared_event_queue_out)
 
         # buffers
-        self.__send_buffer = PacketBuffer()
-        self.__recv_buffer = PacketBuffer()
+        self.__send_buffer: PacketBuffer = PacketBuffer()
+        self.__recv_buffer: PacketBuffer = PacketBuffer()
 
         # central sleep time
         self.__async_time: float = 0.8
@@ -442,110 +442,6 @@ class ClientManager:
 
         print(f"Finish async handle_apdu")
         logging.debug(f"Finish async handle_apdu")
-
-    async def handle_response_for_client(self, session: Session) -> None:
-        while not self.flag_stop_tasks:
-            print(f"Starting async handle_response ")
-            logging.debug(f"Starting async handle_response ")
-            actual_transmission_state = session.transmission_state
-            session_event = session.event_queue_out
-
-            try:
-
-                # STATE MACHINE
-                if session.connection_state == 'CONNECTED':
-
-                    # * STATE 1
-                    if actual_transmission_state == 'STOPPED':
-
-                        new_frame = self.generate_testdt_act()
-                        for i in range(0, 2):
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.__tasks.append(task)
-                            await asyncio.sleep(2.5)
-
-                        # send start act
-                        if self.__flag_start_sequence:
-                            session.flag_session = 'START_SESSION'
-                            self.__flag_start_sequence = False
-                            print(f"flag_start_seq = False")
-                            logging.debug(f"flag_start_seq = False")
-
-                    # * STATE 2
-                    if actual_transmission_state == 'WAITING_RUNNING':
-                        # else send testdt frame
-
-                        new_frame = self.generate_testdt_act()
-                        for i in range(0, 2):
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.__tasks.append(task)
-                            await asyncio.sleep(2.5)
-
-                    # * STATE 3
-                    if actual_transmission_state == 'RUNNING':
-
-                        # for cyklus for send I frame with random data
-                        for data in self.data_list:
-                            # list of data
-                            new_frame = self.generate_i_frame(data, session)
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.__tasks.append(task)
-                            await asyncio.sleep(1.5)
-
-                        # check if response is ack with S format
-
-                        if self.__recv_buffer.__len__() >= session.w:
-                            new_frame = await self.generate_s_frame(session)
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.__tasks.append(task)
-
-                        # send testdt frame
-                        new_frame = self.generate_testdt_act()
-                        for i in range(0, 2):
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.__tasks.append(task)
-                            await asyncio.sleep(2.5)
-
-                        await asyncio.sleep(10)
-                        # session.flag_session = 'STOP_SESSION'
-                        # print(f"nastaven priznak 'STOP_SESSION'")
-
-                    # * STATE 4
-                    if actual_transmission_state == 'WAITING_UNCONFIRMED':
-                        # do not send new I frame, but check if response are I,S or U formats
-                        # send testdt frame
-                        new_frame = self.generate_testdt_act()
-                        for i in range(0, 2):
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.__tasks.append(task)
-                            await asyncio.sleep(2.5)
-
-                        # session.flag_session = 'STOP_SESSION'
-
-                    # * STATE 5
-                    if actual_transmission_state == 'WAITING_STOPPED':
-                        # # do not send new I frame, but check if response are I,S or U formats
-                        # send testdt frame
-                        new_frame = self.generate_testdt_act()
-                        for i in range(0, 2):
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.__tasks.append(task)
-                            await asyncio.sleep(2.5)
-
-                        # check if response is stopdt con
-                        # frame = self.generate_stopdt_con()
-                        # self.__out_queue.to_send((session,frame), session_event)
-
-            except Exception as e:
-                print(f"Exception {e}")
-                logging.error(f"Exception {e}")
 
     async def is_response(self) -> None:
         while not self.flag_stop_tasks:
@@ -954,6 +850,7 @@ class ClientManager:
 
                         session.delete_self()
                         self.check_alive_sessions()
+
                 else:
                     pass
 
