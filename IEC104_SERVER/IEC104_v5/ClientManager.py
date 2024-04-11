@@ -12,6 +12,7 @@ from UFormat import UFormat
 # from OutgoingQueueManager import OutgoingQueueManager
 from Packet_buffer import PacketBuffer
 from Session import Session
+from MQTTProtocol import MQTTProtocol
 
 
 class ClientManager:
@@ -45,6 +46,13 @@ class ClientManager:
 
         self.__callback_only_for_client = callback_only_for_client
         self.__callback_check_alive_clients = callback_check_clients
+
+        # MQTT client
+        self.__mqtt_topic: str | None = None
+        self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
+        self.__mqtt_broker: str | None = "localhost"
+        self.__mqtt_port: int | None = 1883
+        self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id, self.__mqtt_broker, self.__mqtt_port)
 
         self.__whoami: str = whoami
 
@@ -356,11 +364,14 @@ class ClientManager:
                     session.flag_session = 'ACTIVE_TERMINATION'
                     # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
 
+                # correct I-format
                 else:
                     self.incrementVR()
                     if apdu.rsn > self.ack:
                         self.ack = apdu.rsn
                         await self.__send_buffer.clear_frames_less_than(self.__ack)
+
+                    # shara payload with MQTT
 
                     # # odpověď stejnymi daty jen pro testovani 
                     # new_apdu = self.generate_i_frame(apdu.data)
