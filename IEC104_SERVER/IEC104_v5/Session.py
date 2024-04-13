@@ -35,12 +35,17 @@ class Session:
                  send_buffer: Packet_buffer = None,
                  whoami: str = 'client'):
 
+        # Instances of Session
+        Session._id += 1
+        self.__id: int = Session._id
+        Session._instances.append(self)
+
         # features of session
         self.__reader: asyncio.StreamReader = reader
         self.__writer: asyncio.StreamWriter = writer
         self.__ip_dst: str = ip
         self.__port_dst: int = port
-
+        self.__name: str = "Session_" + str(self.__id)
         # callback
         self.__callback_on_message_recv = callback_on_message_recv
 
@@ -122,9 +127,7 @@ class Session:
 
         # self.__tasks.append(asyncio.create_task(self.check_for_timeouts()))
 
-        Session._id += 1
-        self.__id: int = Session._id
-        Session._instances.append(self)
+
 
     async def start(self) -> None:
         self.__task = asyncio.ensure_future(self.handle_messages())
@@ -149,6 +152,10 @@ class Session:
     @property
     def id(self) -> int:
         return self.__id
+
+    @property
+    def name(self) -> str:
+        return self.__name
 
     @property
     def flag_stop_tasks(self) -> bool:

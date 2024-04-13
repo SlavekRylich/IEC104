@@ -1,104 +1,162 @@
+# -*- coding: utf-8 -*-
 import paho.mqtt.client as mqtt
-import IDataSharing
+from IDataSharing import IDataSharing
+import asyncio
 
 
 class MQTTProtocol(IDataSharing):
-    def __init__(self, client_id: str, broker_url: str, port: int, username: str = None, password: str = None):
+    def __init__(self, client_id: str,
+                 broker_url: str,
+                 port: int,
+                 username: str = None,
+                 password: str = None
+                 ):
         """
         Inicializace klienta MQTT.
 
         Args:
-            client_id: Identifik·tor klienta.
+            client_id: Identifik√°tor klienta.
             broker_url: URL adresa brokera.
             port: Port brokera.
-            username: UûivatelskÈ jmÈno pro autentizaci (volitelnÏ).
-            password: Heslo pro autentizaci (volitelnÏ).
+            username: U≈æivatelsk√© jm√©no pro autentizaci (volitelnƒõ).
+            password: Heslo pro autentizaci (volitelnƒõ).
         """
-        self._client = mqtt.Client(client_id)
+
+        self._msg_info: mqtt.MQTTMessage | None = None
+        self._client = mqtt.Client(client_id=client_id, protocol=5)
         self._client.on_connect = self._on_connect
         self._client.on_message = self._on_message
         self._client.on_disconnect = self._on_disconnect
+        self._client.on_publish = self._on_publish
         self._broker_url = broker_url
         self._port = port
         self._username = username
         self._password = password
         self._connected = False
 
-    def _on_connect(self, client, userdata, flags, rc):
+        self._unacked_publish = set()
+        self._client.user_data_set(self._unacked_publish)
+
+    def _on_connect(self, client, userdata, flags, rc, properties):
         """
-        Metoda volan· po p¯ipojenÌ klienta k brokerovi.
+        Metoda volan√° po p≈ôipojen√≠ klienta k brokerovi.
 
         Args:
             client: Klient MQTT.
-            userdata: Uûivatelsk· data (nepouûÌv·no).
-            flags: P¯Ìznaky p¯ipojenÌ.
-            rc: KÛd n·vratu p¯ipojenÌ.
+            userdata: U≈æivatelsk√° data (nepou≈æ√≠v√°no).
+            flags: P≈ô√≠znaky p≈ôipojen√≠.
+            rc: K√≥d n√°vratu p≈ôipojen√≠.
         """
         self._connected = True
+        print(f"Connected to MQTT Broker on {self._broker_url}")
 
     def _on_message(self, client, userdata, message):
         """
-        Metoda volan· po p¯ijetÌ zpr·vy klientem.
+        Metoda volan√° po p≈ôijet√≠ zpr√°vy klientem.
 
         Args:
             client: Klient MQTT.
-            userdata: Uûivatelsk· data (nepouûÌv·no).
-            message: Zpr·va MQTT.
+            userdata: U≈æivatelsk√° data (nepou≈æ√≠v√°no).
+            message: Zpr√°va MQTT.
         """
-        # Zpracov·nÌ p¯ijatÈ zpr·vy
+        # Zpracov√°n√≠ p≈ôijat√© zpr√°vy
+        print(f"Receive message via MQTT {message}")
         pass
 
-    def _on_disconnect(self, client, userdata, rc):
+    def _on_disconnect(self, client, userdata, rc, properties):
         """
-        Metoda volan· po odpojenÌ klienta od brokera.
+        Metoda volan√° po odpojen√≠ klienta od brokera.
 
         Args:
             client: Klient MQTT.
-            userdata: Uûivatelsk· data (nepouûÌv·no).
-            rc: KÛd n·vratu odpojenÌ.
+            userdata: U≈æivatelsk√° data (nepou≈æ√≠v√°no).
+            rc: K√≥d n√°vratu odpojen√≠.
         """
-        self._connected = False
+        if rc == 0:
+            self._connected = False
+            print("mqtt client: Disconnected")
+        else:
+            print(f"Disconnected from MQTT broker.")
 
-    def connect(self):
+    def _on_publish(self, client, userdata, mid, reason_code=None, properties=None):
         """
-        P¯ipojenÌ klienta k brokerovi.
-        """
-        self._client.connect(self._broker_url, self._port, keepalive=60)
-        self._client.loop_start()
+        Metoda volan√° po ukl√°d√°n√≠ dat do zpr√°vy.
 
-    def disconnect(self):
+        Args:
+            client: Klient MQTT.
+            userdata: U≈æivatelsk√° data (nepou≈æ√≠v√°no).
+            mid: Identifik√°tor zpr√°vy.
+            reason_code: K√≥d n√°vratu ukl√°d√°n√≠ dat do zpr√°vy.
+            properties: Vlastnosti zpr√°vy.
         """
-        OdpojenÌ klienta od brokera.
+        print(f"Published message to broker {userdata}")
+        pass
+
+    async def connect(self):
+        """
+        P≈ôipojen√≠ klienta k brokerovi.
+        """
+        try:
+            print(f"connect: {self._broker_url}")
+            self._client.connect(host=self._broker_url, port=self._port, keepalive=60)
+            self._client.loop_start()
+        except Exception as e:
+            print(f"mqtt client: Exception: {e}")
+
+    async def disconnect(self):
+        """
+        Odpojen√≠ klienta od brokera.
         """
         self._client.loop_stop()
         self._client.disconnect()
 
-    def publish(self, topic: str, payload: bytes):
+    async def publish(self, topic: str, payload: bytes, qos: int = 0, retain=None):
         """
-        Publikov·nÌ zpr·vy na zadanÈ tÈma.
+        Publikov√°n√≠ zpr√°vy na zadan√© t√©ma.
 
         Args:
-            topic: TÈma zpr·vy.
-            payload: Data zpr·vy.
+            topic: T√©ma zpr√°vy.
+            payload: Data zpr√°vy.
+            :param topic:
+            :param payload:
+            :param qos:
+            :param retain:
         """
-        self._client.publish(topic, payload)
+        print(f"To publish {payload}")
+        self._msg_info = self._client.publish(topic, payload, qos)
+        print(f"Published to {topic}: {payload} with qos={qos}")
+        self._unacked_publish.add(self._msg_info)
+        self._msg_info.wait_for_publish(timeout=0.2)
 
-    def subscribe(self, topic: str, callback):
+    async def subscribe(self, topic: str, callback):
         """
-        P¯ihl·öenÌ k odbÏru zpr·v na zadanÈ tÈma.
+        P≈ôihl√°≈°en√≠ k odbƒõru zpr√°v na zadan√© t√©ma.
 
         Args:
-            topic: TÈma zpr·vy.
-            callback: Funkce, kter· bude vol·na po p¯ijetÌ zpr·vy.
+            topic: T√©ma zpr√°vy.
+            callback: Funkce, kter√° bude vol√°na po p≈ôijet√≠ zpr√°vy.
         """
         self._client.subscribe(topic)
         self._client.on_message = callback
 
     def unsubscribe(self, topic: str):
         """
-        Odhl·öenÌ odbÏru zpr·v na zadanÈ tÈma.
+        Odhl√°≈°en√≠ odbƒõru zpr√°v na zadan√© t√©ma.
 
         Args:
-            topic: TÈma zpr·vy.
+            topic: T√©ma zpr√°vy.
         """
         self._client.unsubscribe(topic)
+
+    async def save_data(self,
+                        topic: str,
+                        data: bytes | bytearray | int | float | str| None,
+                        callback=None):
+        # """Ukl√°d√°n√≠ dat do zpr√°vy."""
+        await self.connect()
+        await self.publish(topic, payload=data, qos=1, retain=None)
+        await self.disconnect()
+
+    def send_data(self, callback):
+        # """Odesl√°n√≠ zpr√°vy."""
+        pass

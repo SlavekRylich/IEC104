@@ -13,11 +13,11 @@ class IFormat(Frame):
     __class_ssn = 0
     __class_rsn = 0
 
-    def __init__(self, data, ssn: int = 0, rsn: int = 0, direction: str = 'OUT'):
+    def __init__(self, data: bytes, ssn: int = 0, rsn: int = 0, direction: str = 'OUT'):
         super().__init__('I-format')
         self.__ssn: int = ssn
         self.__rsn: int = rsn
-        self.__data = data
+        self.__data: bytes = data
         self.__data_length: int = self.get_length_of_data()
         # zaokrouhlední dat na celé byty
         self._total_length += self.__data_length

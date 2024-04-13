@@ -26,6 +26,7 @@ class ClientManager:
                  port: int = None,
                  callback_check_clients=None,
                  callback_only_for_client=None,
+                 server_name: str = "",
                  whoami: str = 'client'):
         """
         Constructor for QueueManager.
@@ -33,6 +34,11 @@ class ClientManager:
         Args:
             ip (str): IP address.
         """
+        # Instances of ClientManager
+        ClientManager.__id += 1
+        self.__id: int = ClientManager.__id
+        ClientManager.__instances.append(self)
+
         # Session
         self.__out_queue: asyncio.Queue | None = None
         self.__in_queue: asyncio.Queue | None = None
@@ -47,13 +53,8 @@ class ClientManager:
         self.__callback_only_for_client = callback_only_for_client
         self.__callback_check_alive_clients = callback_check_clients
 
-        # MQTT client
-        self.__mqtt_topic: str | None = None
-        self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
-        self.__mqtt_broker: str | None = "localhost"
-        self.__mqtt_port: int | None = 1883
-        self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id, self.__mqtt_broker, self.__mqtt_port)
-
+        self.__server_name: str = server_name
+        self.__name: str = "Client_" + str(self.__id)
         self.__whoami: str = whoami
 
         # flag for stop all tasks
@@ -85,6 +86,14 @@ class ClientManager:
         # Tasks
         self.__tasks: list = []
 
+        # MQTT client
+        self.__mqtt_topic: str | None = '/' + self.__server_name + '/' + self.__name  # "Server/ClientX
+        self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
+        # self.__mqtt_broker: str | None = "localhost"
+        self.__mqtt_broker: str | None = "192.168.1.136"
+        self.__mqtt_port: int | None = 1883
+        self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id, self.__mqtt_broker, self.__mqtt_port)
+
         # jak dostat data k odeslaní přes server (klienta)
         # přes nejaky API
         self.data2 = struct.pack(f"{'B' * 10}",
@@ -101,10 +110,6 @@ class ClientManager:
                                  )
 
         self.data_list: list = [self.data2, self.data2]  # define static data
-
-        ClientManager.__id += 1
-        self.__id: int = ClientManager.__id
-        ClientManager.__instances.append(self)
 
         print(f"NOVA INSTANCE QUEUE ID: {self.__id}")
         logging.debug(f"NOVA INSTANCE QUEUE ID: {self.__id}")
@@ -372,6 +377,9 @@ class ClientManager:
                         await self.__send_buffer.clear_frames_less_than(self.__ack)
 
                     # shara payload with MQTT
+                    asyncio.ensure_future(self.__mqtt_client.save_data(topic=self.__mqtt_topic + f"/{session.name}",
+                                                                       data=str(apdu.data),
+                                                                       callback=None))
 
                     # # odpověď stejnymi daty jen pro testovani 
                     # new_apdu = self.generate_i_frame(apdu.data)

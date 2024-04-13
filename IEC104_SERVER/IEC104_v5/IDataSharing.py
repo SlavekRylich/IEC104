@@ -1,27 +1,34 @@
+# -*- coding: utf-8 -*-
 from abc import ABC, abstractmethod
-from paho.mqtt.client import Client
+
 
 class IDataSharing(ABC):
     @abstractmethod
     def connect(self, host, port, username, password):
-        # """P¯ipojenÌ k MQTT brokeru."""
+        # """P≈ôipojen√≠ k MQTT brokeru."""
         pass
 
     @abstractmethod
     def disconnect(self):
-        """OdpojenÌ od MQTT brokera."""
+        """Odpojen√≠ od MQTT brokera."""
         pass
 
     @abstractmethod
     def publish(self, topic, message):
-        """Odesl·nÌ zpr·vy do topicu."""
+        """Odesl√°n√≠ zpr√°vy do topicu."""
         pass
 
     @abstractmethod
     def subscribe(self, topic, callback):
-        # """P¯ihl·öenÌ k odbÏru z topicu a nastavenÌ funkce pro zpracov·nÌ zpr·v."""
+        # """P≈ôihl√°≈°en√≠ k odbƒõru z topicu a nastaven√≠ funkce pro zpracov√°n√≠ zpr√°v."""
         pass
 
-    from paho.mqtt.client import Client
+    @abstractmethod
+    def save_data(self, topic, data, callback):
+        # """Ukl√°d√°n√≠ dat do zpr√°vy."""
+        pass
 
-
+    @abstractmethod
+    def send_data(self, callback):
+        # """Odesl√°n√≠ zpr√°vy."""
+        pass

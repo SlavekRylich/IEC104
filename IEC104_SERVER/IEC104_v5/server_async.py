@@ -25,13 +25,14 @@ class ServerIEC104:
     Class for server IEC 104 protocol.
     """
 
-    def __init__(self):
+    def __init__(self, name: str = "Server"):
         """
         Constructor for server IEC 104 protocol.
         Args: None
         Returns: None
         Exceptions: None
         """
+        self.__name: str = name
         self.__loop: asyncio.get_running_loop() = None
         self.task_check_alive_queue = None
         self._server: ServerIEC104 | None = None
@@ -98,12 +99,20 @@ class ServerIEC104:
 
         return k, w, t0, t1, t2, t3
 
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        self.__name = value
+
     def send(self) -> None:
         pass
 
     async def listen(self) -> None:
-        print(f"Naslouchám na {self.ip}:{self.port}")
-        logging.info(f"Naslouchám na {self.ip}:{self.port}")
+        print(f"Listen on {self.ip}:{self.port}")
+        logging.info(f"Listen on {self.ip}:{self.port}")
         try:
             self._server = await asyncio.start_server(
                 self.handle_client,
@@ -133,26 +142,27 @@ class ServerIEC104:
         """
         callback = self.check_alive_clients
         if client_addr not in self.clients:
-            client_manager_class = ClientManager(client_addr,
+            client_manager_instance = ClientManager(client_addr,
                                                  port=None,
                                                  callback_check_clients=callback,
                                                  callback_only_for_client=None,
+                                                 server_name=self.name,
                                                  whoami='server')
 
-            self.clients[client_addr] = client_manager_class
+            self.clients[client_addr] = client_manager_instance
 
             print(f"Created new queue for client {client_addr}")
             logging.info(f"Created new queue for client {client_addr}")
 
-        client_manager_class: ClientManager = self.clients[client_addr]
+        client_manager_instance: ClientManager = self.clients[client_addr]
 
         # Get the functions to call for handling incoming APDU packets and timeout events
-        callback_on_message_recv = client_manager_class.on_message_receive
+        callback_on_message_recv = client_manager_instance.on_message_receive
         callback_timeouts_tuple: tuple = (
-            client_manager_class.handle_timeout_t0,
-            client_manager_class.handle_timeout_t1,
-            client_manager_class.handle_timeout_t2,
-            client_manager_class.handle_timeout_t3,
+            client_manager_instance.handle_timeout_t0,
+            client_manager_instance.handle_timeout_t1,
+            client_manager_instance.handle_timeout_t2,
+            client_manager_instance.handle_timeout_t3,
         )
 
         # Create a new Session object for the client
@@ -164,16 +174,16 @@ class ServerIEC104:
             self.session_params,
             callback_on_message_recv,
             callback_timeouts_tuple,
-            client_manager_class.send_buffer,
-            'server'
+            client_manager_instance.send_buffer,
+            whoami='server'
         )
 
         # Add the session to the queue
-        client_manager_class.add_session(session)
+        client_manager_instance.add_session(session)
         print(f"Connection established with {client_addr}:{client_port} "
-              f"(Total connections: {client_manager_class.get_number_of_connected_sessions()})")
+              f"(Total connections: {client_manager_instance.get_number_of_connected_sessions()})")
         logging.info(f"Connection established with {client_addr}:{client_port} "
-                     f"(Number of connections: {client_manager_class.get_number_of_connected_sessions()})")
+                     f"(Number of connections: {client_manager_instance.get_number_of_connected_sessions()})")
 
         try:
             # Start the session
@@ -200,6 +210,7 @@ class ServerIEC104:
         # continue
 
         # await asyncio.sleep(self.async_time)
+
     def check_alive_clients(self) -> bool:
 
         # if is any client in list self.clients, check his flag for delete and remove it

@@ -22,7 +22,7 @@ logging.error("Toto je chybová zpráva")
 
 
 class IEC104Client(object):
-    def __init__(self):
+    def __init__(self, name: str = "Client"):
         self.task_handle_response = None
         self.__loop = None
         self.task_check_alive_queue = None
@@ -43,6 +43,7 @@ class IEC104Client(object):
 
         self.__event = asyncio.Event()
 
+        self.__name = name
         self.loop = None
         self.no_overflow = 0
         self.async_time = 0.8

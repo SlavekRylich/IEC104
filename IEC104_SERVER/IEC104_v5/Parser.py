@@ -18,7 +18,7 @@ class Parser:
             rsn = (unpacked_apdu[3] << 7) + (unpacked_apdu[2] >> 1)
             data = struct.unpack(f"{'B' * (length)}", apdu)
             asdu_data = data[acpi.ACPI_HEADER_LENGTH:]
-            new_instance = IFormat(asdu_data, ssn, rsn, direction='IN')
+            new_instance = IFormat(bytes(asdu_data), ssn, rsn, direction='IN')
             return new_instance
 
         elif frame_format == "S":
