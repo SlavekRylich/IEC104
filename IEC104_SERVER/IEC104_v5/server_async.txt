@@ -15780,3 +15780,126 @@ TypeError: payload must be a string, bytearray, int, float or None.
 2024-04-13 17:19:15,690 - DEBUG - Starting async handle_messages
 2024-04-13 17:19:15,690 - DEBUG - Start on_handle_message
 2024-04-13 17:19:15,691 - DEBUG - Starting update_state_machine_server with: ID: 17, IN, Typ: U-format: TESTDT ACT
+2024-04-18 17:12:40,757 - INFO - Toto je informaèní zpráva
+2024-04-18 17:12:40,757 - WARNING - Toto je varovná zpráva
+2024-04-18 17:12:40,757 - ERROR - Toto je chybová zpráva
+2024-04-18 17:12:40,765 - DEBUG - Using proactor: IocpProactor
+2024-04-18 17:12:40,767 - INFO - Listen on 127.0.0.1:2404
+2024-04-18 17:13:03,397 - INFO - Toto je informaèní zpráva
+2024-04-18 17:13:03,397 - WARNING - Toto je varovná zpráva
+2024-04-18 17:13:03,397 - ERROR - Toto je chybová zpráva
+2024-04-18 17:13:03,398 - DEBUG - Using proactor: IocpProactor
+2024-04-18 17:13:03,399 - INFO - Listen on 192.168.56.1:2404
+2024-04-18 17:13:25,335 - DEBUG - NOVA INSTANCE QUEUE ID: 1
+2024-04-18 17:13:25,336 - INFO - Created new queue for client 192.168.56.101
+2024-04-18 17:13:25,336 - INFO - Connection established with 192.168.56.101:43710 (Number of connections: 1)
+2024-04-18 17:13:25,336 - DEBUG - Starting async handle_messages
+2024-04-18 17:13:25,338 - INFO - 17:13:25-Received from 192.168.56.101:43710 - frame: ID: 1, IN, Typ: U-format: STARTDT ACT
+2024-04-18 17:13:25,338 - DEBUG - Finish async handle_messages.
+2024-04-18 17:13:25,339 - DEBUG - Starting async handle_messages
+2024-04-18 17:13:25,339 - DEBUG - Start on_handle_message
+2024-04-18 17:13:25,339 - DEBUG - Starting update_state_machine_server with: ID: 1, IN, Typ: U-format: STARTDT ACT
+2024-04-18 17:13:25,339 - DEBUG - CHANGE_TRANSMISSION_STATE: STOPPED -> RUNNING
+2024-04-18 17:13:25,340 - DEBUG - Start send_frame_task()
+2024-04-18 17:13:25,340 - INFO - 17:13:25-Send to 192.168.56.101:43710 - frame: ID: 2, OUT, Typ: U-format: STARTDT CON
+2024-04-18 17:13:25,341 - DEBUG - Stop send_frame_task()
+2024-04-18 17:13:26,127 - DEBUG - Finish async update_state_machine_server
+2024-04-18 17:13:26,127 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 1, IN, Typ: U-format: STARTDT ACT
+2024-04-18 17:13:26,127 - DEBUG - Finish async handle_apdu
+2024-04-18 17:13:26,127 - DEBUG - Finish on_handle_message
+2024-04-18 17:13:27,339 - INFO - 17:13:27-Received from 192.168.56.101:43710 - frame: ID: 3, IN, Typ: I-format, Data in bytes: b'h\x0e\x00\x00'...
+2024-04-18 17:13:27,340 - DEBUG - Finish async handle_messages.
+2024-04-18 17:13:27,340 - DEBUG - Starting async handle_messages
+2024-04-18 17:13:27,340 - DEBUG - Start on_handle_message
+2024-04-18 17:13:27,340 - DEBUG - Starting update_state_machine_server with: ID: 3, IN, Typ: I-format, Data in bytes: b'h\x0e\x00\x00'...
+2024-04-18 17:13:28,141 - DEBUG - Finish async update_state_machine_server
+2024-04-18 17:13:28,141 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 3, IN, Typ: I-format, Data in bytes: b'h\x0e\x00\x00'...
+2024-04-18 17:13:28,141 - DEBUG - Finish async handle_apdu
+2024-04-18 17:13:28,142 - DEBUG - Finish on_handle_message
+2024-04-18 17:13:33,156 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-25' coro=<MQTTProtocol.save_data() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py:151> exception=RuntimeError('Message publish failed: The client is not currently connected.')>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py", line 157, in save_data
+    await self.publish(topic, payload=data, qos=1, retain=None)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py", line 129, in publish
+    self._msg_info.wait_for_publish(timeout=0.2)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\.venv\Lib\site-packages\paho\mqtt\client.py", line 362, in wait_for_publish
+    raise RuntimeError('Message publish failed: %s' % (error_string(self.rc)))
+RuntimeError: Message publish failed: The client is not currently connected.
+2024-04-18 17:13:33,182 - INFO - 17:13:33-Received from 192.168.56.101:43710 - frame: ID: 4, IN, Typ: I-format, Data in bytes: b'h\x0e\x02\x00'...
+2024-04-18 17:13:33,182 - DEBUG - Finish async handle_messages.
+2024-04-18 17:13:33,182 - DEBUG - Starting async handle_messages
+2024-04-18 17:13:33,183 - DEBUG - Start on_handle_message
+2024-04-18 17:13:33,183 - DEBUG - Starting update_state_machine_server with: ID: 4, IN, Typ: I-format, Data in bytes: b'h\x0e\x02\x00'...
+2024-04-18 17:13:33,347 - INFO - 17:13:33-Received from 192.168.56.101:43710 - frame: ID: 5, IN, Typ: I-format, Data in bytes: b'h\x0e\x04\x00'...
+2024-04-18 17:13:33,348 - DEBUG - Finish async handle_messages.
+2024-04-18 17:13:33,348 - DEBUG - Starting async handle_messages
+2024-04-18 17:13:33,348 - DEBUG - Start on_handle_message
+2024-04-18 17:13:33,348 - DEBUG - Starting update_state_machine_server with: ID: 5, IN, Typ: I-format, Data in bytes: b'h\x0e\x04\x00'...
+2024-04-18 17:13:33,978 - DEBUG - Finish async update_state_machine_server
+2024-04-18 17:13:33,978 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 4, IN, Typ: I-format, Data in bytes: b'h\x0e\x02\x00'...
+2024-04-18 17:13:33,978 - DEBUG - Finish async handle_apdu
+2024-04-18 17:13:33,979 - DEBUG - Finish on_handle_message
+2024-04-18 17:13:38,979 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-38' coro=<MQTTProtocol.save_data() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py:151> exception=RuntimeError('Message publish failed: The client is not currently connected.')>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py", line 157, in save_data
+    await self.publish(topic, payload=data, qos=1, retain=None)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py", line 129, in publish
+    self._msg_info.wait_for_publish(timeout=0.2)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\.venv\Lib\site-packages\paho\mqtt\client.py", line 362, in wait_for_publish
+    raise RuntimeError('Message publish failed: %s' % (error_string(self.rc)))
+RuntimeError: Message publish failed: The client is not currently connected.
+2024-04-18 17:13:38,980 - DEBUG - Finish async update_state_machine_server
+2024-04-18 17:13:38,980 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 5, IN, Typ: I-format, Data in bytes: b'h\x0e\x04\x00'...
+2024-04-18 17:13:38,981 - DEBUG - Finish async handle_apdu
+2024-04-18 17:13:38,981 - DEBUG - Finish on_handle_message
+2024-04-18 17:13:43,982 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-39' coro=<MQTTProtocol.save_data() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py:151> exception=RuntimeError('Message publish failed: The client is not currently connected.')>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py", line 157, in save_data
+    await self.publish(topic, payload=data, qos=1, retain=None)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\MQTTProtocol.py", line 129, in publish
+    self._msg_info.wait_for_publish(timeout=0.2)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v5\.venv\Lib\site-packages\paho\mqtt\client.py", line 362, in wait_for_publish
+    raise RuntimeError('Message publish failed: %s' % (error_string(self.rc)))
+RuntimeError: Message publish failed: The client is not currently connected.
+2024-04-18 17:13:43,983 - INFO - 17:13:43-Received from 192.168.56.101:43710 - frame: ID: 6, IN, Typ: I-format, Data in bytes: b'h\x0e\x06\x00'...
+2024-04-18 17:13:43,984 - DEBUG - Finish async handle_messages.
+2024-04-18 17:13:43,984 - DEBUG - Starting async handle_messages
+2024-04-18 17:13:43,984 - DEBUG - Start on_handle_message
+2024-04-18 17:13:43,984 - DEBUG - Starting update_state_machine_server with: ID: 6, IN, Typ: I-format, Data in bytes: b'h\x0e\x06\x00'...
+2024-04-18 17:13:43,985 - INFO - 17:13:43-Received from 192.168.56.101:43710 - frame: ID: 7, IN, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
+2024-04-18 17:13:43,985 - DEBUG - Finish async handle_messages.
+2024-04-18 17:13:43,985 - DEBUG - Starting async handle_messages
+2024-04-18 17:13:43,986 - DEBUG - Start on_handle_message
+2024-04-18 17:13:43,986 - DEBUG - Starting update_state_machine_server with: ID: 7, IN, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
+2024-04-18 17:13:43,986 - INFO - 17:13:43-Received from 192.168.56.101:43710 - frame: ID: 8, IN, Typ: I-format, Data in bytes: b'h\x0e\n\x00'...
+2024-04-18 17:13:43,986 - DEBUG - EOF - odpojeni klienta
+2024-04-18 17:13:43,987 - DEBUG - flag_session_set ACTIVE_TERMINATION - SessionID: 1, ip: 192.168.56.101, port: 43710, states: CONNECTED, RUNNING
+2024-04-18 17:13:43,987 - DEBUG - Start on_handle_message
+2024-04-18 17:13:43,987 - DEBUG - Starting update_state_machine_server with: ID: 8, IN, Typ: I-format, Data in bytes: b'h\x0e\n\x00'...
+2024-04-18 17:13:43,987 - DEBUG - flag_session_set None - SessionID: 1, ip: 192.168.56.101, port: 43710, states: CONNECTED, RUNNING
+2024-04-18 17:13:43,987 - DEBUG - CHANGE_TRANSMISSION_STATE: RUNNING -> STOPPED
+2024-04-18 17:13:43,988 - DEBUG - CHANGE_CONNECTION_STATE: CONNECTED -> DISCONNECTED
+2024-04-18 17:13:43,988 - DEBUG - Nastaven flag_delete na True
+2024-04-18 17:13:43,988 - DEBUG - pred smazanim session: SessionID: 1, ip: 192.168.56.101, port: 43710, states: DISCONNECTED, STOPPED
+2024-04-18 17:13:43,988 - DEBUG - po smazani session: SessionID: 1, ip: 192.168.56.101, port: 43710, states: DISCONNECTED, STOPPED
+2024-04-18 17:13:43,988 - DEBUG - deleted SessionID: 1, ip: 192.168.56.101, port: 43710, states: DISCONNECTED, STOPPED from clientmanager
+2024-04-18 17:13:43,988 - DEBUG - pred smazanim clientmanager: Client: 192.168.56.101, ID: 1, Num of sessions: 0
+2024-04-18 17:13:43,988 - DEBUG - po smazani clientmanager: Client: 192.168.56.101, ID: 1, Num of sessions: 0
+2024-04-18 17:13:43,988 - DEBUG - deleted Client: 192.168.56.101, ID: 1, Num of sessions: 0 from server
+2024-04-18 17:13:43,989 - DEBUG - Start on_handle_message
+2024-04-18 17:13:43,989 - DEBUG - Finish on_handle_message
+2024-04-18 17:13:44,790 - DEBUG - Finish async update_state_machine_server
+2024-04-18 17:13:44,790 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 6, IN, Typ: I-format, Data in bytes: b'h\x0e\x06\x00'...
+2024-04-18 17:13:44,790 - DEBUG - Finish async handle_apdu
+2024-04-18 17:13:44,790 - DEBUG - Finish on_handle_message
+2024-04-18 17:13:44,791 - DEBUG - Finish async update_state_machine_server
+2024-04-18 17:13:44,791 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 8, IN, Typ: I-format, Data in bytes: b'h\x0e\n\x00'...
+2024-04-18 17:13:44,791 - DEBUG - Finish async handle_apdu
+2024-04-18 17:13:44,791 - DEBUG - Finish on_handle_message
+2024-04-18 17:13:44,791 - DEBUG - Finish async update_state_machine_server
+2024-04-18 17:13:44,792 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 7, IN, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
+2024-04-18 17:13:44,792 - DEBUG - Finish async handle_apdu
+2024-04-18 17:13:44,792 - DEBUG - Finish on_handle_message
