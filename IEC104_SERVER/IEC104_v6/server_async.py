@@ -34,10 +34,10 @@ class ServerIEC104:
         Exceptions: None
         """
         self.__name: str = name
-        self.__loop: asyncio.get_running_loop() = None
-        self.task_check_alive_queue = None
-        self._server: ServerIEC104 | None = None
-        self.config_loader = ConfigLoader('./config_parameters.json')
+        self.__loop: asyncio.BaseEventLoop | None = None
+        self.task_check_alive_queue: asyncio.Task | None = None
+        self._server: asyncio.Server | None = None
+        self.config_loader: ConfigLoader | None = ConfigLoader('./config_parameters.json')
 
         self.ip: str = self.config_loader.config['server']['ip_address']
         self.port: int = self.config_loader.config['server']['port']
@@ -144,11 +144,11 @@ class ServerIEC104:
         callback = self.check_alive_clients
         if client_addr not in self.clients:
             client_manager_instance = ClientManager(client_addr,
-                                                 port=None,
-                                                 callback_check_clients=callback,
-                                                 callback_only_for_client=None,
-                                                 server_name=self.name,
-                                                 whoami='server')
+                                                    port=None,
+                                                    callback_check_clients=callback,
+                                                    callback_only_for_client=None,
+                                                    server_name=self.name,
+                                                    whoami='server')
 
             self.clients[client_addr] = client_manager_instance
 

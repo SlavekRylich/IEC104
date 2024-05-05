@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import asyncio
+from typing import Any
 
 
 class Timer:
     def __init__(self, timeout: int, callback):
         self._timeout: int = timeout
-        self._callback = callback
-        self._task = asyncio.ensure_future(self._job())
+        self._callback: Any = callback
+        self._task: asyncio.Task = asyncio.ensure_future(self._job())
 
     def start(self) -> None:
         self._task.cancel()

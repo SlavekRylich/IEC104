@@ -14,10 +14,10 @@ from aiomqtt import Client, MqttError
 import logging as logger
 
 
-tz = time.timezone
+tz: int = time.timezone
 
-MQTT_HOST = "192.168.1.136"
-MQTT_PORT = 1883
+MQTT_HOST: str = "192.168.1.136"
+MQTT_PORT: int = 1883
 
 
 def get_parser() -> argparse.ArgumentParser:

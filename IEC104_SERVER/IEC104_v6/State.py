@@ -11,7 +11,7 @@ class ConnectionState(Enum):
         return self.name
 
     @classmethod
-    def set_state(cls, state: str) -> 'ConnectionState':
+    def set_state(cls, state: str) -> Enum:
         return cls(state)
 
     def get_state(self) -> str:
@@ -19,17 +19,17 @@ class ConnectionState(Enum):
 
 
 class TransmissionState(Enum):
-    STOPPED = 'STOPPED'
-    WAITING_RUNNING = 'WAITING_RUNNING'
-    RUNNING = 'RUNNING'
-    WAITING_UNCONFIRMED = 'WAITING_UNCONFIRMED'
-    WAITING_STOPPED = 'WAITING_STOPPED'
+    STOPPED: str = 'STOPPED'
+    WAITING_RUNNING: str = 'WAITING_RUNNING'
+    RUNNING: str = 'RUNNING'
+    WAITING_UNCONFIRMED: str = 'WAITING_UNCONFIRMED'
+    WAITING_STOPPED: str = 'WAITING_STOPPED'
 
     def __str__(self) -> str:
         return self.name
 
     @classmethod
-    def set_state(cls, state: str) -> 'TransmissionState':
+    def set_state(cls, state: str) -> Enum:
         return cls(state)
 
     def get_state(self) -> str:

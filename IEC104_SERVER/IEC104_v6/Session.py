@@ -49,13 +49,13 @@ class Session:
         self.__port_dst: int = port
         self.__name: str = "Session_" + str(self.__id)
         # callback
-        self.__callback_on_message_recv = callback_on_message_recv
+        self.__callback_on_message_recv: Any = callback_on_message_recv
 
         # events
         # self.__event_queue_in = queue.event_in
         # self.__shared_event_queue_out = queue.event_out
-        self.__event_queue_out = asyncio.Event()
-        self.__event_update = asyncio.Event()
+        self.__event_queue_out: asyncio.Event = asyncio.Event()
+        self.__event_update: asyncio.Event = asyncio.Event()
 
         # Queues 
         # self.__queue = queue
@@ -68,13 +68,13 @@ class Session:
         self.__whoami: str = whoami
 
         # local queue is for handle message to update_state_machine
-        self.__local_queue = asyncio.Queue(maxsize=256)
+        self.__local_queue: asyncio.Queue = asyncio.Queue(maxsize=256)
 
         # flag_session = 'START_SESSION'
         # flag_session = 'STOP_SESSION'
         # flag_session = 'ACTIVE_TERMINATION'
         # flag_session = None
-        self.__flag_session = None
+        self.__flag_session: str | None = None
 
         # flag_timeout_t1 = 0 - good
         # flag_timeout_t1 = 1 - timeout 
@@ -113,12 +113,12 @@ class Session:
         self.__priority: int = 0
 
         # inical states
-        self.__connection_state = ConnectionState.set_state('CONNECTED')
-        self.__transmission_state = TransmissionState.set_state('STOPPED')
+        self.__connection_state: ConnectionState = ConnectionState.set_state('CONNECTED')
+        self.__transmission_state: TransmissionState = TransmissionState.set_state('STOPPED')
 
         # Tasks
-        self.__task = None
-        self.__tasks: list = []
+        self.__task: asyncio.Task | None = None
+        self.__tasks: list[asyncio.Task] = []
         # self.__tasks.append(asyncio.create_task(self.handle_messages()))
         # self.__tasks.append(asyncio.create_task(self.send_frame()))
 

@@ -12,8 +12,8 @@ from Frame import Frame
 
 
 class IFormat(Frame):
-    __class_ssn = 0
-    __class_rsn = 0
+    __class_ssn: int = 0
+    __class_rsn: int = 0
 
     def __init__(self, data: bytes, ssn: int = 0, rsn: int = 0, direction: str = 'OUT'):
         super().__init__('I-format')
@@ -22,7 +22,7 @@ class IFormat(Frame):
         self.__data: bytes = data
         self.__data_length: int = self.get_length_of_data()
         # zaokrouhlední dat na celé byty
-        self._total_length += self.__data_length
+        self._total_length: int = self.__data_length
 
         self._direction: str = direction
 
@@ -108,4 +108,3 @@ class IFormat(Frame):
                 f" {self._direction},"
                 f" Typ: {self.type_in_word},"
                 f" Data in bytes: {self.serialize()[:4]}...")
-

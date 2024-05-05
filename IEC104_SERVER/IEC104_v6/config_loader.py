@@ -7,8 +7,8 @@ from typing import Any
 
 class ConfigLoader:
     def __init__(self, file_path: str):
-        self.file_path = file_path
-        self.config = self.load_config()
+        self.file_path: str = file_path
+        self.config: Any = self.load_config()
 
     def load_config(self) -> Any | None:
         try:

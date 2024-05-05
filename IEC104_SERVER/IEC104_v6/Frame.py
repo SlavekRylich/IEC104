@@ -14,9 +14,9 @@ class Frame:
     def __init__(self, type_frame='Frame'):
         self._header_length: int = acpi.ACPI_HEADER_LENGTH
         self._total_length: int = self._header_length
-        self._structure = None
+        self._structure: bytes | None = None
         self._type_in_word: str = type_frame
-        self._direction = None
+        self._direction: str | None = None
 
         Frame._id += 1
         self._id: int = Frame._id
