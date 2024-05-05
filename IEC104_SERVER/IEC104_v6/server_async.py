@@ -42,7 +42,7 @@ class ServerIEC104:
         self.ip: str = self.config_loader.config['server']['ip_address']
         self.port: int = self.config_loader.config['server']['port']
 
-        self.tasks: list = []
+        self.tasks: list[asyncio.Task] = []
         self.clients: dict[str, ClientManager] = {}
 
         self.no_overflow: int = 0
