@@ -127,8 +127,6 @@ class Session:
 
         # self.__tasks.append(asyncio.create_task(self.check_for_timeouts()))
 
-
-
     async def start(self) -> None:
         self.__task = asyncio.ensure_future(self.handle_messages())
         # await asyncio.gather(*self.__tasks)
@@ -260,8 +258,7 @@ class Session:
                 return inst
         return None
 
-    ################################################
-    ## RECEIVE FRAME
+    # RECEIVE FRAME
     async def handle_messages(self) -> None:
         while not self.__flag_stop_tasks:
             # if not self.__flag_stop_tasks:
@@ -452,5 +449,3 @@ class Session:
 
     def __exit__(*exc_info):
         pass
-
-

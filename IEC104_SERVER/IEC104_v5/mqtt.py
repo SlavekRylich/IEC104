@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import asyncio_mqtt as aiomqtt
 import paho.mqtt.client as mqtt
 
 

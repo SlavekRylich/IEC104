@@ -38,4 +38,3 @@ if __name__ == "__main__":
 
         print(f"Server IP: {server_ip}, Port: {server_port}")
         print(f"Client IP: {client_ip}, Port: {client_port}")
-

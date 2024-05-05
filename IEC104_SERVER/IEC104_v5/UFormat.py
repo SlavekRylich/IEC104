@@ -69,4 +69,3 @@ class UFormat(Frame):
                 f" {self._direction},"
                 f" Typ: {self.type_in_word}:"
                 f" {self.type_of_Uformat_Str}")
-

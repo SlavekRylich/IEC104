@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import paho.mqtt.client as mqtt
 from IDataSharing import IDataSharing
-import asyncio
 
 
 class MQTTProtocol(IDataSharing):

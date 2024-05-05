@@ -32,4 +32,3 @@ class TransmissionState(Enum):
 
     def get_state(self) -> str:
         return self.value
-

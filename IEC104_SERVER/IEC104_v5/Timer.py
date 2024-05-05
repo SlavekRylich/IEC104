@@ -22,4 +22,3 @@ class Timer:
 async def timeout_callback() -> None:
     await asyncio.sleep(0.1)
     print('echo!')
-

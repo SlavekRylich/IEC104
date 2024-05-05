@@ -1,4 +1,3 @@
-import Frame
 import struct
 import acpi
 
