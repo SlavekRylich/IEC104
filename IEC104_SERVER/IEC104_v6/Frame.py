@@ -2,17 +2,17 @@
 
 from typing import Any
 
-import acpi
+from acpi import ACPI
 
 
 class Frame:
     # třídní proměná pro uchování unikátní id každé instance
     _id: int = 0
     _instances: list['Frame'] = []
-    _start_byte: int = acpi.START_BYTE
+    _start_byte: int = ACPI.START_BYTE
 
     def __init__(self, type_frame='Frame'):
-        self._header_length: int = acpi.ACPI_HEADER_LENGTH
+        self._header_length: int = ACPI.ACPI_HEADER_LENGTH
         self._total_length: int = self._header_length
         self._structure: bytes | None = None
         self._type_in_word: str = type_frame
@@ -67,9 +67,6 @@ class Frame:
     def get_all_instances(cls) -> list:
         return cls._instances
 
-    def new_method(self) -> None:
-        pass
-
     def serialize(self) -> Any:
         print(f"This never become")
         # it will return false because method is overrided
@@ -84,7 +81,7 @@ class Frame:
         self._total_length += length
 
     def get_length_of_data(self) -> int:
-        return self._total_length - acpi.ACPI_HEADER_LENGTH
+        return self._total_length - ACPI.ACPI_HEADER_LENGTH
 
     @property
     def structure(self) -> bytes:
@@ -98,7 +95,7 @@ class Frame:
 
     @classmethod
     def start_byte(cls) -> int:
-        return acpi.START_BYTE
+        return ACPI.START_BYTE
 
     def __str__(self) -> str:
         return f"Typ: {self._type_in_word}, Data in bytes: {self.serialize()}"

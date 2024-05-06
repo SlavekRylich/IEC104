@@ -15903,3 +15903,13 @@ RuntimeError: Message publish failed: The client is not currently connected.
 2024-04-18 17:13:44,792 - DEBUG - Starting handle_apdu, clientID: 1, sessionID: 1, apdu: ID: 7, IN, Typ: I-format, Data in bytes: b'h\x0e\x08\x00'...
 2024-04-18 17:13:44,792 - DEBUG - Finish async handle_apdu
 2024-04-18 17:13:44,792 - DEBUG - Finish on_handle_message
+2024-05-06 12:26:00,062 - INFO - Toto je informaèní zpráva
+2024-05-06 12:26:00,063 - WARNING - Toto je varovná zpráva
+2024-05-06 12:26:00,063 - ERROR - Toto je chybová zpráva
+2024-05-06 12:26:00,070 - DEBUG - Using proactor: IocpProactor
+2024-05-06 12:26:00,073 - INFO - Listen on 192.168.56.1:2404
+2024-05-06 12:29:34,710 - INFO - Toto je informaèní zpráva
+2024-05-06 12:29:34,710 - WARNING - Toto je varovná zpráva
+2024-05-06 12:29:34,710 - ERROR - Toto je chybová zpráva
+2024-05-06 12:29:34,711 - DEBUG - Using proactor: IocpProactor
+2024-05-06 12:29:34,712 - INFO - Listen on 192.168.56.1:2404

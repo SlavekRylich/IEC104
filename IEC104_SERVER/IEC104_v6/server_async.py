@@ -37,10 +37,10 @@ class ServerIEC104:
         self.__loop: asyncio.BaseEventLoop | None = None
         self.task_check_alive_queue: asyncio.Task | None = None
         self._server: asyncio.Server | None = None
-        self.config_loader: ConfigLoader | None = ConfigLoader('./config_parameters.json')
+        self.__config_loader: ConfigLoader = ConfigLoader('./config_parameters.json')
 
-        self.ip: str = self.config_loader.config['server']['ip_address']
-        self.port: int = self.config_loader.config['server']['port']
+        self.ip: str = self.__config_loader.config['server']['ip_address']
+        self.port: int = self.__config_loader.config['server']['port']
 
         self.tasks: list[asyncio.Task] = []
         self.clients: dict[str, ClientManager] = {}
@@ -56,7 +56,7 @@ class ServerIEC104:
                 self.timeout_t0, \
                 self.timeout_t1, \
                 self.timeout_t2, \
-                self.timeout_t3 = self.load_params(self.config_loader)
+                self.timeout_t3 = self.load_params(self.__config_loader)
 
             # save parameters into tuple 
             self.session_params: tuple = (self.k,
@@ -167,24 +167,15 @@ class ServerIEC104:
         )
 
         # Create a new Session object for the client
-        session = Session(
-            client_addr,
-            client_port,
-            reader,
-            writer,
-            self.session_params,
-            callback_on_message_recv,
-            callback_timeouts_tuple,
-            client_manager_instance.send_buffer,
-            whoami='server'
-        )
-
         # Add the session to the queue
-        client_manager_instance.add_session(session)
-        print(f"Connection established with {client_addr}:{client_port} "
-              f"(Total connections: {client_manager_instance.get_number_of_connected_sessions()})")
-        logging.info(f"Connection established with {client_addr}:{client_port} "
-                     f"(Number of connections: {client_manager_instance.get_number_of_connected_sessions()})")
+        session = client_manager_instance.add_session(client_addr,
+                                                      client_port,
+                                                      reader,
+                                                      writer,
+                                                      self.session_params,
+                                                      callback_on_message_recv,
+                                                      callback_timeouts_tuple,
+                                                      whoami='server')
 
         try:
             # Start the session

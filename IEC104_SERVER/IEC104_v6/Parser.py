@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import struct
-import acpi
+from acpi import ACPI
 
 from IFormat import IFormat
 from SFormat import SFormat
@@ -18,7 +18,7 @@ class Parser:
             ssn = (unpacked_apdu[1] << 7) + (unpacked_apdu[0] >> 1)
             rsn = (unpacked_apdu[3] << 7) + (unpacked_apdu[2] >> 1)
             data = struct.unpack(f"{'B' * (length)}", apdu)
-            asdu_data = data[acpi.ACPI_HEADER_LENGTH:]
+            asdu_data = data[ACPI.ACPI_HEADER_LENGTH:]
             new_instance = IFormat(bytes(asdu_data), ssn, rsn, direction='IN')
             return new_instance
 
@@ -32,32 +32,32 @@ class Parser:
             new_instance = UFormat(direction='IN')
 
             # STARTDT ACT
-            if first_byte == acpi.STARTDT_ACT:
-                new_instance.type = acpi.STARTDT_ACT
+            if first_byte == ACPI.STARTDT_ACT:
+                new_instance.type = ACPI.STARTDT_ACT
                 return new_instance
 
             # STOPDT ACT
-            elif first_byte == acpi.STOPDT_ACT:
-                new_instance.type = acpi.STOPDT_ACT
+            elif first_byte == ACPI.STOPDT_ACT:
+                new_instance.type = ACPI.STOPDT_ACT
                 return new_instance
 
             # TESTDT ACT
-            elif first_byte == acpi.TESTFR_ACT:
-                new_instance.type = acpi.TESTFR_ACT
+            elif first_byte == ACPI.TESTFR_ACT:
+                new_instance.type = ACPI.TESTFR_ACT
                 return new_instance
 
-            elif first_byte == acpi.STARTDT_CON:
-                new_instance.type = acpi.STARTDT_CON
+            elif first_byte == ACPI.STARTDT_CON:
+                new_instance.type = ACPI.STARTDT_CON
                 return new_instance
 
             # STOPDT ACT
-            elif first_byte == acpi.STOPDT_CON:
-                new_instance.type = acpi.STOPDT_CON
+            elif first_byte == ACPI.STOPDT_CON:
+                new_instance.type = ACPI.STOPDT_CON
                 return new_instance
 
             # TESTDT ACT
-            elif first_byte == acpi.TESTFR_CON:
-                new_instance.type = acpi.TESTFR_CON
+            elif first_byte == ACPI.TESTFR_CON:
+                new_instance.type = ACPI.TESTFR_CON
                 return new_instance
 
             else:

@@ -44,7 +44,7 @@ class ClientManager:
         # Session
         self.__out_queue: asyncio.Queue | None = None
         self.__in_queue: asyncio.Queue | None = None
-        self.__sessions: list['Session'] = []
+        self.__sessions: list[Session] = []
         self.__VR: int = 0
         self.__VS: int = 0
         self.__ack: int = 0
@@ -472,9 +472,30 @@ class ClientManager:
                 print(f"Exception {e}")
                 logging.error(f"Exception {e}")
 
-    def add_session(self, session: Session) -> None:
+    def add_session(self, client_addr: str,
+                    client_port: int,
+                    reader: asyncio.StreamReader,
+                    writer: asyncio.StreamWriter,
+                    session_params: tuple,
+                    callback_on_message_recv,
+                    callback_timeouts_tuple: tuple,
+                    whoami: str = 'server') -> Session:
+
+        session = Session(client_addr,
+                          client_port,
+                          reader, writer,
+                          session_params,
+                          callback_on_message_recv,
+                          callback_timeouts_tuple,
+                          self.send_buffer,
+                          whoami=whoami)
+        print(f"Connection established with {client_addr}:{client_port} "
+              f"(Total connections: {self.get_number_of_connected_sessions()})")
+        logging.info(f"Connection established with {client_addr}:{client_port} "
+                     f"(Number of connections: {self.get_number_of_connected_sessions()})")
+
         self.__sessions.append(session)
-        # self.__session = self.Select_active_session(session)
+        return session
 
     def get_number_of_sessions(self) -> int:
         return len(self.__sessions)

@@ -11,7 +11,7 @@ class ConnectionState(Enum):
         return self.name
 
     @classmethod
-    def set_state(cls, state: str) -> Enum:
+    def set_state(cls, state: str):
         return cls(state)
 
     def get_state(self) -> str:
@@ -29,7 +29,7 @@ class TransmissionState(Enum):
         return self.name
 
     @classmethod
-    def set_state(cls, state: str) -> Enum:
+    def set_state(cls, state: str):
         return cls(state)
 
     def get_state(self) -> str:

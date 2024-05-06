@@ -1,0 +1,222 @@
+@startuml classes
+set namespaceSeparator none
+class "ClientManager" as ClientManager.ClientManager {
+  - VR : int
+  - VS : int
+  - ack : int
+  - id : int
+  - ip : str
+  - recv_buffer : PacketBuffer
+  - send_buffer : PacketBuffer
+  - sessions : list[Session]
+  + Select_active_session() -> Session
+  + add_session(session: Session) -> None
+  + del_session(sess: Session) -> bool
+  + generate_i_frame(data: bytes, session: Session) -> IFormat
+  + generate_s_frame(session: Session) -> SFormat
+  + generate_startdt_act() -> UFormat
+  + generate_startdt_con() -> UFormat
+  + generate_stopdt_act() -> UFormat
+  + generate_stopdt_con() -> UFormat
+  + generate_testdt_act() -> UFormat
+  + generate_testdt_con() -> UFormat
+  + handle_apdu(session: Session, apdu: Frame) -> None
+  + handle_timeout_t0(session: Session) -> None
+  + handle_timeout_t1(session: Session) -> None
+  + handle_timeout_t2(session: Session) -> None
+  + handle_timeout_t3(session: Session) -> None
+  + incrementVR() -> None
+  + incrementVS() -> None
+  + on_message_receive(session: Session, apdu: Frame) -> None
+  + update_state_machine_server(session: Session, fr: Frame) -> None
+}
+class "ConfigLoader" as config_loader.ConfigLoader {
+  + config : Any
+  + file_path : str
+  + load_config() -> Any | None
+}
+class "ConnectionState" as State.ConnectionState {
+  - name
+  + get_state() -> str
+  + set_state(state: str) -> Enum
+}
+class "Frame" as Frame.Frame {
+  - id
+  - length
+  - type_in_word
+  + id() -> int
+  + serialize() -> bytes | Any
+  + start_byte() -> int
+}
+class "IDataSharing" as IDataSharing.IDataSharing {
+  {abstract}connect(host, port, username, password)
+  {abstract}disconnect()
+  {abstract}publish(topic, message)
+  {abstract}save_data(topic, data, callback)
+  {abstract}send_data(callback)
+  {abstract}subscribe(topic, callback)
+}
+class "IEC104Client" as client_async.IEC104Client {
+  active_session : Optional[Session | None]
+  async_time : float
+  client_manager : Optional[ClientManager | None]
+  data : str
+  data1 : int
+  data2 : bytes
+  data_list : list[bytes]
+  k
+  loop : Optional[asyncio.BaseEventLoop | None]
+  no_overflow : int
+  reader : Optional[asyncio.StreamReader | None]
+  server_ip : str
+  server_port : int
+  servers : dict
+  session_params : tuple
+  task_check_alive_queue : Optional[asyncio.Task | None]
+  task_handle_response : Optional[asyncio.Task | None]
+  timeout_t0
+  timeout_t1
+  timeout_t2
+  timeout_t3
+  w
+  writer : Optional[asyncio.StreamWriter | None]
+  check_alive_clients() -> bool
+  handle_response_for_client(session: Session) -> None
+  load_params(config_loader: ConfigLoader)
+  new_session(ip: str, port_num: int)
+  periodic_event_check()
+  run_client(ip, port_num)
+}
+class "IFormat" as IFormat.IFormat {
+  - data
+  - rsn
+  - ssn
+  + get_length_of_data() -> int
+}
+class "MQTTProtocol" as MQTTProtocol.MQTTProtocol {
+  connect()
+  disconnect()
+  publish(topic: str, payload: bytes, qos: int, retain)
+  save_data(topic: str, data: bytes | bytearray | int | float | str | None, callback)
+  {abstract}send_data(callback)
+  subscribe(topic: str, callback)
+  unsubscribe(topic: str)
+}
+class "MqttInterface" as mqtt.MqttInterface {
+  {abstract}connect(host, port, username, password)
+  {abstract}disconnect()
+  {abstract}publish(topic, message)
+  {abstract}subscribe(topic, callback)
+}
+class "MqttPaho" as mqtt.MqttPaho {
+  connect(host, port, username, password)
+  disconnect()
+  publish(topic, message)
+  subscribe(topic, callback)
+}
+class "PacketBuffer" as Packet_buffer.PacketBuffer {
+  add_frame(frame_id: int, frame: Frame) -> None
+  clear() -> None
+  clear_frames_less_than(frame_id: int) -> None
+  get_frame(frame_id: int) -> Frame
+  get_list_from_buffer() -> list
+  has_frame(frame_id: int) -> bool
+  is_empty() -> int
+  remove_frame(frame_id: int) -> None
+}
+class "Parser" as Parser.Parser {
+  parser(apdu, length: int) -> IFormat | SFormat | UFormat | None
+  what_format(first_byte: tuple) -> str | None
+}
+class "SFormat" as SFormat.SFormat {
+  - rsn
+  + increment_rsn() -> None
+}
+class "ServerIEC104" as server_async.ServerIEC104 {
+  async_time : float
+  clients : dict[str, ClientManager]
+  config_loader : ConfigLoader | None
+  ip : str
+  k
+  name
+  no_overflow : int
+  port : int
+  session_params : tuple
+  task_check_alive_queue : Optional[asyncio.Task | None]
+  tasks : list
+  timeout_t0
+  timeout_t1
+  timeout_t2
+  timeout_t3
+  w
+  check_alive_clients() -> bool
+  close() -> None
+  handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None
+  listen() -> None
+  load_params(config_loader: ConfigLoader) -> tuple
+  periodic_event_check()
+  run() -> None
+  {abstract}send() -> None
+}
+class "Session" as Session.Session {
+  connection_info
+  connection_state
+  event_queue_out
+  flag_delete
+  flag_delete : bool
+  flag_session
+  flag_session : str
+  flag_stop_tasks
+  flag_stop_tasks : bool
+  flag_timeout_t1
+  id
+  ip
+  is_connected
+  k
+  name
+  port
+  priority
+  transmission_state
+  w
+  whoami
+  delete_self() -> None
+  get_all_instances() -> list
+  get_instance(id_num: int) -> Any | None
+  handle_messages() -> None
+  remove_instance(id_num: int, instance: 'Session') -> bool
+  send_frame(frame: Frame) -> None
+  start() -> None
+  update_timestamp_t2() -> None
+}
+class "Timer" as Timer.Timer {
+  cancel() -> None
+  start() -> None
+}
+class "TransmissionState" as State.TransmissionState {
+  name
+  get_state() -> str
+  set_state(state: str) -> Enum
+}
+class "UFormat" as UFormat.UFormat {
+  - type_frame : int
+  + type() -> int
+}
+IFormat.IFormat --|> Frame.Frame
+MQTTProtocol.MQTTProtocol --|> IDataSharing.IDataSharing
+SFormat.SFormat --|> Frame.Frame
+UFormat.UFormat --|> Frame.Frame
+mqtt.MqttPaho --|> mqtt.MqttInterface
+ClientManager.ClientManager --* client_async.IEC104Client : client_manager
+MQTTProtocol.MQTTProtocol --* ClientManager.ClientManager : __mqtt_client
+Packet_buffer.PacketBuffer --* ClientManager.ClientManager : __send_buffer
+Packet_buffer.PacketBuffer --* ClientManager.ClientManager : __recv_buffer
+Session.Session --* client_async.IEC104Client : active_session
+State.ConnectionState --* Session.Session : __connection_state
+State.ConnectionState --* Session.Session : __connection_state
+State.TransmissionState --* Session.Session : __transmission_state
+State.TransmissionState --* Session.Session : __transmission_state
+Timer.Timer --* Session.Session : __timer_t0
+Timer.Timer --* Session.Session : __timer_t1
+Timer.Timer --* Session.Session : __timer_t2
+Timer.Timer --* Session.Session : __timer_t3
+@enduml
