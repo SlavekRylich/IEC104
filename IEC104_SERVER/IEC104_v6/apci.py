@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class ACPI:
+class APCI:
     # define
     ACPI_HEADER_LENGTH: int = 4
     START_BYTE: int = 0x68

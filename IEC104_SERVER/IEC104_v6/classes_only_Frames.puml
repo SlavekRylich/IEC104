@@ -1,0 +1,43 @@
+@startuml classes
+set namespaceSeparator none
+left to right direction
+'scale 250 width
+skinparam lineType ortho
+
+class "APCI" as apci.APCI {
+ACPI_HEADER_LENGTH: int = 4
+START_BYTE: int = 0x68
+}
+
+
+class "Frame" as Frame.Frame {
+  - id
+  - length
+  - type_in_word
+  + id() -> int
+  + serialize() -> bytes | Any
+  + start_byte() -> int
+  + length() -> int
+}
+class "IFormat" as IFormat.IFormat {
+  - data
+  - rsn
+  - ssn
+  + get_length_of_data() -> int
+  + rsn() -> int
+  + ssn() -> int
+}
+class "SFormat" as SFormat.SFormat {
+  - rsn
+  + rsn() -> int
+}
+class "UFormat" as UFormat.UFormat {
+  - type_frame : int
+  + type() -> int
+}
+
+apci.APCI --* Frame.Frame
+IFormat.IFormat -left-|> Frame.Frame
+SFormat.SFormat -up-|> Frame.Frame
+UFormat.UFormat -down-|> Frame.Frame
+@enduml
