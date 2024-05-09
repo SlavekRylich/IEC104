@@ -4,6 +4,7 @@ import asyncio
 import logging
 import struct
 
+from FrameStatistics import FrameStatistics
 from apci import APCI
 from Frame import Frame
 
@@ -24,17 +25,20 @@ class ClientManager:
     __id: int = 0
     __instances: list = []
 
-    def __init__(self, ip: str,
+    def __init__(self, ip_addr: str,
                  port: int = None,
+                 server_name: str = "",
+                 mqtt_broker_ip: str = "",
+                 mqtt_broker_port: int = 1883,
+                 mqtt_topic: str = "/",
                  callback_check_clients=None,
                  callback_only_for_client=None,
-                 server_name: str = "",
                  whoami: str = 'client'):
         """
         Constructor for QueueManager.
 
         Args:
-            ip (str): IP address.
+            ip_addr (str): IP address.
         """
         # Instances of ClientManager
         ClientManager.__id += 1
@@ -49,7 +53,7 @@ class ClientManager:
         self.__VS: int = 0
         self.__ack: int = 0
         self.__session: Session | None = None
-        self.__ip: str = ip
+        self.__ip: str = ip_addr
         self.__port: int = port
 
         self.__callback_only_for_client = callback_only_for_client
@@ -89,32 +93,26 @@ class ClientManager:
         self.__tasks: list = []
 
         # MQTT client
-        self.__mqtt_topic: str | None = '/' + self.__server_name + '/' + self.__name  # "Server/ClientX
         self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
-        # self.__mqtt_broker: str | None = "localhost"
-        self.__mqtt_broker: str | None = "192.168.1.136"
-        self.__mqtt_port: int | None = 1883
-        self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id, self.__mqtt_broker, self.__mqtt_port)
+        self.__mqtt_broker_ip: str = mqtt_broker_ip
+        self.__mqtt_broker_port: int = mqtt_broker_port
+        self.__mqtt_topic: str = mqtt_topic
+        self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
+                                          self.__mqtt_broker_ip,
+                                          self.__mqtt_broker_port,
+                                          username="alice",
+                                          password="p4ssw0rd")
+
+        # statistics
+        self.client_stats: FrameStatistics = FrameStatistics(self.ip)
+        self.sessions_stats: dict[int, FrameStatistics] = {}
 
         # jak dostat data k odeslaní přes server (klienta)
         # přes nejaky API
-        self.data2 = struct.pack(f"{'B' * 10}",
-                                 0x65,
-                                 0x01,
-                                 0x0A,
-                                 0x00,
-                                 0x0C,
-                                 0x00,
-                                 0x00,
-                                 0x00,
-                                 0x00,
-                                 0x05,
-                                 )
 
-        self.data_list: list = [self.data2, self.data2]  # define static data
 
-        print(f"NOVA INSTANCE QUEUE ID: {self.__id}")
-        logging.debug(f"NOVA INSTANCE QUEUE ID: {self.__id}")
+        print(f"NOVA INSTANCE CLIENTMANAGER ID: {self.__id}")
+        logging.debug(f"NOVA INSTANCE CLIENTMANAGER ID: {self.__id}")
 
     async def start(self) -> None:
         try:
@@ -137,6 +135,7 @@ class ClientManager:
 
     @flag_delete.setter
     def flag_delete(self, value: bool) -> None:
+        print(self.client_stats)
         self.__flag_delete = value
 
     @property
@@ -176,11 +175,31 @@ class ClientManager:
         return self.__id
 
     @property
+    def flag_start_sequence(self) -> bool:
+        if self.__flag_start_sequence:
+            return True
+        else:
+            return False
+
+    @flag_start_sequence.setter
+    def flag_start_sequence(self, value: bool) -> None:
+        self.__flag_start_sequence = value
+
+    @property
     def tasks(self) -> list:
         return self.__tasks
 
     def add_task(self, value: asyncio.create_task) -> None:
         self.__tasks.append(value)
+
+    def get_client_stats(self) -> FrameStatistics:
+        return self.client_stats
+
+    def get_session_stats(self, id_num: int) -> FrameStatistics:
+        return self.sessions_stats[id_num]
+
+    def get_all_sessions_stat(self) -> dict:
+        return self.sessions_stats
 
     @classmethod
     def remove_instance(cls, id_num: int = 0, instance: 'ClientManager' = None) -> bool:
@@ -190,38 +209,12 @@ class ClientManager:
         else:
             return False
 
-    async def check_in_queue(self) -> None:
-        while not self.flag_stop_tasks:
+    async def send_frame(self, session: Session, frame: Frame) -> None:
+        self.client_stats.update_send(frame)
+        self.sessions_stats[session.port].update_send(frame)
 
-            try:
-                await self.__event_queue_in.wait()
-                self.__event_queue_in.clear()
-                print(f"Starting_check_in_queue")
-                logging.debug(f"Starting_check_in_queue")
-
-                if not self.__in_queue.is_Empty():
-                    pass
-                    session, message = await self.__in_queue.get_message()
-
-                    if isinstance(message, IFormat):
-                        self.__recv_buffer.add_frame(message.ssn, message)
-
-                    if self.__whoami == 'server':
-                        await self.handle_apdu(session, message)
-                    else:
-                        await self.handle_apdu(session, message)
-                        # await self.handle_response_for_client(session)
-
-                    await asyncio.sleep(self.__async_time)
-                    print(f"Finish_check_in_queue")
-                    logging.debug(f"Finish_check_in_queue")
-
-            except Exception as e:
-                print(f"Exception {e}")
-                logging.error(f"Exception {e}")
-
-            session = None
-            message = None
+        task = asyncio.ensure_future(session.send_frame(frame))
+        self.__tasks.append(task)
 
     async def on_message_recv_or_timeout(self, session: Session, apdu: Frame = None) -> None:
         """
@@ -237,10 +230,13 @@ class ClientManager:
             None
 
         """
-        print(f"Start on_handle_message")
-        logging.debug(f"Start on_handle_message")
+        print(f"Start on_message_recv_or_timeout")
+        logging.debug(f"Start on_message_recv_or_timeout")
 
         if apdu is not None:
+            # update statistics
+            self.client_stats.update_recv(apdu)
+            self.sessions_stats[session.port].update_recv(apdu)
 
             # if apdu is Iformat save to buffer for acknowledgment
             if isinstance(apdu, IFormat):
@@ -262,26 +258,8 @@ class ClientManager:
                 # await self.handle_response_for_client(session)
 
         # await asyncio.sleep(self.__async_time)
-        print(f"Finish on_handle_message")
-        logging.debug(f"Finish on_handle_message")
-
-    # is handled in session
-    async def check_out_queue(self) -> None:
-        while not self.flag_stop_tasks:
-
-            try:
-                print(f"Starting_check_out_queue")
-                logging.debug(f"Starting_check_out_queue")
-                if not self.__out_queue.is_Empty():
-                    pass
-
-                await asyncio.sleep(self.__async_time)
-            except Exception as e:
-                print(f"Exception {e}")
-                logging.error(f"Exception {e}")
-
-            print(f"Finish_check_out_queue")
-            logging.debug(f"Finish_check_out_queue")
+        print(f"Finish on_message_recv_or_timeout")
+        logging.debug(f"Finish on_message_recv_or_timeout")
 
     @property
     def ip(self) -> str:
@@ -344,7 +322,6 @@ class ClientManager:
         # if isinstance(self._session, Session):
 
         actual_transmission_state = session.transmission_state
-        session_event = session.event_queue_out
 
         if actual_transmission_state == 'STOPPED' or \
                 actual_transmission_state == 'WAITING_RUNNING':
@@ -352,9 +329,7 @@ class ClientManager:
             if isinstance(apdu, UFormat):
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+                    await self.send_frame(session, new_frame)
 
         if actual_transmission_state == 'RUNNING':
 
@@ -364,10 +339,9 @@ class ClientManager:
 
                     # chyba sekvence
                     # vyslat S-format s posledním self.VR
-                    new_frame = await self.generate_s_frame(session)
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+
+                    new_frame = self.generate_s_frame(session)
+                    await self.send_frame(session, new_frame)
                     session.flag_session = 'ACTIVE_TERMINATION'
                     # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
 
@@ -376,10 +350,11 @@ class ClientManager:
                     self.incrementVR()
                     if apdu.rsn > self.ack:
                         self.ack = apdu.rsn
-                        await self.__send_buffer.clear_frames_less_than(self.__ack)
+                        self.__send_buffer.clear_frames_less_than(self.__ack)
+
 
                     # shara payload with MQTT
-                    asyncio.ensure_future(self.__mqtt_client.save_data(topic=self.__mqtt_topic + f"/{session.name}",
+                    asyncio.ensure_future(self.__mqtt_client.save_data(topic=self.__mqtt_topic,
                                                                        data=str(apdu.data),
                                                                        callback=None))
 
@@ -388,22 +363,18 @@ class ClientManager:
                     # self.__out_queue.to_send(new_apdu)
 
                 if self.__recv_buffer.__len__() >= session.w:
-                    new_frame = await self.generate_s_frame(session)
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+                    new_frame = self.generate_s_frame(session)
+                    await self.send_frame(session, new_frame)
 
             if isinstance(apdu, SFormat):
                 if apdu.rsn > self.ack:
                     self.ack = apdu.rsn
-                    await self.__send_buffer.clear_frames_less_than(self.__ack)
+                    self.__send_buffer.clear_frames_less_than(self.__ack)
 
             if isinstance(apdu, UFormat):
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+                    await self.send_frame(session, new_frame)
 
         if actual_transmission_state == 'WAITING_UNCONFIRMED' and \
                 session.whoami == 'server':
@@ -411,15 +382,13 @@ class ClientManager:
             if isinstance(apdu, SFormat):
                 if apdu.rsn > self.ack:
                     self.ack = apdu.rsn
-                    await self.__send_buffer.clear_frames_less_than(self.__ack)
+                    self.__send_buffer.clear_frames_less_than(self.__ack)
 
             if isinstance(apdu, UFormat):
 
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+                    await self.send_frame(session, new_frame)
 
         if session.whoami == 'client' and \
                 (actual_transmission_state == 'WAITING_UNCONFIRMED' or
@@ -430,10 +399,8 @@ class ClientManager:
                 if (apdu.ssn - self.__VR) > 1:
                     # chyba sekvence
                     # vyslat S-format s posledním self.VR
-                    new_frame = await self.generate_s_frame(session)
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+                    new_frame = self.generate_s_frame(session)
+                    await self.send_frame(session, new_frame)
                     session.flag_session = 'ACTIVE_TERMINATION'
                     # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
 
@@ -441,25 +408,21 @@ class ClientManager:
                     self.incrementVR()
                     if apdu.rsn > self.ack:
                         self.ack = apdu.rsn
-                        await self.__send_buffer.clear_frames_less_than(self.__ack)
+                        self.__send_buffer.clear_frames_less_than(self.__ack)
 
                 if self.__recv_buffer.__len__() >= session.w:
-                    new_frame = await self.generate_s_frame(session)
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+                    new_frame = self.generate_s_frame(session)
+                    await self.send_frame(session, new_frame)
 
             if isinstance(apdu, SFormat):
                 if apdu.rsn > self.ack:
                     self.ack = apdu.rsn
-                    await self.__send_buffer.clear_frames_less_than(self.__ack)
+                    self.__send_buffer.clear_frames_less_than(self.__ack)
 
             if isinstance(apdu, UFormat):
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    # self.__out_queue.to_send((session, frame), session_event)
-                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                    self.__tasks.append(task)
+                    await self.send_frame(session, new_frame)
 
         print(f"Finish async handle_apdu")
         logging.debug(f"Finish async handle_apdu")
@@ -489,6 +452,10 @@ class ClientManager:
                           callback_timeouts_tuple,
                           self.send_buffer,
                           whoami=whoami)
+
+        # create statistics object for session
+        self.sessions_stats[client_port] = FrameStatistics(client_addr, client_port)
+
         print(f"Connection established with {client_addr}:{client_port} "
               f"(Total connections: {self.get_number_of_connected_sessions()})")
         logging.info(f"Connection established with {client_addr}:{client_port} "
@@ -501,14 +468,14 @@ class ClientManager:
         return len(self.__sessions)
 
     def generate_i_frame(self, data: bytes, session: Session) -> IFormat:
-        session.update_timestamp_t2()
+        # session.update_timestamp_t2()
         new_i_format = IFormat(data, self.__VS, self.__VR)
         self.incrementVS()
         return new_i_format
 
-    async def generate_s_frame(self, session: Session) -> SFormat:
+    def generate_s_frame(self, session: Session) -> SFormat:
         session.update_timestamp_t2()
-        await self.__recv_buffer.clear_frames_less_than(self.__VR)
+        self.__recv_buffer.clear_frames_less_than(self.__VR)
         return SFormat(self.__VR)
 
     def Select_active_session(self) -> Session:
@@ -649,15 +616,12 @@ class ClientManager:
                                     if other_session.connection_state == 'CONNECTED' and \
                                             other_session.transmission_state != 'STOPPED':
                                         new_frame = self.generate_stopdt_act()
-                                        task = asyncio.ensure_future(other_session.send_frame(new_frame))
-                                        self.__tasks.append(task)
+                                        await self.send_frame(session, new_frame)
 
                                 # ack startdt con
                                 session.transmission_state = 'RUNNING'
                                 new_frame = self.generate_startdt_con()
-                                # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                task = asyncio.ensure_future(session.send_frame(new_frame))
-                                self.__tasks.append(task)
+                                await self.send_frame(session, new_frame)
 
                             # S-format or I-format
                             if frame == 'S-format' or frame == 'I-format':
@@ -671,21 +635,16 @@ class ClientManager:
 
                                 if self.__recv_buffer.is_empty() and \
                                         self.__send_buffer.is_empty():
-
                                     new_frame = self.generate_stopdt_con()
-                                    # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                                    self.__tasks.append(task)
+                                    await self.send_frame(session, new_frame)
                                     # poslat STOPDT CON
                                     session.transmission_state = 'STOPPED'
 
                                 else:  # if frame is stopdt act and send queue is not blank
                                     if not self.__recv_buffer.is_empty():
                                         # ack all received_I-formats
-                                        new_frame = await self.generate_s_frame(session)
-                                        # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                        task = asyncio.ensure_future(session.send_frame(new_frame))
-                                        self.__tasks.append(task)
+                                        new_frame = self.generate_s_frame(session)
+                                        await self.send_frame(session, new_frame)
                                     session.transmission_state = 'WAITING_UNCONFIRMED'
 
                         # * STATE 3
@@ -696,19 +655,15 @@ class ClientManager:
                                         self.__recv_buffer.is_empty():
                                     # poslat STOPDT CON
                                     new_frame = self.generate_stopdt_con()
-                                    # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                                    self.__tasks.append(task)
+                                    await self.send_frame(session, new_frame)
 
                                     # change state to 'STOPPED'
                                     session.transmission_state = 'STOPPED'
 
                                 if not self.__recv_buffer.is_empty():
                                     # ack all received_I-formats
-                                    new_frame = await self.generate_s_frame(session)
-                                    # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                                    self.__tasks.append(task)
+                                    new_frame = self.generate_s_frame(session)
+                                    await self.send_frame(session, new_frame)
 
                             #  I-format
                             if frame == 'I-format':
@@ -798,9 +753,7 @@ class ClientManager:
                                 session.flag_session = None
                                 # send start act
                                 new_frame = self.generate_startdt_act()
-                                # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                task = asyncio.ensure_future(session.send_frame(new_frame))
-                                self.__tasks.append(task)
+                                await self.send_frame(session, new_frame)
                                 # update state
                                 session.transmission_state = 'WAITING_RUNNING'
 
@@ -835,9 +788,7 @@ class ClientManager:
 
                                     # send stopdt act
                                     new_frame = self.generate_stopdt_act()
-                                    # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                                    self.__tasks.append(task)
+                                    await self.send_frame(session, new_frame)
                                     # update state
                                     session.transmission_state = 'WAITING_STOPPED'
 
@@ -845,16 +796,12 @@ class ClientManager:
                                     # To WAITING_UNCONFIRMED
                                     if not self.__recv_buffer.is_empty():
                                         # ack all received_I-formats
-                                        new_frame = await self.generate_s_frame(session)
-                                        # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                        task = asyncio.ensure_future(session.send_frame(new_frame))
-                                        self.__tasks.append(task)
+                                        new_frame = self.generate_s_frame(session)
+                                        await self.send_frame(session, new_frame)
 
                                     # send stopdt act
                                     new_frame = self.generate_stopdt_act()
-                                    # self.__out_queue.to_send((self, new_frame), self.__event_queue_out)
-                                    task = asyncio.ensure_future(session.send_frame(new_frame))
-                                    self.__tasks.append(task)
+                                    await self.send_frame(session, new_frame)
 
                                     # update state
                                     session.transmission_state = 'WAITING_UNCONFIRMED'
@@ -928,18 +875,14 @@ class ClientManager:
         print(f"Timer t2 timed_out - {session}")
         logging.debug(f"Timer t2 timed_out - {session}")
         if not self.__recv_buffer.is_empty():
-            new_frame = await self.generate_s_frame(session)
-            # self.__out_queue.to_send((self, resp), self.__event_queue_out)
-            task = asyncio.ensure_future(session.send_frame(new_frame))
-            self.__tasks.append(task)
+            new_frame = self.generate_s_frame(session)
+            await self.send_frame(session, new_frame)
 
     async def handle_timeout_t3(self, session: Session = None) -> None:
         print(f"Timer t3 timed_out - {session}")
         logging.debug(f"Timer t3 timed_out - {session}")
         new_frame = self.generate_testdt_act()
-        # self.__out_queue.to_send((self, frame), self.__event_queue_out)
-        task = asyncio.ensure_future(session.send_frame(new_frame))
-        self.__tasks.append(task)
+        await self.send_frame(session, new_frame)
 
     def __str__(self) -> str:
         return (f"Client: {self.ip},"

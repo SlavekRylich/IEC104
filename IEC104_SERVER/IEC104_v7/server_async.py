@@ -4,6 +4,7 @@ import gc
 import logging
 import asyncio
 
+from FrameStatistics import FrameStatistics
 from config_loader import ConfigLoader
 from Session import Session
 from ClientManager import ClientManager
@@ -39,12 +40,22 @@ class ServerIEC104:
         self._server: asyncio.Server | None = None
         self.__config_loader: ConfigLoader = ConfigLoader('./config_parameters.json')
 
+        # ip config
         self.ip: str = self.__config_loader.config['server']['ip_address']
         self.port: int = self.__config_loader.config['server']['port']
 
+        # MQTT config
+        self.mqtt_broker_ip: str = self.__config_loader.config['mqtt']['mqtt_broker_ip']
+        self.mqtt_broker_port: int = self.__config_loader.config['mqtt']['mqtt_broker_port']
+        self.mqtt_topic: str = self.__config_loader.config['mqtt']['mqtt_topic']
+
+        # tasks
         self.tasks: list[asyncio.Task] = []
+
+        # clients - dictionary[ip_add, ClientManager]
         self.clients: dict[str, ClientManager] = {}
 
+        # working var
         self.no_overflow: int = 0
 
         # central sleep time
@@ -56,20 +67,20 @@ class ServerIEC104:
                 self.timeout_t0, \
                 self.timeout_t1, \
                 self.timeout_t2, \
-                self.timeout_t3 = self.load_params(self.__config_loader)
+                self.timeout_t3 = self.load_session_params(self.__config_loader)
 
             # save parameters into tuple 
-            self.session_params: tuple = (self.k,
-                                          self.w,
-                                          self.timeout_t0,
-                                          self.timeout_t1,
-                                          self.timeout_t2,
-                                          self.timeout_t3)
+            self.config_parameters: tuple = (self.k,
+                                             self.w,
+                                             self.timeout_t0,
+                                             self.timeout_t1,
+                                             self.timeout_t2,
+                                             self.timeout_t3)
 
         except Exception as e:
             print(e)
 
-    def load_params(self, config_loader: ConfigLoader) -> tuple:
+    def load_session_params(self, config_loader: ConfigLoader) -> tuple:
 
         k = config_loader.config['server']['k']
         if k < 1 or k > 32767:
@@ -111,6 +122,23 @@ class ServerIEC104:
     def send(self) -> None:
         pass
 
+    def get_all_clients_stats(self) -> list | None:
+        """
+            Get all clients stats.
+            Args: None
+            Returns: bool | None
+            Exceptions: None
+            """
+        local_list: list[FrameStatistics] = []
+        for client in self.clients.values():
+            local_list.append(client.get_client_stats())
+            for session_stats in client.get_all_sessions_stat():
+                local_list.append(session_stats)
+
+        if local_list.__sizeof__() > 0:
+            return local_list
+        return None
+
     async def listen(self) -> None:
         print(f"Listen on {self.ip}:{self.port}")
         logging.info(f"Listen on {self.ip}:{self.port}")
@@ -144,10 +172,13 @@ class ServerIEC104:
         callback = self.check_alive_clients
         if client_addr not in self.clients:
             client_manager_instance = ClientManager(client_addr,
-                                                    port=None,
+                                                    port=self.port,
+                                                    server_name=self.name,
+                                                    mqtt_broker_ip=self.mqtt_broker_ip,
+                                                    mqtt_broker_port=self.mqtt_broker_port,
+                                                    mqtt_topic=self.mqtt_topic,
                                                     callback_check_clients=callback,
                                                     callback_only_for_client=None,
-                                                    server_name=self.name,
                                                     whoami='server')
 
             self.clients[client_addr] = client_manager_instance
@@ -172,7 +203,7 @@ class ServerIEC104:
                                                       client_port,
                                                       reader,
                                                       writer,
-                                                      self.session_params,
+                                                      self.config_parameters,
                                                       callback_on_message_recv,
                                                       callback_timeouts_tuple,
                                                       whoami='server')
@@ -219,6 +250,7 @@ class ServerIEC104:
                     logging.debug(f"deleted {client} because it's None")
             if count == 0:
                 logging.debug(f"last client was deleted")
+                print(f"Čekám na spojení...")
             print(count)
             if len(list(self.clients)) > 0:
                 return True

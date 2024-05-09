@@ -63,11 +63,11 @@ async def handle_messages(self) -> None:
 
 async def handle_client(self, reader: asyncio.StreamReader,
                         writer: asyncio.StreamWriter) -> None:
-    # získá IP adresu a port z TCP spojení
+    # zï¿½skï¿½ IP adresu a port z TCP spojenï¿½
     client_addr, client_port = writer.get_extra_info('peername')
-    # callback pro smazání instance ClientManagera pokud již nemá žádné aktivní spojení
+    # callback pro smazï¿½nï¿½ instance ClientManagera pokud jiï¿½ nemï¿½ ï¿½ï¿½dnï¿½ aktivnï¿½ spojenï¿½
     callback = self.check_alive_clients
-    # vytvoøení instance ClientManager, pokud se pøipojil nový klient
+    # vytvoï¿½enï¿½ instance ClientManager, pokud se pï¿½ipojil novï¿½ klient
     if client_addr not in self.clients:
         client_manager_instance = ClientManager(client_addr,
                                                 port=None,
@@ -75,11 +75,11 @@ async def handle_client(self, reader: asyncio.StreamReader,
                                                 callback_only_for_client=None,
                                                 server_name=self.name,
                                                 whoami='server')
-        # pøiøazení vytvoøené instance do slovníku s IP adresou jako její index
+        # pï¿½iï¿½azenï¿½ vytvoï¿½enï¿½ instance do slovnï¿½ku s IP adresou jako jejï¿½ index
         self.clients[client_addr] = client_manager_instance
-    # získání reference na instanci pokud již exitovala døíve
+    # zï¿½skï¿½nï¿½ reference na instanci pokud jiï¿½ exitovala dï¿½ï¿½ve
     client_manager_instance: ClientManager = self.clients[client_addr]
-    # callback funkce pro pøedání v argumentu
+    # callback funkce pro pï¿½edï¿½nï¿½ v argumentu
     callback_on_message_recv = client_manager_instance.on_message_recv_or_timeout
     callback_timeouts_tuple: tuple = (
         client_manager_instance.handle_timeout_t0,
@@ -87,18 +87,18 @@ async def handle_client(self, reader: asyncio.StreamReader,
         client_manager_instance.handle_timeout_t2,
         client_manager_instance.handle_timeout_t3,
     )
-    # vytvoøení nové instance Session uvnitø instance ClientManager
+    # vytvoï¿½enï¿½ novï¿½ instance Session uvnitï¿½ instance ClientManager
     session = client_manager_instance.add_session(client_addr,
                                                   client_port,
                                                   reader,
                                                   writer,
-                                                  self.session_params,
+                                                  self.config_parameters,
                                                   callback_on_message_recv,
                                                   callback_timeouts_tuple,
                                                   whoami='server')
 
     try:
-        # spuštìní asynchroní smyèky pro pøíjem dat ve tøídì session
+        # spuï¿½tï¿½nï¿½ asynchronï¿½ smyï¿½ky pro pï¿½ï¿½jem dat ve tï¿½ï¿½dï¿½ session
         await session.start()
 
     except Exception as e:
@@ -106,17 +106,17 @@ async def handle_client(self, reader: asyncio.StreamReader,
         logging.error(f"Exception: {e}")
 
     async def on_message_recv_or_timeout(self, session: Session, apdu: Frame = None) -> None:
-        # pokud metodu spustil pøijatý ramec, zpracuj ho, pokud ne tak to byl timeout
+        # pokud metodu spustil pï¿½ijatï¿½ ramec, zpracuj ho, pokud ne tak to byl timeout
         if apdu is not None:
 
-            # vložení rámce do vyrovnávací pamìti k potvrzení
+            # vloï¿½enï¿½ rï¿½mce do vyrovnï¿½vacï¿½ pamï¿½ti k potvrzenï¿½
             if isinstance(apdu, IFormat):
                 self.__recv_buffer.add_frame(apdu.ssn, apdu)
-            # jedná-li se o øízenou stanici, jinak øídicí stanice
+            # jednï¿½-li se o ï¿½ï¿½zenou stanici, jinak ï¿½ï¿½dicï¿½ stanice
             if self.__whoami == 'server':
-                # zpracování dat
+                # zpracovï¿½nï¿½ dat
                 await self.handle_apdu(session, apdu)
-                # aktualizace stavu spojení
+                # aktualizace stavu spojenï¿½
                 await self.update_state_machine_server(session, apdu)
             else:
                 await self.handle_apdu(session, apdu)

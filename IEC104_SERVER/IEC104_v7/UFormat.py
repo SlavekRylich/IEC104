@@ -2,7 +2,7 @@
 
 import struct
 
-import apci
+from apci import APCI
 from Frame import Frame
 
 
@@ -24,22 +24,22 @@ class UFormat(Frame):
     @type.setter
     def type(self, type_frame: int) -> None:
         self.__type_int = type_frame
-        if type_frame == acpi.STARTDT_ACT:
+        if type_frame == APCI.STARTDT_ACT:
             self.__type_of_Uformat_Str = 'STARTDT ACT'
 
-        if type_frame == acpi.STARTDT_CON:
+        if type_frame == APCI.STARTDT_CON:
             self.__type_of_Uformat_Str = 'STARTDT CON'
 
-        if type_frame == acpi.STOPDT_ACT:
+        if type_frame == APCI.STOPDT_ACT:
             self.__type_of_Uformat_Str = 'STOPDT ACT'
 
-        if type_frame == acpi.STOPDT_CON:
+        if type_frame == APCI.STOPDT_CON:
             self.__type_of_Uformat_Str = 'STOPDT CON'
 
-        if type_frame == acpi.TESTFR_ACT:
+        if type_frame == APCI.TESTFR_ACT:
             self.__type_of_Uformat_Str = 'TESTDT ACT'
 
-        if type_frame == acpi.TESTFR_CON:
+        if type_frame == APCI.TESTFR_CON:
             self.__type_of_Uformat_Str = 'TESTDT CON'
 
     @property

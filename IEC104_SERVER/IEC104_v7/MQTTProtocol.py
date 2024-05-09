@@ -29,6 +29,8 @@ class MQTTProtocol(IDataSharing):
         self._client.on_publish = self._on_publish
         self._broker_url = broker_url
         self._port = port
+        # self._client.tls_set()
+        # self._client.username_pw_set(username, password)
         self._username = username
         self._password = password
         self._connected = False
@@ -149,11 +151,11 @@ class MQTTProtocol(IDataSharing):
 
     async def save_data(self,
                         topic: str,
-                        data: bytes | bytearray | int | float | str| None,
+                        data: bytes | bytearray | int | float | str | None,
                         callback=None):
         # """Ukládání dat do zprávy."""
         await self.connect()
-        await self.publish(topic, payload=data, qos=1, retain=None)
+        await self.publish(topic, payload=data, qos=2, retain=None)
         await self.disconnect()
 
     def send_data(self, callback):

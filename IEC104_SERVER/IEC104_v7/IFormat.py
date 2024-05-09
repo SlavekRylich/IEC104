@@ -20,9 +20,7 @@ class IFormat(Frame):
         self.__ssn: int = ssn
         self.__rsn: int = rsn
         self.__data: bytes = data
-        self.__data_length: int = self.get_length_of_data()
-        # zaokrouhlední dat na celé byty
-        self._total_length: int = self.__data_length
+        self.__data_length: int = len(data)
 
         self._direction: str = direction
 
@@ -64,6 +62,10 @@ class IFormat(Frame):
     def data(self) -> bytes:
         return self.__data
 
+    @property
+    def length(self) -> int:
+        return self._total_length + self.__data_length
+
     def get_length_of_data(self) -> int:
         return len(self.__data)
 
@@ -84,7 +86,7 @@ class IFormat(Frame):
         # + 2 because start_byte and length
         packed_header = struct.pack(f"{'B' * (self._header_length + 2)}",
                                     Frame.start_byte(),  # start byte
-                                    self._total_length,  # Total Length pouze hlavička
+                                    self.length,  # Total Length pouze hlavička
                                     first,  # 1. ridici pole
                                     second,  # 2. ridici pole
                                     third,  # 3. ridici pole

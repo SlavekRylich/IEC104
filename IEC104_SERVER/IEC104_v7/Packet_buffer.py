@@ -21,7 +21,7 @@ class PacketBuffer:
     def has_frame(self, frame_id: int) -> bool:
         return frame_id in self.__buffer
 
-    async def clear_frames_less_than(self, frame_id: int) -> None:
+    def clear_frames_less_than(self, frame_id: int) -> None:
         for key, frame in list(self.__buffer.items()):
             if isinstance(frame, Frame):
                 if key <= frame_id:

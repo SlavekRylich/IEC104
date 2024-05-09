@@ -11,7 +11,7 @@ class Frame:
     _instances: list['Frame'] = []
     _start_byte: int = APCI.START_BYTE
 
-    def __init__(self, type_frame='Frame'):
+    def __init__(self, type_frame: str = 'Frame'):
         self._header_length: int = APCI.ACPI_HEADER_LENGTH
         self._total_length: int = self._header_length
         self._structure: bytes | None = None

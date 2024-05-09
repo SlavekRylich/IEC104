@@ -1,0 +1,28 @@
+Dokumentace MQTT
+
+# instalace:
+sudo apt-get install mosquitto mosquitto-clients
+
+
+# generace nového uživatele a zadání hesla
+sudo mosquitto_passwd -c /etc/mosquitto/.passwd alice
+
+
+# konfigurace vložit do /etc/mosquitto/conf.d/auth.conf
+listener 1883
+allow_anonymous false
+password_file /etc/mosquitto/.passwd
+
+
+# restart služby
+sudo systemctl restart mosquitto
+
+# session - Mosquitto Subscriber
+sudo mosquitto_sub -h localhost -t test -u "alice" -P "p4ssw0rd"
+
+
+# session - Mosquitto Publisher
+sudo mosquitto_pub -h localhost -t "test" -m "Hello - enabled auth" -u "alice" -P "p4ssw0rd"
+
+
+# !!!!!! NEFUNGUJE s autentizací uživatele, v konfiguračním souboru je zakomentové a povolen anonymní přístup

@@ -88,7 +88,6 @@ class IEC104Client(object):
         except Exception as e:
             print(e)
 
-
     def load_params(self, config_loader: ConfigLoader):
 
         k = config_loader.config['server']['k']
@@ -139,21 +138,16 @@ class IEC104Client(object):
                 self.client_manager.handle_timeout_t0,
                 self.client_manager.handle_timeout_t1,
                 self.client_manager.handle_timeout_t2,
-                self.client_manager.handle_timeout_t3,
-            )
-            new_session = Session(self.server_ip,
-                                  self.server_port,
-                                  self.reader,
-                                  self.writer,
-                                  self.session_params,
-                                  callback_on_message_recv,
-                                  callback_timeouts_tuple,
-                                  self.client_manager.send_buffer,
-                                  'client')
+                self.client_manager.handle_timeout_t3)
+            active_session = self.client_manager.add_session(self.server_ip,
+                                                             self.server_port,
+                                                             self.reader,
+                                                             self.writer,
+                                                             self.session_params,
+                                                             callback_on_message_recv,
+                                                             callback_timeouts_tuple,
+                                                             whoami='client')
 
-            self.client_manager.add_session(new_session)
-            # active_session = self.queue.Select_active_session()
-            active_session = new_session
             return active_session
 
         except asyncio.TimeoutError:
@@ -170,7 +164,7 @@ class IEC104Client(object):
         callback_only_for_client = self.handle_response_for_client
         self.client_manager = ClientManager(ip,
                                             port=None,
-                                            callback_check_clients=None,
+                                            callback_check_clients=self.check_alive_clients,
                                             callback_only_for_client=callback_only_for_client,
                                             whoami='client')
         # self._in_queue = self.queue.in_queue
@@ -297,8 +291,7 @@ class IEC104Client(object):
                         new_frame = self.client_manager.generate_testdt_act()
                         for i in range(0, 2):
                             # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.client_manager.add_task(task)
+                            await self.client_manager.send_frame(session, new_frame)
                             await asyncio.sleep(2.5)
 
                         # send start act
@@ -315,8 +308,7 @@ class IEC104Client(object):
                         new_frame = self.client_manager.generate_testdt_act()
                         for i in range(0, 2):
                             # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.client_manager.add_task(task)
+                            await self.client_manager.send_frame(session, new_frame)
                             await asyncio.sleep(2.5)
 
                     # * STATE 3
@@ -327,24 +319,21 @@ class IEC104Client(object):
                             # list of data
                             new_frame = self.client_manager.generate_i_frame(data, session)
                             # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.client_manager.add_task(task)
+                            await self.client_manager.send_frame(session, new_frame)
                             await asyncio.sleep(1.5)
 
                         # check if response is ack with S format
 
                         if self.client_manager.recv_buffer.__len__() >= session.w:
-                            new_frame = await self.client_manager.generate_s_frame(session)
+                            new_frame = self.client_manager.generate_s_frame(session)
                             # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.client_manager.add_task(task)
+                            await self.client_manager.send_frame(session, new_frame)
 
                         # send testdt frame
                         new_frame = self.client_manager.generate_testdt_act()
                         for i in range(0, 2):
                             # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.client_manager.add_task(task)
+                            await self.client_manager.send_frame(session, new_frame)
                             await asyncio.sleep(2.5)
 
                         await asyncio.sleep(10)
@@ -358,8 +347,7 @@ class IEC104Client(object):
                         new_frame = self.client_manager.generate_testdt_act()
                         for i in range(0, 2):
                             # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.client_manager.add_task(task)
+                            await self.client_manager.send_frame(session, new_frame)
                             await asyncio.sleep(2.5)
 
                         # session.flag_session = 'STOP_SESSION'
@@ -371,8 +359,7 @@ class IEC104Client(object):
                         new_frame = self.client_manager.generate_testdt_act()
                         for i in range(0, 2):
                             # self.__out_queue.to_send((session, frame), session_event)
-                            task = asyncio.ensure_future(session.send_frame(new_frame))
-                            self.client_manager.add_task(task)
+                            await self.client_manager.send_frame(session, new_frame)
                             await asyncio.sleep(2.5)
 
                         # check if response is stopdt con
