@@ -48,6 +48,11 @@ class ServerIEC104:
         self.mqtt_broker_ip: str = self.__config_loader.config['mqtt']['mqtt_broker_ip']
         self.mqtt_broker_port: int = self.__config_loader.config['mqtt']['mqtt_broker_port']
         self.mqtt_topic: str = self.__config_loader.config['mqtt']['mqtt_topic']
+        self.mqtt_version: int = self.__config_loader.config['mqtt']['mqtt_version']
+        self.mqtt_transport: str = self.__config_loader.config['mqtt']['mqtt_transport']
+        self.mqtt_username: str = self.__config_loader.config['mqtt']['mqtt_username']
+        self.mqtt_password: str = self.__config_loader.config['mqtt']['mqtt_password']
+        self.mqtt_qos: int = self.__config_loader.config['mqtt']['mqtt_qos']
 
         # tasks
         self.tasks: list[asyncio.Task] = []
@@ -177,6 +182,11 @@ class ServerIEC104:
                                                     mqtt_broker_ip=self.mqtt_broker_ip,
                                                     mqtt_broker_port=self.mqtt_broker_port,
                                                     mqtt_topic=self.mqtt_topic,
+                                                    mqtt_version=self.mqtt_version,
+                                                    mqtt_transport=self.mqtt_transport,
+                                                    mqtt_username=self.mqtt_username,
+                                                    mqtt_password=self.mqtt_password,
+                                                    mqtt_qos=self.mqtt_qos,
                                                     callback_check_clients=callback,
                                                     callback_only_for_client=None,
                                                     whoami='server')
@@ -199,14 +209,14 @@ class ServerIEC104:
 
         # Create a new Session object for the client
         # Add the session to the queue
-        session = client_manager_instance.add_session(client_addr,
-                                                      client_port,
-                                                      reader,
-                                                      writer,
-                                                      self.config_parameters,
-                                                      callback_on_message_recv,
-                                                      callback_timeouts_tuple,
-                                                      whoami='server')
+        session: Session = client_manager_instance.add_session(client_addr,
+                                                               client_port,
+                                                               reader,
+                                                               writer,
+                                                               self.config_parameters,
+                                                               callback_on_message_recv,
+                                                               callback_timeouts_tuple,
+                                                               whoami='server')
 
         try:
             # Start the session

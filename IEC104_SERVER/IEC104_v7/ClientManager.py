@@ -30,7 +30,12 @@ class ClientManager:
                  server_name: str = "",
                  mqtt_broker_ip: str = "",
                  mqtt_broker_port: int = 1883,
-                 mqtt_topic: str = "/",
+                 mqtt_topic: str = "",
+                 mqtt_version: int = None,
+                 mqtt_transport: str = "",
+                 mqtt_username: str = "",
+                 mqtt_password: str = "",
+                 mqtt_qos: int = 0,
                  callback_check_clients=None,
                  callback_only_for_client=None,
                  whoami: str = 'client'):
@@ -56,12 +61,14 @@ class ClientManager:
         self.__ip: str = ip_addr
         self.__port: int = port
 
+        # server x client
+        self.__whoami = whoami
+
         self.__callback_only_for_client = callback_only_for_client
         self.__callback_check_alive_clients = callback_check_clients
 
         self.__server_name: str = server_name
         self.__name: str = "Client_" + str(self.__id)
-        self.__whoami: str = whoami
 
         # flag for stop all tasks
         self.__flag_stop_tasks: bool = False
@@ -92,16 +99,25 @@ class ClientManager:
         # Tasks
         self.__tasks: list = []
 
-        # MQTT client
-        self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
-        self.__mqtt_broker_ip: str = mqtt_broker_ip
-        self.__mqtt_broker_port: int = mqtt_broker_port
-        self.__mqtt_topic: str = mqtt_topic
-        self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
-                                          self.__mqtt_broker_ip,
-                                          self.__mqtt_broker_port,
-                                          username="alice",
-                                          password="p4ssw0rd")
+        if self.__whoami == "server":
+            # MQTT client
+            self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
+            self.__mqtt_broker_ip: str = mqtt_broker_ip
+            self.__mqtt_broker_port: int = mqtt_broker_port
+            self.__mqtt_topic: str = mqtt_topic
+            self.__mqtt_version: int = mqtt_version
+            self.__mqtt_transport: str = mqtt_transport
+            self.__mqtt_username: str = mqtt_username
+            self.__mqtt_password: str = mqtt_password
+            self.__mqtt_qos: int = mqtt_qos
+            self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
+                                              self.__mqtt_broker_ip,
+                                              self.__mqtt_broker_port,
+                                              username=self.__mqtt_username,
+                                              password=self.__mqtt_password,
+                                              version=self.__mqtt_version,
+                                              transport=self.__mqtt_transport,
+                                              qos=self.__mqtt_qos)
 
         # statistics
         self.client_stats: FrameStatistics = FrameStatistics(self.ip)
@@ -109,7 +125,6 @@ class ClientManager:
 
         # jak dostat data k odeslaní přes server (klienta)
         # přes nejaky API
-
 
         print(f"NOVA INSTANCE CLIENTMANAGER ID: {self.__id}")
         logging.debug(f"NOVA INSTANCE CLIENTMANAGER ID: {self.__id}")
@@ -352,11 +367,12 @@ class ClientManager:
                         self.ack = apdu.rsn
                         self.__send_buffer.clear_frames_less_than(self.__ack)
 
-
-                    # shara payload with MQTT
-                    asyncio.ensure_future(self.__mqtt_client.save_data(topic=self.__mqtt_topic,
-                                                                       data=str(apdu.data),
-                                                                       callback=None))
+                    if self.__whoami == "server":
+                        # shara payload with MQTT
+                        asyncio.ensure_future(self.__mqtt_client.save_data(
+                            topic=self.__mqtt_topic,
+                            data=apdu.data,
+                            callback=None))
 
                     # # odpověď stejnymi daty jen pro testovani 
                     # new_apdu = self.generate_i_frame(apdu.data)

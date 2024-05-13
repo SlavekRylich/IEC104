@@ -159,21 +159,22 @@ class IEC104Client(object):
             logging.error(f"Exception {e}")
 
     async def run_client(self, ip, port_num):
-        self.__loop = asyncio.get_running_loop()
-
-        callback_only_for_client = self.handle_response_for_client
-        self.client_manager = ClientManager(ip,
-                                            port=None,
-                                            callback_check_clients=self.check_alive_clients,
-                                            callback_only_for_client=callback_only_for_client,
-                                            whoami='client')
-        # self._in_queue = self.queue.in_queue
-        # self._out_queue = self.queue.out_queue
-        # self._send_buffer = self.queue.send_buffer
-        # self._recv_buffer = self.queue.recv_buffer
-        # self.task_queue = asyncio.create_task(self.queue.start())
-
         try:
+            self.__loop = asyncio.get_running_loop()
+
+            callback_only_for_client = self.handle_response_for_client
+            self.client_manager = ClientManager(ip,
+                                                port=None,
+                                                callback_check_clients=self.check_alive_clients,
+                                                mqtt_version=3,
+                                                callback_only_for_client=callback_only_for_client,
+                                                whoami='client')
+            # self._in_queue = self.queue.in_queue
+            # self._out_queue = self.queue.out_queue
+            # self._send_buffer = self.queue.send_buffer
+            # self._recv_buffer = self.queue.recv_buffer
+            # self.task_queue = asyncio.create_task(self.queue.start())
+
             print(f"Vytáčím {self.server_ip}:{self.server_port}")
             logging.debug(f"Vytáčím {self.server_ip}:{self.server_port}")
 

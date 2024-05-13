@@ -10,9 +10,14 @@
         "t3": 20
     },
     "mqtt": {
-        "mqtt_broker_ip": "192.168.56.102",
+        "mqtt_broker_ip": "192.168.1.167",
         "mqtt_broker_port": 1883,
-        "mqtt_topic": "/Doma/Pokoj1/Stul"
+        "mqtt_topic": "Doma/Pokoj1/Stul",
+        "mqtt_version": 5,
+        "mqtt_transport": "tcp",
+        "mqtt_username": "mqtt",
+        "mqtt_password": "MQTTpass123",
+        "mqtt_qos": 1
     },
     "client": {
         "ip_address": "127.0.0.1",
