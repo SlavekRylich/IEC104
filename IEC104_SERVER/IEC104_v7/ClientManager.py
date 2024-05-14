@@ -20,7 +20,7 @@ from MQTTProtocol import MQTTProtocol
 
 class ClientManager:
     """
-    Class for queue manager.
+    Class represents the client and his features.
     """
     __id: int = 0
     __instances: list = []
@@ -44,6 +44,21 @@ class ClientManager:
 
         Args:
             ip_addr (str): IP address.
+            :rtype: object
+            :param ip_addr:
+            :param port: 
+            :param server_name: 
+            :param mqtt_broker_ip: 
+            :param mqtt_broker_port: 
+            :param mqtt_topic: 
+            :param mqtt_version: 
+            :param mqtt_transport: 
+            :param mqtt_username: 
+            :param mqtt_password: 
+            :param mqtt_qos: 
+            :param callback_check_clients: 
+            :param callback_only_for_client: 
+            :param whoami: 
         """
         # Instances of ClientManager
         ClientManager.__id += 1
@@ -64,9 +79,13 @@ class ClientManager:
         # server x client
         self.__whoami = whoami
 
+        # callbacks for Client app (client_async.py)
         self.__callback_only_for_client = callback_only_for_client
+
+        # callback for check if is still connected any clients
         self.__callback_check_alive_clients = callback_check_clients
 
+        # Description of the client
         self.__server_name: str = server_name
         self.__name: str = "Client_" + str(self.__id)
 
@@ -99,6 +118,7 @@ class ClientManager:
         # Tasks
         self.__tasks: list = []
 
+        # Setup for MQTT parameters
         if self.__whoami == "server":
             # MQTT client
             self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
@@ -128,21 +148,6 @@ class ClientManager:
 
         print(f"NOVA INSTANCE CLIENTMANAGER ID: {self.__id}")
         logging.debug(f"NOVA INSTANCE CLIENTMANAGER ID: {self.__id}")
-
-    async def start(self) -> None:
-        try:
-            pass
-            # self.__tasks.append(asyncio.create_task(self.check_in_queue()))
-            # # self.__tasks.append(asyncio.create_task(self.check_out_queue()))
-            # self.__tasks.append(asyncio.create_task(self.isResponse()))
-            # self.__tasks.append(asyncio.create_task(self.check_alive_sessions()))
-
-            # await asyncio.gather(*self.__tasks)
-        except Exception as e:
-            print(f"Exception {e}")
-            logging.error(f"Exception {e}")
-
-            # await asyncio.sleep(self.__async_time)    
 
     @property
     def flag_delete(self) -> bool:
@@ -186,6 +191,10 @@ class ClientManager:
         return self.__recv_buffer
 
     @property
+    def ip(self) -> str:
+        return self.__ip
+
+    @property
     def id(self) -> int:
         return self.__id
 
@@ -225,6 +234,12 @@ class ClientManager:
             return False
 
     async def send_frame(self, session: Session, frame: Frame) -> None:
+        """
+        Method to send frame and can catch statistics of sending frames.
+        :rtype: object
+        :param session:
+        :param frame:
+        """
         self.client_stats.update_send(frame)
         self.sessions_stats[session.port].update_send(frame)
 
@@ -233,7 +248,7 @@ class ClientManager:
 
     async def on_message_recv_or_timeout(self, session: Session, apdu: Frame = None) -> None:
         """
-        This function is triggered when a new message is received.
+        This function is triggered when a new message is received or any timeout became.
         Redirects apdu for handle apdu and update state session
         or if apdu is None then it be update state session only.
 
@@ -243,6 +258,9 @@ class ClientManager:
 
         Returns:
             None
+            :param session:
+            :param apdu:
+            :rtype: object
 
         """
         print(f"Start on_message_recv_or_timeout")
@@ -257,31 +275,31 @@ class ClientManager:
             if isinstance(apdu, IFormat):
                 self.__recv_buffer.add_frame(apdu.ssn, apdu)
 
+            # if it is server then handle own update states
             if self.__whoami == 'server':
                 await self.handle_apdu(session, apdu)
                 await self.update_state_machine_server(session, apdu)
             else:
                 await self.handle_apdu(session, apdu)
                 await self.update_state_machine_client(session, apdu)
-                # await self.handle_response_for_client(session)
 
         else:
             if self.__whoami == 'server':
                 await self.update_state_machine_server(session)
             else:
                 await self.update_state_machine_client(session)
-                # await self.handle_response_for_client(session)
 
-        # await asyncio.sleep(self.__async_time)
         print(f"Finish on_message_recv_or_timeout")
         logging.debug(f"Finish on_message_recv_or_timeout")
 
-    @property
-    def ip(self) -> str:
-        return self.__ip
-
-    # remove session from sessions list if is not connected
     def check_alive_sessions(self) -> bool:
+        """
+        Method for checking if any session still exists.
+        If session has set flag for delete it will be deleted from list of sessions.
+        If no session is found it will call delete_self method.
+        :return:
+        :rtype: object
+        """
         # if any session in list self.__sessions check his flag for delete and remove it
         if len(self.__sessions) > 0:
             count: int = 0
@@ -308,6 +326,11 @@ class ClientManager:
             return False
 
     def delete_self(self) -> None:
+        """
+        Method cancel all tasks associated, set flag for delete and call callback for server class instance.
+        :rtype: object
+
+        """
         # flag for stop coroutines
         self.flag_stop_tasks = True
         # flag for delete instance by ClientManager
@@ -326,18 +349,25 @@ class ClientManager:
         ClientManager.remove_instance(instance=self)
         logging.debug(f"po smazani clientmanager: {self}")
 
+        # callback function in server class instance
         self.__callback_check_alive_clients()
         del self
 
     # for client and server
     async def handle_apdu(self, session: Session, apdu: Frame = None) -> None:
-
+        """
+        Method for handling the apdu by state diagram.
+        :rtype: object
+        :param session:
+        :param apdu:
+        """
         print(f"Starting handle_apdu, clientID: {self.id}, sessionID: {session.id}, apdu: {apdu}")
         logging.debug(f"Starting handle_apdu, clientID: {self.id}, sessionID: {session.id}, apdu: {apdu}")
         # if isinstance(self._session, Session):
 
         actual_transmission_state = session.transmission_state
 
+        # STATE 1
         if actual_transmission_state == 'STOPPED' or \
                 actual_transmission_state == 'WAITING_RUNNING':
 
@@ -346,6 +376,7 @@ class ClientManager:
                     new_frame = self.generate_testdt_con()
                     await self.send_frame(session, new_frame)
 
+        # STATE 2
         if actual_transmission_state == 'RUNNING':
 
             if isinstance(apdu, IFormat):
@@ -392,6 +423,7 @@ class ClientManager:
                     new_frame = self.generate_testdt_con()
                     await self.send_frame(session, new_frame)
 
+        # STATE 3
         if actual_transmission_state == 'WAITING_UNCONFIRMED' and \
                 session.whoami == 'server':
 
@@ -406,26 +438,25 @@ class ClientManager:
                     new_frame = self.generate_testdt_con()
                     await self.send_frame(session, new_frame)
 
+        # STATE FOR CLIENT APP
         if session.whoami == 'client' and \
                 (actual_transmission_state == 'WAITING_UNCONFIRMED' or
                  actual_transmission_state == 'WAITING_STOPPED'):
 
             if isinstance(apdu, IFormat):
-
                 if (apdu.ssn - self.__VR) > 1:
-                    # chyba sekvence
-                    # vyslat S-format s posledním self.VR
+                    # bad sequence
+                    # send S-format with last value of self.VR
                     new_frame = self.generate_s_frame(session)
                     await self.send_frame(session, new_frame)
                     session.flag_session = 'ACTIVE_TERMINATION'
-                    # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
 
                 else:
                     self.incrementVR()
                     if apdu.rsn > self.ack:
                         self.ack = apdu.rsn
                         self.__send_buffer.clear_frames_less_than(self.__ack)
-
+                # send S-format frame
                 if self.__recv_buffer.__len__() >= session.w:
                     new_frame = self.generate_s_frame(session)
                     await self.send_frame(session, new_frame)
@@ -459,7 +490,19 @@ class ClientManager:
                     callback_on_message_recv,
                     callback_timeouts_tuple: tuple,
                     whoami: str = 'server') -> Session:
-
+        """
+        Method
+        :rtype: Session
+        :param client_addr:
+        :param client_port:
+        :param reader:
+        :param writer:
+        :param session_params:
+        :param callback_on_message_recv:
+        :param callback_timeouts_tuple:
+        :param whoami:
+        :return: Session instance
+        """
         session = Session(client_addr,
                           client_port,
                           reader, writer,
