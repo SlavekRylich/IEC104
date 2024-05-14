@@ -10,7 +10,7 @@ from Session import Session
 
 # Nastavení úrovně logování
 logging.basicConfig(
-    filename='client_async.txt',
+    filename='client_app_test1.txt',
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
@@ -20,6 +20,10 @@ logging.info("Toto je informační zpráva")
 logging.warning("Toto je varovná zpráva")
 logging.error("Toto je chybová zpráva")
 
+
+# tento soubor slouží k testování stavu, kdy se vystřídají stavy, pošle 35 I-formátů
+# poté se počká 0.8t1 timeoutu a zašle se STOPDT act, opět se počká 0,8x t1 timeoutu a znovu
+# se zahájí přenos 35 I-formátů
 
 class IEC104Client(object):
     def __init__(self, name: str = "Client"):
@@ -87,6 +91,9 @@ class IEC104Client(object):
 
         except Exception as e:
             print(e)
+
+        # test's times
+        self.async_time_0_8xt1: float = 0.8 * self.timeout_t1
 
     def load_params(self, config_loader: ConfigLoader):
 
@@ -288,7 +295,7 @@ class IEC104Client(object):
                 # STATE MACHINE
                 if session.connection_state == 'CONNECTED':
 
-                    # * STATE 1
+                    # STATE 1
                     if actual_transmission_state == 'STOPPED':
 
                         new_frame = self.client_manager.generate_testdt_act()

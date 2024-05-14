@@ -253,8 +253,8 @@ class Session:
         flag : str
             The new value for the flag.
         """
-        print(f"flag_session_set {flag} - {self}")
-        logging.debug(f"flag_session_set {flag} - {self}")
+        print(f"flag_session_set to {flag} - {self}")
+        logging.debug(f"flag_session_set to {flag} - {self}")
         self.__flag_session = flag
 
     @property

@@ -72,14 +72,13 @@ class ClientManager:
         self.__VR: int = 0
         self.__VS: int = 0
         self.__ack: int = 0
-        self.__session: Session | None = None
         self.__ip: str = ip_addr
         self.__port: int = port
 
         # server x client
         self.__whoami = whoami
 
-        # callbacks for Client app (client_async.py)
+        # callbacks for Client app (client_app.py)
         self.__callback_only_for_client = callback_only_for_client
 
         # callback for check if is still connected any clients
@@ -207,6 +206,8 @@ class ClientManager:
 
     @flag_start_sequence.setter
     def flag_start_sequence(self, value: bool) -> None:
+        print(f"flag_start_seq set to {value}")
+        logging.debug(f"flag_start_seq set to {value}")
         self.__flag_start_sequence = value
 
     @property
@@ -374,7 +375,7 @@ class ClientManager:
             if isinstance(apdu, UFormat):
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    await self.send_frame(session, new_frame)
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
         # STATE 2
         if actual_transmission_state == 'RUNNING':
@@ -387,7 +388,7 @@ class ClientManager:
                     # vyslat S-format s posledním self.VR
 
                     new_frame = self.generate_s_frame(session)
-                    await self.send_frame(session, new_frame)
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
                     session.flag_session = 'ACTIVE_TERMINATION'
                     # raise Exception(f"Invalid SSN: {apdu.get_ssn() - self.VR} > 1")
 
@@ -396,7 +397,7 @@ class ClientManager:
                     self.incrementVR()
                     if apdu.rsn > self.ack:
                         self.ack = apdu.rsn
-                        self.__send_buffer.clear_frames_less_than(self.__ack)
+                        # self.__recv_buffer.clear_frames_less_than(self.__ack)
 
                     if self.__whoami == "server":
                         # shara payload with MQTT
@@ -405,13 +406,14 @@ class ClientManager:
                             data=apdu.data,
                             callback=None))
 
-                    # # odpověď stejnymi daty jen pro testovani 
+                    # # odpověď stejnymi daty jen pro testovani
                     # new_apdu = self.generate_i_frame(apdu.data)
                     # self.__out_queue.to_send(new_apdu)
 
                 if self.__recv_buffer.__len__() >= session.w:
                     new_frame = self.generate_s_frame(session)
-                    await self.send_frame(session, new_frame)
+                    print(f"nastalo")
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
             if isinstance(apdu, SFormat):
                 if apdu.rsn > self.ack:
@@ -421,7 +423,7 @@ class ClientManager:
             if isinstance(apdu, UFormat):
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    await self.send_frame(session, new_frame)
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
         # STATE 3
         if actual_transmission_state == 'WAITING_UNCONFIRMED' and \
@@ -436,7 +438,7 @@ class ClientManager:
 
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    await self.send_frame(session, new_frame)
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
         # STATE FOR CLIENT APP
         if session.whoami == 'client' and \
@@ -448,7 +450,7 @@ class ClientManager:
                     # bad sequence
                     # send S-format with last value of self.VR
                     new_frame = self.generate_s_frame(session)
-                    await self.send_frame(session, new_frame)
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
                     session.flag_session = 'ACTIVE_TERMINATION'
 
                 else:
@@ -459,7 +461,7 @@ class ClientManager:
                 # send S-format frame
                 if self.__recv_buffer.__len__() >= session.w:
                     new_frame = self.generate_s_frame(session)
-                    await self.send_frame(session, new_frame)
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
             if isinstance(apdu, SFormat):
                 if apdu.rsn > self.ack:
@@ -469,7 +471,7 @@ class ClientManager:
             if isinstance(apdu, UFormat):
                 if apdu.type_int == APCI.TESTFR_ACT:
                     new_frame = self.generate_testdt_con()
-                    await self.send_frame(session, new_frame)
+                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
         print(f"Finish async handle_apdu")
         logging.debug(f"Finish async handle_apdu")
@@ -539,7 +541,7 @@ class ClientManager:
         :param session:
         :return: IFormat
         """
-        # session.update_timestamp_t2()
+        session.update_timestamp_t2()
         new_i_format = IFormat(data, self.__VS, self.__VR)
         self.incrementVS()
         return new_i_format
@@ -654,12 +656,12 @@ class ClientManager:
                                     if other_session.connection_state == 'CONNECTED' and \
                                             other_session.transmission_state != 'STOPPED':
                                         new_frame = self.generate_stopdt_act()
-                                        await self.send_frame(session, new_frame)
+                                        asyncio.ensure_future(self.send_frame(session, new_frame))
 
                                 # ack with STARTDT con
                                 session.transmission_state = 'RUNNING'
                                 new_frame = self.generate_startdt_con()
-                                await self.send_frame(session, new_frame)
+                                asyncio.ensure_future(self.send_frame(session, new_frame))
 
                             # S-format or I-format
                             if frame == 'S-format' or frame == 'I-format':
@@ -673,14 +675,14 @@ class ClientManager:
                                 if self.__recv_buffer.is_empty() and \
                                         self.__send_buffer.is_empty():
                                     new_frame = self.generate_stopdt_con()
-                                    await self.send_frame(session, new_frame)
+                                    asyncio.ensure_future(self.send_frame(session, new_frame))
                                     session.transmission_state = 'STOPPED'
 
                                 else:  # if frame is STOPDT act and recv buffer is not blank
                                     if not self.__recv_buffer.is_empty():
                                         # ack all received_I-formats
                                         new_frame = self.generate_s_frame(session)
-                                        await self.send_frame(session, new_frame)
+                                        asyncio.ensure_future(self.send_frame(session, new_frame))
                                     session.transmission_state = 'WAITING_UNCONFIRMED'
 
                         # STATE 3
@@ -690,13 +692,13 @@ class ClientManager:
                                         self.__recv_buffer.is_empty():
                                     # send STOPDT con
                                     new_frame = self.generate_stopdt_con()
-                                    await self.send_frame(session, new_frame)
+                                    asyncio.ensure_future(self.send_frame(session, new_frame))
                                     session.transmission_state = 'STOPPED'
 
                                 if not self.__recv_buffer.is_empty():
                                     # ack all received_I-formats
                                     new_frame = self.generate_s_frame(session)
-                                    await self.send_frame(session, new_frame)
+                                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
                             #  I-format
                             if frame == 'I-format':
@@ -775,7 +777,7 @@ class ClientManager:
                                 session.flag_session = None
                                 # send START act
                                 new_frame = self.generate_startdt_act()
-                                await self.send_frame(session, new_frame)
+                                asyncio.ensure_future(self.send_frame(session, new_frame))
                                 session.transmission_state = 'WAITING_RUNNING'
 
                             # t1_timeout or S-format or I-format
@@ -804,7 +806,7 @@ class ClientManager:
 
                                     # send stopdt act
                                     new_frame = self.generate_stopdt_act()
-                                    await self.send_frame(session, new_frame)
+                                    asyncio.ensure_future(self.send_frame(session, new_frame))
                                     # update state
                                     session.transmission_state = 'WAITING_STOPPED'
 
@@ -813,11 +815,11 @@ class ClientManager:
                                     if not self.__recv_buffer.is_empty():
                                         # ack all received_I-formats
                                         new_frame = self.generate_s_frame(session)
-                                        await self.send_frame(session, new_frame)
+                                        asyncio.ensure_future(self.send_frame(session, new_frame))
 
                                     # send STOPDT act
                                     new_frame = self.generate_stopdt_act()
-                                    await self.send_frame(session, new_frame)
+                                    asyncio.ensure_future(self.send_frame(session, new_frame))
 
                                     # update state
                                     session.transmission_state = 'WAITING_UNCONFIRMED'
@@ -902,7 +904,7 @@ class ClientManager:
         logging.debug(f"Timer t2 timed_out - {session}")
         if not self.__recv_buffer.is_empty():
             new_frame = self.generate_s_frame(session)
-            await self.send_frame(session, new_frame)
+            asyncio.ensure_future(self.send_frame(session, new_frame))
 
     async def handle_timeout_t3(self, session: Session = None) -> None:
         """
@@ -912,7 +914,7 @@ class ClientManager:
         print(f"Timer t3 timed_out - {session}")
         logging.debug(f"Timer t3 timed_out - {session}")
         new_frame = self.generate_testdt_act()
-        await self.send_frame(session, new_frame)
+        asyncio.ensure_future(self.send_frame(session, new_frame))
 
     def __str__(self) -> str:
         return (f"Client: {self.ip},"
