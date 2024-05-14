@@ -1,4 +1,6 @@
+*******************************
 Dokumentace MQTT
+*******************************
 
 # instalace:
 sudo apt-get install mosquitto mosquitto-clients
@@ -49,4 +51,12 @@ https://docs.portainer.io/start/install-ce/server/docker/linux
 # login Portainer
 user: portainer.io
 passwd: portainer.io
+
+
+*******************************
+Generace docstringu
+*******************************
+
+# video 
+https://www.youtube.com/watch?v=BWIrhgCAae0
 

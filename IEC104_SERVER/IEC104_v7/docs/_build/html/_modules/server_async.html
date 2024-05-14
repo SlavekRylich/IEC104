@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>server_async &mdash; IEC104 1.0.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=46dfa7f5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            IEC104
+          </a>
+              <div class="version">
+                1.0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">IEC104_v7</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IEC104</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">server_async</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for server_async</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="kn">from</span> <span class="nn">FrameStatistics</span> <span class="kn">import</span> <span class="n">FrameStatistics</span>
+<span class="kn">from</span> <span class="nn">config_loader</span> <span class="kn">import</span> <span class="n">ConfigLoader</span>
+<span class="kn">from</span> <span class="nn">Session</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">ClientManager</span> <span class="kn">import</span> <span class="n">ClientManager</span>
+
+<span class="c1"># Nastavení úrovně logování</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;server_async.txt&#39;</span><span class="p">,</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Logování zprávy</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Toto je informační zpráva&quot;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Toto je varovná zpráva&quot;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Toto je chybová zpráva&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ServerIEC104">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104">[docs]</a>
+<span class="k">class</span> <span class="nc">ServerIEC104</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for server IEC 104 protocol.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Server&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for server IEC 104 protocol.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the server. Default is &quot;Server&quot;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__loop</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">BaseEventLoop</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_check_alive_queue</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Server</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="p">:</span> <span class="n">ConfigLoader</span> <span class="o">=</span> <span class="n">ConfigLoader</span><span class="p">(</span><span class="s1">&#39;./config_parameters.json&#39;</span><span class="p">)</span>
+
+        <span class="c1"># ip config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;ip_address&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;port&#39;</span><span class="p">]</span>
+
+        <span class="c1"># MQTT config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_broker_ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_broker_ip&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_broker_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_broker_port&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_topic</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_topic&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_version&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_transport</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_transport&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_username&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_password&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mqtt_qos</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;mqtt&#39;</span><span class="p">][</span><span class="s1">&#39;mqtt_qos&#39;</span><span class="p">]</span>
+
+        <span class="c1"># tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># clients - dictionary[ip_add, ClientManager]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ClientManager</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># working var</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_overflow</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># central sleep time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">async_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+        <span class="c1"># load configuration parameters</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t0</span><span class="p">,</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t1</span><span class="p">,</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t2</span><span class="p">,</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_session_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config_loader</span><span class="p">)</span>
+
+            <span class="c1"># save parameters into tuple </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config_parameters</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t0</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t1</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t2</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">timeout_t3</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ServerIEC104.load_session_params">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.load_session_params">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_session_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_loader</span><span class="p">:</span> <span class="n">ConfigLoader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load session parameters from the configuration loader.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config_loader (ConfigLoader): The configuration loader object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing the loaded session parameters.</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            Exception: If any of the session parameters are out of range.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="n">config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;k&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">32767</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong value range for </span><span class="se">\&#39;</span><span class="s2">k</span><span class="se">\&#39;</span><span class="s2"> variable!&quot;</span><span class="p">)</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="p">((</span><span class="n">k</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">32767</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong value range for </span><span class="se">\&#39;</span><span class="s2">w</span><span class="se">\&#39;</span><span class="s2"> variable!&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning! Use value range for &quot;</span>
+                  <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">w</span><span class="se">\&#39;</span><span class="s2"> less than 2/3 of </span><span class="se">\&#39;</span><span class="s2">k</span><span class="se">\&#39;</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;t0&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t0</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">t0</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong value range for </span><span class="se">\&#39;</span><span class="s2">t0</span><span class="se">\&#39;</span><span class="s2"> variable!&quot;</span><span class="p">)</span>
+
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;t1&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t1</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">t1</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong value range for </span><span class="se">\&#39;</span><span class="s2">t1</span><span class="se">\&#39;</span><span class="s2"> variable!&quot;</span><span class="p">)</span>
+
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;t2&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t2</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">t2</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong value range for </span><span class="se">\&#39;</span><span class="s2">t2</span><span class="se">\&#39;</span><span class="s2"> variable!&quot;</span><span class="p">)</span>
+
+        <span class="n">t3</span> <span class="o">=</span> <span class="n">config_loader</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">][</span><span class="s1">&#39;t3&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t3</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">t3</span> <span class="o">&gt;</span> <span class="mi">172800</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong value range for </span><span class="se">\&#39;</span><span class="s2">t3</span><span class="se">\&#39;</span><span class="s2"> variable!&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t3</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the name of the server.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The name of the server.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+
+    <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the name of the server.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str): The new name of the server.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="ServerIEC104.send">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.send">[docs]</a>
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send data to the clients.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ServerIEC104.get_all_clients_stats">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.get_all_clients_stats">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_all_clients_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all clients&#39; statistics.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of all clients&#39; statistics.</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">local_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">FrameStatistics</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">local_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">get_client_stats</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">session_stats</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_all_sessions_stat</span><span class="p">():</span>
+                <span class="n">local_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session_stats</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">local_list</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">local_list</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ServerIEC104.listen">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.listen">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Listen for incoming client connections.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Listen on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Listen on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">start_server</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handle_client</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ServerIEC104.handle_client">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.handle_client">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">StreamReader</span><span class="p">,</span>
+                            <span class="n">writer</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">StreamWriter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle a new client connection.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            reader (asyncio.StreamReader): The stream reader for the incoming data from the client.</span>
+<span class="sd">            writer (asyncio.StreamWriter): The stream writer for sending data to the client.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client_addr</span><span class="p">,</span> <span class="n">client_port</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;peername&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the IP address of the client that connected to the server.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">callback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_alive_clients</span>
+        <span class="k">if</span> <span class="n">client_addr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">:</span>
+            <span class="n">client_manager_instance</span> <span class="o">=</span> <span class="n">ClientManager</span><span class="p">(</span><span class="n">client_addr</span><span class="p">,</span>
+                                                    <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                                                    <span class="n">server_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                    <span class="n">mqtt_broker_ip</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_broker_ip</span><span class="p">,</span>
+                                                    <span class="n">mqtt_broker_port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_broker_port</span><span class="p">,</span>
+                                                    <span class="n">mqtt_topic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_topic</span><span class="p">,</span>
+                                                    <span class="n">mqtt_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_version</span><span class="p">,</span>
+                                                    <span class="n">mqtt_transport</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_transport</span><span class="p">,</span>
+                                                    <span class="n">mqtt_username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_username</span><span class="p">,</span>
+                                                    <span class="n">mqtt_password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_password</span><span class="p">,</span>
+                                                    <span class="n">mqtt_qos</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mqtt_qos</span><span class="p">,</span>
+                                                    <span class="n">callback_check_clients</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+                                                    <span class="n">callback_only_for_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                    <span class="n">whoami</span><span class="o">=</span><span class="s1">&#39;server&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">client_manager_instance</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created new queue for client </span><span class="si">{</span><span class="n">client_addr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created new queue for client </span><span class="si">{</span><span class="n">client_addr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">client_manager_instance</span><span class="p">:</span> <span class="n">ClientManager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">client_addr</span><span class="p">]</span>
+
+        <span class="c1"># Get the functions to call for handling incoming APDU packets and timeout events</span>
+        <span class="n">callback_on_message_recv</span> <span class="o">=</span> <span class="n">client_manager_instance</span><span class="o">.</span><span class="n">on_message_recv_or_timeout</span>
+        <span class="n">callback_timeouts_tuple</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">client_manager_instance</span><span class="o">.</span><span class="n">handle_timeout_t0</span><span class="p">,</span>
+            <span class="n">client_manager_instance</span><span class="o">.</span><span class="n">handle_timeout_t1</span><span class="p">,</span>
+            <span class="n">client_manager_instance</span><span class="o">.</span><span class="n">handle_timeout_t2</span><span class="p">,</span>
+            <span class="n">client_manager_instance</span><span class="o">.</span><span class="n">handle_timeout_t3</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create a new Session object for the client</span>
+        <span class="c1"># Add the session to the queue</span>
+        <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">client_manager_instance</span><span class="o">.</span><span class="n">add_session</span><span class="p">(</span><span class="n">client_addr</span><span class="p">,</span>
+                                                               <span class="n">client_port</span><span class="p">,</span>
+                                                               <span class="n">reader</span><span class="p">,</span>
+                                                               <span class="n">writer</span><span class="p">,</span>
+                                                               <span class="bp">self</span><span class="o">.</span><span class="n">config_parameters</span><span class="p">,</span>
+                                                               <span class="n">callback_on_message_recv</span><span class="p">,</span>
+                                                               <span class="n">callback_timeouts_tuple</span><span class="p">,</span>
+                                                               <span class="n">whoami</span><span class="o">=</span><span class="s1">&#39;server&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Start the session</span>
+            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ServerIEC104.run">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.run">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the server.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+        <span class="k">pass</span>
+        <span class="c1"># self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())</span>
+
+        <span class="c1"># # while True:</span>
+        <span class="c1"># try:</span>
+        <span class="c1">#     await asyncio.gather(self.task_periodic_event_check,</span>
+        <span class="c1">#                          *(task for task in self.tasks))</span>
+        <span class="c1">#</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span></div>
+
+        <span class="c1">#</span>
+        <span class="c1"># except Exception as e:</span>
+        <span class="c1">#     print(f&quot;Exception {e}&quot;)</span>
+        <span class="c1"># continue</span>
+
+        <span class="c1"># await asyncio.sleep(self.async_time)</span>
+
+<div class="viewcode-block" id="ServerIEC104.check_alive_clients">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.check_alive_clients">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_alive_clients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if any client in the list self.clients has a flag for deletion.</span>
+<span class="sd">        If a client has the flag set, it is removed from the list.</span>
+<span class="sd">        If no clients are left in the list, it returns False.</span>
+<span class="sd">        If clients are still present, it returns True.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        bool: True if clients are still present, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># if there are any clients in the list</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># iterate over a copy of the clients list</span>
+            <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="c1"># if the client has the flag for deletion</span>
+                <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">flag_delete</span><span class="p">:</span>
+                    <span class="c1"># remove the client from the list</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">ip</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;deleted </span><span class="si">{</span><span class="n">client</span><span class="si">}</span><span class="s2"> from server&quot;</span><span class="p">)</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># if the client is None</span>
+                <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;deleted </span><span class="si">{</span><span class="n">client</span><span class="si">}</span><span class="s2"> because it&#39;s None&quot;</span><span class="p">)</span>
+            <span class="c1"># if no clients were deleted</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;last client was deleted&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting for connection...&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+            <span class="c1"># if there are still clients in the list</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="c1"># if no clients are left in the list</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># if there are no clients in the list</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;no clients on server&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="ServerIEC104.close">
+<a class="viewcode-back" href="../server_async.html#server_async.ServerIEC104.close">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the asyncio event loop and shutdown the logging system.</span>
+
+<span class="sd">        This method should be called when the server is no longer needed to free up system resources.</span>
+<span class="sd">        It closes the asyncio event loop and shuts down the logging system.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># Close the asyncio event loop</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loop.close!&quot;</span><span class="p">)</span>  <span class="c1"># Log the closure of the event loop</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>  <span class="c1"># Shut down the logging system</span></div>
+</div>
+
+
+
+<span class="c1"># Main function</span>
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../server_async.html#server_async.main">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The main function of the server application.</span>
+
+<span class="sd">    This function initializes a new instance of the ServerIEC104 class,</span>
+<span class="sd">    starts listening for incoming client connections, and runs the server.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">my_server</span> <span class="o">=</span> <span class="n">ServerIEC104</span><span class="p">()</span>  <span class="c1"># Initialize a new instance of the ServerIEC104 class</span>
+    <span class="k">await</span> <span class="n">my_server</span><span class="o">.</span><span class="n">listen</span><span class="p">()</span>  <span class="c1"># Start listening for incoming client connections</span>
+    <span class="k">await</span> <span class="n">my_server</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>  <span class="c1"># Run the server</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 Brno University of Technology.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

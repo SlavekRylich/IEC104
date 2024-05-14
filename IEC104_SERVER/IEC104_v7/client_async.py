@@ -180,6 +180,8 @@ class IEC104Client(object):
 
             # přidá novou session a zároveň vybere aktivní session
             self.active_session: Session = await self.new_session(ip, port_num)
+            if self.active_session is None:
+                raise Exception("Connection refuse!")
 
             self.servers[ip] = self.client_manager
 

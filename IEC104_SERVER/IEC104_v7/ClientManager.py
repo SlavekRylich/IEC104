@@ -491,7 +491,7 @@ class ClientManager:
                     callback_timeouts_tuple: tuple,
                     whoami: str = 'server') -> Session:
         """
-        Method
+        Method for create new session instance of new client connection.
         :rtype: Session
         :param client_addr:
         :param client_port:
@@ -512,7 +512,7 @@ class ClientManager:
                           self.send_buffer,
                           whoami=whoami)
 
-        # create statistics object for session
+        # create statistics object for session indexing by port
         self.sessions_stats[client_port] = FrameStatistics(client_addr, client_port)
 
         print(f"Connection established with {client_addr}:{client_port} "
@@ -520,62 +520,52 @@ class ClientManager:
         logging.info(f"Connection established with {client_addr}:{client_port} "
                      f"(Number of connections: {self.get_number_of_connected_sessions()})")
 
+        # add session instance in list of sessions
         self.__sessions.append(session)
         return session
 
     def get_number_of_sessions(self) -> int:
+        """
+        Return number of session in list of sessions
+        :return: int
+        """
         return len(self.__sessions)
 
     def generate_i_frame(self, data: bytes, session: Session) -> IFormat:
+        """
+        Method generate a new I-format frame with the current counter states
+        :rtype: IFormat
+        :param data:
+        :param session:
+        :return: IFormat
+        """
         # session.update_timestamp_t2()
         new_i_format = IFormat(data, self.__VS, self.__VR)
         self.incrementVS()
         return new_i_format
 
     def generate_s_frame(self, session: Session) -> SFormat:
+        """
+        Method generate a new S-format frame with the current counter states
+        :rtype: SFormat
+        :param session:
+        :return: SFormat
+        """
         session.update_timestamp_t2()
         self.__recv_buffer.clear_frames_less_than(self.__VR)
         return SFormat(self.__VR)
 
-    def Select_active_session(self) -> Session:
-        # logika výběru aktivního spojení
-        # zatím ponechám jedno a to to poslední
-
-        # self.sessions = (ip, port, session)
-        for session in self.__sessions:
-            if session.connection_state == 'CONNECTED' and \
-                    session.priority < 1:
-                self.__session = session
-                return self.__session
-
     def get_number_of_connected_sessions(self) -> int:
+        """
+        Method returns number of session with CONNECTED state.
+        :rtype: int
+        :return: count
+        """
         count = 0
         for session in self.__sessions:
             if session.connection_state == 'CONNECTED':
                 count = count + 1
         return count
-
-    def get_connected_sessions(self) -> list[Session]:
-        list_sessions = []
-        for session in self.__sessions:
-            if session.connection_state == 'CONNECTED':
-                list_sessions.append(session)
-        return list_sessions
-
-    def del_session(self, sess: Session) -> bool:
-
-        for session in self.__sessions:
-            if session == sess:
-                print(f"Remove by del_session: {session}")
-                logging.debug(f"Remove by del_session: {session}")
-                self.__sessions.remove(session)
-                return True
-        return False
-
-    def get_running_sessions(self) -> Session:
-        for session in self.__sessions:
-            if session.transmission_state == 'RUNNING':
-                return session
 
     @property
     def sessions(self) -> list[Session]:
@@ -604,8 +594,7 @@ class ClientManager:
         return self.__VS
 
     ################################################
-    # GENERATE U FRAME
-
+    # GENERATE U-FRAME
     def generate_testdt_act(self) -> UFormat:
         return UFormat(APCI.TESTFR_ACT)
 
@@ -625,11 +614,13 @@ class ClientManager:
         return UFormat(APCI.STOPDT_CON)
 
     async def update_state_machine_server(self, session: Session = None, fr: Frame = None) -> None:
-        # while not self.flag_stop_tasks:
+        """
+        Method for update state of session by receive frame or timeout.
+        :param session:
+        :param fr:
+        """
+
         if not session.flag_stop_tasks:
-            # wait for allow
-            # await self.__event_update.wait()
-            # self.__event_update.clear()
             print(f"Starting update_state_machine_server with: {fr}")
             logging.debug(f"Starting update_state_machine_server with: {fr}")
 
@@ -640,17 +631,6 @@ class ClientManager:
                 # 0 = DISCONNECTED
                 # 1 = CONNECTED
                 if session.connection_state == 'CONNECTED':
-
-                    # get_connection_state()
-                    # 0 = STOPPED
-                    # 1= WAITING_RUNNING
-                    # 2 = RUNNING
-                    # 3 = WAITING_UNCONFIRMED
-                    # 4 = WAITING_STOPPED
-
-                    # if not self.__local_queue.empty():
-                    #     fr = await self.__local_queue.get()
-                    #     print(f"použit z lokalni fronty pro update: {fr}")
 
                     # correct format for conditions
                     if fr:
@@ -665,19 +645,18 @@ class ClientManager:
                     # timeout t1
                     if not session.flag_timeout_t1:
 
-                        # * STATE 1
+                        # STATE 1
                         if actual_transmission_state == 'STOPPED':
-
                             if frame == APCI.STARTDT_ACT:
-
-                                # for backup connection -> send stopdt_act to other sessions
+                                # only one session can be in running state
+                                # -> send STOPDT act to other active sessions
                                 for other_session in self.__sessions:
                                     if other_session.connection_state == 'CONNECTED' and \
                                             other_session.transmission_state != 'STOPPED':
                                         new_frame = self.generate_stopdt_act()
                                         await self.send_frame(session, new_frame)
 
-                                # ack startdt con
+                                # ack with STARTDT con
                                 session.transmission_state = 'RUNNING'
                                 new_frame = self.generate_startdt_con()
                                 await self.send_frame(session, new_frame)
@@ -686,37 +665,32 @@ class ClientManager:
                             if frame == 'S-format' or frame == 'I-format':
                                 session.flag_session = 'ACTIVE_TERMINATION'
 
-                        # * STATE 2
+                        # STATE 2
                         if actual_transmission_state == 'RUNNING':
-
                             # if frame is stopdt act and send queue is blank
                             if frame == APCI.STOPDT_ACT:
-
+                                # send STOPDT con
                                 if self.__recv_buffer.is_empty() and \
                                         self.__send_buffer.is_empty():
                                     new_frame = self.generate_stopdt_con()
                                     await self.send_frame(session, new_frame)
-                                    # poslat STOPDT CON
                                     session.transmission_state = 'STOPPED'
 
-                                else:  # if frame is stopdt act and send queue is not blank
+                                else:  # if frame is STOPDT act and recv buffer is not blank
                                     if not self.__recv_buffer.is_empty():
                                         # ack all received_I-formats
                                         new_frame = self.generate_s_frame(session)
                                         await self.send_frame(session, new_frame)
                                     session.transmission_state = 'WAITING_UNCONFIRMED'
 
-                        # * STATE 3
+                        # STATE 3
                         if actual_transmission_state == 'WAITING_UNCONFIRMED':
-
                             if frame == 'S-format':
                                 if self.__send_buffer.is_empty() and \
                                         self.__recv_buffer.is_empty():
-                                    # poslat STOPDT CON
+                                    # send STOPDT con
                                     new_frame = self.generate_stopdt_con()
                                     await self.send_frame(session, new_frame)
-
-                                    # change state to 'STOPPED'
                                     session.transmission_state = 'STOPPED'
 
                                 if not self.__recv_buffer.is_empty():
@@ -743,16 +717,15 @@ class ClientManager:
                         session.transmission_state = 'STOPPED'
                         session.connection_state = 'DISCONNECTED'
 
-                        # zde vyvolat odstranění session
+                        # delete session
                         session.delete_self()
                         self.check_alive_sessions()
 
                 else:
-                    pass
+                    # delete session
+                    session.delete_self()
+                    self.check_alive_sessions()
 
-                print(f"{session}")
-
-                await asyncio.sleep(self.__async_time)
                 print(f"Finish async update_state_machine_server")
                 logging.debug(f"Finish async update_state_machine_server")
 
@@ -761,12 +734,13 @@ class ClientManager:
                 logging.error(f"Exception {e}")
 
     async def update_state_machine_client(self, session: Session = None, fr: Frame = None) -> None:
+        """
+        Method for update state of session by receive frame or timeout for client app.
+        :param session:
+        :param fr:
+        """
         # while not session.flag_stop_tasks:
         if not session.flag_stop_tasks:
-
-            # wait for allow
-            # await self.__event_update.wait()
-            # self.__event_update.clear()
 
             try:
                 print(f"Starting update_state_machine_client with {fr}")
@@ -778,17 +752,6 @@ class ClientManager:
                 # 0 = DISCONNECTED
                 # 1 = CONNECTED
                 if session.connection_state == 'CONNECTED':
-
-                    # get_connection_state()
-                    # 0 = STOPPED
-                    # 1 = WAITING_RUNNING
-                    # 2 = RUNNING
-                    # 3 = WAITING_UNCONFIRMED
-                    # 4 = WAITING_STOPPED
-                    #
-                    # if not self.__local_queue.empty():
-                    #     fr = await self.__local_queue.get()
-                    #     print(f"použit z lokalni fronty pro update: {fr}")
 
                     # correct format for next conditions
                     if fr:
@@ -803,41 +766,35 @@ class ClientManager:
                     # timeout t1
                     if not session.flag_timeout_t1:
 
-                        # * STATE 1 -
+                        # STATE 1
                         if actual_transmission_state == 'STOPPED':
 
                             # flag for start session is set
                             if session.flag_session == 'START_SESSION':
                                 # reset flag for start session
                                 session.flag_session = None
-                                # send start act
+                                # send START act
                                 new_frame = self.generate_startdt_act()
                                 await self.send_frame(session, new_frame)
-                                # update state
                                 session.transmission_state = 'WAITING_RUNNING'
 
                             # t1_timeout or S-format or I-format
                             if frame == 'S-format' or frame == 'I-format':
-                                # aktivni ukonceni
                                 session.flag_session = 'ACTIVE_TERMINATION'
 
-                        # * STATE 2 -
+                        # STATE 2
                         if actual_transmission_state == 'WAITING_RUNNING':
-
                             if frame == APCI.STARTDT_CON:
                                 session.transmission_state = 'RUNNING'
 
                             # t1_timeout or S-format or I-format
                             if frame == 'S-format' or frame == 'I-format':
-                                # aktivni ukonceni
                                 session.flag_session = 'ACTIVE_TERMINATION'
 
-                        # * STATE 3 -
+                        # STATE 3
                         if actual_transmission_state == 'RUNNING':
-
                             # END RUNNING
                             if session.flag_session == 'STOP_SESSION':
-
                                 # reset flag for start session
                                 session.flag_session = None
 
@@ -858,14 +815,14 @@ class ClientManager:
                                         new_frame = self.generate_s_frame(session)
                                         await self.send_frame(session, new_frame)
 
-                                    # send stopdt act
+                                    # send STOPDT act
                                     new_frame = self.generate_stopdt_act()
                                     await self.send_frame(session, new_frame)
 
                                     # update state
                                     session.transmission_state = 'WAITING_UNCONFIRMED'
 
-                        # * STATE 4
+                        # STATE 4
                         if actual_transmission_state == 'WAITING_UNCONFIRMED':
 
                             if frame == APCI.STOPDT_CON:
@@ -876,9 +833,8 @@ class ClientManager:
                                      self.__recv_buffer.is_empty()):
                                 session.transmission_state = 'WAITING_STOPPED'
 
-                        # * STATE 5
+                        # STATE 5
                         if actual_transmission_state == 'WAITING_STOPPED':
-
                             if frame == APCI.STOPDT_CON:
                                 session.transmission_state = 'STOPPED'
 
@@ -889,7 +845,6 @@ class ClientManager:
                         logging.debug(f"Timeout t1 is set to 0")
                         session.flag_session = 'ACTIVE_TERMINATION'
 
-                        # default condition if ACTIVE_TERMINATION is set
                     if session.flag_session == 'ACTIVE_TERMINATION':
                         # unset ACTIVE_TERMINATION
                         session.flag_session = None
@@ -900,12 +855,12 @@ class ClientManager:
                         self.check_alive_sessions()
 
                 else:
-                    pass
+                    session.delete_self()
+                    self.check_alive_sessions()
 
                 print(f"{session}")
                 logging.info(f"{session}")
 
-                await asyncio.sleep(self.__async_time)
                 print(f"Finish async update_state_machine_client")
                 logging.debug(f"Finish async update_state_machine_client")
 
@@ -914,6 +869,10 @@ class ClientManager:
                 logging.error(f"Exception {e}")
 
     async def handle_timeout_t0(self, session: Session = None) -> None:
+        """
+        Method for handling timeout.
+        :param session:
+        """
         print(f"Timer t0 timed_out - {session}")
         logging.debug(f"Timer t0 timed_out - {session}")
         print(f'Client {session.ip}:{session.port} timed out and disconnected')
@@ -921,6 +880,10 @@ class ClientManager:
         session.flag_session = 'ACTIVE_TERMINATION'
 
     async def handle_timeout_t1(self, session: Session = None) -> None:
+        """
+        Method for handling timeout.
+        :param session:
+        """
         print(f"Timer t1 timed_out - {session}")
         logging.debug(f"Timer t1 timed_out - {session}")
         session.flag_timeout_t1 = 1
@@ -931,6 +894,10 @@ class ClientManager:
         # raise TimeoutError(f"Timeout pro t1")
 
     async def handle_timeout_t2(self, session: Session = None) -> None:
+        """
+        Method for handling timeout.
+        :param session:
+        """
         print(f"Timer t2 timed_out - {session}")
         logging.debug(f"Timer t2 timed_out - {session}")
         if not self.__recv_buffer.is_empty():
@@ -938,6 +905,10 @@ class ClientManager:
             await self.send_frame(session, new_frame)
 
     async def handle_timeout_t3(self, session: Session = None) -> None:
+        """
+        Method for handling timeout.
+        :param session:
+        """
         print(f"Timer t3 timed_out - {session}")
         logging.debug(f"Timer t3 timed_out - {session}")
         new_frame = self.generate_testdt_act()
@@ -948,8 +919,6 @@ class ClientManager:
                 f" ID: {self.id},"
                 f" Num of sessions: {len(self.sessions)}")
 
-    def __enter__(self) -> None:
-        pass
 
     def __exit__(*exc_info):
         pass

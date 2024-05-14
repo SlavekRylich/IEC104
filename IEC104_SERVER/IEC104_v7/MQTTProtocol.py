@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-import asyncio
 import paho.mqtt.client as mqtt
 from IDataSharing import IDataSharing
 
 
 class MQTTProtocol(IDataSharing):
+    """
+    MQTTProtocol class for handling MQTT communication.
+    """
+
     def __init__(self, client_id: str,
                  broker_url: str,
                  port: int,
@@ -15,14 +18,16 @@ class MQTTProtocol(IDataSharing):
                  qos: int = 0
                  ):
         """
-        Inicializace klienta MQTT.
+        Initialize MQTTProtocol instance.
 
-        Args:
-            client_id: Identifikátor klienta.
-            broker_url: URL adresa brokera.
-            port: Port brokera.
-            username: Uživatelské jméno pro autentizaci (volitelně).
-            password: Heslo pro autentizaci (volitelně).
+        :param client_id: MQTT client ID.
+        :param broker_url: MQTT broker URL.
+        :param port: MQTT broker port.
+        :param username: MQTT broker username.
+        :param password: MQTT broker password.
+        :param version: MQTT protocol version.
+        :param transport: MQTT transport protocol.
+        :param qos: MQTT Quality of Service level.
         """
 
         self._msg_info: mqtt.MQTTMessage | None = None
@@ -58,13 +63,13 @@ class MQTTProtocol(IDataSharing):
 
     def _on_connect(self, client, userdata, flags, rc, properties):
         """
-        Metoda volaná po připojení klienta k brokerovi.
+        Callback function for MQTT on_connect event.
 
-        Args:
-            client: Klient MQTT.
-            userdata: Uživatelská data (nepoužíváno).
-            flags: Příznaky připojení.
-            rc: Kód návratu připojení.
+        :param client: MQTT client instance.
+        :param userdata: User data.
+        :param flags: MQTT connection flags.
+        :param rc: MQTT connection result code.
+        :param properties: MQTT connection properties.
         """
         if rc == 0:
             self._connected = True
@@ -84,25 +89,43 @@ class MQTTProtocol(IDataSharing):
 
     def _on_message(self, client, userdata, message):
         """
-        Metoda volaná po přijetí zprávy klientem.
+        Callback function for MQTT on_message event. This function is called when a PUBLISH message is received from
+        the broker.
 
-        Args:
-            client: Klient MQTT.
-            userdata: Uživatelská data (nepoužíváno).
-            message: Zpráva MQTT.
+        :param client: MQTT client instance. This is the client that received the message.
+        :type client: mqtt.Client
+
+        :param userdata: User data. This is the user data that was set when creating the client instance.
+        :type userdata: Any
+
+        :param message: MQTT message. This is the received PUBLISH message.
+        :type message: mqtt.MQTTMessage
+
+        :return: None
         """
-        # Zpracování přijaté zprávy
+        # Processing receive messages
         print(f"Receive message via MQTT {message}")
         pass
 
     def _on_disconnect(self, client, userdata, rc, properties):
         """
-        Metoda volaná po odpojení klienta od brokera.
+        Callback function for MQTT on_disconnect event. This function is called when the client disconnects from the
+        broker.
 
-        Args:
-            client: Klient MQTT.
-            userdata: Uživatelská data (nepoužíváno).
-            rc: Kód návratu odpojení.
+        :param client: MQTT client instance. This is the client that initiated the disconnect.
+        :type client: mqtt.Client
+
+        :param userdata: User data. This is the user data that was set when creating the client instance.
+        :type userdata: Any
+
+        :param rc: The disconnection result code. 0 indicates a normal disconnection, 1 indicates that the client
+        disconnected because it received a disconnect message from the broker, 2 indicates that the client is
+        disconnecting due to a network error. :type rc: int
+
+        :param properties: MQTT connection properties.
+        :type properties: dict
+
+        :return: None
         """
         if rc == 0:
             self._connected = False
@@ -112,20 +135,38 @@ class MQTTProtocol(IDataSharing):
 
     def _on_publish(self, client, userdata, mid, reason_code=None, properties=None):
         """
-        Metoda volaná po ukládání dat do zprávy.
+        Callback function for MQTT on_publish event. This function is called when a PUBLISH message is sent to the
+        broker.
 
         Args:
-            client: Klient MQTT.
-            userdata: Uživatelská data (nepoužíváno).
-            mid: Identifikátor zprávy.
-            reason_code: Kód návratu ukládání dat do zprávy.
-            properties: Vlastnosti zprávy.
+            client (mqtt.Client): MQTT client instance. This is the client that sent the message.
+            userdata (Any): User data. This is the user data that was set when creating the client instance.
+            mid (int): Message ID. This is the ID of the message that was sent.
+            reason_code (int, optional): The reason code for the publish. Defaults to None.
+            properties (dict, optional): MQTT properties for the publish. Defaults to None.
+
+        Returns:
+            None
         """
         print(f"Reason code from broker: {reason_code}"
               f"\nMid: {mid}")
         pass
 
     def _on_subscribe(self, client, userdata, mid, reason_code=None, properties=None):
+        """
+        Callback function for MQTT on_subscribe event. This function is called when a SUBSCRIBE message is sent to
+        the broker.
+
+        Args:
+            client (mqtt.Client): MQTT client instance. This is the client that sent the message.
+            userdata (Any): User data. This is the user data that was set when creating the client instance.
+            mid (int): Message ID. This is the ID of the message that was sent.
+            reason_code (int, optional): The reason code for the subscribe. Defaults to None.
+            properties (dict, optional): MQTT properties for the subscribe. Defaults to None.
+
+        Returns:
+            None
+        """
         print(f"Subscribed back: \n client: {client}"
               f"userdata: {userdata}\n"
               f"mid: {mid}\n"
@@ -134,7 +175,12 @@ class MQTTProtocol(IDataSharing):
 
     async def connect(self, host, port, username, password):
         """
-        Připojení klienta k brokerovi.
+        Connect to MQTT broker.
+
+        :param host: MQTT broker host.
+        :param port: MQTT broker port.
+        :param username: MQTT broker username.
+        :param password: MQTT broker password.
         """
         try:
             print(f"connect: {self._broker_url}")
@@ -148,22 +194,19 @@ class MQTTProtocol(IDataSharing):
 
     async def disconnect(self):
         """
-        Odpojení klienta od brokera.
+        Disconnect from MQTT broker.
         """
         self._client.loop_stop()
         self._client.disconnect()
 
     async def publish(self, topic: str, payload: str | bytes, qos: int = 0, retain=None):
         """
-        Publikování zprávy na zadané téma.
+        Publish a message to an MQTT topic.
 
-        Args:
-            topic: Téma zprávy.
-            payload: Data zprávy.
-            :param topic:
-            :param payload:
-            :param qos:
-            :param retain:
+        :param topic: MQTT topic.
+        :param payload: MQTT message payload.
+        :param qos: MQTT Quality of Service level.
+        :param retain: Retain flag for the message.
         """
         self._msg_info = self._client.publish(topic, payload, qos)
         print(type(payload))
@@ -174,21 +217,19 @@ class MQTTProtocol(IDataSharing):
 
     async def subscribe(self, topic: str, callback):
         """
-        Přihlášení k odběru zpráv na zadané téma.
+        Subscribe to an MQTT topic.
 
-        Args:
-            topic: Téma zprávy.
-            callback: Funkce, která bude volána po přijetí zprávy.
+        :param topic: MQTT topic.
+        :param callback: Callback function to handle incoming messages.
         """
         self._client.subscribe(topic)
         self._client.on_message = callback
 
     def unsubscribe(self, topic: str):
         """
-        Odhlášení odběru zpráv na zadané téma.
+        Unsubscribe from an MQTT topic.
 
-        Args:
-            topic: Téma zprávy.
+        :param topic: MQTT topic.
         """
         self._client.unsubscribe(topic)
 
@@ -196,6 +237,13 @@ class MQTTProtocol(IDataSharing):
                         topic: str,
                         data: bytes | bytearray | int | float | str | None,
                         callback=None):
+        """
+        Save data to an MQTT topic.
+
+        :param topic: MQTT topic.
+        :param data: Data to be saved.
+        :param callback: Callback function to handle the result.
+        """
         try:
             # """Ukládání dat do zprávy."""
             await self.connect(host=self._broker_url,
@@ -211,5 +259,9 @@ class MQTTProtocol(IDataSharing):
             await self.disconnect()
 
     def send_data(self, callback):
-        # """Odeslání zprávy."""
+        """
+        Send data to an MQTT topic.
+
+        :param callback: Callback function to handle the result.
+        """
         pass

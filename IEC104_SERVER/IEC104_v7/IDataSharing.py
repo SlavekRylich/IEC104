@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 class IDataSharing(ABC):
     @abstractmethod
     def connect(self, host, port, username, password):
-        # """Připojení k MQTT brokeru."""
+        """Připojení k MQTT brokeru."""
         pass
 
     @abstractmethod
@@ -20,15 +20,15 @@ class IDataSharing(ABC):
 
     @abstractmethod
     def subscribe(self, topic, callback):
-        # """Přihlášení k odběru z topicu a nastavení funkce pro zpracování zpráv."""
+        """Přihlášení k odběru z topicu a nastavení funkce pro zpracování zpráv."""
         pass
 
     @abstractmethod
     def save_data(self, topic, data, callback):
-        # """Ukládání dat do zprávy."""
+        """Ukládání dat do zprávy."""
         pass
 
     @abstractmethod
     def send_data(self, callback):
-        # """Odeslání zprávy."""
+        """Odeslání zprávy."""
         pass

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IEC104 &mdash; IEC104 1.0.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=46dfa7f5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ClientManager module" href="ClientManager.html" />
+    <link rel="prev" title="Welcome to IEC104’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            IEC104
+          </a>
+              <div class="version">
+                1.0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IEC104</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClientManager.html">ClientManager module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Frame.html">Frame module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FrameStatistics.html">FrameStatistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IDataSharing.html">IDataSharing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IFormat.html">IFormat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MQTTProtocol.html">MQTTProtocol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Packet_buffer.html">Packet_buffer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parser.html">Parser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SFormat.html">SFormat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Session.html">Session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="State.html">State module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Timer.html">Timer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UFormat.html">UFormat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apci.html">apci module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config_loader.html">config_loader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_async.html">server_async module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IEC104</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">IEC104</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="iec104">
+<h1>IEC104<a class="headerlink" href="#iec104" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ClientManager.html">ClientManager module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager"><code class="docutils literal notranslate"><span class="pre">ClientManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.flag_delete"><code class="docutils literal notranslate"><span class="pre">ClientManager.flag_delete</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.flag_stop_tasks"><code class="docutils literal notranslate"><span class="pre">ClientManager.flag_stop_tasks</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.event_in"><code class="docutils literal notranslate"><span class="pre">ClientManager.event_in</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.event_out"><code class="docutils literal notranslate"><span class="pre">ClientManager.event_out</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.in_queue"><code class="docutils literal notranslate"><span class="pre">ClientManager.in_queue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.out_queue"><code class="docutils literal notranslate"><span class="pre">ClientManager.out_queue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.send_buffer"><code class="docutils literal notranslate"><span class="pre">ClientManager.send_buffer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.recv_buffer"><code class="docutils literal notranslate"><span class="pre">ClientManager.recv_buffer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.ip"><code class="docutils literal notranslate"><span class="pre">ClientManager.ip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.id"><code class="docutils literal notranslate"><span class="pre">ClientManager.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.flag_start_sequence"><code class="docutils literal notranslate"><span class="pre">ClientManager.flag_start_sequence</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.tasks"><code class="docutils literal notranslate"><span class="pre">ClientManager.tasks</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.add_task"><code class="docutils literal notranslate"><span class="pre">ClientManager.add_task()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.get_client_stats"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_client_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.get_session_stats"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_session_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.get_all_sessions_stat"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_all_sessions_stat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.remove_instance"><code class="docutils literal notranslate"><span class="pre">ClientManager.remove_instance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.send_frame"><code class="docutils literal notranslate"><span class="pre">ClientManager.send_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.on_message_recv_or_timeout"><code class="docutils literal notranslate"><span class="pre">ClientManager.on_message_recv_or_timeout()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.check_alive_sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.check_alive_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.delete_self"><code class="docutils literal notranslate"><span class="pre">ClientManager.delete_self()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.handle_apdu"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_apdu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.is_response"><code class="docutils literal notranslate"><span class="pre">ClientManager.is_response()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.add_session"><code class="docutils literal notranslate"><span class="pre">ClientManager.add_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.get_number_of_sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_number_of_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_i_frame"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_i_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_s_frame"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_s_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.get_number_of_connected_sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_number_of_connected_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.sessions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.incrementVR"><code class="docutils literal notranslate"><span class="pre">ClientManager.incrementVR()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.incrementVS"><code class="docutils literal notranslate"><span class="pre">ClientManager.incrementVS()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.ack"><code class="docutils literal notranslate"><span class="pre">ClientManager.ack</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.VR"><code class="docutils literal notranslate"><span class="pre">ClientManager.VR</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.VS"><code class="docutils literal notranslate"><span class="pre">ClientManager.VS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_testdt_act"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_testdt_act()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_testdt_con"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_testdt_con()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_startdt_act"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_startdt_act()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_startdt_con"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_startdt_con()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_stopdt_act"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_stopdt_act()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.generate_stopdt_con"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_stopdt_con()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.update_state_machine_server"><code class="docutils literal notranslate"><span class="pre">ClientManager.update_state_machine_server()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.update_state_machine_client"><code class="docutils literal notranslate"><span class="pre">ClientManager.update_state_machine_client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.handle_timeout_t0"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t0()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.handle_timeout_t1"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t1()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.handle_timeout_t2"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientManager.html#ClientManager.ClientManager.handle_timeout_t3"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t3()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Frame.html">Frame module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Frame.html#Frame.Frame"><code class="docutils literal notranslate"><span class="pre">Frame</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.is_structured"><code class="docutils literal notranslate"><span class="pre">Frame.is_structured()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.id"><code class="docutils literal notranslate"><span class="pre">Frame.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.type_in_word"><code class="docutils literal notranslate"><span class="pre">Frame.type_in_word</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.get_all_instances"><code class="docutils literal notranslate"><span class="pre">Frame.get_all_instances()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.serialize"><code class="docutils literal notranslate"><span class="pre">Frame.serialize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.length"><code class="docutils literal notranslate"><span class="pre">Frame.length</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.get_length_of_data"><code class="docutils literal notranslate"><span class="pre">Frame.get_length_of_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.structure"><code class="docutils literal notranslate"><span class="pre">Frame.structure</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Frame.html#Frame.Frame.start_byte"><code class="docutils literal notranslate"><span class="pre">Frame.start_byte()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FrameStatistics.html">FrameStatistics module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics"><code class="docutils literal notranslate"><span class="pre">FrameStatistics</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics.get_ip_add"><code class="docutils literal notranslate"><span class="pre">FrameStatistics.get_ip_add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics.get_port"><code class="docutils literal notranslate"><span class="pre">FrameStatistics.get_port()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics.allow_stats"><code class="docutils literal notranslate"><span class="pre">FrameStatistics.allow_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics.update_send"><code class="docutils literal notranslate"><span class="pre">FrameStatistics.update_send()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics.update_recv"><code class="docutils literal notranslate"><span class="pre">FrameStatistics.update_recv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics.reset_statistics"><code class="docutils literal notranslate"><span class="pre">FrameStatistics.reset_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics.create_rule"><code class="docutils literal notranslate"><span class="pre">FrameStatistics.create_rule()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="IDataSharing.html">IDataSharing module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="IDataSharing.html#IDataSharing.IDataSharing"><code class="docutils literal notranslate"><span class="pre">IDataSharing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="IDataSharing.html#IDataSharing.IDataSharing.connect"><code class="docutils literal notranslate"><span class="pre">IDataSharing.connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDataSharing.html#IDataSharing.IDataSharing.disconnect"><code class="docutils literal notranslate"><span class="pre">IDataSharing.disconnect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDataSharing.html#IDataSharing.IDataSharing.publish"><code class="docutils literal notranslate"><span class="pre">IDataSharing.publish()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDataSharing.html#IDataSharing.IDataSharing.subscribe"><code class="docutils literal notranslate"><span class="pre">IDataSharing.subscribe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDataSharing.html#IDataSharing.IDataSharing.save_data"><code class="docutils literal notranslate"><span class="pre">IDataSharing.save_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDataSharing.html#IDataSharing.IDataSharing.send_data"><code class="docutils literal notranslate"><span class="pre">IDataSharing.send_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="IFormat.html">IFormat module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="IFormat.html#IFormat.IFormat"><code class="docutils literal notranslate"><span class="pre">IFormat</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.get_class_ssn"><code class="docutils literal notranslate"><span class="pre">IFormat.get_class_ssn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.set_class_ssn"><code class="docutils literal notranslate"><span class="pre">IFormat.set_class_ssn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.get_class_rsn"><code class="docutils literal notranslate"><span class="pre">IFormat.get_class_rsn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.set_class_rsn"><code class="docutils literal notranslate"><span class="pre">IFormat.set_class_rsn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.ssn"><code class="docutils literal notranslate"><span class="pre">IFormat.ssn</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.rsn"><code class="docutils literal notranslate"><span class="pre">IFormat.rsn</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.data"><code class="docutils literal notranslate"><span class="pre">IFormat.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.length"><code class="docutils literal notranslate"><span class="pre">IFormat.length</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.get_length_of_data"><code class="docutils literal notranslate"><span class="pre">IFormat.get_length_of_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.set_data_from_structure"><code class="docutils literal notranslate"><span class="pre">IFormat.set_data_from_structure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.structure"><code class="docutils literal notranslate"><span class="pre">IFormat.structure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="IFormat.html#IFormat.IFormat.serialize"><code class="docutils literal notranslate"><span class="pre">IFormat.serialize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MQTTProtocol.html">MQTTProtocol module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol.connect"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol.connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol.disconnect"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol.disconnect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol.publish"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol.publish()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol.subscribe"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol.subscribe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol.unsubscribe"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol.unsubscribe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol.save_data"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol.save_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTTProtocol.html#MQTTProtocol.MQTTProtocol.send_data"><code class="docutils literal notranslate"><span class="pre">MQTTProtocol.send_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Packet_buffer.html">Packet_buffer module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer"><code class="docutils literal notranslate"><span class="pre">PacketBuffer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.add_frame"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.add_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.get_frame"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.get_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.remove_frame"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.remove_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.has_frame"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.has_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.clear_frames_less_than"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.clear_frames_less_than()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.get_list_from_buffer"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.get_list_from_buffer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.is_empty"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.is_empty()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer.clear"><code class="docutils literal notranslate"><span class="pre">PacketBuffer.clear()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Parser.html">Parser module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Parser.html#Parser.Parser"><code class="docutils literal notranslate"><span class="pre">Parser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Parser.html#Parser.Parser.parser"><code class="docutils literal notranslate"><span class="pre">Parser.parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Parser.html#Parser.Parser.what_format"><code class="docutils literal notranslate"><span class="pre">Parser.what_format()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SFormat.html">SFormat module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SFormat.html#SFormat.SFormat"><code class="docutils literal notranslate"><span class="pre">SFormat</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SFormat.html#SFormat.SFormat.serialize"><code class="docutils literal notranslate"><span class="pre">SFormat.serialize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SFormat.html#SFormat.SFormat.rsn"><code class="docutils literal notranslate"><span class="pre">SFormat.rsn</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Session.html">Session module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Session.html#Session.Session"><code class="docutils literal notranslate"><span class="pre">Session</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.start"><code class="docutils literal notranslate"><span class="pre">Session.start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.k"><code class="docutils literal notranslate"><span class="pre">Session.k</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.w"><code class="docutils literal notranslate"><span class="pre">Session.w</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.ip"><code class="docutils literal notranslate"><span class="pre">Session.ip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.port"><code class="docutils literal notranslate"><span class="pre">Session.port</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.id"><code class="docutils literal notranslate"><span class="pre">Session.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.name"><code class="docutils literal notranslate"><span class="pre">Session.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.flag_stop_tasks"><code class="docutils literal notranslate"><span class="pre">Session.flag_stop_tasks</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.event_queue_out"><code class="docutils literal notranslate"><span class="pre">Session.event_queue_out</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.flag_delete"><code class="docutils literal notranslate"><span class="pre">Session.flag_delete</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.flag_session"><code class="docutils literal notranslate"><span class="pre">Session.flag_session</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.flag_timeout_t1"><code class="docutils literal notranslate"><span class="pre">Session.flag_timeout_t1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.whoami"><code class="docutils literal notranslate"><span class="pre">Session.whoami</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.connection_state"><code class="docutils literal notranslate"><span class="pre">Session.connection_state</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.transmission_state"><code class="docutils literal notranslate"><span class="pre">Session.transmission_state</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.remove_instance"><code class="docutils literal notranslate"><span class="pre">Session.remove_instance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.update_timestamp_t2"><code class="docutils literal notranslate"><span class="pre">Session.update_timestamp_t2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.get_all_instances"><code class="docutils literal notranslate"><span class="pre">Session.get_all_instances()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.get_instance"><code class="docutils literal notranslate"><span class="pre">Session.get_instance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.handle_messages"><code class="docutils literal notranslate"><span class="pre">Session.handle_messages()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.send_frame"><code class="docutils literal notranslate"><span class="pre">Session.send_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Session.html#Session.Session.delete_self"><code class="docutils literal notranslate"><span class="pre">Session.delete_self()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="State.html">State module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="State.html#State.ConnectionState"><code class="docutils literal notranslate"><span class="pre">ConnectionState</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.ConnectionState.DISCONNECTED"><code class="docutils literal notranslate"><span class="pre">ConnectionState.DISCONNECTED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.ConnectionState.CONNECTED"><code class="docutils literal notranslate"><span class="pre">ConnectionState.CONNECTED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.ConnectionState.set_state"><code class="docutils literal notranslate"><span class="pre">ConnectionState.set_state()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.ConnectionState.get_state"><code class="docutils literal notranslate"><span class="pre">ConnectionState.get_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="State.html#State.TransmissionState"><code class="docutils literal notranslate"><span class="pre">TransmissionState</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.TransmissionState.STOPPED"><code class="docutils literal notranslate"><span class="pre">TransmissionState.STOPPED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.TransmissionState.WAITING_RUNNING"><code class="docutils literal notranslate"><span class="pre">TransmissionState.WAITING_RUNNING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.TransmissionState.RUNNING"><code class="docutils literal notranslate"><span class="pre">TransmissionState.RUNNING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.TransmissionState.WAITING_UNCONFIRMED"><code class="docutils literal notranslate"><span class="pre">TransmissionState.WAITING_UNCONFIRMED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.TransmissionState.WAITING_STOPPED"><code class="docutils literal notranslate"><span class="pre">TransmissionState.WAITING_STOPPED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.TransmissionState.set_state"><code class="docutils literal notranslate"><span class="pre">TransmissionState.set_state()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="State.html#State.TransmissionState.get_state"><code class="docutils literal notranslate"><span class="pre">TransmissionState.get_state()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Timer.html">Timer module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Timer.html#Timer.Timer"><code class="docutils literal notranslate"><span class="pre">Timer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Timer.html#Timer.Timer.start"><code class="docutils literal notranslate"><span class="pre">Timer.start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Timer.html#Timer.Timer.cancel"><code class="docutils literal notranslate"><span class="pre">Timer.cancel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Timer.html#Timer.timeout_callback"><code class="docutils literal notranslate"><span class="pre">timeout_callback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="UFormat.html">UFormat module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="UFormat.html#UFormat.UFormat"><code class="docutils literal notranslate"><span class="pre">UFormat</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="UFormat.html#UFormat.UFormat.type"><code class="docutils literal notranslate"><span class="pre">UFormat.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="UFormat.html#UFormat.UFormat.type_of_Uformat_Str"><code class="docutils literal notranslate"><span class="pre">UFormat.type_of_Uformat_Str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="UFormat.html#UFormat.UFormat.type_int"><code class="docutils literal notranslate"><span class="pre">UFormat.type_int</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="UFormat.html#UFormat.UFormat.serialize"><code class="docutils literal notranslate"><span class="pre">UFormat.serialize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="apci.html">apci module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="apci.html#apci.APCI"><code class="docutils literal notranslate"><span class="pre">APCI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.ACPI_HEADER_LENGTH"><code class="docutils literal notranslate"><span class="pre">APCI.ACPI_HEADER_LENGTH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.START_BYTE"><code class="docutils literal notranslate"><span class="pre">APCI.START_BYTE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.TESTFR_ACT"><code class="docutils literal notranslate"><span class="pre">APCI.TESTFR_ACT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.TESTFR_CON"><code class="docutils literal notranslate"><span class="pre">APCI.TESTFR_CON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.STOPDT_ACT"><code class="docutils literal notranslate"><span class="pre">APCI.STOPDT_ACT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.STOPDT_CON"><code class="docutils literal notranslate"><span class="pre">APCI.STOPDT_CON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.STARTDT_ACT"><code class="docutils literal notranslate"><span class="pre">APCI.STARTDT_ACT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apci.html#apci.APCI.STARTDT_CON"><code class="docutils literal notranslate"><span class="pre">APCI.STARTDT_CON</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config_loader.html">config_loader module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config_loader.html#config_loader.ConfigLoader"><code class="docutils literal notranslate"><span class="pre">ConfigLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config_loader.html#config_loader.ConfigLoader.load_config"><code class="docutils literal notranslate"><span class="pre">ConfigLoader.load_config()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="server_async.html">server_async module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="server_async.html#server_async.ServerIEC104"><code class="docutils literal notranslate"><span class="pre">ServerIEC104</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.load_session_params"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.load_session_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.name"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.send"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.send()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.get_all_clients_stats"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.get_all_clients_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.listen"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.listen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.handle_client"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.handle_client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.run"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.check_alive_clients"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.check_alive_clients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server_async.html#server_async.ServerIEC104.close"><code class="docutils literal notranslate"><span class="pre">ServerIEC104.close()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server_async.html#server_async.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to IEC104’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ClientManager.html" class="btn btn-neutral float-right" title="ClientManager module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 Brno University of Technology.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

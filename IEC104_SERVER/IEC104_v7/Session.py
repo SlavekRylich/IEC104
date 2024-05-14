@@ -13,14 +13,9 @@ from IFormat import IFormat
 from State import ConnectionState, TransmissionState
 
 
-# from IncomingQueueManager import IncomingQueueManager
-# from OutgoingQueueManager import OutgoingQueueManager
-# from Packet_buffer import PacketBuffer
-# from Timeout import Timeout
-
-
 class Session:
-    """Class for session.
+    """
+    Class for session. Manages communication with a client and handles incoming and outgoing frames.
     """
     # třídní proměná pro uchování unikátní id každé instance
     _id: int = 0
@@ -36,6 +31,19 @@ class Session:
                  callback_timeouts: tuple = None,
                  send_buffer: Packet_buffer = None,
                  whoami: str = 'client'):
+        """
+        Initialize a new Session instance.
+
+        :param ip: IP address of the client.
+        :param port: Port number of the client.
+        :param reader: asyncio.StreamReader for reading data from the client.
+        :param writer: asyncio.StreamWriter for writing data to the client.
+        :param session_params: Tuple of parameters for the session.
+        :param callback_on_message_recv: Callback function to handle received messages.
+        :param callback_timeouts: Tuple of callback functions for handling timeouts.
+        :param send_buffer: Packet_buffer for storing outgoing frames.
+        :param whoami: String indicating whether the session is for a client or server.
+        """
 
         # Instances of Session
         Session._id += 1
@@ -130,38 +138,67 @@ class Session:
         # self.__tasks.append(asyncio.create_task(self.check_for_timeouts()))
 
     async def start(self) -> None:
+        """
+        Start the session by initiating the handling of incoming messages.
+        """
         self.__task = asyncio.ensure_future(self.handle_messages())
 
     @property
     def k(self) -> int:
+        """
+        Return the value of k.
+        """
         return self.__k
 
     @property
     def w(self) -> int:
+        """
+        Return the value of w.
+        """
         return self.__w
 
     @property
     def ip(self) -> str:
+        """
+        Return the IP address.
+        """
         return self.__ip_dst
 
     @property
     def port(self) -> int:
+        """
+        Return the port.
+        """
         return self.__port_dst
 
     @property
     def id(self) -> int:
+        """
+        Return the value of id.
+        """
         return self.__id
 
     @property
     def name(self) -> str:
+        """
+        Return the name of the session.
+        """
         return self.__name
 
     @property
     def flag_stop_tasks(self) -> bool:
+        """
+        Return the flag indicating whether to stop the tasks for the session.
+        """
         return self.__flag_stop_tasks
 
     @flag_stop_tasks.setter
     def flag_stop_tasks(self, value: bool) -> None:
+        """
+        Set the flag indicating whether to stop the tasks for the session.
+
+        :param value: The new value for the flag.
+        """
         self.__flag_stop_tasks = value
 
     @property
@@ -170,54 +207,130 @@ class Session:
 
     @property
     def flag_delete(self) -> bool:
+        """
+        Return the flag indicating whether to delete the session.
+
+        Returns
+        -------
+        bool
+            The flag indicating whether to delete the session.
+        """
         return self.__flag_delete
 
     @flag_delete.setter
     def flag_delete(self, flag: bool) -> None:
+        """
+        Set the flag indicating whether to delete the session.
+
+        Parameters
+        ----------
+        flag : bool
+            The new value for the flag.
+        """
         print(f"Nastaven flag_delete na {flag}")
         logging.debug(f"Nastaven flag_delete na {flag}")
         self.__flag_delete = flag
 
     @property
-    def flag_session(self) -> int:
+    def flag_session(self) -> str | None:
+        """
+        Return the flag indicating the session state.
+
+        Returns
+        -------
+        str | None
+            The flag indicating the session state.
+        """
         return self.__flag_session
 
     @flag_session.setter
-    def flag_session(self, flag) -> None:
+    def flag_session(self, flag: str) -> None:
+        """
+        Set the flag indicating the session state.
+
+        Parameters
+        ----------
+        flag : str
+            The new value for the flag.
+        """
         print(f"flag_session_set {flag} - {self}")
         logging.debug(f"flag_session_set {flag} - {self}")
         self.__flag_session = flag
 
     @property
     def flag_timeout_t1(self) -> int:
+        """
+        Return the flag indicating whether a timeout occurred for timer T1.
+
+        Returns
+        -------
+        int
+            The flag indicating whether a timeout occurred for timer T1.
+        """
         return self.__flag_timeout_t1
 
     @flag_timeout_t1.setter
     def flag_timeout_t1(self, flag: int) -> None:
+        """
+        Set the flag indicating whether a timeout occurred for timer T1.
+
+        Parameters
+        ----------
+        flag : int
+            The new value for the flag.
+        """
         self.__flag_timeout_t1 = flag
 
     @property
-    def priority(self) -> int:
-        return self.__priority
-
-    @property
     def whoami(self) -> str:
+        """
+        Return the identifier for the session (client or server).
+
+        Returns
+        -------
+        str
+            The identifier for the session.
+        """
         return self.__whoami
 
     @property
     def connection_state(self) -> str:
+        """
+        Return the connection state of the session.
+
+        Returns
+        -------
+        str
+            The connection state of the session.
+        """
         return self.__connection_state.get_state()
 
     # 0 = DISCONNECTED
     # 1 = CONNECTED
     @connection_state.setter
     def connection_state(self, state) -> None:
+        """
+        Set the connection state of the session.
+
+        Parameters
+        ----------
+        state : str
+            The new connection state of the session.
+        """
         print(f"CHANGE_CONNECTION_STATE: {self.__connection_state} -> {state}")
         logging.debug(f"CHANGE_CONNECTION_STATE: {self.__connection_state} -> {state}")
         self.__connection_state = ConnectionState.set_state(state)
 
     @property
     def transmission_state(self) -> str:
+        """
+        Return the transmission state of the session.
+
+        Returns
+        -------
+        str
+            The transmission state of the session.
+        """
         return self.__transmission_state.get_state()
 
     # 0 = STOPPED
@@ -227,6 +340,14 @@ class Session:
     # 4 = WAITING_STOPPED
     @transmission_state.setter
     def transmission_state(self, state: str) -> None:
+        """
+        Set the transmission state of the session.
+
+        Parameters
+        ----------
+        state : str
+            The new transmission state of the session.
+        """
         print(f"CHANGE_TRANSMISSION_STATE: {self.__transmission_state} -> {state}")
         logging.debug(f"CHANGE_TRANSMISSION_STATE: {self.__transmission_state} -> {state}")
         self.__transmission_state = TransmissionState.set_state(state)
@@ -261,6 +382,9 @@ class Session:
 
     # RECEIVE FRAME
     async def handle_messages(self) -> None:
+        """
+        Asynchronously handle incoming messages from the client.
+        """
         while not self.__flag_stop_tasks:
             # if not self.__flag_stop_tasks:
 
@@ -345,6 +469,11 @@ class Session:
     ################################################
     ## SEND FRAME
     async def send_frame(self, frame: Frame = None) -> None:
+        """
+        Asynchronously send a frame to the client.
+
+        :param frame: The frame to be sent.
+        """
         # while not self.__flag_stop_tasks:
         if not self.__flag_stop_tasks:
 
@@ -397,17 +526,10 @@ class Session:
             print(f"Stop send_frame_task()")
             logging.debug(f"Stop send_frame_task()")
 
-    @property
-    def is_connected(self) -> bool:
-        if self.__connection_state == ConnectionState.set_state('CONNECTED'):
-            return True
-        return False
-
-    @property
-    def connection_info(self) -> tuple:
-        return self.__ip_dst, self.__port_dst, self.__connection_state, self.__transmission_state
-
     def delete_self(self) -> None:
+        """
+        Delete the session and perform necessary cleanup.
+        """
 
         # flag for stop coroutines
         self.flag_stop_tasks = True
@@ -437,10 +559,10 @@ class Session:
 
         del self
 
-    def __enter__(self):
-        pass
-
     def __str__(self) -> str:
+        """
+        Return a string representation of the Session instance.
+        """
         return (f"SessionID: {self.id},"
                 f" ip: {self.ip},"
                 f" port: {self.port},"

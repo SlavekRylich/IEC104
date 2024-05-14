@@ -7,109 +7,136 @@ from IFormat import IFormat
 
 
 class FrameStatistics:
+    """
+    This class is responsible for collecting and presenting statistics about the frames sent and received.
+    """
+
     def __init__(self, ip_add: str, port: int = 0, title: str = ""):
-        self.ip_add = ip_add
-        self.port = port
+        """
+        Initialize a new instance of FrameStatistics.
 
-        self.send_frame_count = 0
-        self.send_frame_bytes = 0
-        self.send_transfer_times = []
-        self.send_frame_types = Counter()
+        :param ip_add: The IP address of the device.
+        :param port: The port number of the device.
+        :param title: The title of the statistics.
+        """
+        self.__ip_add: str = ip_add
+        self.__port: int = port
 
-        self.recv_frame_count = 0
-        self.recv_frame_bytes = 0
-        self.recv_transfer_times = []
-        self.recv_frame_types = Counter()
+        self.__send_frame_count: int = 0
+        self.__send_frame_bytes: int = 0
+        self.__send_transfer_times: list = []
+        self.__send_frame_types: Counter = Counter()
 
-        self.allow_statistics = True
-        self.own_rules: dict[str, int] = {}
-        self.title = title
+        self.__recv_frame_count: int = 0
+        self.__recv_frame_bytes: int = 0
+        self.__recv_transfer_times: list = []
+        self.__recv_frame_types: Counter = Counter()
+
+        self.__allow_statistics: bool = True
+        self.__own_rules: dict[str, int] = {}
+        self.__title: str = title
 
     def get_ip_add(self) -> str:
-        return self.ip_add
+        """
+        Get the IP address of the device.
+
+        :return: The IP address of the device.
+        """
+        return self.__ip_add
 
     def get_port(self) -> int:
-        return self.port
+        """
+        Get the port number of the device.
+
+        :return: The port number of the device.
+        """
+        return self.__port
 
     def allow_stats(self, option: bool) -> None:
-        self.allow_statistics = option
+        """
+        Enable or disable statistics collection.
+
+        :param option: True to enable, False to disable.
+        """
+        self.__allow_statistics = option
 
     def update_send(self, frame: Frame = None, name: str = None):
-        if self.allow_statistics:
+        """
+        Update the statistics for sent frames.
+
+        :param frame: The sent frame.
+        :param name: The name of the frame.
+        """
+        if self.__allow_statistics:
             frame_type = frame.type_in_word
-            # Zpracujte příchozí rámec
 
-            # Aktualizujte počítadla
-            self.send_frame_count += 1
-            self.send_frame_bytes += frame.length
-            # self.send_transfer_times.append(time.time() - start_time)
-            self.send_frame_types[frame_type] += 1
+            self.__send_frame_count += 1
+            self.__send_frame_bytes += frame.length
+            self.__send_frame_types[frame_type] += 1
 
-            for item in self.own_rules.keys():
+            for item in self.__own_rules.keys():
                 if name == item:
-                    self.own_rules[item] += 1
+                    self.__own_rules[item] += 1
 
     def update_recv(self, frame: Frame = None, name: str = None):
-        if self.allow_statistics:
+        """
+        Update the statistics for received frames.
+
+        :param frame: The received frame.
+        :param name: The name of the frame.
+        """
+        if self.__allow_statistics:
             frame_type = frame.type_in_word
 
-            # Aktualizujte počítadla
-            self.recv_frame_count += 1
-            self.recv_frame_bytes += frame.length
-            # self.recv_transfer_times.append(time.time() - start_time)
-            self.recv_frame_types[frame_type] += 1
+            self.__recv_frame_count += 1
+            self.__recv_frame_bytes += frame.length
+            self.__recv_frame_types[frame_type] += 1
 
-            for item in self.own_rules.keys():
+            for item in self.__own_rules.keys():
                 if name == item:
-                    self.own_rules[item] += 1
+                    self.__own_rules[item] += 1
 
     def reset_statistics(self):
-        # Resetujte statistiky
-        self.send_frame_count = 0
-        self.send_frame_bytes = 0
-        self.send_transfer_times = []
-        self.send_frame_types = Counter()
+        """
+        Reset all statistics to their initial values.
+        """
+        self.__send_frame_count = 0
+        self.__send_frame_bytes = 0
+        self.__send_transfer_times = []
+        self.__send_frame_types = Counter()
 
-        self.recv_frame_count = 0
-        self.recv_frame_bytes = 0
-        self.recv_transfer_times = []
-        self.recv_frame_types = Counter()
+        self.__recv_frame_count = 0
+        self.__recv_frame_bytes = 0
+        self.__recv_transfer_times = []
+        self.__recv_frame_types = Counter()
 
-        for item in self.own_rules.keys():
-            self.own_rules[item] = 0
+        for item in self.__own_rules.keys():
+            self.__own_rules[item] = 0
 
     def create_rule(self, name: str, value: int = 0):
-        self.own_rules[name] = value
+        """
+        Create a new rule for the statistics.
 
-    def get_statistics(self):
-        # Vraťte statistiky
-        return {
-            "frame_count": self.frame_count,
-            "average_transfer_time": mean(self.transfer_times),
-            "frame_types": self.frame_types,
-        }
+        :param name: The name of the rule.
+        :param value: The initial value of the rule.
+        """
+        self.__own_rules[name] = value
 
     def __str__(self) -> str:
-        return (f"{self.title} - Statistics send:\n"
-                f"frame_count: {self.send_frame_count}\n"
-                f"frame_bytes: {self.send_frame_bytes}B\n"
-                # f" average_transfer_time: {mean(self.send_transfer_times)},"
-                f" frame_types: {self.send_frame_types}\n"
-                
-                f"{self.title} - Statistics receive:\n"
-                f"frame_count: {self.recv_frame_count}\n"
-                f"frame_bytes: {self.recv_frame_bytes}B\n"
-                # f" average_transfer_time: {mean(self.recv_transfer_times)},"
-                f" frame_types: {self.recv_frame_types}"
-                )
+        """
+        Get a string representation of the statistics.
 
-    # packet_counts = [[0 for _ in range(60)] for _ in range(24)]  # 24 hodin, 60 sekund v hodině
-    #
-    # # Zpracujte příchozí pakety a aktualizujte počítadla
-    # def handle_incoming_packet(packet):
-    #     current_time = time.time()
-    #     hour = int(current_time // 3600)
-    #     minute = int((current_time % 3600) // 60)
-    #     second = int(current_time % 60)
-    #
-    #     packet_counts[hour][minute][second] += 1
+        :return: The string representation of the statistics.
+        """
+        return (f"{self.__title} - Statistics send:\n"
+                f"frame_count: {self.__send_frame_count}\n"
+                f"frame_bytes: {self.__send_frame_bytes}B\n"
+                # f" average_transfer_time: {mean(self.send_transfer_times)},"
+                f" frame_types: {self.__send_frame_types}\n"
+                
+                f"{self.__title} - Statistics receive:\n"
+                f"frame_count: {self.__recv_frame_count}\n"
+                f"frame_bytes: {self.__recv_frame_bytes}B\n"
+                # f" average_transfer_time: {mean(self.recv_transfer_times)},"
+                f" frame_types: {self.__recv_frame_types}"
+                )

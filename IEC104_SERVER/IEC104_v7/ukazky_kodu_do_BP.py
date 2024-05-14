@@ -162,7 +162,7 @@ async def send_frame(self, frame: Frame = None) -> None:
         try:
             if frame is not None:
                 logging.info(f"{time.strftime('%X')}-Send"
-                             f" to {self.ip}:{self.port}"
+                             f" to {self.ip}:{self.__port}"
                              f" - frame: {frame}")
                 self.__writer.write(frame.serialize())
                 await self.__writer.drain()

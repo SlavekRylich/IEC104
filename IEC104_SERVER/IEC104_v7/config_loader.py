@@ -6,11 +6,23 @@ from typing import Any
 
 
 class ConfigLoader:
+    """
+    Class provides method for load parameters from file.
+    """
     def __init__(self, file_path: str):
+        """
+        Constructor of ConfigLoader class.
+
+        :param file_path:
+        """
         self.file_path: str = file_path
         self.config: Any = self.load_config()
 
     def load_config(self) -> Any | None:
+        """
+        Method for load config from json format file with parameters of IEC104 session.
+        :return:
+        """
         try:
             with open(self.file_path, 'r') as file:
                 config = json.load(file)

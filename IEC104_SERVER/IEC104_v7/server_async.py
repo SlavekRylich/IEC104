@@ -30,9 +30,15 @@ class ServerIEC104:
     def __init__(self, name: str = "Server"):
         """
         Constructor for server IEC 104 protocol.
-        Args: None
-        Returns: None
-        Exceptions: None
+
+        Args:
+            name (str): The name of the server. Default is "Server".
+
+        Returns:
+            None
+
+        Exceptions:
+            None
         """
         self.__name: str = name
         self.__loop: asyncio.BaseEventLoop | None = None
@@ -86,6 +92,18 @@ class ServerIEC104:
             print(e)
 
     def load_session_params(self, config_loader: ConfigLoader) -> tuple:
+        """
+        Load session parameters from the configuration loader.
+
+        Args:
+            config_loader (ConfigLoader): The configuration loader object.
+
+        Returns:
+            tuple: A tuple containing the loaded session parameters.
+
+        Exceptions:
+            Exception: If any of the session parameters are out of range.
+        """
 
         k = config_loader.config['server']['k']
         if k < 1 or k > 32767:
@@ -118,22 +136,58 @@ class ServerIEC104:
 
     @property
     def name(self):
+        """
+        Get the name of the server.
+
+        Returns:
+            str: The name of the server.
+        """
         return self.__name
 
     @name.setter
     def name(self, value):
+        """
+        Set the name of the server.
+
+        Args:
+            value (str): The new name of the server.
+
+        Returns:
+            None
+
+        Exceptions:
+            None
+        """
         self.__name = value
 
     def send(self) -> None:
+        """
+        Send data to the clients.
+
+        Args:
+            None
+
+        Returns:
+            None
+
+        Exceptions:
+            None
+        """
         pass
 
     def get_all_clients_stats(self) -> list | None:
         """
-            Get all clients stats.
-            Args: None
-            Returns: bool | None
-            Exceptions: None
-            """
+        Get all clients' statistics.
+
+        Args:
+            None
+
+        Returns:
+            list: A list of all clients' statistics.
+
+        Exceptions:
+            None
+        """
         local_list: list[FrameStatistics] = []
         for client in self.clients.values():
             local_list.append(client.get_client_stats())
@@ -145,6 +199,18 @@ class ServerIEC104:
         return None
 
     async def listen(self) -> None:
+        """
+        Listen for incoming client connections.
+
+        Args:
+            None
+
+        Returns:
+            None
+
+        Exceptions:
+            None
+        """
         print(f"Listen on {self.ip}:{self.port}")
         logging.info(f"Listen on {self.ip}:{self.port}")
         try:
@@ -157,18 +223,20 @@ class ServerIEC104:
         except Exception as e:
             print(e)
 
-    """
-    Handle client.
-    Args: reader, writer
-    """
-
     async def handle_client(self, reader: asyncio.StreamReader,
                             writer: asyncio.StreamWriter) -> None:
         """
-        This function is called when a new client connects to the server. It creates a new QueueManager object for
-        the client if one does not already exist, and adds it to the "self.clients" dictionary. Args: reader (
-        asyncio.StreamReader): A stream reader for the incoming data from the client. writer (asyncio.StreamWriter):
-        A stream writer for sending data to the client.
+        Handle a new client connection.
+
+        Args:
+            reader (asyncio.StreamReader): The stream reader for the incoming data from the client.
+            writer (asyncio.StreamWriter): The stream writer for sending data to the client.
+
+        Returns:
+            None
+
+        Exceptions:
+            None
         """
         client_addr, client_port = writer.get_extra_info('peername')
         """
@@ -227,6 +295,19 @@ class ServerIEC104:
             logging.error(f"Exception: {e}")
 
     async def run(self) -> None:
+        """
+        Run the server.
+
+        Args:
+            None
+
+        Returns:
+            None
+
+        Exceptions:
+            None
+        """
+
         self.__loop = asyncio.get_running_loop()
         pass
         # self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
@@ -245,97 +326,95 @@ class ServerIEC104:
         # await asyncio.sleep(self.async_time)
 
     def check_alive_clients(self) -> bool:
+        """
+        Check if any client in the list self.clients has a flag for deletion.
+        If a client has the flag set, it is removed from the list.
+        If no clients are left in the list, it returns False.
+        If clients are still present, it returns True.
 
-        # if is any client in list self.clients, check his flag for delete and remove it
+        Parameters:
+        None
+
+        Returns:
+        bool: True if clients are still present, False otherwise.
+        """
+
+        # if there are any clients in the list
         if len(self.clients) > 0:
             count: int = 0
+            # iterate over a copy of the clients list
             for client in list(self.clients.values()):
+                # if the client has the flag for deletion
                 if client.flag_delete:
+                    # remove the client from the list
                     self.clients.pop(client.ip)
                     logging.debug(f"deleted {client} from server")
                     count += 1
+                # if the client is None
                 if client is None:
                     count += 1
-                    print(f"nastalo toto ? ")
                     logging.debug(f"deleted {client} because it's None")
+            # if no clients were deleted
             if count == 0:
                 logging.debug(f"last client was deleted")
-                print(f"Čekám na spojení...")
+                print(f"Waiting for connection...")
             print(count)
+            # if there are still clients in the list
             if len(list(self.clients)) > 0:
                 return True
+            # if no clients are left in the list
             else:
                 return False
+        # if there are no clients in the list
         else:
             logging.debug(f"no clients on server")
             return False
 
-    async def periodic_event_check(self):
-
-        while True:
-            print(f"Starting async server periodic event check.")
-            logging.debug(f"Starting async server periodic event check.")
-            try:
-                # delete queue if no session is connected
-                if len(self.clients) != 0:
-                    if self.task_check_alive_queue.done():
-
-                        for value in list(self.clients.values()):
-                            if isinstance(value, ClientManager):
-                                if value.flag_delete:
-                                    result_value = self.clients.pop(value.ip)
-                                    print(f"oddelana fronta ze slovniku {result_value}")
-                                    logging.debug(f"oddelana fronta ze slovniku {result_value}")
-                                    del result_value
-
-                print(len(self.clients))
-                gc.collect()
-                objects = gc.get_objects()
-
-                for value in list(self.clients.values()):
-                    if isinstance(value, ClientManager):
-                        print(f"value: {value}")
-                        logging.debug(f"value: {value}")
-
-                found = False
-                for obj in objects:
-                    if isinstance(obj, ClientManager):
-                        print(obj)
-                        found = True
-
-                if found:
-                    print(f"Instatnce queue stale existuje")
-                    logging.debug(f"Instatnce queue stale existuje")
-
-                else:
-                    print(f"Instatnce queue byla odstranena")
-                    logging.debug(f"Instatnce queue byla odstranena")
-
-            except Exception as e:
-                print(f"Exception {e}")
-                logging.error(f"Exception {e}")
-
-            print(f"Finish async server periodic event check.")
-            logging.debug(f"Finish async server periodic event check.")
-            await asyncio.sleep(self.async_time * 2)
-
-    # Stop server
     async def close(self) -> None:
-        self.__loop.close()
-        logging.info(f"Loop.close!")
-        logging.shutdown()
+        """
+        Close the asyncio event loop and shutdown the logging system.
+
+        This method should be called when the server is no longer needed to free up system resources.
+        It closes the asyncio event loop and shuts down the logging system.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+
+        Raises:
+        None
+        """
+        self.__loop.close()  # Close the asyncio event loop
+        logging.info(f"Loop.close!")  # Log the closure of the event loop
+        logging.shutdown()  # Shut down the logging system
 
 
 # Main function
 async def main() -> None:
-    my_server = ServerIEC104()
-    await my_server.listen()
-    await my_server.run()
+    """
+    The main function of the server application.
+
+    This function initializes a new instance of the ServerIEC104 class,
+    starts listening for incoming client connections, and runs the server.
+
+    Parameters:
+    None
+
+    Returns:
+    None
+
+    Raises:
+    None
+    """
+    my_server = ServerIEC104()  # Initialize a new instance of the ServerIEC104 class
+    await my_server.listen()  # Start listening for incoming client connections
+    await my_server.run()  # Run the server
 
 
 if __name__ == '__main__':
 
-    # server = ServerIEC104()
     try:
         asyncio.run(main())
 

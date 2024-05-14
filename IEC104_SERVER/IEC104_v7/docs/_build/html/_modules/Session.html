@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session &mdash; IEC104 1.0.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=46dfa7f5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            IEC104
+          </a>
+              <div class="version">
+                1.0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">IEC104_v7</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IEC104</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Session</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Session</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span> <span class="nn">Packet_buffer</span>
+<span class="kn">from</span> <span class="nn">Timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">Frame</span> <span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">Parser</span>
+<span class="kn">from</span> <span class="nn">IFormat</span> <span class="kn">import</span> <span class="n">IFormat</span>
+<span class="kn">from</span> <span class="nn">State</span> <span class="kn">import</span> <span class="n">ConnectionState</span><span class="p">,</span> <span class="n">TransmissionState</span>
+
+
+<div class="viewcode-block" id="Session">
+<a class="viewcode-back" href="../Session.html#Session.Session">[docs]</a>
+<span class="k">class</span> <span class="nc">Session</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for session. Manages communication with a client and handles incoming and outgoing frames.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># třídní proměná pro uchování unikátní id každé instance</span>
+    <span class="n">_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">_instances</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Session&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">ip</span><span class="p">,</span>
+                 <span class="n">port</span><span class="p">,</span>
+                 <span class="n">reader</span><span class="p">,</span>
+                 <span class="n">writer</span><span class="p">,</span>
+                 <span class="n">session_params</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">callback_on_message_recv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">callback_timeouts</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">send_buffer</span><span class="p">:</span> <span class="n">Packet_buffer</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">whoami</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;client&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new Session instance.</span>
+
+<span class="sd">        :param ip: IP address of the client.</span>
+<span class="sd">        :param port: Port number of the client.</span>
+<span class="sd">        :param reader: asyncio.StreamReader for reading data from the client.</span>
+<span class="sd">        :param writer: asyncio.StreamWriter for writing data to the client.</span>
+<span class="sd">        :param session_params: Tuple of parameters for the session.</span>
+<span class="sd">        :param callback_on_message_recv: Callback function to handle received messages.</span>
+<span class="sd">        :param callback_timeouts: Tuple of callback functions for handling timeouts.</span>
+<span class="sd">        :param send_buffer: Packet_buffer for storing outgoing frames.</span>
+<span class="sd">        :param whoami: String indicating whether the session is for a client or server.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Instances of Session</span>
+        <span class="n">Session</span><span class="o">.</span><span class="n">_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">_id</span>
+        <span class="n">Session</span><span class="o">.</span><span class="n">_instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># features of session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__reader</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">StreamReader</span> <span class="o">=</span> <span class="n">reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__writer</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">StreamWriter</span> <span class="o">=</span> <span class="n">writer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ip_dst</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__port_dst</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Session_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__id</span><span class="p">)</span>
+        <span class="c1"># callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__callback_on_message_recv</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">callback_on_message_recv</span>
+
+        <span class="c1"># events</span>
+        <span class="c1"># self.__event_queue_in = queue.event_in</span>
+        <span class="c1"># self.__shared_event_queue_out = queue.event_out</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__event_queue_out</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__event_update</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="c1"># Queues </span>
+        <span class="c1"># self.__queue = queue</span>
+        <span class="c1"># self.__incomming_queue = queue.in_queue</span>
+        <span class="c1"># self.__outgoing_queue = queue.out_queue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__send_buffer</span><span class="p">:</span> <span class="n">Packet_buffer</span> <span class="o">=</span> <span class="n">send_buffer</span>
+        <span class="c1"># self.__recv_buffer = queue.recv_buffer</span>
+
+        <span class="c1"># server / client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__whoami</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">whoami</span>
+
+        <span class="c1"># local queue is for handle message to update_state_machine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__local_queue</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Queue</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+
+        <span class="c1"># flag_session = &#39;START_SESSION&#39;</span>
+        <span class="c1"># flag_session = &#39;STOP_SESSION&#39;</span>
+        <span class="c1"># flag_session = &#39;ACTIVE_TERMINATION&#39;</span>
+        <span class="c1"># flag_session = None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># flag_timeout_t1 = 0 - good</span>
+        <span class="c1"># flag_timeout_t1 = 1 - timeout </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_timeout_t1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># flag for delete self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_stop_tasks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># flag for stop tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Parameters from config file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">session_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__w</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">session_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># self.__timeout_t0 = session_params[2]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timeout_t1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">session_params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="c1"># self.__timeout_t2 = session_params[4]</span>
+        <span class="c1"># self.__timeout_t3 = session_params[5]</span>
+
+        <span class="c1"># Timers</span>
+        <span class="c1"># Timer( time, callback)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t0</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="n">session_params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">callback_timeouts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t1</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="n">session_params</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">callback_timeouts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t2</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="n">session_params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">callback_timeouts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t3</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="n">session_params</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">callback_timeouts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Timer</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__timer_t0</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t1</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t2</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t3</span><span class="p">]</span>
+
+        <span class="c1"># timing of tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__async_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__time_for_task_timeouts</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+        <span class="c1"># parameter for select session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># inical states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__connection_state</span><span class="p">:</span> <span class="n">ConnectionState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="s1">&#39;CONNECTED&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__transmission_state</span><span class="p">:</span> <span class="n">TransmissionState</span> <span class="o">=</span> <span class="n">TransmissionState</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="s1">&#39;STOPPED&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__task</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tasks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># self.__tasks.append(asyncio.create_task(self.handle_messages()))</span>
+        <span class="c1"># self.__tasks.append(asyncio.create_task(self.send_frame()))</span>
+
+        <span class="c1"># if self.__whoami == &#39;server&#39;:</span>
+        <span class="c1">#     self.__tasks.append(asyncio.create_task(self.update_state_machine_server()))</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     self.__tasks.append(asyncio.create_task(self.update_state_machine_client()))</span>
+
+        <span class="c1"># self.__tasks.append(asyncio.create_task(self.check_for_timeouts()))</span>
+
+<div class="viewcode-block" id="Session.start">
+<a class="viewcode-back" href="../Session.html#Session.Session.start">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start the session by initiating the handling of incoming messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_messages</span><span class="p">())</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">k</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the value of k.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__k</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the value of w.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__w</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ip</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the IP address.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ip_dst</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the port.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__port_dst</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the value of id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the name of the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">flag_stop_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the flag indicating whether to stop the tasks for the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__flag_stop_tasks</span>
+
+    <span class="nd">@flag_stop_tasks</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flag_stop_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the flag indicating whether to stop the tasks for the session.</span>
+
+<span class="sd">        :param value: The new value for the flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_stop_tasks</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">event_queue_out</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__event_queue_out</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">flag_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the flag indicating whether to delete the session.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            The flag indicating whether to delete the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__flag_delete</span>
+
+    <span class="nd">@flag_delete</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flag_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the flag indicating whether to delete the session.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        flag : bool</span>
+<span class="sd">            The new value for the flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nastaven flag_delete na </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nastaven flag_delete na </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_delete</span> <span class="o">=</span> <span class="n">flag</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">flag_session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the flag indicating the session state.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str | None</span>
+<span class="sd">            The flag indicating the session state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__flag_session</span>
+
+    <span class="nd">@flag_session</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flag_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the flag indicating the session state.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        flag : str</span>
+<span class="sd">            The new value for the flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;flag_session_set </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;flag_session_set </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_session</span> <span class="o">=</span> <span class="n">flag</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">flag_timeout_t1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the flag indicating whether a timeout occurred for timer T1.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The flag indicating whether a timeout occurred for timer T1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__flag_timeout_t1</span>
+
+    <span class="nd">@flag_timeout_t1</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flag_timeout_t1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the flag indicating whether a timeout occurred for timer T1.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        flag : int</span>
+<span class="sd">            The new value for the flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__flag_timeout_t1</span> <span class="o">=</span> <span class="n">flag</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">whoami</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the identifier for the session (client or server).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The identifier for the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__whoami</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">connection_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the connection state of the session.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The connection state of the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__connection_state</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+
+    <span class="c1"># 0 = DISCONNECTED</span>
+    <span class="c1"># 1 = CONNECTED</span>
+    <span class="nd">@connection_state</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">connection_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the connection state of the session.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : str</span>
+<span class="sd">            The new connection state of the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHANGE_CONNECTION_STATE: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__connection_state</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHANGE_CONNECTION_STATE: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__connection_state</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__connection_state</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transmission_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the transmission state of the session.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The transmission state of the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmission_state</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+
+    <span class="c1"># 0 = STOPPED</span>
+    <span class="c1"># 1= WAITING_RUNNING</span>
+    <span class="c1"># 2 = RUNNING</span>
+    <span class="c1"># 3 = WAITING_UNCONFIRMED</span>
+    <span class="c1"># 4 = WAITING_STOPPED</span>
+    <span class="nd">@transmission_state</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">transmission_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the transmission state of the session.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : str</span>
+<span class="sd">            The new transmission state of the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHANGE_TRANSMISSION_STATE: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__transmission_state</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHANGE_TRANSMISSION_STATE: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__transmission_state</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__transmission_state</span> <span class="o">=</span> <span class="n">TransmissionState</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Session.remove_instance">
+<a class="viewcode-back" href="../Session.html#Session.Session.remove_instance">[docs]</a>
+    <span class="nd">@classmethod</span>  <span class="c1"># instance s indexem 0 neexistuje ( je rezevrována* )</span>
+    <span class="k">def</span> <span class="nf">remove_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">id_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="s1">&#39;Session&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+        <span class="c1"># if id_num &lt; len(cls._instances):</span>
+        <span class="c1">#     del cls._instances[id_num]</span>
+        <span class="c1">#     return True</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     return False</span>
+
+<div class="viewcode-block" id="Session.update_timestamp_t2">
+<a class="viewcode-back" href="../Session.html#Session.Session.update_timestamp_t2">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_timestamp_t2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># self.__timestamp_t2.start()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Session.get_all_instances">
+<a class="viewcode-back" href="../Session.html#Session.Session.get_all_instances">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_all_instances</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span></div>
+
+
+<div class="viewcode-block" id="Session.get_instance">
+<a class="viewcode-back" href="../Session.html#Session.Session.get_instance">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">id_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">inst</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">id_num</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">inst</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+    <span class="c1"># RECEIVE FRAME</span>
+<div class="viewcode-block" id="Session.handle_messages">
+<a class="viewcode-back" href="../Session.html#Session.Session.handle_messages">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asynchronously handle incoming messages from the client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__flag_stop_tasks</span><span class="p">:</span>
+            <span class="c1"># if not self.__flag_stop_tasks:</span>
+
+            <span class="c1"># await asyncio.sleep(0.01)  # kritický bod pro rychlost aplikace</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting async handle_messages&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting async handle_messages&quot;</span><span class="p">)</span>
+
+                <span class="c1"># zde změřit zda timeout nedělá problém zbrždění</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__timeout_t1</span><span class="p">)</span>
+                <span class="c1"># header = await self.__reader.read(2)</span>
+
+                <span class="k">if</span> <span class="n">header</span><span class="p">:</span>
+                    <span class="n">start_byte</span><span class="p">,</span> <span class="n">frame_length</span> <span class="o">=</span> <span class="n">header</span>
+
+                    <span class="c1"># identifikace IEC 104</span>
+                    <span class="k">if</span> <span class="n">start_byte</span> <span class="o">==</span> <span class="n">Frame</span><span class="o">.</span><span class="n">start_byte</span><span class="p">():</span>
+
+                        <span class="n">apdu</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">frame_length</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">apdu</span><span class="p">)</span> <span class="o">==</span> <span class="n">frame_length</span><span class="p">:</span>
+                            <span class="n">new_apdu</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">apdu</span><span class="p">,</span> <span class="n">frame_length</span><span class="p">)</span>
+
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">-Received&quot;</span>
+                                  <span class="sa">f</span><span class="s2">&quot; from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+                                  <span class="sa">f</span><span class="s2">&quot; - frame: </span><span class="si">{</span><span class="n">new_apdu</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">-Received from&quot;</span>
+                                         <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+                                         <span class="sa">f</span><span class="s2">&quot; - frame: </span><span class="si">{</span><span class="n">new_apdu</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t0</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__timer_t3</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+                            <span class="c1"># put into local queue for handle message by update_state</span>
+                            <span class="c1"># self.__local_queue.put_nowait(new_apdu)</span>
+
+                            <span class="c1"># allow to event</span>
+                            <span class="c1"># self.__event_update.set()</span>
+
+                            <span class="c1"># put into incomming queue for handle message by QueueManager</span>
+                            <span class="c1"># self.__incomming_queue.on_message_received((self, new_apdu))</span>
+
+                            <span class="c1"># handle apdu in QueueManager</span>
+                            <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__callback_on_message_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_apdu</span><span class="p">))</span>
+
+                            <span class="c1"># reset local vars</span>
+                            <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="n">start_byte</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="n">apdu</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="n">new_apdu</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="n">frame_length</span> <span class="o">=</span> <span class="kc">None</span>
+                            <span class="c1"># return new_apdu</span>
+                            <span class="c1"># self.__task = asyncio.ensure_future(self.handle_messages())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;zadne prichozi zpravy&quot;</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;zadne prichozi zpravy&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__reader</span><span class="o">.</span><span class="n">at_eof</span><span class="p">():</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EOF - odpojeni klienta&quot;</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EOF - odpojeni klienta&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">flag_session</span> <span class="o">=</span> <span class="s1">&#39;ACTIVE_TERMINATION&#39;</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__callback_on_message_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+                    <span class="c1"># allow to event</span>
+                    <span class="c1"># self.__event_update.set()</span>
+                    <span class="k">break</span>
+
+            <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Klient </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s1"> neposlal žádná data.&#39;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Klient </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s1"> neposlal žádná data.&#39;</span><span class="p">)</span>
+                <span class="c1"># if session is still connect, specially in stopped state</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flag_session</span> <span class="o">=</span> <span class="s1">&#39;ACTIVE_TERMINATION&#39;</span>
+                <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__callback_on_message_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception v handle_messages </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception v handle_messages </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finish async handle_messages.&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finish async handle_messages.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1">################################################</span>
+    <span class="c1">## SEND FRAME</span>
+<div class="viewcode-block" id="Session.send_frame">
+<a class="viewcode-back" href="../Session.html#Session.Session.send_frame">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asynchronously send a frame to the client.</span>
+
+<span class="sd">        :param frame: The frame to be sent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># while not self.__flag_stop_tasks:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__flag_stop_tasks</span><span class="p">:</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># # await asyncio.sleep(self.__async_time) # kritický bod pro rychlost ap</span>
+                <span class="c1"># await self.__event_queue_out.wait()</span>
+                <span class="c1"># self.__event_queue_out.clear()</span>
+
+                <span class="c1"># await self.__shared_event_queue_out.wait()</span>
+                <span class="c1"># self.__shared_event_queue_out.clear()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Start send_frame_task()&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Start send_frame_task()&quot;</span><span class="p">)</span>
+
+                <span class="c1"># print(&quot;\x1b[31mToto je červený text.\x1b[0m&quot;)</span>
+                <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">-Send&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; - frame: </span><span class="si">{</span><span class="n">frame</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">-Send&quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot; to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot; - frame: </span><span class="si">{</span><span class="n">frame</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+
+                <span class="c1"># else:</span>
+                <span class="c1">#     if not self.__outgoing_queue.is_Empty():</span>
+                <span class="c1">#         print(f&quot;posílá se neco z odchozí fronty&quot;)</span>
+                <span class="c1">#         session, frame = await self.__outgoing_queue.get_message()</span>
+                <span class="c1">#</span>
+                <span class="c1">#         if session == self:</span>
+                <span class="c1">#             print(f&quot;{time.ctime()} - Send frame: {frame}&quot;)</span>
+                <span class="c1">#             self.__writer.write(frame.serialize())</span>
+                <span class="c1">#             await self.__writer.drain()</span>
+
+                <span class="c1"># add to packet buffer</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">IFormat</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__send_buffer</span><span class="o">.</span><span class="n">add_frame</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">ssn</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">QueueEmpty</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;problem v asynciu - fronta plna&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;problem v asynciu - fronta plna&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># reset local var </span>
+            <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">frame</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stop send_frame_task()&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stop send_frame_task()&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Session.delete_self">
+<a class="viewcode-back" href="../Session.html#Session.Session.delete_self">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_self</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the session and perform necessary cleanup.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># flag for stop coroutines</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_stop_tasks</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># flag for delete instance by ClientManager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_delete</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tasks</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+            <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+                <span class="c1"># Zpracování zrušení tasků</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zrušení tasku proběhlo úspěšně!&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zrušení tasku proběhlo úspěšně!&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">timer_task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__timers</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">timer_task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+                <span class="c1"># Zpracování zrušení tasků</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zrušení tasku proběhlo úspěšně!&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zrušení tasku proběhlo úspěšně!&quot;</span><span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pred smazanim session: </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">Session</span><span class="o">.</span><span class="n">remove_instance</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;po smazani session: </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">del</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a string representation of the Session instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SessionID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; ip: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; port: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; states: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_state</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission_state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 Brno University of Technology.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

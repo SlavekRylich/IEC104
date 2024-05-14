@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClientManager module &mdash; IEC104 1.0.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=46dfa7f5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Frame module" href="Frame.html" />
+    <link rel="prev" title="IEC104_v7" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            IEC104
+          </a>
+              <div class="version">
+                1.0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">IEC104_v7</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ClientManager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ClientManager.ClientManager"><code class="docutils literal notranslate"><span class="pre">ClientManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.flag_delete"><code class="docutils literal notranslate"><span class="pre">ClientManager.flag_delete</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.flag_stop_tasks"><code class="docutils literal notranslate"><span class="pre">ClientManager.flag_stop_tasks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.event_in"><code class="docutils literal notranslate"><span class="pre">ClientManager.event_in</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.event_out"><code class="docutils literal notranslate"><span class="pre">ClientManager.event_out</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.in_queue"><code class="docutils literal notranslate"><span class="pre">ClientManager.in_queue</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.out_queue"><code class="docutils literal notranslate"><span class="pre">ClientManager.out_queue</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.send_buffer"><code class="docutils literal notranslate"><span class="pre">ClientManager.send_buffer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.recv_buffer"><code class="docutils literal notranslate"><span class="pre">ClientManager.recv_buffer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.ip"><code class="docutils literal notranslate"><span class="pre">ClientManager.ip</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.id"><code class="docutils literal notranslate"><span class="pre">ClientManager.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.flag_start_sequence"><code class="docutils literal notranslate"><span class="pre">ClientManager.flag_start_sequence</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.tasks"><code class="docutils literal notranslate"><span class="pre">ClientManager.tasks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.add_task"><code class="docutils literal notranslate"><span class="pre">ClientManager.add_task()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.get_client_stats"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_client_stats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.get_session_stats"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_session_stats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.get_all_sessions_stat"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_all_sessions_stat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.remove_instance"><code class="docutils literal notranslate"><span class="pre">ClientManager.remove_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.send_frame"><code class="docutils literal notranslate"><span class="pre">ClientManager.send_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.on_message_recv_or_timeout"><code class="docutils literal notranslate"><span class="pre">ClientManager.on_message_recv_or_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.check_alive_sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.check_alive_sessions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.delete_self"><code class="docutils literal notranslate"><span class="pre">ClientManager.delete_self()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.handle_apdu"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_apdu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.is_response"><code class="docutils literal notranslate"><span class="pre">ClientManager.is_response()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.add_session"><code class="docutils literal notranslate"><span class="pre">ClientManager.add_session()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.get_number_of_sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_number_of_sessions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_i_frame"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_i_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_s_frame"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_s_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.get_number_of_connected_sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.get_number_of_connected_sessions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.sessions"><code class="docutils literal notranslate"><span class="pre">ClientManager.sessions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.incrementVR"><code class="docutils literal notranslate"><span class="pre">ClientManager.incrementVR()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.incrementVS"><code class="docutils literal notranslate"><span class="pre">ClientManager.incrementVS()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.ack"><code class="docutils literal notranslate"><span class="pre">ClientManager.ack</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.VR"><code class="docutils literal notranslate"><span class="pre">ClientManager.VR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.VS"><code class="docutils literal notranslate"><span class="pre">ClientManager.VS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_testdt_act"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_testdt_act()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_testdt_con"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_testdt_con()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_startdt_act"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_startdt_act()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_startdt_con"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_startdt_con()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_stopdt_act"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_stopdt_act()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.generate_stopdt_con"><code class="docutils literal notranslate"><span class="pre">ClientManager.generate_stopdt_con()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.update_state_machine_server"><code class="docutils literal notranslate"><span class="pre">ClientManager.update_state_machine_server()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.update_state_machine_client"><code class="docutils literal notranslate"><span class="pre">ClientManager.update_state_machine_client()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.handle_timeout_t0"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t0()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.handle_timeout_t1"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t1()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.handle_timeout_t2"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ClientManager.ClientManager.handle_timeout_t3"><code class="docutils literal notranslate"><span class="pre">ClientManager.handle_timeout_t3()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Frame.html">Frame module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FrameStatistics.html">FrameStatistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IDataSharing.html">IDataSharing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IFormat.html">IFormat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MQTTProtocol.html">MQTTProtocol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Packet_buffer.html">Packet_buffer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parser.html">Parser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SFormat.html">SFormat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Session.html">Session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="State.html">State module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Timer.html">Timer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UFormat.html">UFormat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apci.html">apci module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config_loader.html">config_loader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_async.html">server_async module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IEC104</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">IEC104_v7</a></li>
+      <li class="breadcrumb-item active">ClientManager module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ClientManager.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ClientManager">
+<span id="clientmanager-module"></span><h1>ClientManager module<a class="headerlink" href="#module-ClientManager" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ClientManager.ClientManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ClientManager.</span></span><span class="sig-name descname"><span class="pre">ClientManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip_addr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_broker_ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_broker_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1883</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_topic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_transport</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_qos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_check_clients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_only_for_client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whoami</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'client'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ClientManager.html#ClientManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class represents the client and his features.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.flag_delete">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flag_delete</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.flag_delete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.flag_stop_tasks">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flag_stop_tasks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.flag_stop_tasks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.event_in">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">event_in</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Event</span></em><a class="headerlink" href="#ClientManager.ClientManager.event_in" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.event_out">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">event_out</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Event</span></em><a class="headerlink" href="#ClientManager.ClientManager.event_out" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.in_queue">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">in_queue</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Queue</span></em><a class="headerlink" href="#ClientManager.ClientManager.in_queue" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.out_queue">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_queue</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Queue</span></em><a class="headerlink" href="#ClientManager.ClientManager.out_queue" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.send_buffer">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_buffer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer" title="Packet_buffer.PacketBuffer"><span class="pre">PacketBuffer</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.send_buffer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.recv_buffer">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">recv_buffer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="Packet_buffer.html#Packet_buffer.PacketBuffer" title="Packet_buffer.PacketBuffer"><span class="pre">PacketBuffer</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.recv_buffer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.ip">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ip</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.ip" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.flag_start_sequence">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flag_start_sequence</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.flag_start_sequence" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.tasks">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tasks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.tasks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.add_task">
+<span class="sig-name descname"><span class="pre">add_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">create_task</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.add_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.add_task" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.get_client_stats">
+<span class="sig-name descname"><span class="pre">get_client_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics" title="FrameStatistics.FrameStatistics"><span class="pre">FrameStatistics</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.get_client_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.get_client_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.get_session_stats">
+<span class="sig-name descname"><span class="pre">get_session_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="FrameStatistics.html#FrameStatistics.FrameStatistics" title="FrameStatistics.FrameStatistics"><span class="pre">FrameStatistics</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.get_session_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.get_session_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.get_all_sessions_stat">
+<span class="sig-name descname"><span class="pre">get_all_sessions_stat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.get_all_sessions_stat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.get_all_sessions_stat" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.remove_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ClientManager.ClientManager" title="ClientManager.ClientManager"><span class="pre">ClientManager</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.remove_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.remove_instance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.send_frame">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Frame.html#Frame.Frame" title="Frame.Frame"><span class="pre">Frame</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.send_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.send_frame" title="Link to this definition"></a></dt>
+<dd><p>Method to send frame and can catch statistics of sending frames.
+:rtype: object
+:param session:
+:param frame:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.on_message_recv_or_timeout">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_message_recv_or_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">apdu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Frame.html#Frame.Frame" title="Frame.Frame"><span class="pre">Frame</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.on_message_recv_or_timeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.on_message_recv_or_timeout" title="Link to this definition"></a></dt>
+<dd><p>This function is triggered when a new message is received or any timeout became.
+Redirects apdu for handle apdu and update state session
+or if apdu is None then it be update state session only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><em>Session</em></a>) – The session that received the message.</p></li>
+<li><p><strong>apdu</strong> (<a class="reference internal" href="Frame.html#Frame.Frame" title="Frame.Frame"><em>Frame</em></a>) – The APDU frame that was received.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None
+:param session:
+:param apdu:
+:rtype: object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.check_alive_sessions">
+<span class="sig-name descname"><span class="pre">check_alive_sessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.check_alive_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.check_alive_sessions" title="Link to this definition"></a></dt>
+<dd><p>Method for checking if any session still exists.
+If session has set flag for delete it will be deleted from list of sessions.
+If no session is found it will call delete_self method.
+:return:
+:rtype: object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.delete_self">
+<span class="sig-name descname"><span class="pre">delete_self</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.delete_self"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.delete_self" title="Link to this definition"></a></dt>
+<dd><p>Method cancel all tasks associated, set flag for delete and call callback for server class instance.
+:rtype: object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.handle_apdu">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">apdu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Frame.html#Frame.Frame" title="Frame.Frame"><span class="pre">Frame</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.handle_apdu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.handle_apdu" title="Link to this definition"></a></dt>
+<dd><p>Method for handling the apdu by state diagram.
+:rtype: object
+:param session:
+:param apdu:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.is_response">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_response</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.is_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.is_response" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.add_session">
+<span class="sig-name descname"><span class="pre">add_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_addr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StreamReader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StreamWriter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_on_message_recv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_timeouts_tuple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">whoami</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'server'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.add_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.add_session" title="Link to this definition"></a></dt>
+<dd><p>Method for create new session instance of new client connection.
+:rtype: Session
+:param client_addr:
+:param client_port:
+:param reader:
+:param writer:
+:param session_params:
+:param callback_on_message_recv:
+:param callback_timeouts_tuple:
+:param whoami:
+:return: Session instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.get_number_of_sessions">
+<span class="sig-name descname"><span class="pre">get_number_of_sessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.get_number_of_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.get_number_of_sessions" title="Link to this definition"></a></dt>
+<dd><p>Return number of session in list of sessions
+:return: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_i_frame">
+<span class="sig-name descname"><span class="pre">generate_i_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="IFormat.html#IFormat.IFormat" title="IFormat.IFormat"><span class="pre">IFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_i_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_i_frame" title="Link to this definition"></a></dt>
+<dd><p>Method generate a new I-format frame with the current counter states
+:rtype: IFormat
+:param data:
+:param session:
+:return: IFormat</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_s_frame">
+<span class="sig-name descname"><span class="pre">generate_s_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="SFormat.html#SFormat.SFormat" title="SFormat.SFormat"><span class="pre">SFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_s_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_s_frame" title="Link to this definition"></a></dt>
+<dd><p>Method generate a new S-format frame with the current counter states
+:rtype: SFormat
+:param session:
+:return: SFormat</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.get_number_of_connected_sessions">
+<span class="sig-name descname"><span class="pre">get_number_of_connected_sessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.get_number_of_connected_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.get_number_of_connected_sessions" title="Link to this definition"></a></dt>
+<dd><p>Method returns number of session with CONNECTED state.
+:rtype: int
+:return: count</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.sessions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sessions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ClientManager.ClientManager.sessions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.incrementVR">
+<span class="sig-name descname"><span class="pre">incrementVR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.incrementVR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.incrementVR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.incrementVS">
+<span class="sig-name descname"><span class="pre">incrementVS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.incrementVS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.incrementVS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.ack">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.ack" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.VR">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.VR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.VS">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#ClientManager.ClientManager.VS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_testdt_act">
+<span class="sig-name descname"><span class="pre">generate_testdt_act</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="UFormat.html#UFormat.UFormat" title="UFormat.UFormat"><span class="pre">UFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_testdt_act"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_testdt_act" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_testdt_con">
+<span class="sig-name descname"><span class="pre">generate_testdt_con</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="UFormat.html#UFormat.UFormat" title="UFormat.UFormat"><span class="pre">UFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_testdt_con"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_testdt_con" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_startdt_act">
+<span class="sig-name descname"><span class="pre">generate_startdt_act</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="UFormat.html#UFormat.UFormat" title="UFormat.UFormat"><span class="pre">UFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_startdt_act"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_startdt_act" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_startdt_con">
+<span class="sig-name descname"><span class="pre">generate_startdt_con</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="UFormat.html#UFormat.UFormat" title="UFormat.UFormat"><span class="pre">UFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_startdt_con"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_startdt_con" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_stopdt_act">
+<span class="sig-name descname"><span class="pre">generate_stopdt_act</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="UFormat.html#UFormat.UFormat" title="UFormat.UFormat"><span class="pre">UFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_stopdt_act"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_stopdt_act" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.generate_stopdt_con">
+<span class="sig-name descname"><span class="pre">generate_stopdt_con</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="UFormat.html#UFormat.UFormat" title="UFormat.UFormat"><span class="pre">UFormat</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.generate_stopdt_con"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.generate_stopdt_con" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.update_state_machine_server">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_state_machine_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Frame.html#Frame.Frame" title="Frame.Frame"><span class="pre">Frame</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.update_state_machine_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.update_state_machine_server" title="Link to this definition"></a></dt>
+<dd><p>Method for update state of session by receive frame or timeout.
+:param session:
+:param fr:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.update_state_machine_client">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_state_machine_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Frame.html#Frame.Frame" title="Frame.Frame"><span class="pre">Frame</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.update_state_machine_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.update_state_machine_client" title="Link to this definition"></a></dt>
+<dd><p>Method for update state of session by receive frame or timeout for client app.
+:param session:
+:param fr:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.handle_timeout_t0">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_timeout_t0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.handle_timeout_t0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.handle_timeout_t0" title="Link to this definition"></a></dt>
+<dd><p>Method for handling timeout.
+:param session:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.handle_timeout_t1">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_timeout_t1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.handle_timeout_t1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.handle_timeout_t1" title="Link to this definition"></a></dt>
+<dd><p>Method for handling timeout.
+:param session:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.handle_timeout_t2">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_timeout_t2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.handle_timeout_t2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.handle_timeout_t2" title="Link to this definition"></a></dt>
+<dd><p>Method for handling timeout.
+:param session:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ClientManager.ClientManager.handle_timeout_t3">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_timeout_t3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Session.html#Session.Session" title="Session.Session"><span class="pre">Session</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/ClientManager.html#ClientManager.handle_timeout_t3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ClientManager.ClientManager.handle_timeout_t3" title="Link to this definition"></a></dt>
+<dd><p>Method for handling timeout.
+:param session:</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="IEC104_v7" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Frame.html" class="btn btn-neutral float-right" title="Frame module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 Brno University of Technology.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
