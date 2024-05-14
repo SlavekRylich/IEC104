@@ -12,7 +12,7 @@ from ClientManager import ClientManager
 # Nastavení úrovně logování
 logging.basicConfig(
     filename='main-server.txt',
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
@@ -261,8 +261,8 @@ class ServerIEC104:
 
             self.clients[client_addr] = client_manager_instance
 
-            print(f"Created new queue for client {client_addr}")
-            logging.info(f"Created new queue for client {client_addr}")
+            print(f"Established with new client: {client_addr}")
+            logging.info(f"Established with new client: {client_addr}")
 
         client_manager_instance: ClientManager = self.clients[client_addr]
 
@@ -308,22 +308,22 @@ class ServerIEC104:
             None
         """
 
-        self.__loop = asyncio.get_running_loop()
-        pass
-        # self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
+        try:
+            self.__loop = asyncio.get_running_loop()
 
-        # # while True:
-        # try:
-        #     await asyncio.gather(self.task_periodic_event_check,
-        #                          *(task for task in self.tasks))
-        #
-        await self._server.serve_forever()
-        #
-        # except Exception as e:
-        #     print(f"Exception {e}")
-        # continue
+            # self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
 
-        # await asyncio.sleep(self.async_time)
+            # # while True:
+            # try:
+            #     await asyncio.gather(self.task_periodic_event_check,
+            #                          *(task for task in self.tasks))
+            #
+            await self._server.serve_forever()
+
+        except Exception as e:
+            print(f"Exception {e}")
+        finally:
+            pass
 
     def check_alive_clients(self) -> bool:
         """
@@ -370,7 +370,7 @@ class ServerIEC104:
             logging.debug(f"no clients on server")
             return False
 
-    async def close(self) -> None:
+    def close(self) -> None:
         """
         Close the asyncio event loop and shutdown the logging system.
 

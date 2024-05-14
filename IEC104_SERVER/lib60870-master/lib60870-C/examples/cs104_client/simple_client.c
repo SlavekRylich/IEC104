@@ -105,7 +105,7 @@ asduReceivedHandler (void* parameter, int address, CS101_ASDU asdu)
 int
 main(int argc, char** argv)
 {
-    const char* ip = "192.168.211.129";
+    const char* ip = "127.0.0.1";
     uint16_t port = IEC_60870_5_104_DEFAULT_PORT;
     const char* localIp = NULL;
     int localPort = -1;
