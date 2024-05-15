@@ -66,7 +66,7 @@ async def handle_client(self, reader: asyncio.StreamReader,
     # z�sk� IP adresu a port z TCP spojen�
     client_addr, client_port = writer.get_extra_info('peername')
     # callback pro smaz�n� instance ClientManagera pokud ji� nem� ��dn� aktivn� spojen�
-    callback = self.check_alive_clients
+    callback = self.delete_dead_clients
     # vytvo�en� instance ClientManager, pokud se p�ipojil nov� klient
     if client_addr not in self.clients:
         client_manager_instance = ClientManager(client_addr,
@@ -151,7 +151,7 @@ async def handle_timeout_t2(self, session: Session = None) -> None:
 
 async def handle_timeout_t3(self, session: Session = None) -> None:
     logging.debug(f"Timer t3 timed_out - {session}")
-    new_frame = self.generate_testdt_act()
+    new_frame = generate_testdt_act()
     task = asyncio.ensure_future(session.send_frame(new_frame))
     self.__tasks.append(task)
 

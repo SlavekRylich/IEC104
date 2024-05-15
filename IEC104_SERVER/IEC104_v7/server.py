@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import gc
 import logging
 import asyncio
 
@@ -11,15 +10,10 @@ from ClientManager import ClientManager
 
 # Nastavení úrovně logování
 logging.basicConfig(
-    filename='main-server.txt',
+    filename='server.txt',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
-
-# Logování zprávy
-logging.info("Toto je informační zpráva")
-logging.warning("Toto je varovná zpráva")
-logging.error("Toto je chybová zpráva")
 
 
 class ServerIEC104:
@@ -66,6 +60,12 @@ class ServerIEC104:
         # clients - dictionary[ip_add, ClientManager]
         self.clients: dict[str, ClientManager] = {}
 
+        # callbacks
+        self.__callback_on_connect = None
+        self.__callback_on_disconnect = None
+        self.__callback_on_message = None
+        self.__callback_on_send = None
+
         # working var
         self.no_overflow: int = 0
 
@@ -90,6 +90,7 @@ class ServerIEC104:
 
         except Exception as e:
             print(e)
+            self.close()
 
     def load_session_params(self, config_loader: ConfigLoader) -> tuple:
         """
@@ -105,32 +106,55 @@ class ServerIEC104:
             Exception: If any of the session parameters are out of range.
         """
 
-        k = config_loader.config['server']['k']
+        k: int = config_loader.config['server']['k']
         if k < 1 or k > 32767:
-            raise Exception("Wrong value range for \'k\' variable!")
+            logging.critical("Wrong value range for \'k\' parameter!\n"
+                             "Correct range is <1-32767>. ")
+            raise Exception("Wrong value range for \'k\' parameter!\n"
+                            "Correct range is <1-32767>. ")
 
-        w = config_loader.config['server']['w']
+        w: int = config_loader.config['server']['w']
+        if w < 1 or w > 32767:
+            logging.critical("Wrong value range for \'w\' parameter!\n"
+                             "Correct range is <1-32767>. ")
+            raise Exception("Wrong value range for \'w\' parameter!\n"
+                            "Correct range is <1-32767>. ")
         if w > ((k * 2) / 3):
-            if w < 1 or w > 32767:
-                raise Exception("Wrong value range for \'w\' variable!")
-            print(f"Warning! Use value range for "
-                  "\'w\' less than 2/3 of \'k\'")
+            logging.warning(f"Use value range for \'w\' less than 2/3 of \'k\'."
+                            f"The application will not work properly!")
 
         t0 = config_loader.config['server']['t0']
         if t0 < 1 or t0 > 255:
-            raise Exception("Wrong value range for \'t0\' variable!")
+            logging.critical("Wrong value range for \'t0\' parameter!\n"
+                             "Correct range is <1-255> seconds. Minimal unit 1 sec. ")
+            raise Exception("Wrong value range for \'t0\' parameter!\n"
+                            "Correct range is <1-255> seconds. Minimal unit 1 sec. ")
 
         t1 = config_loader.config['server']['t1']
         if t1 < 1 or t1 > 255:
-            raise Exception("Wrong value range for \'t1\' variable!")
+            logging.critical("Wrong value range for \'t1\' parameter!\n"
+                             "Correct range is <1-255> seconds. Minimal unit 1 sec. ")
+            raise Exception("Wrong value range for \'t1\' parameter!\n"
+                            "Correct range is <1-255> seconds. Minimal unit 1 sec. ")
 
         t2 = config_loader.config['server']['t2']
         if t2 < 1 or t2 > 255:
-            raise Exception("Wrong value range for \'t2\' variable!")
+            logging.critical("Wrong value range for \'t2\' parameter!\n"
+                             "Correct range is <1-255> seconds. Minimal unit 1 sec. ")
+            raise Exception("Wrong value range for \'t2\' parameter!\n"
+                            "Correct range is <1-255> seconds. Minimal unit 1 sec. ")
+        if t2 >= t1:
+            logging.critical("Wrong value for \'t2\' parameter!\n"
+                             "It must be t2 < t1!")
+            raise Exception("Wrong value for \'t2\' parameter!\n"
+                            "It must be t2 < t1!")
 
         t3 = config_loader.config['server']['t3']
         if t3 < 1 or t3 > 172800:
-            raise Exception("Wrong value range for \'t3\' variable!")
+            logging.critical("Wrong value range for \'t3\' parameter!\n"
+                             "Correct range is <1-172800> seconds. Minimal unit 1 sec. ")
+            raise Exception("Wrong value range for \'t3\' parameter!\n"
+                            "Correct range is <1-172800> seconds. Minimal unit 1 sec. ")
 
         return k, w, t0, t1, t2, t3
 
@@ -160,27 +184,23 @@ class ServerIEC104:
         """
         self.__name = value
 
-    def send(self) -> None:
-        """
-        Send data to the clients.
+    def register_callback_on_connect(self, func):
+        self.__callback_on_connect = func
 
-        Args:
-            None
+    def register_callback_on_disconnect(self, func):
+        self.__callback_on_disconnect = func
 
-        Returns:
-            None
+    def register_callback_on_message(self, func):
+        self.__callback_on_message = func
 
-        Exceptions:
-            None
-        """
-        pass
+    def register_callback_on_send(self, func):
+        self.__callback_on_send = func
 
     def get_all_clients_stats(self) -> list | None:
         """
         Get all clients' statistics.
 
         Args:
-            None
 
         Returns:
             list: A list of all clients' statistics.
@@ -197,31 +217,6 @@ class ServerIEC104:
         if local_list.__sizeof__() > 0:
             return local_list
         return None
-
-    async def listen(self) -> None:
-        """
-        Listen for incoming client connections.
-
-        Args:
-            None
-
-        Returns:
-            None
-
-        Exceptions:
-            None
-        """
-        print(f"Listen on {self.ip}:{self.port}")
-        logging.info(f"Listen on {self.ip}:{self.port}")
-        try:
-            self._server = await asyncio.start_server(
-                self.handle_client,
-                self.ip,
-                self.port,
-            )
-
-        except Exception as e:
-            print(e)
 
     async def handle_client(self, reader: asyncio.StreamReader,
                             writer: asyncio.StreamWriter) -> None:
@@ -242,7 +237,7 @@ class ServerIEC104:
         """
         Get the IP address of the client that connected to the server.
         """
-        callback = self.check_alive_clients
+        callback_for_delete = self.delete_dead_clients
         if client_addr not in self.clients:
             client_manager_instance = ClientManager(client_addr,
                                                     port=self.port,
@@ -255,7 +250,9 @@ class ServerIEC104:
                                                     mqtt_username=self.mqtt_username,
                                                     mqtt_password=self.mqtt_password,
                                                     mqtt_qos=self.mqtt_qos,
-                                                    callback_check_clients=callback,
+                                                    callback_for_delete=callback_for_delete,
+                                                    callback_on_message=self.__callback_on_message,
+                                                    callback_on_send=self.__callback_on_send,
                                                     callback_only_for_client=None,
                                                     whoami='server')
 
@@ -287,19 +284,22 @@ class ServerIEC104:
                                                                whoami='server')
 
         try:
+            # Success connect with client
+            self.__callback_on_connect(client_addr, client_port, rc=0)
             # Start the session
             await session.start()
 
         except Exception as e:
+            # Wrong connection
+            self.__callback_on_connect("", 0, rc=1)
             print(f"Exception: {e}")
             logging.error(f"Exception: {e}")
 
-    async def run(self) -> None:
+    def on_message(self, data: bytes | str | None) -> None:
         """
-        Run the server.
+        On receive message
 
         Args:
-            None
 
         Returns:
             None
@@ -308,24 +308,34 @@ class ServerIEC104:
             None
         """
 
-        try:
-            self.__loop = asyncio.get_running_loop()
+        print(f"Here is data: {data}")
 
-            # self.task_periodic_event_check = asyncio.create_task(self.periodic_event_check())
+    def on_connect(self, host: str, port: int, rc: int) -> None:
+        """
+        On connect method.
 
-            # # while True:
-            # try:
-            #     await asyncio.gather(self.task_periodic_event_check,
-            #                          *(task for task in self.tasks))
-            #
-            await self._server.serve_forever()
+        Args:
 
-        except Exception as e:
-            print(f"Exception {e}")
-        finally:
-            pass
+        Returns:
+            None
 
-    def check_alive_clients(self) -> bool:
+        Exceptions:
+            None
+        """
+        if rc == 0:
+            print(f"Established with new client: {host}:{port}")
+            logging.info(f"Established with new client: {host}:{port}")
+        else:
+            print(f"Connection refused!")
+            logging.error(f"Connection refused!")
+
+    def on_send(self, data: bytes | str = None):
+        pass
+
+    def on_disconnect(self) -> None:
+        pass
+
+    def delete_dead_clients(self, client: ClientManager = None) -> None:
         """
         Check if any client in the list self.clients has a flag for deletion.
         If a client has the flag set, it is removed from the list.
@@ -336,39 +346,17 @@ class ServerIEC104:
         None
 
         Returns:
-        bool: True if clients are still present, False otherwise.
+        None:
         """
-
+        self.clients.pop(client.ip)
+        logging.debug(f"{client} deleted from server")
         # if there are any clients in the list
         if len(self.clients) > 0:
-            count: int = 0
-            # iterate over a copy of the clients list
-            for client in list(self.clients.values()):
-                # if the client has the flag for deletion
-                if client.flag_delete:
-                    # remove the client from the list
-                    self.clients.pop(client.ip)
-                    logging.debug(f"deleted {client} from server")
-                    count += 1
-                # if the client is None
-                if client is None:
-                    count += 1
-                    logging.debug(f"deleted {client} because it's None")
-            # if no clients were deleted
-            if count == 0:
-                logging.debug(f"last client was deleted")
-                print(f"Waiting for connection...")
-            print(count)
-            # if there are still clients in the list
-            if len(list(self.clients)) > 0:
-                return True
-            # if no clients are left in the list
-            else:
-                return False
+            pass
         # if there are no clients in the list
         else:
-            logging.debug(f"no clients on server")
-            return False
+            print(f"Listen on {self.ip}:{self.port}")
+            logging.info(f"Listen on {self.ip}:{self.port}")
 
     def close(self) -> None:
         """
@@ -386,37 +374,54 @@ class ServerIEC104:
         Raises:
         None
         """
-        self.__loop.close()  # Close the asyncio event loop
-        logging.info(f"Loop.close!")  # Log the closure of the event loop
+        if self._server:
+            self._server.close()
+            logging.info(f"Stopping server.")  # Log the closure of the event loop
+        if self.__loop:
+            self.__loop.close()  # Close the asyncio event loop
+            logging.info(f"Loop.close!")  # Log the closure of the event loop
         logging.shutdown()  # Shut down the logging system
+        exit()
 
+    # Main function
+    async def start(self) -> None:
+        """
+        The main function of the server application.
 
-# Main function
-async def main() -> None:
-    """
-    The main function of the server application.
+        This function initializes a new instance of the ServerIEC104 class,
+        starts listening for incoming client connections, and runs the server.
 
-    This function initializes a new instance of the ServerIEC104 class,
-    starts listening for incoming client connections, and runs the server.
+        Parameters:
+        None
 
-    Parameters:
-    None
+        Returns:
+        None
 
-    Returns:
-    None
+        Raises:
+        None
+        """
+        print(f"Listen on {self.ip}:{self.port}")
+        logging.info(f"Listen on {self.ip}:{self.port}")
+        try:
+            self._server = await asyncio.start_server(
+                self.handle_client,
+                self.ip,
+                self.port,
+            )
+            self.__loop = asyncio.get_running_loop()
+            await self._server.serve_forever()
 
-    Raises:
-    None
-    """
-    my_server = ServerIEC104()  # Initialize a new instance of the ServerIEC104 class
-    await my_server.listen()  # Start listening for incoming client connections
-    await my_server.run()  # Run the server
+        except Exception as e:
+            print(f"Exception {e}")
+        finally:
+            pass
 
 
 if __name__ == '__main__':
 
+    my_server = ServerIEC104()
     try:
-        asyncio.run(main())
+        asyncio.run(my_server.start())
 
     except KeyboardInterrupt:
         pass

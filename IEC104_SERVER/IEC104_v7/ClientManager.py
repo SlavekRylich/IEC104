@@ -10,8 +10,6 @@ from Frame import Frame
 from IFormat import IFormat
 from SFormat import SFormat
 from UFormat import UFormat
-# from IncomingQueueManager import IncomingQueueManager
-# from OutgoingQueueManager import OutgoingQueueManager
 from Packet_buffer import PacketBuffer
 from Session import Session
 from MQTTProtocol import MQTTProtocol
@@ -22,7 +20,6 @@ class ClientManager:
     Class represents the client and his features.
     """
     __id: int = 0
-    __instances: list = []
 
     def __init__(self, ip_addr: str,
                  port: int = None,
@@ -35,7 +32,9 @@ class ClientManager:
                  mqtt_username: str = "",
                  mqtt_password: str = "",
                  mqtt_qos: int = 0,
-                 callback_check_clients=None,
+                 callback_for_delete=None,
+                 callback_on_message=None,
+                 callback_on_send=None,
                  callback_only_for_client=None,
                  whoami: str = 'client'):
         """
@@ -55,14 +54,13 @@ class ClientManager:
             :param mqtt_username: 
             :param mqtt_password: 
             :param mqtt_qos: 
-            :param callback_check_clients: 
+            :param callback_for_delete: 
             :param callback_only_for_client: 
             :param whoami: 
         """
         # Instances of ClientManager
         ClientManager.__id += 1
         self.__id: int = ClientManager.__id
-        ClientManager.__instances.append(self)
 
         # Session
         self.__out_queue: asyncio.Queue | None = None
@@ -81,7 +79,13 @@ class ClientManager:
         self.__callback_only_for_client = callback_only_for_client
 
         # callback for check if is still connected any clients
-        self.__callback_check_alive_clients = callback_check_clients
+        self.__callback_for_delete_self = callback_for_delete
+
+        # callback for on_message
+        self.__callback_on_message = callback_on_message
+
+        # callback for send message
+        self.__callback_on_send = callback_on_send
 
         # Description of the client
         self.__server_name: str = server_name
@@ -222,14 +226,6 @@ class ClientManager:
     def get_all_sessions_stat(self) -> dict:
         return self.sessions_stats
 
-    @classmethod
-    def remove_instance(cls, id_num: int = 0, instance: 'ClientManager' = None) -> bool:
-        if instance:
-            cls.__instances.remove(instance)
-            return True
-        else:
-            return False
-
     async def send_frame(self, session: Session, frame: Frame) -> None:
         """
         Method to send frame and can catch statistics of sending frames.
@@ -274,11 +270,11 @@ class ClientManager:
 
             # if it is server then handle own update states
             if self.__whoami == 'server':
-                await self.handle_apdu(session, apdu)
                 await self.update_state_machine_server(session, apdu)
-            else:
                 await self.handle_apdu(session, apdu)
+            else:
                 await self.update_state_machine_client(session, apdu)
+                await self.handle_apdu(session, apdu)
 
         else:
             if self.__whoami == 'server':
@@ -289,44 +285,30 @@ class ClientManager:
         print(f"Finish on_message_recv_or_timeout")
         logging.debug(f"Finish on_message_recv_or_timeout")
 
-    def check_alive_sessions(self) -> bool:
+    def delete_dead_session(self, session: Session = None) -> None:
         """
         Method for checking if any session still exists.
         If session has set flag for delete it will be deleted from list of sessions.
         If no session is found it will call delete_self method.
-        :return:
-        :rtype: object
+
+        :param session: The session object to be deleted.
+        :return: None
         """
-        # if any session in list self.__sessions check his flag for delete and remove it
+        self.__sessions.remove(session)
+        print(f"po smazani v client_managerovi: {self}")
+        print(f"{session.name}, {session.ip}:{session.port} disconnect!")
+        logging.debug(f"deleted {session} from clientmanager")
+        logging.info(f"{session.name} {session.ip}:{session.port} disconnected!")
         if len(self.__sessions) > 0:
-            count: int = 0
-            for session in self.__sessions:
-                if session.flag_delete:
-                    self.__sessions.remove(session)
-                    logging.debug(f"deleted {session} from clientmanager")
-                    count += 1
-                if session is None:
-                    count += 1
-                    print(f"nastalo toto ? ")
-                    logging.debug(f"deleted {session} because it's None")
-            if count == 0:
-                logging.debug(f"no session deleted from clientmanager")
-            print(count)
-            if len(self.__sessions) > 0:
-                return True
-            else:
-                self.delete_self()
-                return False
+            pass
         else:
             logging.debug(f"no sessions in clientManager, delete self")
             self.delete_self()
-            return False
 
     def delete_self(self) -> None:
         """
         Method cancel all tasks associated, set flag for delete and call callback for server class instance.
         :rtype: object
-
         """
         # flag for stop coroutines
         self.flag_stop_tasks = True
@@ -342,12 +324,8 @@ class ClientManager:
                 print(f"Zrušení tasku proběhlo úspěšně!")
                 logging.debug(f"Zrušení tasku proběhlo úspěšně!")
 
-        logging.debug(f"pred smazanim clientmanager: {self}")
-        ClientManager.remove_instance(instance=self)
-        logging.debug(f"po smazani clientmanager: {self}")
-
         # callback function in server class instance
-        self.__callback_check_alive_clients()
+        self.__callback_for_delete_self(self)
         del self
 
     # for client and server
@@ -398,10 +376,14 @@ class ClientManager:
                         self.__send_buffer.clear_frames_less_than(self.__ack)
 
                     if self.__whoami == "server":
+
+                        # handle apdu for on_message method
+                        self.__callback_on_message(apdu, apdu.data)
+
                         # shara payload with MQTT
                         task = asyncio.ensure_future(self.__mqtt_client.save_data(
                             topic=self.__mqtt_topic,
-                            data=apdu.data,
+                            data=str(apdu.data),
                             callback=None))
                         self.__tasks.append(task)
 
@@ -509,12 +491,16 @@ class ClientManager:
         :param whoami:
         :return: Session instance
         """
-        session = Session(client_addr,
+        session_number = self.get_number_of_sessions() + 1
+        callback_for_del_session = self.delete_dead_session
+        session = Session(session_number,
+                          client_addr,
                           client_port,
                           reader, writer,
                           session_params,
                           callback_on_message_recv,
                           callback_timeouts_tuple,
+                          callback_for_del_session,
                           self.send_buffer,
                           whoami=whoami)
 
@@ -601,6 +587,7 @@ class ClientManager:
 
     ################################################
     # GENERATE U-FRAME
+
     def generate_testdt_act(self) -> UFormat:
         return UFormat(APCI.TESTFR_ACT)
 
@@ -648,95 +635,94 @@ class ClientManager:
                     else:
                         frame = 0
 
-                    # timeout t1
-                    if not session.flag_timeout_t1:
+                    if session.flag_session != 'ACTIVE_TERMINATION':
+                        # timeout t1
+                        if not session.flag_timeout_t1:
 
-                        # STATE 1
-                        if actual_transmission_state == 'STOPPED':
-                            if frame == APCI.STARTDT_ACT:
-                                # only one session can be in running state
-                                # -> send STOPDT act to other active sessions
-                                for other_session in self.__sessions:
-                                    if other_session.connection_state == 'CONNECTED' and \
-                                            other_session.transmission_state != 'STOPPED':
-                                        new_frame = self.generate_stopdt_act()
-                                        task = asyncio.ensure_future(self.send_frame(session, new_frame))
-                                        self.__tasks.append(task)
+                            # STATE 1
+                            if actual_transmission_state == 'STOPPED':
+                                if frame == APCI.STARTDT_ACT:
+                                    # only one session can be in running state
+                                    # -> send STOPDT act to other active sessions
+                                    for other_session in self.__sessions:
+                                        if other_session.connection_state == 'CONNECTED' and \
+                                                other_session.transmission_state != 'STOPPED':
+                                            new_frame = self.generate_stopdt_act()
+                                            task = asyncio.ensure_future(self.send_frame(session, new_frame))
+                                            self.__tasks.append(task)
+                                            other_session.transmission_state = 'STOPPED'
 
-                                # ack with STARTDT con
-                                session.transmission_state = 'RUNNING'
-                                new_frame = self.generate_startdt_con()
-                                task = asyncio.ensure_future(self.send_frame(session, new_frame))
-                                self.__tasks.append(task)
-
-                            # S-format or I-format
-                            if frame == 'S-format' or frame == 'I-format':
-                                session.flag_session = 'ACTIVE_TERMINATION'
-
-                        # STATE 2
-                        if actual_transmission_state == 'RUNNING':
-                            # if frame is stopdt act and send queue is blank
-                            if frame == APCI.STOPDT_ACT:
-                                # send STOPDT con
-                                if self.__recv_buffer.is_empty() and \
-                                        self.__send_buffer.is_empty():
-                                    new_frame = self.generate_stopdt_con()
+                                    # ack with STARTDT con
+                                    session.transmission_state = 'RUNNING'
+                                    new_frame = self.generate_startdt_con()
                                     task = asyncio.ensure_future(self.send_frame(session, new_frame))
                                     self.__tasks.append(task)
-                                    session.transmission_state = 'STOPPED'
 
-                                else:  # if frame is STOPDT act and recv buffer is not blank
+                                # S-format or I-format
+                                if frame == 'S-format' or frame == 'I-format':
+                                    session.flag_session = 'ACTIVE_TERMINATION'
+
+                            # STATE 2
+                            if actual_transmission_state == 'RUNNING':
+                                # if frame is stopdt act and send queue is blank
+                                if frame == APCI.STOPDT_ACT:
+                                    # send STOPDT con
+                                    if self.__recv_buffer.is_empty() and \
+                                            self.__send_buffer.is_empty():
+                                        new_frame = self.generate_stopdt_con()
+                                        task = asyncio.ensure_future(self.send_frame(session, new_frame))
+                                        self.__tasks.append(task)
+                                        session.transmission_state = 'STOPPED'
+
+                                    else:  # if frame is STOPDT act and recv buffer is not blank
+                                        if not self.__recv_buffer.is_empty():
+                                            # ack all received_I-formats
+                                            new_frame = self.generate_s_frame(session)
+                                            task = asyncio.ensure_future(self.send_frame(session, new_frame))
+                                            self.__tasks.append(task)
+                                        session.transmission_state = 'WAITING_UNCONFIRMED'
+
+                            # STATE 3
+                            if actual_transmission_state == 'WAITING_UNCONFIRMED':
+                                if frame == 'S-format':
+                                    if self.__send_buffer.is_empty() and \
+                                            self.__recv_buffer.is_empty():
+                                        # send STOPDT con
+                                        new_frame = self.generate_stopdt_con()
+                                        task = asyncio.ensure_future(self.send_frame(session, new_frame))
+                                        self.__tasks.append(task)
+                                        session.transmission_state = 'STOPPED'
+
                                     if not self.__recv_buffer.is_empty():
                                         # ack all received_I-formats
                                         new_frame = self.generate_s_frame(session)
                                         task = asyncio.ensure_future(self.send_frame(session, new_frame))
                                         self.__tasks.append(task)
-                                    session.transmission_state = 'WAITING_UNCONFIRMED'
 
-                        # STATE 3
-                        if actual_transmission_state == 'WAITING_UNCONFIRMED':
-                            if frame == 'S-format':
-                                if self.__send_buffer.is_empty() and \
-                                        self.__recv_buffer.is_empty():
-                                    # send STOPDT con
-                                    new_frame = self.generate_stopdt_con()
-                                    task = asyncio.ensure_future(self.send_frame(session, new_frame))
-                                    self.__tasks.append(task)
-                                    session.transmission_state = 'STOPPED'
+                                #  I-format
+                                if frame == 'I-format':
+                                    session.flag_session = 'ACTIVE_TERMINATION'
 
-                                if not self.__recv_buffer.is_empty():
-                                    # ack all received_I-formats
-                                    new_frame = self.generate_s_frame(session)
-                                    task = asyncio.ensure_future(self.send_frame(session, new_frame))
-                                    self.__tasks.append(task)
-
-                            #  I-format
-                            if frame == 'I-format':
-                                session.flag_session = 'ACTIVE_TERMINATION'
-
-                    else:
-                        # reset flag_timeout_t1
-                        session.flag_timeout_t1 = 0
-                        print(f"Timeout t1 is set to 0")
-                        logging.debug(f"Timeout t1 is set to 0")
-                        session.flag_session = 'ACTIVE_TERMINATION'
+                        else:
+                            # reset flag_timeout_t1
+                            session.flag_timeout_t1 = False
+                            print(f"Timeout t1 is set to 0")
+                            logging.debug(f"Timeout t1 is set to 0")
+                            session.flag_session = 'ACTIVE_TERMINATION'
 
                         # default condition if ACTIVE_TERMINATION is set
                     if session.flag_session == 'ACTIVE_TERMINATION':
                         # unset ACTIVE_TERMINATION
                         session.flag_session = None
-
                         session.transmission_state = 'STOPPED'
                         session.connection_state = 'DISCONNECTED'
 
                         # delete session
                         session.delete_self()
-                        self.check_alive_sessions()
 
                 else:
                     # delete session
                     session.delete_self()
-                    self.check_alive_sessions()
 
                 print(f"Finish async update_state_machine_server")
                 logging.debug(f"Finish async update_state_machine_server")
@@ -775,91 +761,92 @@ class ClientManager:
                     else:
                         frame = 0
 
-                    # timeout t1
-                    if not session.flag_timeout_t1:
+                    if session.flag_session != 'ACTIVE_TERMINATION':
+                        # timeout t1
+                        if not session.flag_timeout_t1:
 
-                        # STATE 1
-                        if actual_transmission_state == 'STOPPED':
+                            # STATE 1
+                            if actual_transmission_state == 'STOPPED':
 
-                            # flag for start session is set
-                            if session.flag_session == 'START_SESSION':
-                                # reset flag for start session
-                                session.flag_session = None
-                                # send START act
-                                new_frame = self.generate_startdt_act()
-                                task = asyncio.ensure_future(self.send_frame(session, new_frame))
-                                self.__tasks.append(task)
-                                session.transmission_state = 'WAITING_RUNNING'
-
-                            # t1_timeout or S-format or I-format
-                            if frame == 'S-format' or frame == 'I-format':
-                                session.flag_session = 'ACTIVE_TERMINATION'
-
-                        # STATE 2
-                        if actual_transmission_state == 'WAITING_RUNNING':
-                            if frame == APCI.STARTDT_CON:
-                                session.transmission_state = 'RUNNING'
-
-                            # t1_timeout or S-format or I-format
-                            if frame == 'S-format' or frame == 'I-format':
-                                session.flag_session = 'ACTIVE_TERMINATION'
-
-                        # STATE 3
-                        if actual_transmission_state == 'RUNNING':
-                            # END RUNNING
-                            if session.flag_session == 'STOP_SESSION':
-                                # reset flag for start session
-                                session.flag_session = None
-
-                                # To WAITING_STOPPED
-                                if self.__recv_buffer.is_empty() and \
-                                        self.__send_buffer.is_empty():
-
-                                    # send stopdt act
-                                    new_frame = self.generate_stopdt_act()
+                                # flag for start session is set
+                                if session.flag_session == 'START_SESSION':
+                                    # reset flag for start session
+                                    session.flag_session = None
+                                    # send START act
+                                    new_frame = self.generate_startdt_act()
                                     task = asyncio.ensure_future(self.send_frame(session, new_frame))
                                     self.__tasks.append(task)
-                                    # update state
-                                    session.transmission_state = 'WAITING_STOPPED'
+                                    session.transmission_state = 'WAITING_RUNNING'
 
-                                else:
-                                    # To WAITING_UNCONFIRMED
-                                    if not self.__recv_buffer.is_empty():
-                                        # ack all received_I-formats
-                                        new_frame = self.generate_s_frame(session)
+                                # t1_timeout or S-format or I-format
+                                if frame == 'S-format' or frame == 'I-format':
+                                    session.flag_session = 'ACTIVE_TERMINATION'
+
+                            # STATE 2
+                            if actual_transmission_state == 'WAITING_RUNNING':
+                                if frame == APCI.STARTDT_CON:
+                                    session.transmission_state = 'RUNNING'
+
+                                # t1_timeout or S-format or I-format
+                                if frame == 'S-format' or frame == 'I-format':
+                                    session.flag_session = 'ACTIVE_TERMINATION'
+
+                            # STATE 3
+                            if actual_transmission_state == 'RUNNING':
+                                # END RUNNING
+                                if session.flag_session == 'STOP_SESSION':
+                                    # reset flag for start session
+                                    session.flag_session = None
+
+                                    # To WAITING_STOPPED
+                                    if self.__recv_buffer.is_empty() and \
+                                            self.__send_buffer.is_empty():
+
+                                        # send stopdt act
+                                        new_frame = self.generate_stopdt_act()
+                                        task = asyncio.ensure_future(self.send_frame(session, new_frame))
+                                        self.__tasks.append(task)
+                                        # update state
+                                        session.transmission_state = 'WAITING_STOPPED'
+
+                                    else:
+                                        # To WAITING_UNCONFIRMED
+                                        if not self.__recv_buffer.is_empty():
+                                            # ack all received_I-formats
+                                            new_frame = self.generate_s_frame(session)
+                                            task = asyncio.ensure_future(self.send_frame(session, new_frame))
+                                            self.__tasks.append(task)
+
+                                        # send STOPDT act
+                                        new_frame = self.generate_stopdt_act()
                                         task = asyncio.ensure_future(self.send_frame(session, new_frame))
                                         self.__tasks.append(task)
 
-                                    # send STOPDT act
-                                    new_frame = self.generate_stopdt_act()
-                                    task = asyncio.ensure_future(self.send_frame(session, new_frame))
-                                    self.__tasks.append(task)
+                                        # update state
+                                        session.transmission_state = 'WAITING_UNCONFIRMED'
 
-                                    # update state
-                                    session.transmission_state = 'WAITING_UNCONFIRMED'
+                            # STATE 4
+                            if actual_transmission_state == 'WAITING_UNCONFIRMED':
 
-                        # STATE 4
-                        if actual_transmission_state == 'WAITING_UNCONFIRMED':
+                                if frame == APCI.STOPDT_CON:
+                                    session.transmission_state = 'STOPPED'
 
-                            if frame == APCI.STOPDT_CON:
-                                session.transmission_state = 'STOPPED'
+                                if (frame == 'I-format' or frame == 'S-format') and \
+                                        (self.__send_buffer.is_empty() and
+                                         self.__recv_buffer.is_empty()):
+                                    session.transmission_state = 'WAITING_STOPPED'
 
-                            if (frame == 'I-format' or frame == 'S-format') and \
-                                    (self.__send_buffer.is_empty() and
-                                     self.__recv_buffer.is_empty()):
-                                session.transmission_state = 'WAITING_STOPPED'
+                            # STATE 5
+                            if actual_transmission_state == 'WAITING_STOPPED':
+                                if frame == APCI.STOPDT_CON:
+                                    session.transmission_state = 'STOPPED'
 
-                        # STATE 5
-                        if actual_transmission_state == 'WAITING_STOPPED':
-                            if frame == APCI.STOPDT_CON:
-                                session.transmission_state = 'STOPPED'
-
-                    else:
-                        # reset flag_timeout_t1
-                        session.flag_timeout_t1 = 0
-                        print(f"Timeout t1 is set to 0")
-                        logging.debug(f"Timeout t1 is set to 0")
-                        session.flag_session = 'ACTIVE_TERMINATION'
+                        else:
+                            # reset flag_timeout_t1
+                            session.flag_timeout_t1 = False
+                            print(f"Timeout t1 is set to 0")
+                            logging.debug(f"Timeout t1 is set to 0")
+                            session.flag_session = 'ACTIVE_TERMINATION'
 
                     if session.flag_session == 'ACTIVE_TERMINATION':
                         # unset ACTIVE_TERMINATION
@@ -868,11 +855,9 @@ class ClientManager:
                         session.connection_state = 'DISCONNECTED'
 
                         session.delete_self()
-                        self.check_alive_sessions()
 
                 else:
                     session.delete_self()
-                    self.check_alive_sessions()
 
                 print(f"{session}")
                 logging.info(f"{session}")
@@ -881,8 +866,8 @@ class ClientManager:
                 logging.debug(f"Finish async update_state_machine_client")
 
             except Exception as e:
-                print(f"Exception {e}")
-                logging.error(f"Exception {e}")
+                print(f"Exception: {e}")
+                logging.error(f"Exception: {e}")
 
     async def handle_timeout_t0(self, session: Session = None) -> None:
         """
@@ -902,12 +887,9 @@ class ClientManager:
         """
         print(f"Timer t1 timed_out - {session}")
         logging.debug(f"Timer t1 timed_out - {session}")
-        session.flag_timeout_t1 = 1
-        asyncio.ensure_future(self.on_message_recv_or_timeout(session))
-
-        print(f"Timeout t1 is set to 1")
-        logging.debug(f"Timeout t1 is set to 1")
-        # raise TimeoutError(f"Timeout pro t1")
+        session.flag_timeout_t1 = True
+        task = asyncio.ensure_future(self.on_message_recv_or_timeout(session))
+        self.__tasks.append(task)
 
     async def handle_timeout_t2(self, session: Session = None) -> None:
         """

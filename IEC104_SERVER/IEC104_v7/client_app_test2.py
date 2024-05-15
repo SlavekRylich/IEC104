@@ -172,7 +172,7 @@ class IEC104Client(object):
             callback_only_for_client = self.handle_response_for_client
             self.client_manager = ClientManager(ip,
                                                 port=None,
-                                                callback_check_clients=self.check_alive_clients,
+                                                callback_for_delete=self.check_alive_clients,
                                                 mqtt_version=3,
                                                 callback_only_for_client=callback_only_for_client,
                                                 whoami='client')

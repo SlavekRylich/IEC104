@@ -17,18 +17,17 @@ class Session:
     """
     Class for session. Manages communication with a client and handles incoming and outgoing frames.
     """
-    # třídní proměná pro uchování unikátní id každé instance
-    _id: int = 0
-    _instances: list['Session'] = []
 
     def __init__(self,
-                 ip,
-                 port,
-                 reader,
-                 writer,
+                 id: int,
+                 ip: str,
+                 port: int,
+                 reader: asyncio.StreamReader,
+                 writer: asyncio.StreamWriter,
                  session_params: tuple = None,
                  callback_on_message_recv=None,
                  callback_timeouts: tuple = None,
+                 callback_for_delete=None,
                  send_buffer: Packet_buffer = None,
                  whoami: str = 'client'):
         """
@@ -45,10 +44,7 @@ class Session:
         :param whoami: String indicating whether the session is for a client or server.
         """
 
-        # Instances of Session
-        Session._id += 1
-        self.__id: int = Session._id
-        Session._instances.append(self)
+        self.__id: int = id
 
         # features of session
         self.__reader: asyncio.StreamReader = reader
@@ -58,7 +54,7 @@ class Session:
         self.__name: str = "Session_" + str(self.__id)
         # callback
         self.__callback_on_message_recv: Any = callback_on_message_recv
-
+        self.__callback_for_delete: Any = callback_for_delete
         # events
         # self.__event_queue_in = queue.event_in
         # self.__shared_event_queue_out = queue.event_out
@@ -82,7 +78,7 @@ class Session:
 
         # flag_timeout_t1 = 0 - good
         # flag_timeout_t1 = 1 - timeout 
-        self.__flag_timeout_t1: int = 0
+        self.__flag_timeout_t1: bool = False
 
         # flag for delete self
         self.__flag_stop_tasks: bool = False
@@ -108,11 +104,6 @@ class Session:
                                       ]
 
         # timing of tasks
-        # self.__async_time: float = 0.5
-        # self.__time_for_task_timeouts: float = 0.8
-
-        # parameter for select session
-        # self.__priority: int = 0
 
         # init states
         self.__connection_state: ConnectionState = ConnectionState.set_state('CONNECTED')
@@ -239,32 +230,34 @@ class Session:
         flag : str
             The new value for the flag.
         """
-        print(f"flag_session_set to {flag} - {self}")
-        logging.debug(f"flag_session_set to {flag} - {self}")
+        print(f"flag_session set to {flag} - {self}")
+        logging.debug(f"flag_session set to {flag} - {self}")
         self.__flag_session = flag
 
     @property
-    def flag_timeout_t1(self) -> int:
+    def flag_timeout_t1(self) -> bool:
         """
         Return the flag indicating whether a timeout occurred for timer T1.
 
         Returns
         -------
-        int
+        bool
             The flag indicating whether a timeout occurred for timer T1.
         """
         return self.__flag_timeout_t1
 
     @flag_timeout_t1.setter
-    def flag_timeout_t1(self, flag: int) -> None:
+    def flag_timeout_t1(self, flag: bool) -> None:
         """
         Set the flag indicating whether a timeout occurred for timer T1.
 
         Parameters
         ----------
-        flag : int
+        flag : bool
             The new value for the flag.
         """
+        print(f"flag_timeout_t1 set to - {flag}")
+        logging.debug(f"Timer t1 timed_out - {flag}")
         self.__flag_timeout_t1 = flag
 
     @property
@@ -338,28 +331,9 @@ class Session:
         logging.debug(f"CHANGE_TRANSMISSION_STATE: {self.__transmission_state} -> {state}")
         self.__transmission_state = TransmissionState.set_state(state)
 
-    @classmethod  # instance s indexem 0 neexistuje ( je rezevrována* )
-    def remove_instance(cls, id_num: int = 0, instance: 'Session' = None) -> bool:
-        if instance:
-            cls._instances.remove(instance)
-            return True
-        else:
-            return False
-
     def update_timestamp_t2(self) -> None:
         # self.__timestamp_t2.start()
         self.__timer_t2.start()
-
-    @classmethod
-    def get_all_instances(cls) -> list:
-        return cls._instances
-
-    @classmethod
-    def get_instance(cls, id_num: int) -> Any | None:
-        for inst in cls._instances:
-            if inst.id == id_num:
-                return inst
-        return None
 
     # RECEIVE FRAME
     async def handle_messages(self) -> None:
@@ -376,7 +350,7 @@ class Session:
                 header = await asyncio.wait_for(self.__reader.read(2), timeout=self.__timeout_t1)
                 if header:
                     start_byte, frame_length = header
-                    # identificate IEC 104
+                    # identify IEC 104
                     if start_byte == Frame.start_byte():
                         # read the rest of frame
                         apdu = await self.__reader.read(frame_length)
@@ -386,9 +360,9 @@ class Session:
                             print(f"{time.strftime('%X')}-Received"
                                   f" from {self.ip}:{self.port}"
                                   f" - frame: {new_apdu}")
-                            logging.info(f"{time.strftime('%X')}-Received from"
-                                         f" {self.ip}:{self.port}"
-                                         f" - frame: {new_apdu}")
+                            logging.debug(f"{time.strftime('%X')}-Received from"
+                                          f" {self.ip}:{self.port}"
+                                          f" - frame: {new_apdu}")
                             # update timers
                             self.__timer_t0.start()
                             self.__timer_t1.start()
@@ -398,6 +372,7 @@ class Session:
                             # handle apdu in QueueManager
                             task = asyncio.ensure_future(self.__callback_on_message_recv(self, new_apdu))
                             self.__tasks.append(task)
+
                             # reset local vars
                             header = None
                             start_byte = None
@@ -405,8 +380,8 @@ class Session:
                             new_apdu = None
                             frame_length = None
                 else:
-                    print(f"Nothing came from client.")
-                    logging.debug(f"Nothing came from client.")
+                    print(f"Nothing frame from client.")
+                    logging.debug(f"Nothing frame from client.")
 
                 if self.__reader.at_eof():
                     print(f"Receive EOF")
@@ -427,6 +402,10 @@ class Session:
             except Exception as e:
                 print(f"Exception in handle_messages {e}")
                 logging.error(f"Exception in handle_messages {e}")
+                self.flag_session = 'ACTIVE_TERMINATION'
+                task = asyncio.ensure_future(self.__callback_on_message_recv(self))
+                self.__tasks.append(task)
+                break
 
             print(f"Finish async handle_messages.")
             logging.debug(f"Finish async handle_messages.")
@@ -446,18 +425,19 @@ class Session:
                 logging.debug(f"Start send_frame_task()")
 
                 if frame is not None:
+                    # add to packet buffer
+                    if isinstance(frame, IFormat):
+                        self.__send_buffer.add_frame(frame.ssn, frame)
+
                     print(f"{time.strftime('%X')}-Send"
                           f" to {self.ip}:{self.port}"
                           f" - frame: {frame}")
-                    logging.info(f"{time.strftime('%X')}-Send"
-                                 f" to {self.ip}:{self.port}"
-                                 f" - frame: {frame}")
+                    logging.debug(f"{time.strftime('%X')}-Send"
+                                  f" to {self.ip}:{self.port}"
+                                  f" - frame: {frame}")
+
                     self.__writer.write(frame.serialize())
                     await self.__writer.drain()
-
-                # add to packet buffer
-                if isinstance(frame, IFormat):
-                    self.__send_buffer.add_frame(frame.ssn, frame)
 
             except Exception as e:
                 print(f"Exception {e}")
@@ -483,19 +463,18 @@ class Session:
             except asyncio.CancelledError:
                 # Zpracování zrušení tasků
                 print(f"Task in session be canceled successfully!")
-                logging.error(f"Task in session be canceled successfully!")
+                logging.debug(f"Task in session be canceled successfully!")
 
         for timer_task in self.__timers:
             try:
                 timer_task.cancel()
+
             except asyncio.CancelledError:
                 # Zpracování zrušení tasků
-                print(f"Zrušení tasku proběhlo úspěšně!")
-                logging.error(f"Zrušení tasku proběhlo úspěšně!")
+                print(f"Task in session be canceled successfully!")
+                logging.debug(f"Task in session be canceled successfully!")
 
-        logging.debug(f"pred smazanim session: {self}")
-        Session.remove_instance(instance=self)
-        logging.debug(f"po smazani session: {self}")
+        self.__callback_for_delete(self)
         del self
 
     def __str__(self) -> str:

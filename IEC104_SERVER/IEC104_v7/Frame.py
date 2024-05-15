@@ -11,7 +11,6 @@ class Frame:
 
     Attributes:
     _id (int): Unique identifier for each instance of the class.
-    _instances (list): List of all instances of the class.
     _start_byte (int): Start byte value.
 
     Methods:
@@ -22,7 +21,6 @@ class Frame:
     """
 
     _id: int = 0
-    _instances: list['Frame'] = []
     _start_byte: int = APCI.START_BYTE
 
     def __init__(self, type_frame: str = 'Frame'):
@@ -40,7 +38,6 @@ class Frame:
 
         Frame._id += 1
         self._id: int = Frame._id
-        Frame._instances.append(self)
 
     def is_structured(self) -> bool:
         """
@@ -72,16 +69,6 @@ class Frame:
         str: Type of the frame.
         """
         return self._type_in_word
-
-    @classmethod
-    def get_all_instances(cls) -> list:
-        """
-        Returns all instances of the Frame class.
-
-        Returns:
-        list: List of all instances of the Frame class.
-        """
-        return cls._instances
 
     def serialize(self) -> Any:
         """

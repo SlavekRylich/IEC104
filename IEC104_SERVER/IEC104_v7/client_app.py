@@ -165,7 +165,7 @@ class IEC104Client(object):
             callback_only_for_client = self.handle_response_for_client
             self.client_manager = ClientManager(ip,
                                                 port=None,
-                                                callback_check_clients=self.check_alive_clients,
+                                                callback_for_delete=self.check_alive_clients,
                                                 mqtt_version=3,
                                                 callback_only_for_client=callback_only_for_client,
                                                 whoami='client')
@@ -215,30 +215,15 @@ class IEC104Client(object):
             print(f"Exception: {e}")
             logging.error(f"Exception: {e}")
 
-    def check_alive_clients(self) -> bool:
+    def check_alive_clients(self, server: ClientManager = None) -> None:
 
         # if is any client in list self.clients, check his flag for delete and remove it
+        self.servers.pop(server.ip)
+        logging.debug(f"{server} deleted from server")
         if len(self.servers) > 0:
-            count: int = 0
-            for server in list(self.servers.values()):
-                if server.flag_delete:
-                    self.servers.pop(server.ip)
-                    logging.debug(f"deleted {server} from server")
-                    count += 1
-                if server is None:
-                    count += 1
-                    print(f"nastalo toto ? ")
-                    logging.debug(f"deleted {server} because it's None")
-            if count == 0:
-                logging.debug(f"last client was deleted")
-
-            if len(list(self.servers)) > 0:
-                return True
-            else:
-                return False
+            pass
         else:
-            logging.debug(f"no clients on server")
-            return False
+            pass
 
     async def periodic_event_check(self):
         while True:
@@ -315,6 +300,7 @@ class IEC104Client(object):
                     # * STATE 3
                     if actual_transmission_state == 'RUNNING':
 
+
                         # for cyklus for send I frame with random data
                         for data in self.data_list:
                             # list of data
@@ -337,7 +323,7 @@ class IEC104Client(object):
                             await self.client_manager.send_frame(session, new_frame)
                             await asyncio.sleep(2.5)
 
-                        await asyncio.sleep(10)
+                        await asyncio.sleep(1)
                         # session.flag_session = 'STOP_SESSION'
                         # print(f"nastaven priznak 'STOP_SESSION'")
 

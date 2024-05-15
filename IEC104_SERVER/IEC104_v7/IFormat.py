@@ -17,9 +17,6 @@ class IFormat(Frame):
     It inherits from the Frame class.
     """
 
-    __class_ssn: int = 0  # Class level variable for SSN
-    __class_rsn: int = 0  # Class level variable for RSN
-
     def __init__(self, data: bytes, ssn: int = 0, rsn: int = 0, direction: str = 'OUT'):
         """
         Initialize IFormat object.
@@ -36,46 +33,6 @@ class IFormat(Frame):
         self.__data: bytes = data
         self.__data_length: int = len(data)
         self._direction: str = direction
-
-    @classmethod
-    def get_class_ssn(cls) -> int:
-        """
-        Get the class level SSN.
-
-        Returns:
-        int: Class level SSN.
-        """
-        return cls.__class_ssn
-
-    @classmethod
-    def set_class_ssn(cls, ssn: int) -> None:
-        """
-        Set the class level SSN.
-
-        Parameters:
-        ssn (int): New value for class level SSN.
-        """
-        cls.__class_ssn = ssn
-
-    @classmethod
-    def get_class_rsn(cls) -> int:
-        """
-        Get the class level RSN.
-
-        Returns:
-        int: Class level RSN.
-        """
-        return cls.__class_rsn
-
-    @classmethod
-    def set_class_rsn(cls, rsn: int) -> None:
-        """
-        Set the class level RSN.
-
-        Parameters:
-        rsn (int): New value for class level RSN.
-        """
-        cls.__class_rsn = rsn
 
     @property
     def ssn(self) -> int:

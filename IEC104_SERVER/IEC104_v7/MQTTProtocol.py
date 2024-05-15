@@ -183,7 +183,7 @@ class MQTTProtocol(IDataSharing):
         :param password: MQTT broker password.
         """
         try:
-            print(f"connect: {self._broker_url}")
+            print(f"MQTT connect: {self._broker_url}")
             self._client.loop_start()
             self._client.connect(host=self._broker_url,
                                  port=self._port,
