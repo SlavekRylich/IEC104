@@ -1,0 +1,241 @@
+2024-05-16 06:42:09,481 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 07:51:13,946 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 07:53:07,345 - INFO - Established with new client: 192.168.56.104
+2024-05-16 07:53:07,346 - INFO - Connection established with 192.168.56.104:51148 (Number of connections: 1)
+2024-05-16 07:53:07,346 - INFO - Established with new client: 192.168.56.104:51148
+2024-05-16 07:53:24,352 - INFO - Session_1 192.168.56.104:51148 disconnected!
+2024-05-16 07:53:24,352 - ERROR - Exception 'NoneType' object is not callable
+2024-05-16 07:55:49,231 - INFO - Connection established with 192.168.56.104:55196 (Number of connections: 1)
+2024-05-16 07:55:49,231 - INFO - Established with new client: 192.168.56.104:55196
+2024-05-16 07:55:59,971 - INFO - Session_1 192.168.56.104:55196 disconnected!
+2024-05-16 07:55:59,971 - ERROR - Exception 'NoneType' object is not callable
+2024-05-16 07:56:06,478 - INFO - Connection established with 192.168.56.104:49842 (Number of connections: 1)
+2024-05-16 07:56:06,478 - INFO - Established with new client: 192.168.56.104:49842
+2024-05-16 07:56:23,532 - INFO - Session_1 192.168.56.104:49842 disconnected!
+2024-05-16 07:56:23,532 - ERROR - Exception 'NoneType' object is not callable
+2024-05-16 07:58:13,077 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 07:58:15,708 - INFO - Established with new client: 192.168.56.104
+2024-05-16 07:58:15,709 - INFO - Connection established with 192.168.56.104:45774 (Number of connections: 1)
+2024-05-16 07:58:15,709 - INFO - Established with new client: 192.168.56.104:45774
+2024-05-16 07:58:32,792 - INFO - Session_1 192.168.56.104:45774 disconnected!
+2024-05-16 07:58:32,792 - INFO - Session_1 192.168.56.104:45774 disconnected!
+2024-05-16 07:58:32,792 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:03:11,096 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:03:13,969 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:03:13,970 - INFO - Connection established with 192.168.56.104:45216 (Number of connections: 1)
+2024-05-16 08:03:13,970 - INFO - Established with new client: 192.168.56.104:45216
+2024-05-16 08:03:31,473 - INFO - Session_1 192.168.56.104:45216 disconnected!
+2024-05-16 08:03:31,473 - INFO - Session_1 192.168.56.104:45216 disconnected!
+2024-05-16 08:03:31,474 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:10:15,433 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:11:15,817 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:11:19,003 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:11:19,003 - INFO - Connection established with 192.168.56.104:54776 (Number of connections: 1)
+2024-05-16 08:11:19,003 - INFO - Established with new client: 192.168.56.104:54776
+2024-05-16 08:11:36,005 - INFO - Session_1 192.168.56.104:54776 disconnected!
+2024-05-16 08:11:36,005 - INFO - Session_1 192.168.56.104:54776 disconnected!
+2024-05-16 08:11:36,006 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:13:14,096 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:13:16,250 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:13:16,250 - INFO - Connection established with 192.168.56.104:51292 (Number of connections: 1)
+2024-05-16 08:13:16,250 - INFO - Established with new client: 192.168.56.104:51292
+2024-05-16 08:13:19,252 - ERROR - Exception can't concat str to bytes
+2024-05-16 08:13:21,761 - ERROR - Exception can't concat str to bytes
+2024-05-16 08:13:24,760 - ERROR - Exception can't concat str to bytes
+2024-05-16 08:13:27,771 - ERROR - Exception can't concat str to bytes
+2024-05-16 08:13:30,762 - ERROR - Exception can't concat str to bytes
+2024-05-16 08:13:33,760 - ERROR - Exception can't concat str to bytes
+2024-05-16 08:13:33,761 - INFO - Session_1 192.168.56.104:51292 disconnected!
+2024-05-16 08:13:33,761 - INFO - Session_1 192.168.56.104:51292 disconnected!
+2024-05-16 08:13:33,761 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:18:40,795 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:18:42,918 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:18:42,918 - INFO - Connection established with 192.168.56.104:48652 (Number of connections: 1)
+2024-05-16 08:18:42,918 - INFO - Established with new client: 192.168.56.104:48652
+2024-05-16 08:18:45,924 - INFO - Session_1 192.168.56.104:48652 disconnected!
+2024-05-16 08:18:45,924 - INFO - Session_1 192.168.56.104:48652 disconnected!
+2024-05-16 08:18:45,925 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:19:28,742 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:19:28,742 - INFO - Connection established with 192.168.56.104:49258 (Number of connections: 1)
+2024-05-16 08:19:28,742 - INFO - Established with new client: 192.168.56.104:49258
+2024-05-16 08:19:31,745 - INFO - Session_1 192.168.56.104:49258 disconnected!
+2024-05-16 08:19:31,745 - INFO - Session_1 192.168.56.104:49258 disconnected!
+2024-05-16 08:19:31,745 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:21:27,076 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:21:31,060 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:21:31,061 - INFO - Connection established with 192.168.56.104:56798 (Number of connections: 1)
+2024-05-16 08:21:31,061 - INFO - Established with new client: 192.168.56.104:56798
+2024-05-16 08:21:39,069 - INFO - Session_1 192.168.56.104:56798 disconnected!
+2024-05-16 08:21:39,070 - INFO - Session_1 192.168.56.104:56798 disconnected!
+2024-05-16 08:21:39,070 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:31:21,237 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:31:21,238 - INFO - Connection established with 192.168.56.104:45716 (Number of connections: 1)
+2024-05-16 08:31:21,238 - INFO - Established with new client: 192.168.56.104:45716
+2024-05-16 08:31:29,241 - INFO - Session_1 192.168.56.104:45716 disconnected!
+2024-05-16 08:31:29,242 - INFO - Session_1 192.168.56.104:45716 disconnected!
+2024-05-16 08:31:29,242 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:32:16,948 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:32:16,949 - INFO - Connection established with 192.168.56.104:60728 (Number of connections: 1)
+2024-05-16 08:32:16,949 - INFO - Established with new client: 192.168.56.104:60728
+2024-05-16 08:32:24,951 - INFO - Session_1 192.168.56.104:60728 disconnected!
+2024-05-16 08:32:24,951 - INFO - Session_1 192.168.56.104:60728 disconnected!
+2024-05-16 08:32:24,952 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:32:59,900 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:33:01,725 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:33:01,725 - INFO - Connection established with 192.168.56.104:58184 (Number of connections: 1)
+2024-05-16 08:33:01,725 - INFO - Established with new client: 192.168.56.104:58184
+2024-05-16 08:33:09,727 - INFO - Session_1 192.168.56.104:58184 disconnected!
+2024-05-16 08:33:09,728 - INFO - Session_1 192.168.56.104:58184 disconnected!
+2024-05-16 08:33:09,728 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:35:00,218 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 08:35:01,539 - INFO - Established with new client: 192.168.56.104
+2024-05-16 08:35:01,539 - INFO - Connection established with 192.168.56.104:34560 (Number of connections: 1)
+2024-05-16 08:35:01,539 - INFO - Established with new client: 192.168.56.104:34560
+2024-05-16 08:35:04,542 - INFO - Session_1 192.168.56.104:34560 disconnected!
+2024-05-16 08:35:04,542 - INFO - Session_1 192.168.56.104:34560 disconnected!
+2024-05-16 08:35:04,543 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:06:50,738 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:06:58,494 - INFO - Established with new client: 192.168.56.104
+2024-05-16 09:06:58,494 - INFO - Connection established with 192.168.56.104:50006 (Number of connections: 1)
+2024-05-16 09:06:58,494 - INFO - Established with new client: 192.168.56.104:50006
+2024-05-16 09:07:15,569 - INFO - Session_1 192.168.56.104:50006 disconnected!
+2024-05-16 09:07:15,570 - INFO - Session_1 192.168.56.104:50006 disconnected!
+2024-05-16 09:07:15,570 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:07:37,488 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:07:44,617 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:07:46,885 - INFO - Established with new client: 192.168.56.104
+2024-05-16 09:07:46,886 - INFO - Connection established with 192.168.56.104:34486 (Number of connections: 1)
+2024-05-16 09:07:46,886 - INFO - Established with new client: 192.168.56.104:34486
+2024-05-16 09:08:38,078 - INFO - Session_1 192.168.56.104:34486 disconnected!
+2024-05-16 09:08:38,078 - INFO - Session_1 192.168.56.104:34486 disconnected!
+2024-05-16 09:08:38,078 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:08:49,553 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:08:51,475 - INFO - Established with new client: 192.168.56.104
+2024-05-16 09:08:51,475 - INFO - Connection established with 192.168.56.104:42180 (Number of connections: 1)
+2024-05-16 09:08:51,475 - INFO - Established with new client: 192.168.56.104:42180
+2024-05-16 09:09:08,559 - INFO - Session_1 192.168.56.104:42180 disconnected!
+2024-05-16 09:09:08,560 - INFO - Session_1 192.168.56.104:42180 disconnected!
+2024-05-16 09:09:08,560 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:10:21,659 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:10:23,226 - INFO - Established with new client: 192.168.56.104
+2024-05-16 09:10:23,226 - INFO - Connection established with 192.168.56.104:58362 (Number of connections: 1)
+2024-05-16 09:10:23,226 - INFO - Established with new client: 192.168.56.104:58362
+2024-05-16 09:10:26,232 - INFO - Session_1 192.168.56.104:58362 disconnected!
+2024-05-16 09:10:26,232 - INFO - Session_1 192.168.56.104:58362 disconnected!
+2024-05-16 09:10:26,232 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:12:21,874 - INFO - Listen on 192.168.56.1:2404
+2024-05-16 09:12:24,635 - INFO - Established with new client: 192.168.56.104
+2024-05-16 09:12:24,635 - INFO - Connection established with 192.168.56.104:57598 (Number of connections: 1)
+2024-05-16 09:12:24,635 - INFO - Established with new client: 192.168.56.104:57598
+2024-05-16 14:10:29,014 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 14:11:00,313 - INFO - Established with new client: 127.0.0.1
+2024-05-16 14:11:00,313 - INFO - Connection established with 127.0.0.1:30169 (Number of connections: 1)
+2024-05-16 14:11:00,314 - ERROR - Unhandled exception in client_connected_cb
+transport: <_ProactorSocketTransport fd=1212 read=<_OverlappedFuture pending cb=[_ProactorReadPipeTransport._loop_reading()]>>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 310, in handle_client
+    self.__callback_on_connect(client_addr, client_port, rc=0)
+TypeError: 'NoneType' object is not callable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 316, in handle_client
+    self.__callback_on_connect("", 0, rc=1)
+TypeError: 'NoneType' object is not callable
+2024-05-16 14:11:00,317 - INFO - Session_1 127.0.0.1:30169 disconnected!
+2024-05-16 14:11:00,318 - ERROR - Exception 'NoneType' object is not callable
+2024-05-16 14:25:07,205 - ERROR - Callback not set
+2024-05-16 14:25:07,206 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 14:25:09,628 - INFO - Established with new client: 127.0.0.1
+2024-05-16 14:25:09,628 - INFO - Connection established with 127.0.0.1:30435 (Number of connections: 1)
+2024-05-16 14:33:07,472 - INFO - Session_1 127.0.0.1:30435 disconnected!
+2024-05-16 14:33:07,473 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:20:57,620 - ERROR - Callback not set
+2024-05-16 15:20:57,620 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:20:59,755 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:20:59,756 - INFO - Connection established with 127.0.0.1:31539 (Number of connections: 1)
+2024-05-16 15:21:19,220 - INFO - Session_1 127.0.0.1:31539 disconnected!
+2024-05-16 15:21:19,220 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:22:58,132 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:22:58,133 - INFO - Connection established with 127.0.0.1:31588 (Number of connections: 1)
+2024-05-16 15:23:09,268 - INFO - Session_1 127.0.0.1:31588 disconnected!
+2024-05-16 15:23:09,269 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:29:36,407 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:29:36,407 - INFO - Connection established with 127.0.0.1:31657 (Number of connections: 1)
+2024-05-16 15:29:46,845 - INFO - Session_1 127.0.0.1:31657 disconnected!
+2024-05-16 15:29:46,846 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:35:13,399 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:35:13,399 - INFO - Connection established with 127.0.0.1:31757 (Number of connections: 1)
+2024-05-16 15:35:21,730 - INFO - Session_1 127.0.0.1:31757 disconnected!
+2024-05-16 15:35:21,730 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:36:06,071 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:36:06,072 - INFO - Connection established with 127.0.0.1:31768 (Number of connections: 1)
+2024-05-16 15:36:13,840 - INFO - Session_1 127.0.0.1:31768 disconnected!
+2024-05-16 15:36:13,841 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:36:23,551 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:36:23,551 - INFO - Connection established with 127.0.0.1:31778 (Number of connections: 1)
+2024-05-16 15:36:30,859 - INFO - Session_1 127.0.0.1:31778 disconnected!
+2024-05-16 15:36:30,860 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:39:45,927 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:39:45,928 - INFO - Connection established with 127.0.0.1:31839 (Number of connections: 1)
+2024-05-16 15:39:54,015 - INFO - Session_1 127.0.0.1:31839 disconnected!
+2024-05-16 15:39:54,016 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:43:43,315 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:43:43,315 - INFO - Connection established with 127.0.0.1:31925 (Number of connections: 1)
+2024-05-16 15:51:02,725 - ERROR - Callback not set
+2024-05-16 15:51:02,726 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:51:04,216 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:51:04,216 - INFO - Connection established with 127.0.0.1:32028 (Number of connections: 1)
+2024-05-16 15:51:12,056 - INFO - Session_1 127.0.0.1:32028 disconnected!
+2024-05-16 15:51:12,057 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:51:24,396 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:51:24,396 - INFO - Connection established with 127.0.0.1:32038 (Number of connections: 1)
+2024-05-16 15:51:35,718 - ERROR - Callback not set
+2024-05-16 15:51:35,718 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:57:52,123 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:57:52,124 - INFO - Connection established with 127.0.0.1:32104 (Number of connections: 1)
+2024-05-16 15:57:58,353 - INFO - Session_1 127.0.0.1:32104 disconnected!
+2024-05-16 15:57:58,354 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:58:25,488 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:58:25,488 - INFO - Connection established with 127.0.0.1:32113 (Number of connections: 1)
+2024-05-16 15:58:48,258 - INFO - Session_1 127.0.0.1:32113 disconnected!
+2024-05-16 15:58:48,259 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 15:58:55,581 - INFO - Established with new client: 127.0.0.1
+2024-05-16 15:58:55,581 - INFO - Connection established with 127.0.0.1:32130 (Number of connections: 1)
+2024-05-16 15:59:05,008 - INFO - Session_1 127.0.0.1:32130 disconnected!
+2024-05-16 15:59:05,009 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:05:03,348 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:05:03,348 - INFO - Connection established with 127.0.0.1:32229 (Number of connections: 1)
+2024-05-16 16:05:09,350 - INFO - Session_1 127.0.0.1:32229 disconnected!
+2024-05-16 16:05:09,351 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:06:25,045 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:06:25,046 - INFO - Connection established with 127.0.0.1:32249 (Number of connections: 1)
+2024-05-16 16:06:38,989 - INFO - Session_1 127.0.0.1:32249 disconnected!
+2024-05-16 16:06:38,989 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:07:05,501 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:07:05,502 - INFO - Connection established with 127.0.0.1:32274 (Number of connections: 1)
+2024-05-16 16:07:13,947 - INFO - Session_1 127.0.0.1:32274 disconnected!
+2024-05-16 16:07:13,948 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:23:40,252 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:23:40,252 - INFO - Connection established with 127.0.0.1:32612 (Number of connections: 1)
+2024-05-16 16:23:46,256 - INFO - Session_1 127.0.0.1:32612 disconnected!
+2024-05-16 16:23:46,257 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:25:09,209 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:25:09,210 - INFO - Connection established with 127.0.0.1:32626 (Number of connections: 1)
+2024-05-16 16:25:16,567 - INFO - Session_1 127.0.0.1:32626 disconnected!
+2024-05-16 16:25:16,568 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:27:29,213 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:27:29,215 - INFO - Connection established with 127.0.0.1:32661 (Number of connections: 1)
+2024-05-16 16:27:36,622 - INFO - Session_1 127.0.0.1:32661 disconnected!
+2024-05-16 16:27:36,622 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:27:58,516 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:27:58,516 - INFO - Connection established with 127.0.0.1:32675 (Number of connections: 1)
+2024-05-16 16:28:06,701 - INFO - Session_1 127.0.0.1:32675 disconnected!
+2024-05-16 16:28:06,702 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 16:28:41,263 - INFO - Established with new client: 127.0.0.1
+2024-05-16 16:28:41,263 - INFO - Connection established with 127.0.0.1:32686 (Number of connections: 1)
+2024-05-16 16:28:48,491 - INFO - Session_1 127.0.0.1:32686 disconnected!
+2024-05-16 16:28:48,492 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 20:12:39,264 - INFO - Listen on 127.0.0.1:2404
+2024-05-16 20:13:01,727 - INFO - Listen on 127.0.0.1:2404

@@ -35,6 +35,8 @@ class ClientManager:
                  callback_for_delete=None,
                  callback_on_message=None,
                  callback_on_send=None,
+                 callback_on_disconnect=None,
+                 flag_callbacks=False,
                  callback_only_for_client=None,
                  whoami: str = 'client'):
         """
@@ -86,6 +88,12 @@ class ClientManager:
 
         # callback for send message
         self.__callback_on_send = callback_on_send
+
+        # callback for disconnect
+        self.__callback_on_disconnect = callback_on_disconnect
+
+        # allow for 3rd party callbacks
+        self.__flag_set_callbacks = flag_callbacks
 
         # Description of the client
         self.__server_name: str = server_name
@@ -270,11 +278,19 @@ class ClientManager:
 
             # if it is server then handle own update states
             if self.__whoami == 'server':
-                await self.update_state_machine_server(session, apdu)
-                await self.handle_apdu(session, apdu)
+                task = asyncio.ensure_future(self.update_state_machine_server(session, apdu))
+                self.__tasks.append(task)
+                task = asyncio.ensure_future(self.handle_apdu(session, apdu))
+                self.__tasks.append(task)
+                # await self.update_state_machine_server(session, apdu)
+                # await self.handle_apdu(session, apdu)
             else:
-                await self.update_state_machine_client(session, apdu)
-                await self.handle_apdu(session, apdu)
+                task = asyncio.ensure_future(self.update_state_machine_client(session, apdu))
+                self.__tasks.append(task)
+                task = asyncio.ensure_future(self.handle_apdu(session, apdu))
+                self.__tasks.append(task)
+                # await self.update_state_machine_client(session, apdu)
+                # await self.handle_apdu(session, apdu)
 
         else:
             if self.__whoami == 'server':
@@ -299,6 +315,10 @@ class ClientManager:
         print(f"{session.name}, {session.ip}:{session.port} disconnect!")
         logging.debug(f"deleted {session} from clientmanager")
         logging.info(f"{session.name} {session.ip}:{session.port} disconnected!")
+
+        if self.__flag_set_callbacks:
+            self.__callback_on_disconnect(session)
+
         if len(self.__sessions) > 0:
             pass
         else:
@@ -327,6 +347,24 @@ class ClientManager:
         # callback function in server class instance
         self.__callback_for_delete_self(self)
         del self
+
+    async def callback_on_sent(self, session, data):
+        """
+        Method for callback function for 3rd party app.
+        :rtype: object
+        :param session:
+        :param data:
+        """
+        if self.__flag_set_callbacks:
+            if session.transmission_state == 'RUNNING':
+                print(f"data for send: {data}")
+                new_frame = self.generate_i_frame(data, session)
+                task = asyncio.ensure_future(self.send_frame(session, new_frame))
+                self.__tasks.append(task)
+
+    def kill_session(self):
+        for session in self.__sessions:
+            session.delete_self()
 
     # for client and server
     async def handle_apdu(self, session: Session, apdu: Frame = None) -> None:
@@ -376,9 +414,9 @@ class ClientManager:
                         self.__send_buffer.clear_frames_less_than(self.__ack)
 
                     if self.__whoami == "server":
-
                         # handle apdu for on_message method
-                        self.__callback_on_message(apdu, apdu.data)
+                        if self.__flag_set_callbacks:
+                            await self.__callback_on_message(session, apdu, apdu.data, self.callback_on_sent)
 
                         # shara payload with MQTT
                         task = asyncio.ensure_future(self.__mqtt_client.save_data(

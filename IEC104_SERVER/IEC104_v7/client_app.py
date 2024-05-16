@@ -62,6 +62,11 @@ class IEC104Client(object):
                                         0x00,  # 3. ridici pole
                                         0x05,  # 3. ridici pole
                                         )
+        self.data2 = (b'\x0B\x07\x03\x00\x0C\x00\x10\x30\x00\xBE\x09\x00\x11\x30'
+                      b'\x00\x90\x09\x00\x0E\x30\x00\x75\x00\x00\x28\x30\x00\x25\x09\x00\x29\x30\x00\x75'
+                      b'\x00\x00\x0F\x30\x00\x0F\x0A\x00\x2E\x30\x00\xAE\x05\x00')
+        # příkaz čtení
+        self.data2 = (b'\x0D\x81\x05\x00\x0C\x00\x10\x30\x00\x42\xF6\x00\x11\x30')
 
         self.data_list: list[bytes] = [self.data2, self.data2]  # define static data
 
@@ -299,7 +304,6 @@ class IEC104Client(object):
 
                     # * STATE 3
                     if actual_transmission_state == 'RUNNING':
-
 
                         # for cyklus for send I frame with random data
                         for data in self.data_list:

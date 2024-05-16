@@ -26,14 +26,14 @@ class Parser:
         Returns:
         IFormat | SFormat | UFormat | None: The corresponding format object or None if the format is unknown.
         """
-        unpacked_apdu = struct.unpack(f"{'B' * (length)}", apdu)
+        unpacked_apdu = struct.unpack(f"{'B' * length}", apdu)
         frame_format = Parser.what_format(unpacked_apdu)
 
         if frame_format == "I":
             # Parse I-Format
             ssn = (unpacked_apdu[1] << 7) + (unpacked_apdu[0] >> 1)
             rsn = (unpacked_apdu[3] << 7) + (unpacked_apdu[2] >> 1)
-            data = struct.unpack(f"{'B' * (length)}", apdu)
+            data = struct.unpack(f"{'B' * length}", apdu)
             asdu_data = data[APCI.ACPI_HEADER_LENGTH:]
             new_instance = IFormat(bytes(asdu_data), ssn, rsn, direction='IN')
             return new_instance

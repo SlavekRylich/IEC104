@@ -65,6 +65,7 @@ class ServerIEC104:
         self.__callback_on_disconnect = None
         self.__callback_on_message = None
         self.__callback_on_send = None
+        self.__flag_set_callbacks = False
 
         # working var
         self.no_overflow: int = 0
@@ -184,15 +185,35 @@ class ServerIEC104:
         """
         self.__name = value
 
+    @property
+    def register_callback_on_connect(self):
+        return self.__callback_on_connect
+
+    @register_callback_on_connect.setter
     def register_callback_on_connect(self, func):
         self.__callback_on_connect = func
 
+    @property
+    def register_callback_on_disconnect(self):
+        return self.__callback_on_disconnect
+
+    @register_callback_on_disconnect.setter
     def register_callback_on_disconnect(self, func):
         self.__callback_on_disconnect = func
 
+    @property
+    def register_callback_on_message(self):
+        return self.__callback_on_message
+
+    @register_callback_on_message.setter
     def register_callback_on_message(self, func):
         self.__callback_on_message = func
 
+    @property
+    def register_callback_on_send(self):
+        return self.__callback_on_send
+
+    @register_callback_on_send.setter
     def register_callback_on_send(self, func):
         self.__callback_on_send = func
 
@@ -253,6 +274,8 @@ class ServerIEC104:
                                                     callback_for_delete=callback_for_delete,
                                                     callback_on_message=self.__callback_on_message,
                                                     callback_on_send=self.__callback_on_send,
+                                                    callback_on_disconnect=self.__callback_on_disconnect,
+                                                    flag_callbacks=self.__flag_set_callbacks,
                                                     callback_only_for_client=None,
                                                     whoami='server')
 
@@ -284,56 +307,20 @@ class ServerIEC104:
                                                                whoami='server')
 
         try:
+            task = asyncio.create_task(session.start())
+
             # Success connect with client
-            self.__callback_on_connect(client_addr, client_port, rc=0)
+            if self.__flag_set_callbacks:
+                self.__callback_on_connect(client_addr, client_port, rc=0)
             # Start the session
-            await session.start()
+            await task
 
         except Exception as e:
             # Wrong connection
-            self.__callback_on_connect("", 0, rc=1)
+            if self.__flag_set_callbacks:
+                self.__callback_on_connect("", 0, rc=1)
             print(f"Exception: {e}")
             logging.error(f"Exception: {e}")
-
-    def on_message(self, data: bytes | str | None) -> None:
-        """
-        On receive message
-
-        Args:
-
-        Returns:
-            None
-
-        Exceptions:
-            None
-        """
-
-        print(f"Here is data: {data}")
-
-    def on_connect(self, host: str, port: int, rc: int) -> None:
-        """
-        On connect method.
-
-        Args:
-
-        Returns:
-            None
-
-        Exceptions:
-            None
-        """
-        if rc == 0:
-            print(f"Established with new client: {host}:{port}")
-            logging.info(f"Established with new client: {host}:{port}")
-        else:
-            print(f"Connection refused!")
-            logging.error(f"Connection refused!")
-
-    def on_send(self, data: bytes | str = None):
-        pass
-
-    def on_disconnect(self) -> None:
-        pass
 
     def delete_dead_clients(self, client: ClientManager = None) -> None:
         """
@@ -358,6 +345,14 @@ class ServerIEC104:
             print(f"Listen on {self.ip}:{self.port}")
             logging.info(f"Listen on {self.ip}:{self.port}")
 
+    def kill_clients(self):
+        try:
+            for client in self.clients.values():
+                client.kill_session()
+        except Exception as e:
+            print(f"Exception with kill: {e}")
+            logging.error(f"Exception with kill: {e}")
+
     def close(self) -> None:
         """
         Close the asyncio event loop and shutdown the logging system.
@@ -376,6 +371,7 @@ class ServerIEC104:
         """
         if self._server:
             self._server.close()
+            self.kill_clients()
             logging.info(f"Stopping server.")  # Log the closure of the event loop
         if self.__loop:
             self.__loop.close()  # Close the asyncio event loop
@@ -400,6 +396,14 @@ class ServerIEC104:
         Raises:
         None
         """
+        if (self.__callback_on_connect and self.__callback_on_message and
+                self.__callback_on_send and self.__callback_on_disconnect):
+            self.__flag_set_callbacks = True
+
+        else:
+            print(f"Callback not set")
+            logging.error(f"Callback not set")
+
         print(f"Listen on {self.ip}:{self.port}")
         logging.info(f"Listen on {self.ip}:{self.port}")
         try:
@@ -422,6 +426,7 @@ if __name__ == '__main__':
     my_server = ServerIEC104()
     try:
         asyncio.run(my_server.start())
+        print(f"az po tom")
 
     except KeyboardInterrupt:
         pass
