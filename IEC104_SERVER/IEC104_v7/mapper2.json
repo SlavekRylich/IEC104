@@ -1,0 +1,72 @@
+{ "global": [
+  {
+    "host": "127.0.0.1",
+    "port": 8080,
+    "username": "admin",
+    "password": "123",
+    "ASDU_address": 1
+  }
+],
+  "mappings_IEC101": {
+    "13": {
+      "pin": "di",
+      "pin_number": "1_01"
+    },
+    "45": {},
+    "102": {}
+  },
+  "mappings_IO": {
+    "di":
+      {
+        "1_01": {
+          "ioa": 1,
+          "label": "label",
+          "method": "evok_api"
+          },
+        "1_02": {
+          "ioa": 2,
+          "label": "label",
+          "method": "evok_api"
+          }
+        },
+    "do":
+      {
+        "1_01": {
+          "ioa": 3,
+          "label": "label",
+          "method": "evok_api"
+          },
+        "1_02": {
+          "ioa": 4,
+          "label": "label",
+          "method": "evok_api"
+          }
+        },
+    "ai":
+      {
+        "1_01": {
+          "ioa": 5,
+          "label": "label",
+          "method": "evok_api"
+          },
+        "1_02": {
+          "ioa": 6,
+          "label": "label",
+          "method": "evok_api"
+          }
+        },
+    "ao":
+      {
+        "1_01": {
+          "ioa": 8,
+          "label": "label",
+          "method": "evok_api"
+          },
+        "1_02": {
+          "ioa": 9,
+          "label": "label",
+          "method": "evok_api"
+          }
+        }
+  }
+}

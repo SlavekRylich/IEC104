@@ -239,3 +239,369 @@ TypeError: 'NoneType' object is not callable
 2024-05-16 16:28:48,492 - INFO - Listen on 127.0.0.1:2404
 2024-05-16 20:12:39,264 - INFO - Listen on 127.0.0.1:2404
 2024-05-16 20:13:01,727 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 07:37:35,360 - ERROR - Callback not set
+2024-05-17 07:37:35,360 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 07:37:54,613 - INFO - Established with new client: 127.0.0.1
+2024-05-17 07:37:54,614 - INFO - Connection established with 127.0.0.1:23878 (Number of connections: 1)
+2024-05-17 07:38:01,774 - INFO - Session_1 127.0.0.1:23878 disconnected!
+2024-05-17 07:38:01,774 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 07:39:21,598 - INFO - Established with new client: 127.0.0.1
+2024-05-17 07:39:21,598 - INFO - Connection established with 127.0.0.1:23908 (Number of connections: 1)
+2024-05-17 07:39:28,747 - INFO - Session_1 127.0.0.1:23908 disconnected!
+2024-05-17 07:39:28,748 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 07:43:04,204 - INFO - Established with new client: 127.0.0.1
+2024-05-17 07:43:04,204 - INFO - Connection established with 127.0.0.1:23967 (Number of connections: 1)
+2024-05-17 07:43:11,215 - INFO - Session_1 127.0.0.1:23967 disconnected!
+2024-05-17 07:43:11,217 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 08:00:56,039 - INFO - Established with new client: 127.0.0.1
+2024-05-17 08:00:56,039 - INFO - Connection established with 127.0.0.1:24450 (Number of connections: 1)
+2024-05-17 08:01:03,052 - INFO - Session_1 127.0.0.1:24450 disconnected!
+2024-05-17 08:01:03,053 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 08:02:13,857 - INFO - Established with new client: 127.0.0.1
+2024-05-17 08:02:13,858 - INFO - Connection established with 127.0.0.1:24459 (Number of connections: 1)
+2024-05-17 08:02:24,114 - INFO - Session_1 127.0.0.1:24459 disconnected!
+2024-05-17 08:02:24,115 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 08:04:08,888 - INFO - Established with new client: 127.0.0.1
+2024-05-17 08:04:08,888 - INFO - Connection established with 127.0.0.1:24492 (Number of connections: 1)
+2024-05-17 08:04:18,131 - INFO - Session_1 127.0.0.1:24492 disconnected!
+2024-05-17 08:04:18,131 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 08:20:37,685 - INFO - Established with new client: 127.0.0.1
+2024-05-17 08:20:37,686 - INFO - Connection established with 127.0.0.1:24887 (Number of connections: 1)
+2024-05-17 08:21:10,221 - INFO - Session_1 127.0.0.1:24887 disconnected!
+2024-05-17 08:21:10,222 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 08:21:15,363 - INFO - Established with new client: 127.0.0.1
+2024-05-17 08:21:15,363 - INFO - Connection established with 127.0.0.1:24921 (Number of connections: 1)
+2024-05-17 08:21:25,933 - INFO - Session_1 127.0.0.1:24921 disconnected!
+2024-05-17 08:21:25,934 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 09:26:39,894 - INFO - Established with new client: 127.0.0.1
+2024-05-17 09:26:39,894 - INFO - Connection established with 127.0.0.1:25830 (Number of connections: 1)
+2024-05-17 09:26:49,487 - INFO - Session_1 127.0.0.1:25830 disconnected!
+2024-05-17 09:26:49,488 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 09:50:25,252 - INFO - Established with new client: 127.0.0.1
+2024-05-17 09:50:25,253 - INFO - Connection established with 127.0.0.1:26113 (Number of connections: 1)
+2024-05-17 09:50:32,359 - INFO - Session_1 127.0.0.1:26113 disconnected!
+2024-05-17 09:50:32,360 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 09:53:51,986 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 09:54:43,864 - INFO - Established with new client: 127.0.0.1
+2024-05-17 09:54:43,865 - INFO - Connection established with 127.0.0.1:26158 (Number of connections: 1)
+2024-05-17 09:54:43,865 - INFO - Established with new client: 127.0.0.1:26158
+2024-05-17 09:55:03,600 - INFO - Session_1 127.0.0.1:26158 disconnected!
+2024-05-17 09:55:03,600 - INFO - Session_1 127.0.0.1:26158 disconnected!
+2024-05-17 09:55:03,600 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 12:10:00,384 - ERROR - Callback not set
+2024-05-17 12:10:00,385 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 12:10:08,490 - INFO - Established with new client: 127.0.0.1
+2024-05-17 12:10:08,491 - INFO - Connection established with 127.0.0.1:28359 (Number of connections: 1)
+2024-05-17 12:10:16,101 - INFO - Session_1 127.0.0.1:28359 disconnected!
+2024-05-17 12:10:16,101 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 12:19:48,611 - INFO - Established with new client: 127.0.0.1
+2024-05-17 12:19:48,611 - INFO - Connection established with 127.0.0.1:28548 (Number of connections: 1)
+2024-05-17 12:19:56,021 - INFO - Session_1 127.0.0.1:28548 disconnected!
+2024-05-17 12:19:56,022 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 12:24:58,796 - INFO - Established with new client: 127.0.0.1
+2024-05-17 12:24:58,796 - INFO - Connection established with 127.0.0.1:28620 (Number of connections: 1)
+2024-05-17 12:25:05,822 - INFO - Session_1 127.0.0.1:28620 disconnected!
+2024-05-17 12:25:05,822 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 12:34:02,282 - INFO - Established with new client: 127.0.0.1
+2024-05-17 12:34:02,282 - INFO - Connection established with 127.0.0.1:28718 (Number of connections: 1)
+2024-05-17 12:34:10,107 - INFO - Session_1 127.0.0.1:28718 disconnected!
+2024-05-17 12:34:10,107 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 13:20:18,511 - INFO - Established with new client: 127.0.0.1
+2024-05-17 13:20:18,512 - INFO - Connection established with 127.0.0.1:29465 (Number of connections: 1)
+2024-05-17 13:20:27,629 - INFO - Session_1 127.0.0.1:29465 disconnected!
+2024-05-17 13:20:27,630 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 13:23:27,940 - INFO - Established with new client: 127.0.0.1
+2024-05-17 13:23:27,940 - INFO - Connection established with 127.0.0.1:29525 (Number of connections: 1)
+2024-05-17 13:23:45,186 - INFO - Session_1 127.0.0.1:29525 disconnected!
+2024-05-17 13:23:45,187 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 13:25:21,367 - INFO - Established with new client: 127.0.0.1
+2024-05-17 13:25:21,368 - INFO - Connection established with 127.0.0.1:29565 (Number of connections: 1)
+2024-05-17 13:25:30,952 - INFO - Session_1 127.0.0.1:29565 disconnected!
+2024-05-17 13:25:30,952 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 13:27:14,445 - INFO - Established with new client: 127.0.0.1
+2024-05-17 13:27:14,446 - INFO - Connection established with 127.0.0.1:29594 (Number of connections: 1)
+2024-05-17 13:27:20,448 - INFO - Session_1 127.0.0.1:29594 disconnected!
+2024-05-17 13:27:20,449 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 13:54:50,318 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 13:54:59,329 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 13:55:04,520 - INFO - Established with new client: 127.0.0.1
+2024-05-17 13:55:04,520 - INFO - Connection established with 127.0.0.1:29980 (Number of connections: 1)
+2024-05-17 13:55:04,520 - INFO - Established with new client: 127.0.0.1:29980
+2024-05-17 16:33:44,928 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:33:49,863 - INFO - Established with new client: 127.0.0.1
+2024-05-17 16:33:49,864 - INFO - Connection established with 127.0.0.1:32690 (Number of connections: 1)
+2024-05-17 16:33:49,864 - INFO - Established with new client: 127.0.0.1:32690
+2024-05-17 16:48:59,171 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:49:01,342 - INFO - Established with new client: 127.0.0.1
+2024-05-17 16:49:01,342 - INFO - Connection established with 127.0.0.1:32884 (Number of connections: 1)
+2024-05-17 16:49:01,342 - INFO - Established with new client: 127.0.0.1:32884
+2024-05-17 16:50:11,243 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:50:12,250 - INFO - Established with new client: 127.0.0.1
+2024-05-17 16:50:12,250 - INFO - Connection established with 127.0.0.1:32934 (Number of connections: 1)
+2024-05-17 16:50:12,250 - INFO - Established with new client: 127.0.0.1:32934
+2024-05-17 16:51:08,951 - ERROR - Exception in callback BaseProactorEventLoop._start_serving.<locals>.loop(<_OverlappedF...0.1', 32951))>) at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py:841
+handle: <Handle BaseProactorEventLoop._start_serving.<locals>.loop(<_OverlappedF...0.1', 32951))>) at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py:841>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 856, in loop
+    self._make_socket_transport(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 647, in _make_socket_transport
+    return _ProactorSocketTransport(self, sock, protocol, waiter,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 613, in __init__
+    super().__init__(loop, sock, protocol, waiter, extra, server)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 189, in __init__
+    super().__init__(loop, sock, protocol, waiter, extra, server)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 335, in __init__
+    super().__init__(*args, **kw)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 66, in __init__
+    self._server._attach()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 296, in _attach
+    assert self._sockets is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+2024-05-17 16:51:08,978 - INFO - Session_1 127.0.0.1:32934 disconnected!
+2024-05-17 16:51:08,979 - INFO - Session_1 127.0.0.1:32934 disconnected!
+2024-05-17 16:51:08,979 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:51:11,576 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:51:14,290 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:51:16,303 - INFO - Established with new client: 127.0.0.1
+2024-05-17 16:51:16,303 - INFO - Connection established with 127.0.0.1:32968 (Number of connections: 1)
+2024-05-17 16:51:16,304 - INFO - Established with new client: 127.0.0.1:32968
+2024-05-17 16:53:00,912 - INFO - Session_1 127.0.0.1:32968 disconnected!
+2024-05-17 16:53:00,913 - INFO - Session_1 127.0.0.1:32968 disconnected!
+2024-05-17 16:53:00,913 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:53:05,776 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:53:07,143 - INFO - Established with new client: 127.0.0.1
+2024-05-17 16:53:07,144 - INFO - Connection established with 127.0.0.1:32993 (Number of connections: 1)
+2024-05-17 16:53:07,144 - INFO - Established with new client: 127.0.0.1:32993
+2024-05-17 16:54:55,528 - INFO - Session_1 127.0.0.1:32993 disconnected!
+2024-05-17 16:54:55,528 - INFO - Session_1 127.0.0.1:32993 disconnected!
+2024-05-17 16:54:55,528 - INFO - Listen on 127.0.0.1:2404
+2024-05-17 16:54:55,529 - INFO - Established with new client: 127.0.0.1
+2024-05-17 16:54:55,529 - INFO - Connection established with 127.0.0.1:33029 (Number of connections: 1)
+2024-05-17 16:54:55,530 - INFO - Established with new client: 127.0.0.1:33029
+2024-05-18 13:50:58,572 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 13:51:13,211 - INFO - Established with new client: 127.0.0.1
+2024-05-18 13:51:13,211 - INFO - Connection established with 127.0.0.1:30940 (Number of connections: 1)
+2024-05-18 13:51:13,211 - INFO - Established with new client: 127.0.0.1:30940
+2024-05-18 14:25:59,541 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:26:03,271 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:26:03,273 - INFO - Connection established with 127.0.0.1:31413 (Number of connections: 1)
+2024-05-18 14:26:03,273 - INFO - Established with new client: 127.0.0.1:31413
+2024-05-18 14:29:19,079 - INFO - Session_1 127.0.0.1:31413 disconnected!
+2024-05-18 14:29:19,079 - INFO - Session_1 127.0.0.1:31413 disconnected!
+2024-05-18 14:29:19,079 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:30:15,569 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:30:19,779 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:30:19,779 - INFO - Connection established with 127.0.0.1:31520 (Number of connections: 1)
+2024-05-18 14:34:38,167 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:34:43,112 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:34:45,974 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:34:45,974 - INFO - Connection established with 127.0.0.1:31622 (Number of connections: 1)
+2024-05-18 14:34:45,974 - INFO - Established with new client: 127.0.0.1:31622
+2024-05-18 14:35:37,694 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:35:40,547 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:35:40,547 - INFO - Connection established with 127.0.0.1:31640 (Number of connections: 1)
+2024-05-18 14:35:40,547 - INFO - Established with new client: 127.0.0.1:31640
+2024-05-18 14:37:11,638 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:37:15,392 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:37:15,392 - INFO - Connection established with 127.0.0.1:31679 (Number of connections: 1)
+2024-05-18 14:37:15,392 - INFO - Established with new client: 127.0.0.1:31679
+2024-05-18 14:38:49,563 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:38:49,722 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:39:03,398 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:39:05,155 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:39:05,155 - INFO - Connection established with 127.0.0.1:31726 (Number of connections: 1)
+2024-05-18 14:39:05,155 - INFO - Established with new client: 127.0.0.1:31726
+2024-05-18 14:40:05,286 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:40:07,496 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:40:07,496 - INFO - Connection established with 127.0.0.1:31737 (Number of connections: 1)
+2024-05-18 14:40:07,496 - INFO - Established with new client: 127.0.0.1:31737
+2024-05-18 14:40:27,685 - INFO - Session_1 127.0.0.1:31737 disconnected!
+2024-05-18 14:40:27,685 - INFO - Session_1 127.0.0.1:31737 disconnected!
+2024-05-18 14:40:27,685 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:41:37,748 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:41:39,341 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:41:39,341 - INFO - Connection established with 127.0.0.1:31759 (Number of connections: 1)
+2024-05-18 14:41:39,341 - INFO - Established with new client: 127.0.0.1:31759
+2024-05-18 14:42:47,799 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:42:50,665 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:42:50,665 - INFO - Connection established with 127.0.0.1:31771 (Number of connections: 1)
+2024-05-18 14:42:50,665 - INFO - Established with new client: 127.0.0.1:31771
+2024-05-18 14:44:39,073 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:44:42,265 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:44:44,619 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:44:44,619 - INFO - Connection established with 127.0.0.1:31804 (Number of connections: 1)
+2024-05-18 14:44:44,635 - INFO - Established with new client: 127.0.0.1:31804
+2024-05-18 14:46:00,450 - INFO - Session_1 127.0.0.1:31804 disconnected!
+2024-05-18 14:46:00,450 - INFO - Session_1 127.0.0.1:31804 disconnected!
+2024-05-18 14:46:00,450 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:46:05,263 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:46:05,263 - INFO - Connection established with 127.0.0.1:31819 (Number of connections: 1)
+2024-05-18 14:46:05,263 - INFO - Established with new client: 127.0.0.1:31819
+2024-05-18 14:46:42,135 - INFO - Session_1 127.0.0.1:31819 disconnected!
+2024-05-18 14:46:42,136 - INFO - Session_1 127.0.0.1:31819 disconnected!
+2024-05-18 14:46:42,136 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 14:46:42,137 - INFO - Established with new client: 127.0.0.1
+2024-05-18 14:46:42,137 - INFO - Connection established with 127.0.0.1:31826 (Number of connections: 1)
+2024-05-18 14:46:42,137 - INFO - Established with new client: 127.0.0.1:31826
+2024-05-18 15:16:10,087 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:16:13,595 - INFO - Established with new client: 127.0.0.1
+2024-05-18 15:16:13,596 - INFO - Connection established with 127.0.0.1:32306 (Number of connections: 1)
+2024-05-18 15:16:13,596 - INFO - Established with new client: 127.0.0.1:32306
+2024-05-18 15:18:30,591 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:18:30,797 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:18:40,374 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:18:45,304 - INFO - Established with new client: 127.0.0.1
+2024-05-18 15:18:45,314 - INFO - Connection established with 127.0.0.1:32348 (Number of connections: 1)
+2024-05-18 15:18:45,315 - INFO - Established with new client: 127.0.0.1:32348
+2024-05-18 15:19:48,880 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:19:48,981 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:19:54,861 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:19:56,485 - INFO - Established with new client: 127.0.0.1
+2024-05-18 15:19:56,485 - INFO - Connection established with 127.0.0.1:32374 (Number of connections: 1)
+2024-05-18 15:19:56,485 - INFO - Established with new client: 127.0.0.1:32374
+2024-05-18 15:25:10,246 - ERROR - Exception in callback BaseProactorEventLoop._start_serving.<locals>.loop(<_OverlappedF...0.1', 32407))>) at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py:841
+handle: <Handle BaseProactorEventLoop._start_serving.<locals>.loop(<_OverlappedF...0.1', 32407))>) at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py:841>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 856, in loop
+    self._make_socket_transport(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 647, in _make_socket_transport
+    return _ProactorSocketTransport(self, sock, protocol, waiter,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 613, in __init__
+    super().__init__(loop, sock, protocol, waiter, extra, server)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 189, in __init__
+    super().__init__(loop, sock, protocol, waiter, extra, server)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 335, in __init__
+    super().__init__(*args, **kw)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 66, in __init__
+    self._server._attach()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 296, in _attach
+    assert self._sockets is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+2024-05-18 15:25:10,329 - INFO - Session_1 127.0.0.1:32374 disconnected!
+2024-05-18 15:25:10,329 - INFO - Session_1 127.0.0.1:32374 disconnected!
+2024-05-18 15:25:10,329 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:25:24,955 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 15:25:28,538 - INFO - Established with new client: 127.0.0.1
+2024-05-18 15:25:28,538 - INFO - Connection established with 127.0.0.1:32433 (Number of connections: 1)
+2024-05-18 15:25:28,538 - INFO - Established with new client: 127.0.0.1:32433
+2024-05-18 16:25:25,536 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:25:26,155 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:25:26,155 - INFO - Connection established with 127.0.0.1:33335 (Number of connections: 1)
+2024-05-18 16:25:26,155 - INFO - Established with new client: 127.0.0.1:33335
+2024-05-18 16:27:16,998 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:27:22,603 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:27:22,603 - INFO - Connection established with 127.0.0.1:33370 (Number of connections: 1)
+2024-05-18 16:27:22,603 - INFO - Established with new client: 127.0.0.1:33370
+2024-05-18 16:27:44,271 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:27:46,225 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:27:46,225 - INFO - Connection established with 127.0.0.1:33379 (Number of connections: 1)
+2024-05-18 16:27:46,225 - INFO - Established with new client: 127.0.0.1:33379
+2024-05-18 16:31:05,743 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:31:39,321 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:31:39,321 - INFO - Connection established with 127.0.0.1:33455 (Number of connections: 1)
+2024-05-18 16:31:53,532 - INFO - Established with new client: 127.0.0.1:33455
+2024-05-18 16:33:28,529 - ERROR - Exception in callback BaseProactorEventLoop._start_serving.<locals>.loop(<_OverlappedF...0.1', 33482))>) at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py:841
+handle: <Handle BaseProactorEventLoop._start_serving.<locals>.loop(<_OverlappedF...0.1', 33482))>) at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py:841>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 856, in loop
+    self._make_socket_transport(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 647, in _make_socket_transport
+    return _ProactorSocketTransport(self, sock, protocol, waiter,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 613, in __init__
+    super().__init__(loop, sock, protocol, waiter, extra, server)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 189, in __init__
+    super().__init__(loop, sock, protocol, waiter, extra, server)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 335, in __init__
+    super().__init__(*args, **kw)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py", line 66, in __init__
+    self._server._attach()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 296, in _attach
+    assert self._sockets is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+2024-05-18 16:33:28,539 - INFO - Session_1 127.0.0.1:33455 disconnected!
+2024-05-18 16:33:28,539 - INFO - Session_1 127.0.0.1:33455 disconnected!
+2024-05-18 16:33:28,539 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:34:06,187 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:34:08,692 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:34:08,692 - INFO - Connection established with 127.0.0.1:33503 (Number of connections: 1)
+2024-05-18 16:34:08,692 - INFO - Established with new client: 127.0.0.1:33503
+2024-05-18 16:34:54,118 - INFO - Session_1 127.0.0.1:33503 disconnected!
+2024-05-18 16:34:54,118 - INFO - Session_1 127.0.0.1:33503 disconnected!
+2024-05-18 16:34:54,119 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:35:00,539 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:35:00,699 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:35:10,754 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:35:14,861 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:35:14,861 - INFO - Connection established with 127.0.0.1:33564 (Number of connections: 1)
+2024-05-18 16:35:14,861 - INFO - Established with new client: 127.0.0.1:33564
+2024-05-18 16:36:12,639 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:36:16,278 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:36:16,278 - INFO - Connection established with 127.0.0.1:33580 (Number of connections: 1)
+2024-05-18 16:36:16,278 - INFO - Established with new client: 127.0.0.1:33580
+2024-05-18 16:37:09,046 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:37:11,774 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:37:11,774 - INFO - Connection established with 127.0.0.1:33608 (Number of connections: 1)
+2024-05-18 16:37:11,774 - INFO - Established with new client: 127.0.0.1:33608
+2024-05-18 16:37:45,336 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:37:47,318 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:37:47,318 - INFO - Connection established with 127.0.0.1:33620 (Number of connections: 1)
+2024-05-18 16:37:47,318 - INFO - Established with new client: 127.0.0.1:33620
+2024-05-18 16:38:22,792 - INFO - Session_1 127.0.0.1:33620 disconnected!
+2024-05-18 16:38:22,792 - INFO - Session_1 127.0.0.1:33620 disconnected!
+2024-05-18 16:38:22,792 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:40:12,443 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 16:40:13,821 - INFO - Established with new client: 127.0.0.1
+2024-05-18 16:40:13,821 - INFO - Connection established with 127.0.0.1:33694 (Number of connections: 1)
+2024-05-18 16:40:13,821 - INFO - Established with new client: 127.0.0.1:33694
+2024-05-18 17:03:25,597 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:03:28,993 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:03:28,993 - INFO - Connection established with 127.0.0.1:34124 (Number of connections: 1)
+2024-05-18 17:03:28,993 - INFO - Established with new client: 127.0.0.1:34124
+2024-05-18 17:04:27,439 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:04:31,065 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:04:31,065 - INFO - Connection established with 127.0.0.1:34151 (Number of connections: 1)
+2024-05-18 17:04:31,066 - INFO - Established with new client: 127.0.0.1:34151
+2024-05-18 17:11:03,276 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:11:07,502 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:11:07,502 - INFO - Connection established with 127.0.0.1:34251 (Number of connections: 1)
+2024-05-18 17:11:07,502 - INFO - Established with new client: 127.0.0.1:34251
+2024-05-18 17:13:57,364 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:14:01,301 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:14:01,301 - INFO - Connection established with 127.0.0.1:34278 (Number of connections: 1)
+2024-05-18 17:14:01,301 - INFO - Established with new client: 127.0.0.1:34278
+2024-05-18 17:16:25,048 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:23:09,378 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:23:09,379 - INFO - Connection established with 127.0.0.1:34403 (Number of connections: 1)
+2024-05-18 17:23:09,379 - INFO - Established with new client: 127.0.0.1:34403
+2024-05-18 17:24:24,112 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:24:26,899 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:24:26,899 - INFO - Connection established with 127.0.0.1:34433 (Number of connections: 1)
+2024-05-18 17:24:26,899 - INFO - Established with new client: 127.0.0.1:34433
+2024-05-18 17:35:49,367 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:35:49,600 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:35:49,600 - INFO - Connection established with 127.0.0.1:34660 (Number of connections: 1)
+2024-05-18 17:35:49,600 - INFO - Established with new client: 127.0.0.1:34660
+2024-05-18 17:36:50,287 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:36:53,351 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:36:53,351 - INFO - Connection established with 127.0.0.1:34703 (Number of connections: 1)
+2024-05-18 17:36:53,351 - INFO - Established with new client: 127.0.0.1:34703
+2024-05-18 17:42:20,121 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 17:42:22,717 - INFO - Established with new client: 127.0.0.1
+2024-05-18 17:42:22,717 - INFO - Connection established with 127.0.0.1:34813 (Number of connections: 1)
+2024-05-18 17:42:22,717 - INFO - Established with new client: 127.0.0.1:34813
+2024-05-18 18:08:01,666 - INFO - Listen on 127.0.0.1:2404
+2024-05-18 18:08:04,951 - INFO - Established with new client: 127.0.0.1
+2024-05-18 18:08:04,951 - INFO - Connection established with 127.0.0.1:35262 (Number of connections: 1)
+2024-05-18 18:08:04,951 - INFO - Established with new client: 127.0.0.1:35262

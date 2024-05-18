@@ -6,79 +6,134 @@ import struct
 LOG = logging.getLogger()
 
 
+def bytes_to_float(value: bytes):
+    nexp = 8
+    len_frac = 23
+
+    first_byte = value[3]
+    second_byte = value[2]
+    third_byte = value[1]
+    fourth_byte = value[0]
+
+    sign = (first_byte & 128) >> 7
+    exp = ((first_byte & 127) << 1) + (second_byte >> 7)
+    bias = 2 ** (nexp - 1) - 1
+    exponent = exp - bias
+    fract = (((second_byte & 127) + 128) << 16) + (third_byte << 8) + fourth_byte
+
+    mantisa = fract / 2 ** (len_frac - exponent)
+    if sign:
+        result = (-1) * mantisa
+    else:
+        result = mantisa
+    return result
+
+
 class ASDU:
     def __init__(self, data):
-        print("hex: ", binascii.hexlify(data).decode)
 
+        print("hex: ", binascii.hexlify(data).decode)
+        self.data = data
         format = f"{'B' * (len(data))}"
         print(len(data))
         unpack_data = struct.unpack(format, data)
         print(unpack_data)
         self.type_id = unpack_data[0]  # first byte
-        # self.type_id = data.read('uint:8')
 
         #   1XXX_XXXX
         #  *1000_0000
-        sq = unpack_data[1] & 128  # Single or Sequence
+        self.sq = (unpack_data[1] & 128) >> 7  # Single or Sequence
 
-        # sq = data.read('bool')  # Single or Sequence
         #   X000_0000
         #  *0111_1111
-        sq_count = unpack_data[1] & 127
-        # sq_count = data.read('uint:7')
+        self.sq_count = unpack_data[1] & 127
 
         #   T | P/N |  C5  |  C4  |  C3  |  C2  |  C1  |  C0  |
-        test_bit = unpack_data[2] & 128
-        p_n_bit = unpack_data[2] & 64
+        self.test_bit = bool(unpack_data[2] & 128)
+        self.p_n_bit = bool(unpack_data[2] & 64)
         self.cot = unpack_data[2] & 63
-        # self.cot = data.read('uint:8')
 
-        self.org = unpack_data[3]
+        self.org_OA = unpack_data[3]
         self.addr_COA = (unpack_data[5] << 8) + unpack_data[4]
 
+        # in bytes
+        self.length = 6
+
         # zbytek dat
-        self.asdu = unpack_data[6:]
-        #
-        # self.IOA = (unpack_data[8] << 16) + (unpack_data[7] << 8) + unpack_data[6]
-        # self.QOI = unpack_data[9]
+        self.asdu_tuple = unpack_data[6:]
 
         print(f"TypeId: {self.type_id}\n"
-              f"SQ: {bool(sq)}\n"
-              f"NumIx: {sq_count}\n"
+              f"SQ: {bool(self.sq)}\n"
+              f"NumIx: {self.sq_count}\n"
               f"CauseTx: {self.cot}\n"
-              f"Negative: {bool(p_n_bit)}\n"
-              f"Test: {bool(test_bit)}\n"
-              f"OA: {self.org}\n"
+              f"Negative: {bool(self.p_n_bit)}\n"
+              f"Test: {bool(self.test_bit)}\n"
+              f"OA: {self.org_OA}\n"
               f"Addr: {self.addr_COA}\n"
               )
         # LOG.debug("Type: {}, COT: {}, ASDU: {}".format(self.type_id, self.cot, self.addr))
 
-        self.objs = []
+        self.objs: list = []
         # has more info objects
-        if not sq:
-            for i in range(sq_count):
-                obj = InfoObjMeta.types[self.type_id](self.asdu)
+        if not self.sq:
+            for i in range(self.sq_count):
+                obj = InfoObjMeta.types[self.type_id](self.asdu_tuple)
                 # obj = InfoObjMeta.types[self.type_id](data)
                 self.objs.append(obj)
+                if obj.length:
+                    self.length += obj.length
 
         # has one info object
         else:
-            for i in range(sq_count):
-                obj = InfoObjMeta.types[self.type_id](self.asdu)
+            for i in range(self.sq_count):
+                obj = InfoObjMeta.types[self.type_id](self.asdu_tuple)
                 # obj = InfoObjMeta.types[self.type_id](data)
                 self.objs.append(obj)
+                if obj.length:
+                    self.length += obj.length
             pass
 
         self.obj_elements = []
 
+    def serialize(self):
+        length = self.length
+        # for obj in self.objs:
+        #     length += len(obj.length)
+        a = self.sq << 7
+
+        form = f"{'B' * length}"
+        data = struct.pack(form, self.type_id
+                           , (self.sq << 7) + self.sq_count
+                           , (self.test_bit << 7) + (self.p_n_bit << 6) + self.cot
+                           , self.org_OA
+                           , self.addr_COA & 255
+                           , self.addr_COA >> 8
+                            )
+        for obj in self.objs:
+            data += obj.serialize()
+        return data
+
 
 class QDS(object):
     def __init__(self, data):
-        overflow = bool(data & 0x01)
-        blocked = bool(data & 0x10)
-        substituted = bool(data & 0x20)
-        not_topical = bool(data & 0x40)
-        invalid = bool(data & 0x80)
+        self.overflow = bool(data & 0x01)
+        self.blocked = bool(data & 0x10)
+        self.substituted = bool(data & 0x20)
+        self.not_topical = bool(data & 0x40)
+        self.invalid = bool(data & 0x80)
+
+
+class SCO(object):
+    def __init__(self, data):
+        # super(SCO, self).__init__(unpacked_data)
+        self.qoc = QOC(data)
+        self.on_off = bool(data & 1)
+
+
+class QOC(object):
+    def __init__(self, data):
+        self.execute = bool(data & 128)
+        self.pulse_id = (data & 124) >> 2
 
 
 class InfoObjMeta(type):
@@ -95,10 +150,18 @@ class InfoObj(metaclass=InfoObjMeta):
 
     def __init__(self, unpacked_data):
         self.ioa = (unpacked_data[1] << 8) + unpacked_data[0]
-        special_uses = (unpacked_data[2] << 16) + (unpacked_data[1] << 8) + unpacked_data[0]
+        self.special_uses = (unpacked_data[2] << 16) + (unpacked_data[1] << 8) + unpacked_data[0]
         # unpacked_data.read("int:16")
-        value = unpacked_data
+        # self.value = bytes_to_float(unpacked_data[3:7])
+        self.length = 3
         print("IOA: ", self.ioa)
+
+    def serialize(self):
+        return struct.pack(f"{'B' * self.length}", self.ioa & 255
+                           , self.ioa & 255
+                           , self.ioa >> 8
+                           , self.special_uses >> 16
+                           )
 
 
 class SIQ(InfoObj):
@@ -233,11 +296,16 @@ class MMeNc1(InfoObj):
                (unpacked_data[2] << 16) +
                (unpacked_data[1] << 8) +
                unpacked_data[0])
+
+        self.value = bytes_to_float(unpacked_data[3:7])
+        self.value_bytes = bytes_to_float(self.value)
         # val = unpacked_data.read("floatle:32")
 
-        #qds = QDS(struct.unpack_from('B', data[7:])[0])
+        # qds = QDS(struct.unpack_from('B', unpacked_data[7:])[0])
+        self.qds = QDS(unpacked_data[7])
 
         print("val", val)
+        print("val", self.value)
 
 
 class MMeTc1(InfoObj):
@@ -359,6 +427,16 @@ class CScNa1(InfoObj):
     name = 'C_SC_NA_1'
     description = 'Single command'
 
+    def __init__(self, unpacked_data):
+        super(CScNa1, self).__init__(unpacked_data)
+        # print(binascii.hexlify(unpacked_data.bytes))
+        if isinstance(unpacked_data, tuple):
+            pass
+        else:
+            unpacked_data = struct.unpack("B" * len(unpacked_data), unpacked_data)
+
+        self.sco = SCO(unpacked_data[3])
+
 
 class CDcNa1(InfoObj):
     type_id = 46
@@ -418,6 +496,7 @@ class CRdNa1(InfoObj):
     type_id = 102
     name = 'C_RD_NA_1'
     description = 'Read command'
+    length = 1
 
 
 class CCsNa1(InfoObj):

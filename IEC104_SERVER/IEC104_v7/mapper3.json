@@ -1,0 +1,28 @@
+{ "global": [
+  {
+    "host": "127.0.0.1",
+    "port": 8080,
+    "username": "admin",
+    "password": "123",
+    "ASDU_address": 1
+  }
+],
+  "mappings": [
+    {
+      "ioa": 1,
+      "iec101_type_id": 13,
+      "pin": "ai",
+      "pin_id": "2_01",
+      "command_method": "evok_api",
+      "value": null
+    },
+    {
+      "ioa": 2,
+      "iec101_type_id": 45,
+      "pin": "do",
+      "pin_id": "1_01",
+      "command_method": "evok_api",
+      "value": 1
+    }
+  ]
+}

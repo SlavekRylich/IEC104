@@ -42,7 +42,7 @@ def ieee_754_conversion(n, sgn_len=1, exp_len=8, mant_len=23):
 
 if __name__ == '__main__':
     import struct
-    number = -7.125
+    number = 1.01733e-28
     m = struct.unpack('I', struct.pack('f', number))[0]
     print("Unsigned Int Recieved:", m)
     print("Manually converted:", ieee_754_conversion(m, exp_len=8, mant_len=23))
