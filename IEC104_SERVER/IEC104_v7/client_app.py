@@ -68,7 +68,7 @@ class IEC104Client(object):
         #ac090011
         # self.data2 = (b'\x0D\x81\x05\x00\x0C\x00\x10\x30\x00\xac\x09\x00\x11\x30')
 
-        self.data2 = b'\x0D\x81\x05\x00\x0C\x00\x10\x30\x00\x42\xF6\x00\x11\x30'
+        self.data2 = b'\x66\x01\x05\x00\x0C\x00\x01\x00\x00'
 
         self.data_list: list[bytes] = [self.data2, self.data2]  # define static data
 

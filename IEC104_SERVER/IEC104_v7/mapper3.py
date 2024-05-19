@@ -28,4 +28,5 @@ class IEC101Mapper:
         if mapping:
             return mapping
         else:
+            print("Neznámé ioa v konfiguračním souboru.")
             return None

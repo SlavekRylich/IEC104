@@ -11,6 +11,8 @@ from ASDU import *
 
 class Main:
     def __init__(self):
+        self.cb_on_send = None
+        self.session = None
         self.tasks = []
         self.server = ServerIEC104()
         self.server.register_callback_on_connect = self.on_connect
@@ -61,17 +63,26 @@ class Main:
                 # callback
                 for type_id in self.mapping_IEC101.keys():
                     if type_id == obj.type_id:
-                        response = self.mapping_IEC101[type_id](obj, config_IO)
+                        self.session = session
+                        self.cb_on_send = cb_on_sent
+                        await self.mapping_IEC101[type_id](obj, config_IO)
 
         print(o_asdu)
         response_add = obj.ioa
         response = o_asdu.serialize()
         if not response:
-            await self.on_send(session, response, cb_on_sent)
+            await self.on_send(response)
 
-    async def on_send(self, session, response, cb_on_sent):
-        await cb_on_sent(session, response.encode('ascii'))
-        pass
+    async def on_send(self, response):
+        try:
+            await self.cb_on_send(self.session, response)
+            # reset self.session
+            self.session = None
+            # reset self.cb_on_send
+            self.cb_on_send = None
+        except Exception as e:
+            print(f"Exception: {e}")
+            logging.error(f"Exception: {e}")
 
     def on_disconnect(self, session):
         print(f"{session.name}, {session.ip}:{session.port} disconnect!")
@@ -112,7 +123,7 @@ class Main:
     def handle_gpio(self, obj, config_IO):
         pass
 
-    def handle_type_13(self, obj, config_IO):
+    async def handle_type_13(self, obj, config_IO):
         method = config_IO[obj]["command_method"]
 
         if method == "evok_api":
@@ -133,7 +144,7 @@ class Main:
         print(config_IO)
         return None
 
-    def handle_type_45(self, obj, config_IO):
+    async def handle_type_45(self, obj, config_IO):
         method = config_IO[obj]["command_method"]
         dev_type = config_IO[obj]["pin"]
 
@@ -155,7 +166,7 @@ class Main:
         response = ASDU.ASDU(resp)
         return resp
 
-    def handle_type_102(self, obj, config_IO):
+    async def handle_type_102(self, obj, config_IO):
         method = config_IO[obj]["command_method"]
         dev_type = config_IO[obj]["pin"]
 
@@ -168,6 +179,41 @@ class Main:
             logging.error(f"{method} is not supported")
 
         print(ret)
+        # value = ret["value"]
+
+        type_resp = 13
+        sq = 0
+        sq_count = 1
+        test_bit = 0
+        p_n_bit = 0
+        cot = 5
+        org_OA = 0
+        addr_COA = 1
+
+        try:
+            new_asdu = ASDU(type_id=type_resp,
+                            sq=sq,
+                            sq_count=sq_count,
+                            test_bit=test_bit,
+                            p_n_bit=p_n_bit,
+                            cot=cot,
+                            org_OA=org_OA,
+                            addr_COA=addr_COA,
+                            )
+            value = 20.2
+            qds = 0
+            ioa = obj.ioa
+            new_obj = MMeNc1(ioa=ioa, value=value, qds=qds)
+            new_asdu.add_obj(new_obj)
+
+            data = new_asdu.serialize()
+            await self.on_send(data)
+            print(data)
+
+        except Exception as e:
+            print(e)
+            logging.error(e)
+            return None
 
 
 if __name__ == "__main__":
