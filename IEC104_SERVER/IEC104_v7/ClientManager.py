@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 import asyncio
 import logging
@@ -12,7 +13,10 @@ from SFormat import SFormat
 from UFormat import UFormat
 from Packet_buffer import PacketBuffer
 from Session import Session
-from MQTTProtocol import MQTTProtocol
+
+# from MQTTProtocol_async_gmqtt import MQTTProtocol_async_gmqtt
+# # from MQTTProtocol import MQTTProtocol
+from MQTTProtocol_async import MQTTProtocol_async
 
 
 class ClientManager:
@@ -137,14 +141,22 @@ class ClientManager:
             self.__mqtt_username: str = mqtt_username
             self.__mqtt_password: str = mqtt_password
             self.__mqtt_qos: int = mqtt_qos
-            self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
-                                              self.__mqtt_broker_ip,
-                                              self.__mqtt_broker_port,
-                                              username=self.__mqtt_username,
-                                              password=self.__mqtt_password,
-                                              version=self.__mqtt_version,
-                                              transport=self.__mqtt_transport,
-                                              qos=self.__mqtt_qos)
+            # self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
+            #                                   self.__mqtt_broker_ip,
+            #                                   self.__mqtt_broker_port,
+            #                                   username=self.__mqtt_username,
+            #                                   password=self.__mqtt_password,
+            #                                   version=self.__mqtt_version,
+            #                                   transport=self.__mqtt_transport,
+            #                                   qos=self.__mqtt_qos)
+            self.__mqtt_client = MQTTProtocol_async(self.__mqtt_client_id,
+                                                    self.__mqtt_broker_ip,
+                                                    self.__mqtt_broker_port,
+                                                    username=self.__mqtt_username,
+                                                    password=self.__mqtt_password,
+                                                    version=self.__mqtt_version,
+                                                    transport=self.__mqtt_transport,
+                                                    qos=self.__mqtt_qos)
 
         # statistics
         self.client_stats: FrameStatistics = FrameStatistics(self.ip)
@@ -357,7 +369,7 @@ class ClientManager:
         """
         if self.__flag_set_callbacks:
             if session.transmission_state == 'RUNNING':
-                print(f"data for send: {data}")
+                print(f"{datetime.now().strftime("%H:%M:%S:%f")} data for send: {data}")
                 new_frame = self.generate_i_frame(data, session)
                 task = asyncio.ensure_future(self.send_frame(session, new_frame))
                 self.__tasks.append(task)
@@ -416,7 +428,12 @@ class ClientManager:
                     if self.__whoami == "server":
                         # handle apdu for on_message method
                         if self.__flag_set_callbacks:
-                            await self.__callback_on_message(session, apdu, apdu.data, self.callback_on_sent)
+                            task = asyncio.ensure_future(
+                                self.__callback_on_message(session,
+                                                           apdu,
+                                                           apdu.data,
+                                                           self.callback_on_sent))
+                            self.__tasks.append(task)
 
                         # shara payload with MQTT
                         task = asyncio.ensure_future(self.__mqtt_client.save_data(
@@ -571,6 +588,7 @@ class ClientManager:
         """
         session.update_timestamp_t2()
         new_i_format = IFormat(data, self.__VS, self.__VR)
+        self.__recv_buffer.clear_frames_less_than(self.__ack)
         self.incrementVS()
         return new_i_format
 

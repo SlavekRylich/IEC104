@@ -252,6 +252,7 @@ class MQTTProtocol(IDataSharing):
                                password=self._password)
             await self.publish(topic, payload=data, qos=self._qos, retain=None)
 
+
         except Exception as e:
             print(f"mqtt failed: {e}")
 

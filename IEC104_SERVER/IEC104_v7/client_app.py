@@ -68,7 +68,10 @@ class IEC104Client(object):
         #ac090011
         # self.data2 = (b'\x0D\x81\x05\x00\x0C\x00\x10\x30\x00\xac\x09\x00\x11\x30')
 
-        self.data2 = b'\x66\x01\x05\x00\x0C\x00\x01\x00\x00'
+        self.data2 = b'\x2D\x01\x08\x00\x01\x00\x02\x00\x00\x01'
+        self.dotaz_cteni_102 = b'\x66\x01\x05\x00\x01\x00\x01\x00\x00'
+        self.povel_aktivace_45 = b'\x2D\x01\x06\x00\x01\x00\x02\x00\x00\x01'
+        self.povel_deaktivace_45 = b'\x2D\x01\x08\x00\x01\x00\x02\x00\x00\x00'
 
         self.data_list: list[bytes] = [self.data2, self.data2]  # define static data
 
@@ -307,13 +310,28 @@ class IEC104Client(object):
                     # * STATE 3
                     if actual_transmission_state == 'RUNNING':
 
-                        # for cyklus for send I frame with random data
-                        for data in self.data_list:
-                            # list of data
-                            new_frame = self.client_manager.generate_i_frame(data, session)
-                            # self.__out_queue.to_send((session, frame), session_event)
-                            await self.client_manager.send_frame(session, new_frame)
-                            await asyncio.sleep(1.5)
+                        new_frame = self.client_manager.generate_i_frame(self.dotaz_cteni_102, session)
+                        # self.__out_queue.to_send((session, frame), session_event)
+                        await self.client_manager.send_frame(session, new_frame)
+                        await asyncio.sleep(5)
+
+                        new_frame = self.client_manager.generate_i_frame(self.povel_aktivace_45, session)
+                        # self.__out_queue.to_send((session, frame), session_event)
+                        await self.client_manager.send_frame(session, new_frame)
+                        await asyncio.sleep(5)
+
+                        new_frame = self.client_manager.generate_i_frame(self.povel_deaktivace_45, session)
+                        # self.__out_queue.to_send((session, frame), session_event)
+                        await self.client_manager.send_frame(session, new_frame)
+                        await asyncio.sleep(5)
+
+                        # # for cyklus for send I frame with random data
+                        # for data in self.data_list:
+                        #     # list of data
+                        #     new_frame = self.client_manager.generate_i_frame(data, session)
+                        #     # self.__out_queue.to_send((session, frame), session_event)
+                        #     await self.client_manager.send_frame(session, new_frame)
+                        #     await asyncio.sleep(1.5)
 
                         # check if response is ack with S format
 

@@ -44,12 +44,9 @@ class ASDU:
         self.objs: list = []
         self.obj_elements = []
         if data is not None:
-            print("hex: ", binascii.hexlify(data).decode)
             self.data = data
             format = f"{'B' * (len(data))}"
-            print(len(data))
             unpack_data = struct.unpack(format, data)
-            print(unpack_data)
             self.type_id = unpack_data[0]  # first byte
 
             #   1XXX_XXXX
@@ -74,15 +71,6 @@ class ASDU:
             # zbytek dat
             self.asdu_tuple = unpack_data[6:]
 
-            print(f"TypeId: {self.type_id}\n"
-                  f"SQ: {bool(self.sq)}\n"
-                  f"NumIx: {self.sq_count}\n"
-                  f"CauseTx: {self.cot}\n"
-                  f"Negative: {bool(self.p_n_bit)}\n"
-                  f"Test: {bool(self.test_bit)}\n"
-                  f"OA: {self.org_OA}\n"
-                  f"Addr: {self.addr_COA}\n"
-                  )
             # LOG.debug("Type: {}, COT: {}, ASDU: {}".format(self.type_id, self.cot, self.addr))
 
             # has more info objects
@@ -117,7 +105,8 @@ class ASDU:
 
     def add_obj(self, obj):
         self.objs.append(obj)
-        self.length += obj.length
+        self.length += len(obj.serial_obj)
+        self.length += len(obj.serial_data)
 
     def add_obj_element(self, obj_elements):
         self.obj_elements.append(obj_elements)
@@ -129,18 +118,15 @@ class ASDU:
         a = self.sq << 7
 
         form = f"{'B' * length}"
-        try:
-            data = struct.pack(form, self.type_id
-                               , (self.sq << 7) + self.sq_count
-                               , (self.test_bit << 7) + (self.p_n_bit << 6) + self.cot
-                               , self.org_OA
-                               , self.addr_COA & 255
-                               , self.addr_COA >> 8
-                               )
-        except Exception as e:
-            print(e)
+        data = struct.pack(form, self.type_id
+                           , (self.sq << 7) + self.sq_count
+                           , (self.test_bit << 7) + (self.p_n_bit << 6) + self.cot
+                           , self.org_OA
+                           , self.addr_COA & 255
+                           , self.addr_COA >> 8
+                           )
         for obj in self.objs:
-            data += obj.serial_data
+            data += obj.serial_obj + obj.serial_data
         return data
 
 
@@ -151,6 +137,7 @@ class QDS(object):
         self.substituted = bool(data & 0x20)
         self.not_topical = bool(data & 0x40)
         self.invalid = bool(data & 0x80)
+        self.in_number = data
 
 
 class SCO(object):
@@ -158,6 +145,7 @@ class SCO(object):
         # super(SCO, self).__init__(unpacked_data)
         self.qoc = QOC(data)
         self.on_off = bool(data & 1)
+        self.in_number = data
 
 
 class QOC(object):
@@ -189,10 +177,9 @@ class InfoObj(metaclass=InfoObjMeta):
         if special_uses:
             self.special_uses = special_uses
         self.length = 3
-        print("IOA: ", self.ioa)
-        self.serial_data = self.serialize()
+        self.serial_obj = self.serialize_obj()
 
-    def serialize(self):
+    def serialize_obj(self):
         return struct.pack(f"{'B' * self.length}", self.ioa & 255
                            , self.ioa >> 8
                            , self.special_uses >> 16
@@ -332,31 +319,30 @@ class MMeNc1(InfoObj):
 
     def __init__(self, unpacked_data=None, ioa=None, value=None, qds=None):
         super(MMeNc1, self).__init__(unpacked_data, ioa)
-
+        self.unpack_value = 0
+        self.qds = qds
         if unpacked_data:
             self.value = bytes_to_float(unpacked_data[3:7])
             self.qds = QDS(unpacked_data[7])
 
-        if value:
+        if value is not None:
             self.value = value
             self.value_bytes = pack = struct.pack("<f", value)
             formate = f"{'B' * (len(self.value_bytes))}"
             self.unpack_value = struct.unpack(formate, self.value_bytes)
-        if qds:
+        if qds is not None:
             self.qds = QDS(qds)
-        print("val", self.value)
-        self.serial_data = None
 
-    def serialize(self):
-        self.serial_data = struct.pack(f"{'B' * self.length}"
-                            , self.unpack_value[0] & 255
-                            , self.unpack_value[0] & 255
-                            , self.value >> 8
-                            , self.value >> 16
-                            , self.value >> 24
-                            , self.qds.serialize()
+        self.serial_data = self.serialize_MMeNc1()
+
+    def serialize_MMeNc1(self):
+        return struct.pack(f"{'B' * MMeNc1.length}"
+                           , self.unpack_value[0]
+                           , self.unpack_value[1]
+                           , self.unpack_value[2]
+                           , self.unpack_value[3]
+                           , self.qds.in_number
                            )
-
 
 
 class MMeTc1(InfoObj):
@@ -477,16 +463,21 @@ class CScNa1(InfoObj):
     type_id = 45
     name = 'C_SC_NA_1'
     description = 'Single command'
+    length = 1
 
-    def __init__(self, unpacked_data):
-        super(CScNa1, self).__init__(unpacked_data)
-        # print(binascii.hexlify(unpacked_data.bytes))
-        if isinstance(unpacked_data, tuple):
-            pass
-        else:
-            unpacked_data = struct.unpack("B" * len(unpacked_data), unpacked_data)
+    def __init__(self, unpacked_data=None, ioa=None, sco=None):
+        super(CScNa1, self).__init__(unpacked_data, ioa=ioa)
 
-        self.sco = SCO(unpacked_data[3])
+        if unpacked_data is not None:
+            self.sco = SCO(unpacked_data[3])
+        if sco is not None:
+            self.sco = SCO(sco)
+        self.serial_data = self.serialize_CScNa1()
+
+    def serialize_CScNa1(self):
+        return struct.pack(f"{'B' * CScNa1.length}"
+                           , self.sco.in_number
+                           )
 
 
 class CDcNa1(InfoObj):

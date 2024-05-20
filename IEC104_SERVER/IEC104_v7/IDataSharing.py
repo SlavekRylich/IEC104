@@ -19,7 +19,7 @@ class IDataSharing(ABC):
         pass
 
     @abstractmethod
-    def subscribe(self, topic, callback):
+    def subscribe(self, topic, qos, callback):
         """Přihlášení k odběru z topicu a nastavení funkce pro zpracování zpráv."""
         pass
 

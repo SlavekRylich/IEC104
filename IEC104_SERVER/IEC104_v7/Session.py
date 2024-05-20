@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from datetime import datetime
+
 import asyncio
-import time
 from typing import Any
 
 import Packet_buffer
@@ -357,10 +358,10 @@ class Session:
                         if len(apdu) == frame_length:
                             new_apdu = Parser.parser(apdu, frame_length)
 
-                            print(f"{time.strftime('%X')}-Received"
+                            print(f"{datetime.now().strftime("%H:%M:%S:%f")}-Received"
                                   f" from {self.ip}:{self.port}"
                                   f" - frame: {new_apdu}")
-                            logging.debug(f"{time.strftime('%X')}-Received from"
+                            logging.debug(f"{datetime.now().strftime("%H:%M:%S:%f")}-Received from"
                                           f" {self.ip}:{self.port}"
                                           f" - frame: {new_apdu}")
                             # update timers
@@ -394,10 +395,10 @@ class Session:
             except asyncio.TimeoutError:
                 print(f'Client {self} hasn\'t send any frames.')
                 logging.debug(f'Client {self} hasn\'t send any frames.')
-                # if session is still connect, specially in stopped state
-                self.flag_session = 'ACTIVE_TERMINATION'
-                task = asyncio.ensure_future(self.__callback_on_message_recv(self))
-                self.__tasks.append(task)
+                # # if session is still connect, specially in stopped state
+                # self.flag_session = 'ACTIVE_TERMINATION'
+                # task = asyncio.ensure_future(self.__callback_on_message_recv(self))
+                # self.__tasks.append(task)
 
             except Exception as e:
                 print(f"Exception in handle_messages {e}")
@@ -429,10 +430,10 @@ class Session:
                     if isinstance(frame, IFormat):
                         self.__send_buffer.add_frame(frame.ssn, frame)
 
-                    print(f"{time.strftime('%X')}-Send"
+                    print(f"{datetime.now().strftime("%H:%M:%S:%f")}-Send"
                           f" to {self.ip}:{self.port}"
                           f" - frame: {frame}")
-                    logging.debug(f"{time.strftime('%X')}-Send"
+                    logging.debug(f"{datetime.now().strftime("%H:%M:%S:%f")}-Send"
                                   f" to {self.ip}:{self.port}"
                                   f" - frame: {frame}")
 

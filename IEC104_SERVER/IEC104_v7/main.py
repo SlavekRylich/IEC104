@@ -4,7 +4,7 @@ import logging
 import requests
 
 import ASDU
-from mapper3 import IEC101Mapper
+from Mapper_IO import IEC101Mapper
 from server import ServerIEC104
 from ASDU import *
 
@@ -59,27 +59,17 @@ class Main:
         for obj in o_asdu.objs:
 
             config_IO[obj] = self.mapper.handle_iec101_message(obj.ioa)
-            if not None:
+            if config_IO[obj] is not None:
                 # callback
                 for type_id in self.mapping_IEC101.keys():
                     if type_id == obj.type_id:
-                        self.session = session
-                        self.cb_on_send = cb_on_sent
-                        await self.mapping_IEC101[type_id](obj, config_IO)
+                        callback = (session, cb_on_sent)
+                        await self.mapping_IEC101[type_id](o_asdu, obj, config_IO, callback)
 
-        print(o_asdu)
-        response_add = obj.ioa
-        response = o_asdu.serialize()
-        if not response:
-            await self.on_send(response)
-
-    async def on_send(self, response):
+    async def on_send(self, response, callback):
         try:
-            await self.cb_on_send(self.session, response)
-            # reset self.session
-            self.session = None
-            # reset self.cb_on_send
-            self.cb_on_send = None
+            await callback[1](callback[0], response)
+
         except Exception as e:
             print(f"Exception: {e}")
             logging.error(f"Exception: {e}")
@@ -99,7 +89,7 @@ class Main:
         data = {'value': str(int(value))}
         return requests.post(url=url, data=data)
 
-    def handle_evok_request_mapping(self, obj, config_IO: dict):
+    def handle_evok_request_mapping(self, obj, config_IO: dict, value=None):
         dev_type = config_IO[obj]["pin"]
         circuit = config_IO[obj]["pin_id"]
 
@@ -109,7 +99,6 @@ class Main:
             ret = None
 
         elif dev_type == "do" or dev_type == "ao":
-            value = obj.value
             # ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
             # print(ret.json())
             ret = None
@@ -123,72 +112,44 @@ class Main:
     def handle_gpio(self, obj, config_IO):
         pass
 
-    async def handle_type_13(self, obj, config_IO):
-        method = config_IO[obj]["command_method"]
-
-        if method == "evok_api":
-            ret = self.handle_evok_request_mapping(obj, config_IO)
-        elif method == "gpio":
-            self.handle_gpio(obj, config_IO)
-        else:
-            print(f"{method} is not supported")
-            logging.error(f"{method} is not supported")
-
-        # get value from ret
-        print(ret)
-
-        # create response type 13
-        # response = self.generate_type_13(obj, value)
-        # await self.on_send(session, response, cb_on_sent)
+    async def handle_type_13(self, o_asdu, obj, config_IO, callback):
         pass
-        print(config_IO)
-        return None
 
-    async def handle_type_45(self, obj, config_IO):
+    async def handle_type_45(self, o_asdu, obj, config_IO, callback):
         method = config_IO[obj]["command_method"]
-        dev_type = config_IO[obj]["pin"]
+
+        value = obj.sco.on_off
 
         if method == "evok_api":
-            ret = self.handle_evok_request_mapping(obj, config_IO)
+            ret = self.handle_evok_request_mapping(obj, config_IO, value)
         elif method == "gpio":
             self.handle_gpio(obj, config_IO)
         else:
             print(f"{method} is not supported")
             logging.error(f"{method} is not supported")
 
-        print(ret)
-        if obj.sco.on_off == 1:
-            # potvrzeni aktivace
-            resp = b'\x2D\x01\x07\x00\x0C\x00\x10\x30\x00\x00'
-        else:
-            # potvrzeni deaktivace
-            resp = b'\x2D\x01\x09\x00\x0C\x00\x10\x30\x00\x00'
-        response = ASDU.ASDU(resp)
-        return resp
-
-    async def handle_type_102(self, obj, config_IO):
-        method = config_IO[obj]["command_method"]
-        dev_type = config_IO[obj]["pin"]
-
-        if method == "evok_api":
-            ret = self.handle_evok_request_mapping(obj, config_IO)
-        elif method == "gpio":
-            self.handle_gpio(obj, config_IO)
-        else:
-            print(f"{method} is not supported")
-            logging.error(f"{method} is not supported")
-
-        print(ret)
-        # value = ret["value"]
-
-        type_resp = 13
+        # GENERATE RESPONSE
+        type_resp = 45
         sq = 0
         sq_count = 1
         test_bit = 0
         p_n_bit = 0
-        cot = 5
         org_OA = 0
         addr_COA = 1
+        if o_asdu.cot == 6:
+            # potvrzeni aktivace
+            cot = 7  # 7 - ack activation
+            sco = 1  # 7 - activation
+        elif o_asdu.cot == 8:
+            # potvrzeni deaktivace
+            cot = 9  # 7 - ack deactivation
+            sco = 0  # 7 - deactivation
+        else:
+            # unknown
+            cot = 0
+            sco = 0
+
+        ioa = obj.ioa
 
         try:
             new_asdu = ASDU(type_id=type_resp,
@@ -200,20 +161,65 @@ class Main:
                             org_OA=org_OA,
                             addr_COA=addr_COA,
                             )
-            value = 20.2
-            qds = 0
-            ioa = obj.ioa
-            new_obj = MMeNc1(ioa=ioa, value=value, qds=qds)
+
+            new_obj = CScNa1(ioa=ioa, sco=sco)
             new_asdu.add_obj(new_obj)
 
             data = new_asdu.serialize()
-            await self.on_send(data)
-            print(data)
+            await self.on_send(data, callback)
 
         except Exception as e:
             print(e)
             logging.error(e)
-            return None
+
+    async def handle_type_102(self, o_asdu, obj, config_IO, callback):
+        method = config_IO[obj]["command_method"]
+
+        if method == "evok_api":
+            ret = self.handle_evok_request_mapping(obj, config_IO)
+        elif method == "gpio":
+            self.handle_gpio(obj, config_IO)
+        else:
+            print(f"{method} is not supported")
+            logging.error(f"{method} is not supported")
+
+        print(f"none {ret}")
+        # value = ret["value"]
+
+        # GENERATE RESPONSE
+        type_resp = 13
+        sq = 0
+        sq_count = 1
+        test_bit = 0
+        p_n_bit = 0
+        cot = 5  # 5 - required
+        org_OA = 0
+        addr_COA = 1
+
+        value = 20.2
+        qds = 0
+        ioa = obj.ioa
+
+        try:
+            new_asdu = ASDU(type_id=type_resp,
+                            sq=sq,
+                            sq_count=sq_count,
+                            test_bit=test_bit,
+                            p_n_bit=p_n_bit,
+                            cot=cot,
+                            org_OA=org_OA,
+                            addr_COA=addr_COA,
+                            )
+
+            new_obj = MMeNc1(ioa=ioa, value=value, qds=qds)
+            new_asdu.add_obj(new_obj)
+
+            data = new_asdu.serialize()
+            await self.on_send(data, callback)
+
+        except Exception as e:
+            print(e)
+            logging.error(e)
 
 
 if __name__ == "__main__":

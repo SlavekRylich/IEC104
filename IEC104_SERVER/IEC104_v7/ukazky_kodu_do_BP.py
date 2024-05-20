@@ -39,10 +39,10 @@ async def handle_messages(self) -> None:
 
                     if len(apdu) == frame_length:
                         new_apdu = Parser.parser(apdu, frame_length)
-                        self.__timer_t0.start()
-                        self.__timer_t1.start()
-                        self.__timer_t2.start()
-                        self.__timer_t3.start()
+                        self.__timer_t0.work()
+                        self.__timer_t1.work()
+                        self.__timer_t2.work()
+                        self.__timer_t3.work()
                         asyncio.ensure_future(self.__callback_on_message_recv(self, new_apdu))
 
                         header = None
@@ -99,7 +99,7 @@ async def handle_client(self, reader: asyncio.StreamReader,
 
     try:
         # spu�t�n� asynchron� smy�ky pro p��jem dat ve t��d� session
-        await session.start()
+        await session.work()
 
     except Exception as e:
         print(f"Exception: {e}")
