@@ -26822,3 +26822,14 @@ Traceback (most recent call last):
   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
     raise NotImplementedError
 NotImplementedError
+2024-05-21 10:11:09,649 - INFO - Listen on 127.0.0.1:2404
+2024-05-21 10:11:14,400 - INFO - Established with new client: 127.0.0.1
+2024-05-21 10:11:14,400 - INFO - Connection established with 127.0.0.1:52723 (Number of connections: 1)
+2024-05-21 10:11:14,400 - INFO - Established with new client: 127.0.0.1:52723
+2024-05-22 16:50:18,141 - INFO - Listen on 127.0.0.1:2404
+2024-05-22 16:51:18,616 - INFO - Established with new client: 127.0.0.1
+2024-05-22 16:51:18,616 - INFO - Connection established with 127.0.0.1:50342 (Number of connections: 1)
+2024-05-22 16:51:18,616 - INFO - Established with new client: 127.0.0.1:50342
+2024-05-22 16:51:34,549 - INFO - Session_1 127.0.0.1:50342 disconnected!
+2024-05-22 16:51:34,549 - INFO - Session_1 127.0.0.1:50342 disconnected!
+2024-05-22 16:51:34,549 - INFO - Listen on 127.0.0.1:2404
