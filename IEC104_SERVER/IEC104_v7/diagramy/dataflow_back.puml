@@ -1,14 +1,14 @@
 @startuml
 skinparam DefaultFontSize 18
 
-|#whitesmoke|Session|
+|#grey|Session|
 start
 while (Příznak timeout?) is (ne)
     if ( read(2B) )  is (ne) then
         :TCP spojení ukončeno;
         stop
     else (ano)
-        |#whitesmoke|Session|
+        |#grey|Session|
         :čti příchozí rámec z bufferu\n          apdu = read(2B);
 
         if (1. Byte = 0x68) is (ne) then
@@ -23,18 +23,13 @@ while (Příznak timeout?) is (ne)
             (A)
             :callback pro rámec\n     nebo timeout;
             if (rámec?) is (ano) then
-                : zpracuj rámec;
-
-                |MQTTProtocol /\nModul zpracování|
-                #yellowgreen: předání dat do\n modulu zpracování;
-                |#lightgray|ClientManager|
-                : ulož rámec \ndo databáze;
-                |MQTTProtocol /\nModul zpracování|
-                #tan:data do MQTT Broker;
+                :      zpracuj rámec\n a ulož ho do databáze;
+                |MQTTProtocol|
+                :data do MQTT Broker;
             else (ne)
             endif
                 |#lightgray|ClientManager|
-                :  aktualizace\nstavu spojení;
+                :aktualizace stavu spojení;
         endif
     endif
 endwhile (ano)
