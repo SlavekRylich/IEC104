@@ -14,11 +14,12 @@ class Main:
         self.cb_on_send = None
         self.session = None
         self.tasks = []
+
         self.server = ServerIEC104()
         self.server.register_callback_on_connect = self.on_connect
         self.server.register_callback_on_message = self.on_message
-        self.server.register_callback_on_send = self.on_send
         self.server.register_callback_on_disconnect = self.on_disconnect
+
         self.mapper = IEC101Mapper()
         self.evok_host = self.mapper.host
         self.mapping_IEC101 = {

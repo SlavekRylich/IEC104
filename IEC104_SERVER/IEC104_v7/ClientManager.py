@@ -38,7 +38,6 @@ class ClientManager:
                  mqtt_qos: int = 0,
                  callback_for_delete=None,
                  callback_on_message=None,
-                 callback_on_send=None,
                  callback_on_disconnect=None,
                  flag_callbacks=False,
                  callback_only_for_client=None,
@@ -89,9 +88,6 @@ class ClientManager:
 
         # callback for on_message
         self.__callback_on_message = callback_on_message
-
-        # callback for send message
-        self.__callback_on_send = callback_on_send
 
         # callback for disconnect
         self.__callback_on_disconnect = callback_on_disconnect
@@ -935,6 +931,7 @@ class ClientManager:
         print(f'Client {session.ip}:{session.port} timed out and disconnected')
         logging.debug(f'Client {session.ip}:{session.port} timed out and disconnected')
         session.flag_session = 'ACTIVE_TERMINATION'
+        session.delete_self()
 
     async def handle_timeout_t1(self, session: Session = None) -> None:
         """

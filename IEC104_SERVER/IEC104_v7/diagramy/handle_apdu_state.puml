@@ -1,39 +1,43 @@
 @startuml
 'States
 start
+note : začátek metody
 if (příznak timeout_t1?) then (ano)
-    :nastav příznak ukončení spojení;
+    : příznak ukončit spojení;
 else (ne)
 if (aktuální stav = Zastavene?) then (ano)
-:Tělo stavu Zastavene;
+:Blok stavu Zastavene;
 else (ne)
 endif
 if (aktuální stav = Spustene?) then (ano)
-:Tělo stavu Spustene;
+:Blok stavu Spustene;
 else (ne)
 endif
 if (aktuální stav = čekající?) then (ano)
-:Tělo stavu čekající;
+:Blok stavu čekající;
 else (ne)
 endif
 endif
-if (příznak ukočené spojení?) then (ano)
+if (příznak ukočeno spojení?) then (ano)
     :Ukončit všechny asynchronní úlohy;
     :smazat instanci spojení;
     end
-else (ne)
+    note : smazání instance
+    else (ne)
 endif
 stop
+note : konec metody
 @enduml
 
 @startuml
 'State 1
 start
+note: vstup do bloku
 if (stav spojeni = Zastavene?) then (ano)
  if (apdu = U-formát?) then (ano)
       if (apdu = TESTFR act?) then (ano)
         :vytvoř odpoveď TESTFR con;
-        :odešli odpověď\nsession.send();
+        :odešli odpověď\n  send_frame();
       else (ne)
       endif
   else (ne)
@@ -41,52 +45,71 @@ endif
 else (ne)
 endif
 stop
+note : výstup z bloku
 @enduml
 
 @startuml
-'State 2
+'State 2.1
 skinparam DefaultFontSize 16
 start
+note: vstup do bloku
 if (stav spojeni = Spustene?) then (ano)
- if (apdu = I-formát?) then (ano)
-      if (SSN - VR > 1?) then (ano)
-        :Nastala chyba\n   sekvence;
-        :pošli poslední stav VR;
-        :odešli S-formát\nsession.send();
-        :ukonči spojení;
-      else (ne)
-        :VR++;
+    if (apdu = I-formát?) then (ano)
+        if (SSN - VR > 1?) then (ano)
+            :Nastala chyba\n   sekvence;
+            :pošli poslední stav VR;
+            :odešli S-formát\n  send_frame();
+            :příznak ukončit spojení;
+        else (ne)
+            :VR++;
+            :   odstraň všechny \n   potvrzené rámce \ns hodnotou <= RSN;
+            :odešli data z rámce\n do modulu zpracování;
+            :odešli data z rámce\n do MQTT brokeru;
+            if (počet přijatých rámců ve \n vyrovnávací paměti >= w?) then (ano)
+                :odešli S-formát\n  send_frame();
+            else (ne)
+            endif
+        endif
+    else (ne)
+
+    endif
+    (A)
+
+
+else (ne)
+(B)
+endif
+
+@enduml
+
+@startuml
+'State 2.2
+skinparam DefaultFontSize 16
+(A)
+
+    if (apdu = S-formát?) then (ano)
         :odstraň všechny \npotvrzené rámce \ns hodnotou <= RSN;
-        :odešli data z rámce\n do MQTT brokeru;
-        if (počet přijatých rámců ve \n vyrovnávací paměti >= w?) then (ano)
-            :odešli S-formát\nsession.send();
+    else (ne)
+
+    endif
+    if (apdu = U-formát?) then (ano)
+        if (apdu = TESTFR act?) then (ano)
+            :vytvoř odpoveď\n TESTFR con;
+            :odešli odpověď\n  send_frame();
         else (ne)
         endif
-      endif
-  else (ne)
-
-endif
-if (apdu = S-formát?) then (ano)
-            :odstraň všechny \npotvrzené rámce \ns hodnotou <= RSN;
-      else (ne)
-
-      endif
-      if (apdu = U-formát?) then (ano)
-              if (apdu = TESTFR act?) then (ano)
-                :vytvoř odpoveď\n TESTFR con;
-                :odešli odpověď\nsession.send();
-              else (ne)
-              endif
-          else (ne)
-          endif
-else (ne)
-endif
+    else (ne)
+    endif
+(B)
 stop
+note : výstup z bloku
 @enduml
+
 
 @startuml
 'State 3
 start
+note: vstup do bloku
 if (stav spojeni = čekající?) then (ano)
  if (apdu = S-formát?) then (ano)
             :odstraň všechny \npotvrzené rámce \ns hodnotou <= RSN;
@@ -95,7 +118,7 @@ if (stav spojeni = čekající?) then (ano)
       if (apdu = U-formát?) then (ano)
               if (apdu = TESTFR act?) then (ano)
                 :vytvoř odpoveď\n TESTFR con;
-                :odešli odpověď\nsession.send();
+                :odešli odpověď\n  send_frame();
               else (ne)
               endif
           else (ne)
@@ -103,5 +126,5 @@ if (stav spojeni = čekající?) then (ano)
 else (ne)
 endif
 stop
+note : výstup z bloku
 @enduml
-

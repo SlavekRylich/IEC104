@@ -1,43 +1,24 @@
 @startuml
 skinparam DefaultFontSize 18
 
-|#grey|Session|
+|#whitesmoke|Session|
+|#lightgray|ClientManager|
+|Modul zpracování|
 start
-while (Příznak timeout?) is (ne)
-    if ( read(2B) )  is (ne) then
-        :TCP spojení ukončeno;
-        stop
-    else (ano)
-        |#grey|Session|
-        :čti příchozí rámec z bufferu\n          apdu = read(2B);
+note: start
+:vygenerovaná odpověď\n          po bytech;
 
-        if (1. Byte = 0x68) is (ne) then
-        else (ano)
-            :delka = 2. byte;
-            :čti zbytek rámce dle délky\n       apdu = read(delka);
-            :ziskani objektu na rámec\nnew_apdu = Parser(apdu);
-            :aktualizace časovačů\n          t0, t1, t2, t3;
-
-
-            |#lightgray|ClientManager|
-            (A)
-            :callback pro rámec\n     nebo timeout;
-            if (rámec?) is (ano) then
-                :      zpracuj rámec\n a ulož ho do databáze;
-                |MQTTProtocol|
-                :data do MQTT Broker;
-            else (ne)
-            endif
-                |#lightgray|ClientManager|
-                :aktualizace stavu spojení;
-        endif
-    endif
-endwhile (ano)
-:handle_timeout;
-if (t1?) is (ano) then
-         stop
-         else (ne)
-         (A)
-         detach
-        endif
+|#lightgray|ClientManager|
+:callback odeslat odpověď;
+if (stav spojení spuštěno?) is (ano) then
+    :   vytvoření nového rámce s daty\nnew_apdu = generate-I-format(data);
+    |#whitesmoke|Session|
+    :odeslat rámec;
+    stop
+    note right: zde není spojení\n ukončeno
+else
+endif
+|#lightgray|ClientManager|
+stop
+note right: zde není spojení\n ukončeno
 @enduml

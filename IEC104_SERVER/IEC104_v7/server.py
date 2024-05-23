@@ -64,7 +64,6 @@ class ServerIEC104:
         self.__callback_on_connect = None
         self.__callback_on_disconnect = None
         self.__callback_on_message = None
-        self.__callback_on_send = None
         self.__flag_set_callbacks = False
 
         # working var
@@ -209,14 +208,6 @@ class ServerIEC104:
     def register_callback_on_message(self, func):
         self.__callback_on_message = func
 
-    @property
-    def register_callback_on_send(self):
-        return self.__callback_on_send
-
-    @register_callback_on_send.setter
-    def register_callback_on_send(self, func):
-        self.__callback_on_send = func
-
     def get_all_clients_stats(self) -> list | None:
         """
         Get all clients' statistics.
@@ -273,7 +264,6 @@ class ServerIEC104:
                                                     mqtt_qos=self.mqtt_qos,
                                                     callback_for_delete=callback_for_delete,
                                                     callback_on_message=self.__callback_on_message,
-                                                    callback_on_send=self.__callback_on_send,
                                                     callback_on_disconnect=self.__callback_on_disconnect,
                                                     flag_callbacks=self.__flag_set_callbacks,
                                                     callback_only_for_client=None,
@@ -320,7 +310,7 @@ class ServerIEC104:
             if self.__flag_set_callbacks:
                 self.__callback_on_connect("", 0, rc=1)
             print(f"Exception: {e}")
-            logging.error(f"Exception: {e}")
+            logging.error(f"Exception with start handle_messages(): {e}")
 
     def delete_dead_clients(self, client: ClientManager = None) -> None:
         """
@@ -396,8 +386,7 @@ class ServerIEC104:
         Raises:
         None
         """
-        if (self.__callback_on_connect and self.__callback_on_message and
-                self.__callback_on_send and self.__callback_on_disconnect):
+        if self.__callback_on_connect and self.__callback_on_message and self.__callback_on_disconnect:
             self.__flag_set_callbacks = True
 
         else:

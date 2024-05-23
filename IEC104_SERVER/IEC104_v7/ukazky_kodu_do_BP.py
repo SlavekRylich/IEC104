@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import asyncio
 
 
@@ -6,20 +7,18 @@ class ServerIEC104:
         self.ip = "127.0.0.1"
         self.port = 2404
 
+    async def handle_client(self, reader, writer):
+        pass
 
-async def handle_client(reader, writer):
-    pass
-
-
-async def main():
-    my_server = ServerIEC104()
-    server = await asyncio.start_server(handle_client, my_server.ip, my_server.port)
-    await server.serve_forever()
+    async def start(self):
+        server = await asyncio.start_server(handle_client, my_server.ip, my_server.port)
+        await server.serve_forever()
 
 
 if __name__ == '__main__':
+    my_server = ServerIEC104()
     try:
-        asyncio.run(main())
+        asyncio.run(my_server.start())
     except KeyboardInterrupt:
         pass
     finally:
@@ -60,50 +59,75 @@ async def handle_messages(self) -> None:
             if self.__connection_state != 'DISCONNECTED':
                 pass
 
+    async def handle_client(self, reader: asyncio.StreamReader,
+                            writer: asyncio.StreamWriter) -> None:
 
-async def handle_client(self, reader: asyncio.StreamReader,
-                        writer: asyncio.StreamWriter) -> None:
-    # z�sk� IP adresu a port z TCP spojen�
-    client_addr, client_port = writer.get_extra_info('peername')
-    # callback pro smaz�n� instance ClientManagera pokud ji� nem� ��dn� aktivn� spojen�
-    callback = self.delete_dead_clients
-    # vytvo�en� instance ClientManager, pokud se p�ipojil nov� klient
-    if client_addr not in self.clients:
-        client_manager_instance = ClientManager(client_addr,
-                                                port=None,
-                                                callback_check_clients=callback,
-                                                callback_only_for_client=None,
-                                                server_name=self.name,
-                                                whoami='server')
-        # p�i�azen� vytvo�en� instance do slovn�ku s IP adresou jako jej� index
-        self.clients[client_addr] = client_manager_instance
-    # z�sk�n� reference na instanci pokud ji� exitovala d��ve
-    client_manager_instance: ClientManager = self.clients[client_addr]
-    # callback funkce pro p�ed�n� v argumentu
-    callback_on_message_recv = client_manager_instance.on_message_recv_or_timeout
-    callback_timeouts_tuple: tuple = (
-        client_manager_instance.handle_timeout_t0,
-        client_manager_instance.handle_timeout_t1,
-        client_manager_instance.handle_timeout_t2,
-        client_manager_instance.handle_timeout_t3,
-    )
-    # vytvo�en� nov� instance Session uvnit� instance ClientManager
-    session = client_manager_instance.add_session(client_addr,
-                                                  client_port,
-                                                  reader,
-                                                  writer,
-                                                  self.config_parameters,
-                                                  callback_on_message_recv,
-                                                  callback_timeouts_tuple,
-                                                  whoami='server')
+        # získá IP adresu a port z TCP spojení
+        client_addr, client_port = writer.get_extra_info('peername')
 
-    try:
-        # spu�t�n� asynchron� smy�ky pro p��jem dat ve t��d� session
-        await session.work()
+        # callback pro smazání instance ClientManagera pokud již není aktivní spojení
+        callback_for_delete = self.delete_dead_clients
+        # vytvoří instance ClientManager, pokud s klientem již neexistuje spojení
+        if client_addr not in self.clients:
+            client_manager_instance = ClientManager(client_addr,
+                                                    port=self.port,
+                                                    server_name=self.name,
+                                                    mqtt_broker_ip=self.mqtt_broker_ip,
+                                                    mqtt_broker_port=self.mqtt_broker_port,
+                                                    mqtt_topic=self.mqtt_topic,
+                                                    mqtt_version=self.mqtt_version,
+                                                    mqtt_transport=self.mqtt_transport,
+                                                    mqtt_username=self.mqtt_username,
+                                                    mqtt_password=self.mqtt_password,
+                                                    mqtt_qos=self.mqtt_qos,
+                                                    callback_for_delete=callback_for_delete,
+                                                    callback_on_message=self.__callback_on_message,
+                                                    callback_on_disconnect=self.__callback_on_disconnect,
+                                                    flag_callbacks=self.__flag_set_callbacks,
+                                                    callback_only_for_client=None,
+                                                    whoami='server')
 
-    except Exception as e:
-        print(f"Exception: {e}")
-        logging.error(f"Exception: {e}")
+            # přiřazení instance do slovníku, klíč je IP
+            self.clients[client_addr] = client_manager_instance
+
+            # logování
+            logging.info(f"Established connection with new client: {client_addr}")
+
+        # získání reference na instanci
+        client_manager_instance: ClientManager = self.clients[client_addr]
+
+        # callback funkce pro předání v argumentu pro Session
+        callback_on_message_recv = client_manager_instance.on_message_recv_or_timeout
+        callback_timeouts_tuple: tuple = (
+            client_manager_instance.handle_timeout_t0,
+            client_manager_instance.handle_timeout_t1,
+            client_manager_instance.handle_timeout_t2,
+            client_manager_instance.handle_timeout_t3,
+        )
+
+        # vytvoření instance Session uvnitř ClientManagera
+        session: Session = client_manager_instance.add_session(client_addr,
+                                                               client_port,
+                                                               reader,
+                                                               writer,
+                                                               self.config_parameters,
+                                                               callback_on_message_recv,
+                                                               callback_timeouts_tuple,
+                                                               whoami='server')
+
+        try:
+            # spuštění asynchronní smyčky v handle_messages()
+            task = asyncio.create_task(session.start())
+
+            # pokud má klient napojené callback funkce
+            if self.__flag_set_callbacks:
+                self.__callback_on_connect(client_addr, client_port, rc=0)
+            # čekání na dokončení (nikdy)
+            await task
+
+        except Exception as e:
+            logging.error(f"Exception with start handle_messages(): {e}")
+
 
     async def on_message_recv_or_timeout(self, session: Session, apdu: Frame = None) -> None:
         # pokud metodu spustil p�ijat� ramec, zpracuj ho, pokud ne tak to byl timeout
