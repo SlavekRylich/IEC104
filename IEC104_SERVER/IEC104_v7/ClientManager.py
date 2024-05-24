@@ -28,6 +28,7 @@ class ClientManager:
     def __init__(self, ip_addr: str,
                  port: int = None,
                  server_name: str = "",
+                 mqtt_enabled: bool = False,
                  mqtt_broker_ip: str = "",
                  mqtt_broker_port: int = 1883,
                  mqtt_topic: str = "",
@@ -68,8 +69,6 @@ class ClientManager:
         self.__id: int = ClientManager.__id
 
         # Session
-        self.__out_queue: asyncio.Queue | None = None
-        self.__in_queue: asyncio.Queue | None = None
         self.__sessions: list[Session] = []
         self.__VR: int = 0
         self.__VS: int = 0
@@ -111,10 +110,6 @@ class ClientManager:
         # flag for client_app for start communication
         self.__flag_start_sequence: bool = True
 
-        # queues events
-        self.__event_queue_in: asyncio.Event = asyncio.Event()
-        self.__shared_event_queue_out: asyncio.Event = asyncio.Event()
-
         # buffers
         self.__send_buffer: PacketBuffer = PacketBuffer()
         self.__recv_buffer: PacketBuffer = PacketBuffer()
@@ -125,35 +120,43 @@ class ClientManager:
         # Tasks
         self.__tasks: list = []
 
+
+        print(f"pred mqtt")
+        print(f"{self.__whoami}")
+        print(f"{mqtt_enabled}")
         # Setup for MQTT parameters
         if self.__whoami == "server":
-            # MQTT client
-            self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
-            self.__mqtt_broker_ip: str = mqtt_broker_ip
-            self.__mqtt_broker_port: int = mqtt_broker_port
-            self.__mqtt_topic: str = mqtt_topic
-            self.__mqtt_version: int = mqtt_version
-            self.__mqtt_transport: str = mqtt_transport
-            self.__mqtt_username: str = mqtt_username
-            self.__mqtt_password: str = mqtt_password
-            self.__mqtt_qos: int = mqtt_qos
-            # self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
-            #                                   self.__mqtt_broker_ip,
-            #                                   self.__mqtt_broker_port,
-            #                                   username=self.__mqtt_username,
-            #                                   password=self.__mqtt_password,
-            #                                   version=self.__mqtt_version,
-            #                                   transport=self.__mqtt_transport,
-            #                                   qos=self.__mqtt_qos)
-            self.__mqtt_client = MQTTProtocol_async(self.__mqtt_client_id,
-                                                    self.__mqtt_broker_ip,
-                                                    self.__mqtt_broker_port,
-                                                    username=self.__mqtt_username,
-                                                    password=self.__mqtt_password,
-                                                    version=self.__mqtt_version,
-                                                    transport=self.__mqtt_transport,
-                                                    qos=self.__mqtt_qos)
 
+            self.__mqtt_enabled = mqtt_enabled
+            if mqtt_enabled:
+                # MQTT client
+                self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
+                self.__mqtt_broker_ip: str = mqtt_broker_ip
+                self.__mqtt_broker_port: int = mqtt_broker_port
+                self.__mqtt_topic: str = mqtt_topic
+                self.__mqtt_version: int = mqtt_version
+                self.__mqtt_transport: str = mqtt_transport
+                self.__mqtt_username: str = mqtt_username
+                self.__mqtt_password: str = mqtt_password
+                self.__mqtt_qos: int = mqtt_qos
+                # self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
+                #                                   self.__mqtt_broker_ip,
+                #                                   self.__mqtt_broker_port,
+                #                                   username=self.__mqtt_username,
+                #                                   password=self.__mqtt_password,
+                #                                   version=self.__mqtt_version,
+                #                                   transport=self.__mqtt_transport,
+                #                                   qos=self.__mqtt_qos)
+                self.__mqtt_client = MQTTProtocol_async(self.__mqtt_client_id,
+                                                        self.__mqtt_broker_ip,
+                                                        self.__mqtt_broker_port,
+                                                        username=self.__mqtt_username,
+                                                        password=self.__mqtt_password,
+                                                        version=self.__mqtt_version,
+                                                        transport=self.__mqtt_transport,
+                                                        qos=self.__mqtt_qos)
+
+        print(f"po mqtt")
         # statistics
         self.client_stats: FrameStatistics = FrameStatistics(self.ip)
         self.sessions_stats: dict[int, FrameStatistics] = {}
@@ -180,22 +183,6 @@ class ClientManager:
     @flag_stop_tasks.setter
     def flag_stop_tasks(self, value: bool) -> None:
         self.__flag_stop_tasks = value
-
-    @property
-    def event_in(self, ) -> asyncio.Event:
-        return self.__event_queue_in
-
-    @property
-    def event_out(self) -> asyncio.Event:
-        return self.__shared_event_queue_out
-
-    @property
-    def in_queue(self) -> asyncio.Queue:
-        return self.__in_queue
-
-    @property
-    def out_queue(self) -> asyncio.Queue:
-        return self.__out_queue
 
     @property
     def send_buffer(self) -> PacketBuffer:
@@ -319,7 +306,6 @@ class ClientManager:
         :return: None
         """
         self.__sessions.remove(session)
-        print(f"po smazani v client_managerovi: {self}")
         print(f"{session.name}, {session.ip}:{session.port} disconnect!")
         logging.debug(f"deleted {session} from clientmanager")
         logging.info(f"{session.name} {session.ip}:{session.port} disconnected!")
@@ -365,7 +351,7 @@ class ClientManager:
         """
         if self.__flag_set_callbacks:
             if session.transmission_state == 'RUNNING':
-                # print(f"{datetime.now().strftime("%H:%M:%S:%f")} data for send: {data}")
+                print(f"{datetime.now().strftime('%H:%M:%S:%f')} data for send: {data}")
                 new_frame = self.generate_i_frame(data, session)
                 task = asyncio.ensure_future(self.send_frame(session, new_frame))
                 self.__tasks.append(task)
@@ -431,12 +417,13 @@ class ClientManager:
                                                            self.callback_on_sent))
                             self.__tasks.append(task)
 
-                        # shara payload with MQTT
-                        task = asyncio.ensure_future(self.__mqtt_client.save_data(
-                            topic=self.__mqtt_topic,
-                            data=str(apdu.data),
-                            callback=None))
-                        self.__tasks.append(task)
+                        if self.__mqtt_enabled:
+                            # share payload with MQTT
+                            task = asyncio.ensure_future(self.__mqtt_client.save_data(
+                                topic=self.__mqtt_topic,
+                                data=str(apdu.data),
+                                callback=None))
+                            self.__tasks.append(task)
 
                     # # odpověď stejnymi daty jen pro testovani
                     # new_apdu = self.generate_i_frame(apdu.data)

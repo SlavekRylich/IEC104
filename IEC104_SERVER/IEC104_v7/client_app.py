@@ -384,14 +384,9 @@ class IEC104Client(object):
 
 if __name__ == "__main__":
 
-    # host = "192.168.1.142"
-    # host = "192.168.1.136"
-    host = "127.0.0.1"
-    port = 2404
-
     client = IEC104Client()
     try:
-        asyncio.run(client.run_client(host, port))
+        asyncio.run(client.run_client(client.server_ip, client.server_port))
     except KeyboardInterrupt:
         pass
     finally:

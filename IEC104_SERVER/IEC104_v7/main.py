@@ -101,22 +101,26 @@ class Main:
     def handle_evok_request_mapping(self, obj, config_IO: dict, value=None):
         dev_type = config_IO[obj]["pin"]
         circuit = config_IO[obj]["pin_id"]
+        try:
+            if dev_type == "di" or dev_type == "ai":
+                ret = self.get_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit)
+                # print(ret.json())
 
-        if dev_type == "di" or dev_type == "ai":
-            ret = self.get_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit)
-            # print(ret.json())
+            elif dev_type == "do" or dev_type == "ao":
+                ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
+                # asyncio.sleep(1)    # musí se počkat než se data na patronu propíšou
+                ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
+                # print(ret.json())
+            else:
+                print(f"{dev_type} is not supported")
+                logging.error(f"{dev_type} is not supported")
+                ret = None
 
-        elif dev_type == "do" or dev_type == "ao":
-            ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
-            # asyncio.sleep(1)    # musí se počkat než se data na patronu propíšou
-            ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
-            # print(ret.json())
-        else:
-            print(f"{dev_type} is not supported")
-            logging.error(f"{dev_type} is not supported")
-            ret = None
-
-        return ret
+            return ret
+        except Exception as e:
+            print(f"Error request for evok: {e}")
+            logging.error(f"Error request for evok: {e}")
+            return None
 
     def handle_gpio(self, obj, config_IO):
         pass

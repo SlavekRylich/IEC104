@@ -45,6 +45,7 @@ class ServerIEC104:
         self.port: int = self.__config_loader.config['server']['port']
 
         # MQTT config
+        self.mqtt_enabled: bool = self.__config_loader.config['mqtt']['enabled']
         self.mqtt_broker_ip: str = self.__config_loader.config['mqtt']['mqtt_broker_ip']
         self.mqtt_broker_port: int = self.__config_loader.config['mqtt']['mqtt_broker_port']
         self.mqtt_topic: str = self.__config_loader.config['mqtt']['mqtt_topic']
@@ -254,6 +255,7 @@ class ServerIEC104:
             client_manager_instance = ClientManager(client_addr,
                                                     port=self.port,
                                                     server_name=self.name,
+                                                    mqtt_enabled=self.mqtt_enabled,
                                                     mqtt_broker_ip=self.mqtt_broker_ip,
                                                     mqtt_broker_port=self.mqtt_broker_port,
                                                     mqtt_topic=self.mqtt_topic,
@@ -415,7 +417,6 @@ if __name__ == '__main__':
     my_server = ServerIEC104()
     try:
         asyncio.run(my_server.start())
-        print(f"az po tom")
 
     except KeyboardInterrupt:
         pass
