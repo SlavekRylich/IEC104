@@ -365,7 +365,7 @@ class ClientManager:
         """
         if self.__flag_set_callbacks:
             if session.transmission_state == 'RUNNING':
-                print(f"{datetime.now().strftime("%H:%M:%S:%f")} data for send: {data}")
+                # print(f"{datetime.now().strftime("%H:%M:%S:%f")} data for send: {data}")
                 new_frame = self.generate_i_frame(data, session)
                 task = asyncio.ensure_future(self.send_frame(session, new_frame))
                 self.__tasks.append(task)

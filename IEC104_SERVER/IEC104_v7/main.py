@@ -84,25 +84,33 @@ class Main:
     def get_evok_request(self, host: str, dev_type: str, circuit: str):
         url = f"http://{host}/rest/{dev_type}/{circuit}"
         return requests.get(url=url)
+        # loop = asyncio.get_event_loop()
+        # future1 = loop.run_in_executor(None, requests.get, url)
+        # resp = await future1
+        # return resp
 
     def send_evok_request(self, host: str, dev_type: str, circuit: str, value):
         url = f"http://{host}/rest/{dev_type}/{circuit}"
         data = {'value': str(int(value))}
         return requests.post(url=url, data=data)
+        # loop = asyncio.get_event_loop()
+        # future1 = loop.run_in_executor(None, requests.post, url, data)
+        # resp = await future1
+        # return resp
 
     def handle_evok_request_mapping(self, obj, config_IO: dict, value=None):
         dev_type = config_IO[obj]["pin"]
         circuit = config_IO[obj]["pin_id"]
 
         if dev_type == "di" or dev_type == "ai":
-            # ret = self.get_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit)
+            ret = self.get_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit)
             # print(ret.json())
-            ret = None
 
         elif dev_type == "do" or dev_type == "ao":
-            # ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
+            ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
+            # asyncio.sleep(1)    # musí se počkat než se data na patronu propíšou
+            ret = self.send_evok_request(host=self.evok_host, dev_type=dev_type, circuit=circuit, value=value)
             # print(ret.json())
-            ret = None
         else:
             print(f"{dev_type} is not supported")
             logging.error(f"{dev_type} is not supported")
@@ -130,6 +138,7 @@ class Main:
             logging.error(f"{method} is not supported")
 
         # GENERATE RESPONSE
+        value = ret.json()['result']['value']
         type_resp = 45
         sq = 0
         sq_count = 1
@@ -140,11 +149,11 @@ class Main:
         if o_asdu.cot == 6:
             # potvrzeni aktivace
             cot = 7  # 7 - ack activation
-            sco = 1  # 7 - activation
+            sco = value  # 7 - activation
         elif o_asdu.cot == 8:
             # potvrzeni deaktivace
             cot = 9  # 7 - ack deactivation
-            sco = 0  # 7 - deactivation
+            sco = value  # 7 - deactivation
         else:
             # unknown
             cot = 0
@@ -185,8 +194,11 @@ class Main:
             logging.error(f"{method} is not supported")
 
         print(f"none {ret}")
-        # value = ret["value"]
-
+        resistance = ret.json()["value"]
+        print(f"resistance {resistance}")
+        temp = (20*resistance)/1077.9
+        value = temp
+        print(f"value {value}")
         # GENERATE RESPONSE
         type_resp = 13
         sq = 0
@@ -197,7 +209,6 @@ class Main:
         org_OA = 0
         addr_COA = 1
 
-        value = 20.2
         qds = 0
         ioa = obj.ioa
 

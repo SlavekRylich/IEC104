@@ -358,12 +358,12 @@ class Session:
                         if len(apdu) == frame_length:
                             new_apdu = Parser.parser(apdu, frame_length)
 
-                            print(f"{datetime.now().strftime("%H:%M:%S:%f")}-Received"
-                                  f" from {self.ip}:{self.port}"
-                                  f" - frame: {new_apdu}")
-                            logging.debug(f"{datetime.now().strftime("%H:%M:%S:%f")}-Received from"
-                                          f" {self.ip}:{self.port}"
-                                          f" - frame: {new_apdu}")
+                            # print(f"{datetime.now().strftime("%H:%M:%S:%f")}-Received"
+                            #       f" from {self.ip}:{self.port}"
+                            #       f" - frame: {new_apdu}")
+                            # logging.debug(f"{datetime.now().strftime("%H:%M:%S:%f")}-Received from"
+                            #               f" {self.ip}:{self.port}"
+                            #               f" - frame: {new_apdu}")
                             # update timers
                             self.__timer_t0.start()
                             self.__timer_t1.start()
@@ -430,12 +430,12 @@ class Session:
                     if isinstance(frame, IFormat):
                         self.__send_buffer.add_frame(frame.ssn, frame)
 
-                    print(f"{datetime.now().strftime("%H:%M:%S:%f")}-Send"
-                          f" to {self.ip}:{self.port}"
-                          f" - frame: {frame}")
-                    logging.debug(f"{datetime.now().strftime("%H:%M:%S:%f")}-Send"
-                                  f" to {self.ip}:{self.port}"
-                                  f" - frame: {frame}")
+                    # print(f"{datetime.now().strftime("%H:%M:%S:%f")}-Send"
+                    #       f" to {self.ip}:{self.port}"
+                    #       f" - frame: {frame}")
+                    # logging.debug(f"{datetime.now().strftime("%H:%M:%S:%f")}-Send"
+                    #               f" to {self.ip}:{self.port}"
+                    #               f" - frame: {frame}")
 
                     self.__writer.write(frame.serialize())
                     await self.__writer.drain()

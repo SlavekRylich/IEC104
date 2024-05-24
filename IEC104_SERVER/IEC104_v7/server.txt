@@ -26833,3 +26833,305 @@ NotImplementedError
 2024-05-22 16:51:34,549 - INFO - Session_1 127.0.0.1:50342 disconnected!
 2024-05-22 16:51:34,549 - INFO - Session_1 127.0.0.1:50342 disconnected!
 2024-05-22 16:51:34,549 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:05:10,509 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:05:17,359 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:05:17,359 - INFO - Connection established with 127.0.0.1:17377 (Number of connections: 1)
+2024-05-24 01:05:17,360 - INFO - Established with new client: 127.0.0.1:17377
+2024-05-24 01:05:53,943 - INFO - Session_1 127.0.0.1:17377 disconnected!
+2024-05-24 01:05:53,944 - INFO - Session_1 127.0.0.1:17377 disconnected!
+2024-05-24 01:05:53,945 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:06:57,982 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\main.py", line 38, in main
+    await asyncio.gather(*self.tasks)
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 405, in start
+    await self._server.serve_forever()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 370, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+asyncio.exceptions.CancelledError
+2024-05-24 01:08:28,064 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:08:35,115 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:08:35,116 - INFO - Connection established with 127.0.0.1:17428 (Number of connections: 1)
+2024-05-24 01:08:35,116 - INFO - Established with new client: 127.0.0.1:17428
+2024-05-24 01:12:23,503 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:12:26,692 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:12:26,693 - INFO - Connection established with 127.0.0.1:17489 (Number of connections: 1)
+2024-05-24 01:12:26,693 - INFO - Established with new client: 127.0.0.1:17489
+2024-05-24 01:13:20,888 - INFO - Session_1 127.0.0.1:17489 disconnected!
+2024-05-24 01:13:20,889 - INFO - Session_1 127.0.0.1:17489 disconnected!
+2024-05-24 01:13:20,889 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:14:08,186 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:14:14,810 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:14:19,501 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\main.py", line 38, in main
+    await asyncio.gather(*self.tasks)
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 405, in start
+    await self._server.serve_forever()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 370, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+asyncio.exceptions.CancelledError
+2024-05-24 01:14:28,413 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:14:33,364 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:14:33,364 - INFO - Connection established with 127.0.0.1:17537 (Number of connections: 1)
+2024-05-24 01:14:33,365 - INFO - Established with new client: 127.0.0.1:17537
+2024-05-24 01:15:56,134 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:16:02,223 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:16:02,224 - INFO - Connection established with 127.0.0.1:17564 (Number of connections: 1)
+2024-05-24 01:16:02,224 - INFO - Established with new client: 127.0.0.1:17564
+2024-05-24 01:17:53,656 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\main.py", line 38, in main
+    await asyncio.gather(*self.tasks)
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 405, in start
+    await self._server.serve_forever()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 370, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+asyncio.exceptions.CancelledError
+2024-05-24 01:18:00,490 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:18:02,372 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:18:02,372 - INFO - Connection established with 127.0.0.1:17622 (Number of connections: 1)
+2024-05-24 01:18:02,373 - INFO - Established with new client: 127.0.0.1:17622
+2024-05-24 01:19:22,909 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\main.py", line 38, in main
+    await asyncio.gather(*self.tasks)
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 405, in start
+    await self._server.serve_forever()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 370, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+asyncio.exceptions.CancelledError
+2024-05-24 01:19:30,633 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:19:39,231 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:19:40,571 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:19:40,571 - INFO - Connection established with 127.0.0.1:17669 (Number of connections: 1)
+2024-05-24 01:19:40,571 - INFO - Established with new client: 127.0.0.1:17669
+2024-05-24 01:20:03,689 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\main.py", line 38, in main
+    await asyncio.gather(*self.tasks)
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 405, in start
+    await self._server.serve_forever()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 370, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+asyncio.exceptions.CancelledError
+2024-05-24 01:20:08,950 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:21:16,591 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:21:18,963 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:21:18,963 - INFO - Connection established with 127.0.0.1:17709 (Number of connections: 1)
+2024-05-24 01:21:18,963 - INFO - Established with new client: 127.0.0.1:17709
+2024-05-24 01:21:30,015 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\main.py", line 38, in main
+    await asyncio.gather(*self.tasks)
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py", line 405, in start
+    await self._server.serve_forever()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 370, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+asyncio.exceptions.CancelledError
+2024-05-24 01:21:49,483 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:21:51,980 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:21:51,981 - INFO - Connection established with 127.0.0.1:17728 (Number of connections: 1)
+2024-05-24 01:21:51,981 - INFO - Established with new client: 127.0.0.1:17728
+2024-05-24 01:22:45,720 - INFO - Session_1 127.0.0.1:17728 disconnected!
+2024-05-24 01:22:45,720 - INFO - Session_1 127.0.0.1:17728 disconnected!
+2024-05-24 01:22:45,721 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:22:47,486 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 712, in __aenter__
+    raise MqttError(str(exc)) from None
+aiomqtt.exceptions.MqttError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 108, in work
+    await asyncio.sleep(self.reconnect_interval)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py", line 649, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+2024-05-24 01:23:05,921 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:23:11,934 - INFO - Established with new client: 127.0.0.1
+2024-05-24 01:23:11,935 - INFO - Connection established with 127.0.0.1:17760 (Number of connections: 1)
+2024-05-24 01:23:11,935 - INFO - Established with new client: 127.0.0.1:17760
+2024-05-24 01:26:04,843 - INFO - Session_1 127.0.0.1:17760 disconnected!
+2024-05-24 01:26:04,844 - INFO - Session_1 127.0.0.1:17760 disconnected!
+2024-05-24 01:26:04,844 - INFO - Listen on 127.0.0.1:2404
+2024-05-24 01:26:07,749 - ERROR - _GatheringFuture exception was never retrieved
+future: <_GatheringFuture finished exception=CancelledError()>
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 97, in work
+    async with self._client as client:
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 712, in __aenter__
+    raise MqttError(str(exc)) from None
+aiomqtt.exceptions.MqttError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\skola\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 108, in work
+    await asyncio.sleep(self.reconnect_interval)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py", line 649, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError

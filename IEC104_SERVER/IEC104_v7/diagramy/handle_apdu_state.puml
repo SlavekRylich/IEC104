@@ -6,15 +6,15 @@ if (příznak timeout_t1?) then (ano)
     : příznak ukončit spojení;
 else (ne)
 if (aktuální stav = Zastavene?) then (ano)
-:Blok stavu Zastavene;
+:Blok kódu stavu Zastavene;
 else (ne)
 endif
 if (aktuální stav = Spustene?) then (ano)
-:Blok stavu Spustene;
+:Blok kódu stavu Spustene;
 else (ne)
 endif
 if (aktuální stav = čekající?) then (ano)
-:Blok stavu čekající;
+:Blok kódu stavu čekající;
 else (ne)
 endif
 endif
