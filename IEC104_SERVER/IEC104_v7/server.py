@@ -10,7 +10,7 @@ from ClientManager import ClientManager
 
 # Nastavení úrovně logování
 logging.basicConfig(
-    filename='server.txt',
+    filename='server_log.txt',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
@@ -299,13 +299,17 @@ class ServerIEC104:
                                                                whoami='server')
 
         try:
-            task = asyncio.create_task(session.start())
+            task_session = asyncio.create_task(session.start())
+            task_mqtt_in_clientmager = asyncio.create_task(client_manager_instance.start_mqtt())
 
             # Success connect with client
             if self.__flag_set_callbacks:
                 self.__callback_on_connect(client_addr, client_port, rc=0)
+
+            if self.mqtt_enabled:
+                await asyncio.gather(task_session,task_mqtt_in_clientmager)
             # Start the session
-            await task
+            await task_session
 
         except Exception as e:
             # Wrong connection

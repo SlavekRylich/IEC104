@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 # import paho.mqtt.client as mqtt
 import asyncio
+import json
+import logging
 
-# from asyncio_mqtt import ProtocolVersion
-
-from IDataSharing import IDataSharing
 import aiomqtt as mqtt
 
 
 # import paho.mqtt as mqtt
 
 
-class MQTTProtocol_async(IDataSharing):
+class MQTTProtocol_async:
     """
     MQTTProtocol class for handling MQTT communication.
     """
@@ -39,6 +38,7 @@ class MQTTProtocol_async(IDataSharing):
         """
 
         # self._msg_info: mqtt.MQTTMessage | None = None
+        self.task = None
         self.topic = "Doma/Pokoj1/Stul"
         self._username: str = username
         self._password: str = password
@@ -46,25 +46,11 @@ class MQTTProtocol_async(IDataSharing):
         self._port: int = port
         self._qos: int = qos
 
-        if version == 3:
-            # self._client = mqtt.Client(client_id=client_id,
-            #                            transport=transport,
-            #                            protocol=mqtt.MQTTv311,
-            #                            clean_session=True)
-            self._client = mqtt.Client(
-                hostname=self._broker_url,  # The only non-optional parameter
-                port=self._port,
-                username=username,
-                password=password,
-                clean_session=True,
-            )
-            self.transport = transport
-
         if version == 5:
             # self._client = mqtt.Client(client_id=client_id,
             #                            transport=transport,
             #                            protocol=mqtt.MQTTv5)
-            self._client = mqtt.Client(
+            self.__client = mqtt.Client(
                 hostname=self._broker_url,  # The only non-optional parameter
                 port=self._port,
                 username=username,
@@ -76,28 +62,33 @@ class MQTTProtocol_async(IDataSharing):
         else:
             raise Exception("Invalid MQTT version!")
 
-        self._client.on_connect = self._on_connect
-        self._client.on_message = self._on_message
-        self._client.on_disconnect = self._on_disconnect
-        self._client.on_publish = self._on_publish
-        self._client.on_subscribe = self._on_subscribe
+        self.__client.on_connect = self._on_connect
+        self.__client.on_message = self._on_message
+        self.__client.on_disconnect = self._on_disconnect
+        self.__client.on_publish = self._on_publish
+        self.__client.on_subscribe = self._on_subscribe
         self._connected: bool = False
-        self.task = asyncio.create_task(self.work())
         self.for_send = []
         self.reconnect_interval = 5
-        self.run()
 
-    def run(self):
-        loop = asyncio.get_running_loop()
-        asyncio.gather(self.task)
+        self.stop = False
 
-    async def work(self):
-        while True:
+    async def start(self, loop: asyncio.AbstractEventLoop):
+        task = asyncio.ensure_future(self.run())
+        await asyncio.gather(task)
+
+    async def run(self):
+        """
+        Run MQTTProtocol instance.
+        """
+        logging.debug(f"Start communicate with MQTT broker: {self._broker_url}")
+
+        while not self.stop:
             try:
-                async with self._client as client:
+                async with self.__client as client:
                     self._connected = True
-                    for topic, msg in self.for_send:
-                        await self.publish(topic, msg)
+                    for topic, data in self.for_send:
+                        await self.publish(topic, payload=data, qos=self._qos, retain=None)
                     await client.subscribe(self.topic)
                     async for message in client.messages:
                         self._on_message(client=client, message=message, userdata=None)
@@ -231,12 +222,6 @@ class MQTTProtocol_async(IDataSharing):
         try:
             print(f"MQTT connect: {self._broker_url}")
 
-            # self._client.loop_start()
-            # await self._client.connect(host=self._broker_url,
-            #                      port=self._port,
-            #                      keepalive=60)
-            # await self._client.connect()
-
         except Exception as e:
             print(f"mqtt client: Exception: {e}")
 
@@ -244,10 +229,9 @@ class MQTTProtocol_async(IDataSharing):
         """
         Disconnect from MQTT broker.
         """
-        # self._client.loop_stop()
-        # await self._client.disconnect()
+        pass
 
-    async def publish(self, topic: str, payload: str | bytes, qos: int = 0, retain=None):
+    async def publish(self, topic: str, payload: dict, qos: int = 0, retain=None):
         """
         Publish a message to an MQTT topic.
 
@@ -257,10 +241,12 @@ class MQTTProtocol_async(IDataSharing):
         :param retain: Retain flag for the message.
         """
         # self._msg_info = self._client.publish(topic, payload, qos)
-        await self._client.publish(topic, payload, qos)
-        print(f"Published to {topic}: {payload} with qos={qos}")
-        # self._unacked_publish.add(self._msg_info)
-        # self._msg_info.wait_for_publish(timeout=0.5)
+        message = json.dumps(payload)
+        if self._connected:
+            await self.__client.publish(topic, message, self._qos)
+            print(f"Published to {topic}: {message} with qos={qos}")
+        else:
+            self.for_send.append((topic, payload))
 
     async def subscribe(self, topic, qos, callback):
         """
@@ -270,43 +256,5 @@ class MQTTProtocol_async(IDataSharing):
         :param topic: MQTT topic.
         :param callback: Callback function to handle incoming messages.
         """
-        await self._client.subscribe(topic, qos=self._qos)
-        self._client.on_message = callback
-
-    def unsubscribe(self, topic: str):
-        """
-        Unsubscribe from an MQTT topic.
-
-        :param topic: MQTT topic.
-        """
-        self._client.unsubscribe(topic)
-
-    async def save_data(self,
-                        topic: str,
-                        data: bytes | bytearray | int | float | str | None,
-                        callback=None):
-        """
-        Save data to an MQTT topic.
-
-        :param topic: MQTT topic.
-        :param data: Data to be saved.
-        :param callback: Callback function to handle the result.
-        """
-        try:
-            # """Ukládání dat do zprávy."""
-            # await self.connect(host=self._broker_url,
-            #                    port=self._port,
-            #                    username=self._username,
-            #                    password=self._password)
-            # await self.publish(topic, payload=data, qos=self._qos, retain=None)
-            self.for_send.append((topic, data))
-        except Exception as e:
-            print(f"mqtt failed: {e}")
-
-    def send_data(self, callback):
-        """
-        Send data to an MQTT topic.
-
-        :param callback: Callback function to handle the result.
-        """
-        pass
+        await self.__client.subscribe(topic, qos=self._qos)
+        self.__client.on_message = callback

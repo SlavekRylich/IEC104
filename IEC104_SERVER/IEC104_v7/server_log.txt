@@ -1,0 +1,425 @@
+2024-05-25 14:14:37,350 - ERROR - Callback not set
+2024-05-25 14:14:37,351 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:14:44,819 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:14:44,819 - INFO - Connection established with 192.168.1.131:33069 (Number of connections: 1)
+2024-05-25 14:14:44,837 - ERROR - Exception in callback AbstractEventLoop.add_reader(1516, <function Cli...00206CA401BC0>)
+handle: <Handle AbstractEventLoop.add_reader(1516, <function Cli...00206CA401BC0>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:14:44,841 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...00206CA430540>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...00206CA430540>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:14:59,846 - ERROR - Caught exception in on_socket_unregister_write: 
+2024-05-25 14:14:59,849 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<MQTTProtocol_async.start() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:76> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 78, in start
+    await asyncio.gather(task)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 88, in run
+    async with self.__client as client:
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1433, in connect
+    self.connect_async(host, port, keepalive,
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1521, in connect_async
+    self._sock_close()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1131, in _sock_close
+    self._call_socket_unregister_write(sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 2976, in _call_socket_unregister_write
+    on_socket_unregister_write(self, self._userdata, sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 680, in _on_socket_unregister_write
+    self._loop.remove_writer(sock)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 547, in remove_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:18:47,887 - ERROR - Callback not set
+2024-05-25 14:18:47,888 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:18:57,778 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:18:57,778 - INFO - Connection established with 192.168.1.131:33167 (Number of connections: 1)
+2024-05-25 14:18:57,798 - ERROR - Exception in callback AbstractEventLoop.add_reader(1516, <function Cli...0027AFCB3BEC0>)
+handle: <Handle AbstractEventLoop.add_reader(1516, <function Cli...0027AFCB3BEC0>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:18:57,804 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...0027AFCE1A020>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...0027AFCE1A020>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:19:27,794 - ERROR - Caught exception in on_socket_unregister_write: 
+2024-05-25 14:19:27,795 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<MQTTProtocol_async.start() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:76> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 78, in start
+    await asyncio.gather(task)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 88, in run
+    async with self.__client as client:
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1433, in connect
+    self.connect_async(host, port, keepalive,
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1521, in connect_async
+    self._sock_close()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1131, in _sock_close
+    self._call_socket_unregister_write(sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 2976, in _call_socket_unregister_write
+    on_socket_unregister_write(self, self._userdata, sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 680, in _on_socket_unregister_write
+    self._loop.remove_writer(sock)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 547, in remove_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:19:49,187 - ERROR - Callback not set
+2024-05-25 14:19:49,188 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:19:51,829 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:19:51,829 - INFO - Connection established with 192.168.1.131:33183 (Number of connections: 1)
+2024-05-25 14:19:51,847 - ERROR - Exception in callback AbstractEventLoop.add_reader(1184, <function Cli...002AB14AF3E20>)
+handle: <Handle AbstractEventLoop.add_reader(1184, <function Cli...002AB14AF3E20>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:19:51,851 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...002AB14B0E020>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...002AB14B0E020>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:20:45,343 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:20:50,930 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:20:54,110 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:20:54,110 - INFO - Connection established with 192.168.1.131:33212 (Number of connections: 1)
+2024-05-25 14:20:54,110 - INFO - Established with new client: 192.168.1.131:33212
+2024-05-25 14:20:54,113 - ERROR - Exception in callback AbstractEventLoop.add_reader(996, <function Cli...001E227E98860>)
+handle: <Handle AbstractEventLoop.add_reader(996, <function Cli...001E227E98860>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:20:54,115 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...001E227E99BC0>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...001E227E99BC0>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:21:20,118 - ERROR - Error request for evok: HTTPConnectionPool(host='192.168.1.166', port=80): Max retries exceeded with url: /rest/ai/2_02 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000001E227ECC2F0>, 'Connection to 192.168.1.166 timed out. (connect timeout=None)'))
+2024-05-25 14:21:45,239 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:21:47,297 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:21:47,297 - INFO - Connection established with 192.168.1.131:33234 (Number of connections: 1)
+2024-05-25 14:21:47,298 - INFO - Established with new client: 192.168.1.131:33234
+2024-05-25 14:21:47,301 - ERROR - Exception in callback AbstractEventLoop.add_reader(1000, <function Cli...0021DD1A98860>)
+handle: <Handle AbstractEventLoop.add_reader(1000, <function Cli...0021DD1A98860>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:21:47,303 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...0021DD1A99BC0>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...0021DD1A99BC0>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:22:02,291 - ERROR - Caught exception in on_socket_unregister_write: 
+2024-05-25 14:22:02,292 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-14' coro=<MQTTProtocol_async.start() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:76> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 78, in start
+    await asyncio.gather(task)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 88, in run
+    async with self.__client as client:
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1433, in connect
+    self.connect_async(host, port, keepalive,
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1521, in connect_async
+    self._sock_close()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1131, in _sock_close
+    self._call_socket_unregister_write(sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 2976, in _call_socket_unregister_write
+    on_socket_unregister_write(self, self._userdata, sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 680, in _on_socket_unregister_write
+    self._loop.remove_writer(sock)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 547, in remove_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:23:13,496 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:23:18,767 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:23:18,767 - INFO - Connection established with 192.168.1.131:33312 (Number of connections: 1)
+2024-05-25 14:23:18,767 - INFO - Established with new client: 192.168.1.131:33312
+2024-05-25 14:23:30,854 - ERROR - Exception in callback AbstractEventLoop.add_reader(1284, <function Cli...001DA000D8CC0>)
+handle: <Handle AbstractEventLoop.add_reader(1284, <function Cli...001DA000D8CC0>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:23:30,858 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...001DA000DAC00>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...001DA000DAC00>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:24:02,817 - ERROR - Caught exception in on_socket_unregister_write: 
+2024-05-25 14:24:02,893 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-14' coro=<MQTTProtocol_async.start() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:76> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 78, in start
+    await asyncio.gather(task)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 88, in run
+    async with self.__client as client:
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 696, in __aenter__
+    await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1433, in connect
+    self.connect_async(host, port, keepalive,
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1521, in connect_async
+    self._sock_close()
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 1131, in _sock_close
+    self._call_socket_unregister_write(sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\paho\mqtt\client.py", line 2976, in _call_socket_unregister_write
+    on_socket_unregister_write(self, self._userdata, sock)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 680, in _on_socket_unregister_write
+    self._loop.remove_writer(sock)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 547, in remove_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:25:12,761 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:25:32,125 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:25:32,125 - INFO - Connection established with 192.168.1.131:33414 (Number of connections: 1)
+2024-05-25 14:25:32,125 - INFO - Established with new client: 192.168.1.131:33414
+2024-05-25 14:26:00,539 - ERROR - Exception in callback AbstractEventLoop.add_reader(1084, <function Cli...002162C1B9620>)
+handle: <Handle AbstractEventLoop.add_reader(1084, <function Cli...002162C1B9620>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:26:00,543 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...002162C7D7740>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke...1.167', 1883)>, <function Cli...002162C7D7740>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-25 14:26:35,657 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 14:26:38,885 - INFO - Established with new client: 192.168.1.131
+2024-05-25 14:26:38,885 - INFO - Connection established with 192.168.1.131:33438 (Number of connections: 1)
+2024-05-25 14:26:38,886 - INFO - Established with new client: 192.168.1.131:33438
+2024-05-25 16:07:48,930 - INFO - Session_1 192.168.1.131:33438 disconnected!
+2024-05-25 16:07:48,930 - INFO - Session_1 192.168.1.131:33438 disconnected!
+2024-05-25 16:07:48,931 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 16:08:03,803 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 16:08:06,987 - INFO - Established with new client: 192.168.1.131
+2024-05-25 16:08:06,988 - INFO - Connection established with 192.168.1.131:36304 (Number of connections: 1)
+2024-05-25 16:08:06,988 - INFO - Established with new client: 192.168.1.131:36304
+2024-05-25 17:22:54,197 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 17:23:05,803 - INFO - Established with new client: 192.168.1.131
+2024-05-25 17:23:05,803 - INFO - Connection established with 192.168.1.131:38318 (Number of connections: 1)
+2024-05-25 17:23:05,803 - INFO - Established with new client: 192.168.1.131:38318
+2024-05-25 17:24:00,854 - INFO - Session_1 192.168.1.131:38318 disconnected!
+2024-05-25 17:24:00,854 - INFO - Session_1 192.168.1.131:38318 disconnected!
+2024-05-25 17:24:00,854 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 17:26:03,123 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 17:26:06,708 - INFO - Established with new client: 192.168.1.131
+2024-05-25 17:26:06,709 - INFO - Connection established with 192.168.1.131:38380 (Number of connections: 1)
+2024-05-25 17:26:06,709 - INFO - Established with new client: 192.168.1.131:38380
+2024-05-25 17:27:21,641 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 17:27:25,835 - INFO - Established with new client: 192.168.1.131
+2024-05-25 17:27:25,836 - INFO - Connection established with 192.168.1.131:38405 (Number of connections: 1)
+2024-05-25 17:27:25,836 - INFO - Established with new client: 192.168.1.131:38405
+2024-05-25 17:29:11,608 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 17:29:13,772 - INFO - Established with new client: 192.168.1.131
+2024-05-25 17:29:13,773 - INFO - Connection established with 192.168.1.131:38456 (Number of connections: 1)
+2024-05-25 17:29:13,773 - INFO - Established with new client: 192.168.1.131:38456
+2024-05-25 17:34:39,479 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 17:34:46,639 - INFO - Established with new client: 192.168.1.131
+2024-05-25 17:34:46,640 - INFO - Connection established with 192.168.1.131:38526 (Number of connections: 1)
+2024-05-25 17:34:46,640 - INFO - Established with new client: 192.168.1.131:38526
+2024-05-25 18:37:29,151 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 18:37:30,178 - INFO - Established with new client: 192.168.1.131
+2024-05-25 18:37:30,179 - INFO - Connection established with 192.168.1.131:39802 (Number of connections: 1)
+2024-05-25 18:37:30,179 - INFO - Established with new client: 192.168.1.131:39802
+2024-05-25 18:39:47,831 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 18:39:55,396 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 18:40:00,422 - INFO - Established with new client: 192.168.1.131
+2024-05-25 18:40:00,422 - INFO - Connection established with 192.168.1.131:39836 (Number of connections: 1)
+2024-05-25 18:40:00,422 - INFO - Established with new client: 192.168.1.131:39836
+2024-05-25 18:40:37,668 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 18:40:42,021 - INFO - Established with new client: 192.168.1.131
+2024-05-25 18:40:42,021 - INFO - Connection established with 192.168.1.131:39849 (Number of connections: 1)
+2024-05-25 18:40:42,021 - INFO - Established with new client: 192.168.1.131:39849
+2024-05-25 20:27:20,470 - INFO - Connection established with 192.168.1.131:43330 (Number of connections: 2)
+2024-05-25 20:27:20,471 - INFO - Established with new client: 192.168.1.131:43330
+2024-05-25 20:27:22,389 - INFO - Session_1 192.168.1.131:39849 disconnected!
+2024-05-25 20:27:22,389 - INFO - Session_1 192.168.1.131:39849 disconnected!
+2024-05-25 20:27:46,487 - INFO - Session_2 192.168.1.131:43330 disconnected!
+2024-05-25 20:27:46,487 - INFO - Session_2 192.168.1.131:43330 disconnected!
+2024-05-25 20:27:46,488 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 20:27:49,539 - INFO - Established with new client: 192.168.1.131
+2024-05-25 20:27:49,539 - INFO - Connection established with 192.168.1.131:43338 (Number of connections: 1)
+2024-05-25 20:27:49,539 - INFO - Established with new client: 192.168.1.131:43338
+2024-05-25 20:27:55,479 - ERROR - Exception in callback BaseSelectorEventLoop.add_writer(<socket.socke...pe=1, proto=0>, <function Cli...0021CB9599760>)
+handle: <Handle BaseSelectorEventLoop.add_writer(<socket.socke...pe=1, proto=0>, <function Cli...0021CB9599760>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\selector_events.py", line 367, in add_writer
+    self._add_writer(fd, callback, *args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\selector_events.py", line 319, in _add_writer
+    key = self._selector.get_key(fd)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\selectors.py", line 190, in get_key
+    return mapping[fileobj]
+           ~~~~~~~^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\selectors.py", line 71, in __getitem__
+    fd = self._selector._fileobj_lookup(fileobj)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\selectors.py", line 225, in _fileobj_lookup
+    return _fileobj_to_fd(fileobj)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\selectors.py", line 42, in _fileobj_to_fd
+    raise ValueError("Invalid file descriptor: {}".format(fd))
+ValueError: Invalid file descriptor: -1
+2024-05-25 20:28:10,461 - ERROR - failed to receive on socket: [WinError 10054] Stávající pøipojení bylo vynucenì ukonèeno vzdáleným hostitelem
+2024-05-25 20:28:10,536 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-2' coro=<ServerIEC104.start() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\server.py:411> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767, gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,537 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-17935' coro=<MQTTProtocol_async.publish() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:234> exception=MqttCodeError('Could not publish message')>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 246, in publish
+    await self.__client.publish(topic, message, self._qos)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 110, in decorated
+    return await method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 446, in publish
+    raise MqttCodeError(info.rc, "Could not publish message")
+aiomqtt.exceptions.MqttCodeError: [code:4] The client is not currently connected.
+2024-05-25 20:28:10,540 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-16571' coro=<Session.handle_messages() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\Session.py:351> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,540 - ERROR - Future exception was never retrieved
+future: <Future finished exception=MqttCodeError('Unexpected disconnection')>
+aiomqtt.exceptions.MqttCodeError: [code:7] The connection was lost.
+2024-05-25 20:28:10,540 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-19442' coro=<Client._misc_loop() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py:684> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,540 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-18541' coro=<MQTTProtocol_async.publish() done, defined at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:234> exception=MqttCodeError('Could not publish message')>
+Traceback (most recent call last):
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py", line 246, in publish
+    await self.__client.publish(topic, message, self._qos)
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 110, in decorated
+    return await method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py", line 446, in publish
+    raise MqttCodeError(info.rc, "Could not publish message")
+aiomqtt.exceptions.MqttCodeError: [code:4] The client is not currently connected.
+2024-05-25 20:28:10,540 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-19292' coro=<Timer._job() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\Timer.py:38> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,541 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-19293' coro=<Timer._job() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\Timer.py:38> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,541 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-19294' coro=<Timer._job() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\Timer.py:38> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,541 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-19295' coro=<Timer._job() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\Timer.py:38> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,541 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-1' coro=<Main.main() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\main.py:40> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,541 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-13' coro=<MQTTProtocol_async.start() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:78> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,541 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-16572' coro=<MQTTProtocol_async.start() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:78> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,541 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-16499' coro=<MQTTProtocol_async.run() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:88> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767, gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,542 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-14' coro=<MQTTProtocol_async.run() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:99> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767, gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,542 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-19443' coro=<Client._misc_loop() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\.venv\Lib\site-packages\aiomqtt\client.py:684> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,542 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-16493' coro=<MQTTProtocol_async.start() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:78> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,542 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Task-16573' coro=<MQTTProtocol_async.run() running at D:\01-skola\vysoka\2021-2024\6.semestr\bakalarska_prace\IEC104\IEC104_SERVER\IEC104_v7\MQTTProtocol_async.py:92> wait_for=<Future cancelled> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767, gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:767]>
+2024-05-25 20:28:10,542 - ERROR - Caught exception in on_socket_close: Event loop is closed
+2024-05-25 20:34:29,344 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 20:34:34,471 - INFO - Established with new client: 192.168.1.131
+2024-05-25 20:34:34,471 - INFO - Connection established with 192.168.1.131:46201 (Number of connections: 1)
+2024-05-25 20:34:34,472 - INFO - Established with new client: 192.168.1.131:46201
+2024-05-25 20:38:14,841 - INFO - Connection established with 192.168.1.131:46321 (Number of connections: 2)
+2024-05-25 20:38:14,842 - INFO - Established with new client: 192.168.1.131:46321
+2024-05-25 20:38:19,524 - INFO - Session_1 192.168.1.131:46201 disconnected!
+2024-05-25 20:38:19,525 - INFO - Session_1 192.168.1.131:46201 disconnected!
+2024-05-25 20:38:40,878 - INFO - Session_2 192.168.1.131:46321 disconnected!
+2024-05-25 20:38:40,878 - INFO - Session_2 192.168.1.131:46321 disconnected!
+2024-05-25 20:38:40,879 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 20:41:34,000 - INFO - Established with new client: 192.168.1.131
+2024-05-25 20:41:34,000 - INFO - Connection established with 192.168.1.131:46376 (Number of connections: 1)
+2024-05-25 20:41:34,001 - INFO - Established with new client: 192.168.1.131:46376
+2024-05-25 20:42:05,492 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 20:42:15,469 - INFO - Established with new client: 192.168.1.131
+2024-05-25 20:42:15,470 - INFO - Connection established with 192.168.1.131:47033 (Number of connections: 1)
+2024-05-25 20:42:15,470 - INFO - Established with new client: 192.168.1.131:47033
+2024-05-25 20:43:02,310 - INFO - Connection established with 192.168.1.131:47071 (Number of connections: 2)
+2024-05-25 20:43:02,310 - INFO - Established with new client: 192.168.1.131:47071
+2024-05-25 20:44:39,636 - INFO - Session_1 192.168.1.131:47033 disconnected!
+2024-05-25 20:44:39,636 - INFO - Session_1 192.168.1.131:47033 disconnected!
+2024-05-25 20:45:03,342 - INFO - Session_2 192.168.1.131:47071 disconnected!
+2024-05-25 20:45:03,343 - INFO - Session_2 192.168.1.131:47071 disconnected!
+2024-05-25 20:45:03,343 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 20:58:17,268 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 20:58:20,924 - INFO - Established with new client: 192.168.1.131
+2024-05-25 20:58:20,924 - INFO - Connection established with 192.168.1.131:49395 (Number of connections: 1)
+2024-05-25 20:58:20,924 - INFO - Established with new client: 192.168.1.131:49395
+2024-05-25 23:23:23,768 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 23:23:26,870 - INFO - Established with new client: 192.168.1.131
+2024-05-25 23:23:26,870 - INFO - Connection established with 192.168.1.131:54287 (Number of connections: 1)
+2024-05-25 23:23:26,870 - INFO - Established with new client: 192.168.1.131:54287
+2024-05-25 23:40:51,797 - INFO - Connection established with 192.168.1.131:54743 (Number of connections: 2)
+2024-05-25 23:40:51,797 - INFO - Established with new client: 192.168.1.131:54743
+2024-05-25 23:40:56,145 - INFO - Session_1 192.168.1.131:54287 disconnected!
+2024-05-25 23:40:56,145 - INFO - Session_1 192.168.1.131:54287 disconnected!
+2024-05-25 23:41:17,813 - INFO - Session_2 192.168.1.131:54743 disconnected!
+2024-05-25 23:41:17,813 - INFO - Session_2 192.168.1.131:54743 disconnected!
+2024-05-25 23:41:17,813 - INFO - Listen on 192.168.1.131:2404
+2024-05-25 23:43:54,071 - INFO - Established with new client: 192.168.1.131
+2024-05-25 23:43:54,071 - INFO - Connection established with 192.168.1.131:54792 (Number of connections: 1)
+2024-05-25 23:43:54,072 - INFO - Established with new client: 192.168.1.131:54792

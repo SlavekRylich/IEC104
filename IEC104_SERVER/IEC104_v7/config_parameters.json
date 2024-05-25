@@ -1,6 +1,6 @@
 {
     "server": {
-        "ip_address": "192.168.1.10",
+        "ip_address": "192.168.1.131",
         "port": 2404,
         "k": 12,     
         "w": 8,
@@ -11,7 +11,7 @@
     },
     "mqtt": {
         "enabled": true,
-        "mqtt_broker_ip": "192.168.1.167",
+        "mqtt_broker_ip": "192.168.1.10",
         "mqtt_broker_port": 1883,
         "mqtt_topic": "Doma/Pokoj1/Stul",
         "mqtt_version": 5,

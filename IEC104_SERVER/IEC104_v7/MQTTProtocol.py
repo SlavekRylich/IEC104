@@ -222,8 +222,8 @@ class MQTTProtocol(IDataSharing):
         :param topic: MQTT topic.
         :param callback: Callback function to handle incoming messages.
         """
-        self._client.subscribe(topic)
-        self._client.on_message = callback
+        topic,msg = self._client.subscribe(topic)
+        callback(topic, msg)
 
     def unsubscribe(self, topic: str):
         """
@@ -251,6 +251,7 @@ class MQTTProtocol(IDataSharing):
                                username=self._username,
                                password=self._password)
             await self.publish(topic, payload=data, qos=self._qos, retain=None)
+            await self.subscribe(topic=topic, callback=callback)
 
 
         except Exception as e:

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-
 import asyncio
 import logging
+from typing import Callable
 
+from ASDU import ASDU
 from FrameStatistics import FrameStatistics
 from apci import APCI
 from Frame import Frame
-
 from IFormat import IFormat
 from SFormat import SFormat
 from UFormat import UFormat
@@ -37,11 +37,11 @@ class ClientManager:
                  mqtt_username: str = "",
                  mqtt_password: str = "",
                  mqtt_qos: int = 0,
-                 callback_for_delete=None,
-                 callback_on_message=None,
-                 callback_on_disconnect=None,
-                 flag_callbacks=False,
-                 callback_only_for_client=None,
+                 callback_for_delete: Callable = None,
+                 callback_on_message: Callable = None,
+                 callback_on_disconnect: Callable = None,
+                 flag_callbacks: Callable = False,
+                 callback_only_for_client: Callable = None,
                  whoami: str = 'client'):
         """
         Constructor for QueueManager.
@@ -81,19 +81,14 @@ class ClientManager:
 
         # callbacks for Client app (client_app.py)
         self.__callback_only_for_client = callback_only_for_client
-
         # callback for check if is still connected any clients
         self.__callback_for_delete_self = callback_for_delete
-
         # callback for on_message
         self.__callback_on_message = callback_on_message
-
         # callback for disconnect
         self.__callback_on_disconnect = callback_on_disconnect
-
         # allow for 3rd party callbacks
         self.__flag_set_callbacks = flag_callbacks
-
         # Description of the client
         self.__server_name: str = server_name
         self.__name: str = "Client_" + str(self.__id)
@@ -120,10 +115,8 @@ class ClientManager:
         # Tasks
         self.__tasks: list = []
 
+        self.__loop: asyncio.AbstractEventLoop = asyncio.get_running_loop()
 
-        print(f"pred mqtt")
-        print(f"{self.__whoami}")
-        print(f"{mqtt_enabled}")
         # Setup for MQTT parameters
         if self.__whoami == "server":
 
@@ -139,7 +132,7 @@ class ClientManager:
                 self.__mqtt_username: str = mqtt_username
                 self.__mqtt_password: str = mqtt_password
                 self.__mqtt_qos: int = mqtt_qos
-                # self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
+                # self.__mqtt_client = MQTTProtocol_async(self.__mqtt_client_id,
                 #                                   self.__mqtt_broker_ip,
                 #                                   self.__mqtt_broker_port,
                 #                                   username=self.__mqtt_username,
@@ -155,8 +148,9 @@ class ClientManager:
                                                         version=self.__mqtt_version,
                                                         transport=self.__mqtt_transport,
                                                         qos=self.__mqtt_qos)
+                # self.__mqtt_client.start(self.__loop)
+        self.count = 0
 
-        print(f"po mqtt")
         # statistics
         self.client_stats: FrameStatistics = FrameStatistics(self.ip)
         self.sessions_stats: dict[int, FrameStatistics] = {}
@@ -166,6 +160,10 @@ class ClientManager:
 
         print(f"NEW INSTANCE CLIENTMANAGER ID: {self.__id}")
         logging.debug(f"NEW INSTANCE CLIENTMANAGER ID: {self.__id}")
+
+    async def start_mqtt(self) -> None:
+        task = asyncio.ensure_future(self.__mqtt_client.start(self.__loop))
+        self.__tasks.append(task)
 
     @property
     def flag_delete(self) -> bool:
@@ -328,7 +326,7 @@ class ClientManager:
         self.flag_stop_tasks = True
         # flag for delete instance by ClientManager
         self.flag_delete = True
-
+        self.__mqtt_client.stop = True
         for task in self.__tasks:
             try:
                 task.cancel()
@@ -418,12 +416,36 @@ class ClientManager:
                             self.__tasks.append(task)
 
                         if self.__mqtt_enabled:
-                            # share payload with MQTT
-                            task = asyncio.ensure_future(self.__mqtt_client.save_data(
-                                topic=self.__mqtt_topic,
-                                data=str(apdu.data),
-                                callback=None))
-                            self.__tasks.append(task)
+                            o_apdu = ASDU(apdu.data)
+                            topic = f"IEC104/{self.__name}/{session.name}/requests"
+                            mqtt_data = {
+                                "client": self.__name,
+                                "session": session.name,
+                                "request_code": o_apdu.type_id,
+                            }
+                            self.count += 1
+                            temp_topic = "telegraf/sensors/temperature"
+                            temp_dat = {
+                                "temperature": self.count
+                            }
+                            if self.count > 20:
+                                self.count = 4
+                            try:
+                                # share payload with MQTT
+                                task = asyncio.ensure_future(self.__mqtt_client.publish(
+                                    topic=topic,
+                                    payload=mqtt_data
+                                ))
+                                self.__tasks.append(task)
+
+                                task = asyncio.ensure_future(self.__mqtt_client.publish(
+                                    topic=temp_topic,
+                                    payload=temp_dat
+                                ))
+                                self.__tasks.append(task)
+                            except Exception as e:
+                                print(f"Exception with publish in client manager: {e}")
+                                logging.error(e)
 
                     # # odpověď stejnymi daty jen pro testovani
                     # new_apdu = self.generate_i_frame(apdu.data)
@@ -684,12 +706,13 @@ class ClientManager:
                                     # only one session can be in running state
                                     # -> send STOPDT act to other active sessions
                                     for other_session in self.__sessions:
-                                        if other_session.connection_state == 'CONNECTED' and \
+                                        if other_session != session and \
+                                                other_session.connection_state == 'CONNECTED' and \
                                                 other_session.transmission_state != 'STOPPED':
                                             new_frame = self.generate_stopdt_act()
                                             task = asyncio.ensure_future(self.send_frame(session, new_frame))
                                             self.__tasks.append(task)
-                                            other_session.transmission_state = 'STOPPED'
+                                            other_session.connection_state = 'DISCONNECTED'
 
                                     # ack with STARTDT con
                                     session.transmission_state = 'RUNNING'
@@ -760,6 +783,7 @@ class ClientManager:
                         session.delete_self()
 
                 else:
+                    session.transmission_state = 'STOPPED'
                     # delete session
                     session.delete_self()
 
