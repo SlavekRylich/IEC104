@@ -1,0 +1,35 @@
+# Přidání změn do vývojové větve:
+
+#Změňte výchozí větev:
+git branch -M master
+
+#Přepněte na vývojovou větev, ve které chcete pracovat:
+#vytvoreni vetve
+git checkout -b vyvoj
+
+#Přidejte změněné soubory do staging oblasti:
+git add <soubor>
+
+#Proveďte commit změn s popisem:
+git commit -m "Zpráva o commitu"
+
+#Odeslání změn na GitHub:
+git push origin vyvoj
+
+# 3. Sloučení změn do hlavní větve:
+
+#Přepněte na hlavní větev:
+git checkout master
+
+#Stáhněte nejnovější změny z GitHubu:
+git pull origin master
+
+#Sloučení vývojové větve do hlavní větve:
+git merge vyvoj
+
+# V případě konfliktů je budete muset ručně vyřešit.
+
+#Proveďte commit sloučení:
+git commit -m "Sloučení vývojové větve vyvoj"
+Odeslání změn na GitHub:
+git push origin master
