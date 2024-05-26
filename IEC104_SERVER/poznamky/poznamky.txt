@@ -1,0 +1,94 @@
+*******************************
+Dokumentace MQTT
+*******************************
+
+# instalace:
+sudo apt-get install mosquitto mosquitto-clients
+
+
+# generace nového uživatele a zadání hesla
+sudo mosquitto_passwd -c /etc/mosquitto/.passwd alice
+
+
+# konfigurace vložit do /etc/mosquitto/conf.d/auth.conf
+listener 1883
+allow_anonymous false
+password_file /etc/mosquitto/.passwd
+
+
+# restart služby
+sudo systemctl restart mosquitto
+
+# session - Mosquitto Subscriber
+sudo mosquitto_sub -h localhost -t test -u "alice" -P "p4ssw0rd"
+
+
+# session - Mosquitto Publisher
+sudo mosquitto_pub -h localhost -t "test" -m "Hello - enabled auth" -u "alice" -P "p4ssw0rd"
+
+
+# !!!!!! NEFUNGUJE s autentizací uživatele, v konfiguračním souboru je zakomentové a povolen anonymní přístup
+
+
+sudo apt-get install ca-certificates curl
+
+
+# Docker
+
+# installation
+https://docs.docker.com/engine/install/debian/
+
+# install mosquitto
+https://github.com/sukesh-ak/setup-mosquitto-with-docker
+mqtt: MQTTpass123
+
+# install telegraf influx grafana in docker
+https://www.youtube.com/watch?v=NOWoLfpY2kE
+
+# install portainer
+https://docs.portainer.io/start/install-ce/server/docker/linux
+
+# login Portainer
+user: portainer.io
+passwd: portainer.io
+
+
+*******************************
+Generace docstringu
+*******************************
+
+# video 
+https://www.youtube.com/watch?v=BWIrhgCAae0
+
+
+
+#*******************************
+# Spusteni aplikace IEC104 na platforme Linux a Windows 
+#*******************************
+# Plati pro Python 3.x
+1. vytvorit virtualni prostredi python ve slozce projektu
+# windows
+# vytvoreni
+python -m venv .\.venv
+# aktivace prostredi
+.\.venv\Scripts\activate
+# deaktivace prostredi
+deactivate
+# nebo 
+exit
+
+# linux
+# vytvoreni
+python3 -m venv .venv
+# aktivace prostredi
+source .venv/bin/activate
+# deaktivace prostredi
+deactivate
+# nebo 
+exit
+
+2. doinstalovat potrebne balicky
+-pomoci pip
+pip install -r requirements.txt
+
+3. spustit main.py

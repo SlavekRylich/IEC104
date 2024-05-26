@@ -243,6 +243,14 @@ class Main:
 if __name__ == "__main__":
     code = Main()
     try:
+        system_name = os.name
+
+        if system_name == "nt":
+            print("Systém je Windows")
+        elif system_name == "posix":
+            print("Systém je Linux")
+        else:
+            print(f"Systém: {system_name}")
         if sys.platform.lower() == "win32" or os.name.lower() == "nt":
             from asyncio import set_event_loop_policy, WindowsSelectorEventLoopPolicy
 

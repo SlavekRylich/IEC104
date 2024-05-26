@@ -423,3 +423,4 @@ task: <Task cancelling name='Task-16573' coro=<MQTTProtocol_async.run() running 
 2024-05-25 23:43:54,071 - INFO - Established with new client: 192.168.1.131
 2024-05-25 23:43:54,071 - INFO - Connection established with 192.168.1.131:54792 (Number of connections: 1)
 2024-05-25 23:43:54,072 - INFO - Established with new client: 192.168.1.131:54792
+2024-05-26 08:50:30,765 - INFO - Listen on 192.168.1.131:2404

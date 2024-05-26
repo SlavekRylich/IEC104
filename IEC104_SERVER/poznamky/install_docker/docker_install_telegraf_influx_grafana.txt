@@ -1,0 +1,161 @@
+# install telegraf
+
+# vytvorime si domovskou slozku pro telegraf
+mkdir telegraf_influx_grafana
+cd telegraf_influx_grafana
+
+# vytvor instalacni soubor pro docker s nazvem 'docker-compose.yml'
+vi docker-compose.yml
+
+# s obsahem 
+
+version: '3.6'
+services:
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
+    volumes:
+    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    links:
+      - influxdb
+    ports:
+    - '8125:8125'
+
+  influxdb:
+    image: influxdb:1.8.10
+    container_name: influxdb
+    restart: always
+    environment:
+      - INFLUXDB_DB=influx
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-server
+    restart: always
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=
+    links:
+      - influxdb
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      
+volumes:
+  grafana_data: {}
+  influxdb_data: {}
+
+
+
+
+# vytvor soubor telegraf.conf s obsahem
+vi telegraf.conf
+
+ [global_tags]
+
+[agent]
+  interval = "60s"
+  round_interval = true
+  metric_batch_size = 1000
+  metric_buffer_limit = 10000
+  collection_jitter = "0s"
+  flush_interval = "10s"
+  flush_jitter = "0s"
+  precision = ""
+  hostname = "192.168.1.10"
+  omit_hostname = false
+
+[[outputs.influxdb]]
+  urls = ["http://influxdb:8086"]
+  database = "influx"
+  timeout = "5s"
+  username = "telegraf"
+  password = "metricsmetricsmetricsmetrics"
+
+[[inputs.cpu]]
+  percpu = true
+  totalcpu = true
+  collect_cpu_time = false
+  report_active = false
+
+
+[[inputs.disk]]
+  ignore_fs = ["tmpfs", "devtmpfs", "devfs", "iso9660", "overlay", "aufs", "squashfs"]
+
+
+[[inputs.diskio]]
+
+[[inputs.kernel]]
+
+[[inputs.mem]]
+
+[[inputs.processes]]
+
+[[inputs.swap]]
+
+[[inputs.system]]
+
+[[inputs.nstat]]
+  ## file paths for proc files. If empty default paths will be used:
+  ##    /proc/net/netstat, /proc/net/snmp, /proc/net/snmp6
+  ## These can also be overridden with env variables, see README.
+  proc_net_netstat = "/proc/net/netstat"
+  proc_net_snmp = "/proc/net/snmp"
+  proc_net_snmp6 = "/proc/net/snmp6"
+  ## dump metrics with 0 values too
+  dump_zeros = true
+
+
+[[inputs.mqtt_consumer]]
+  servers = ["tcp://172.17.0.1:1883", "ws://172.17.0.1:9001"]
+  topics = [
+    "IEC104/+/+/requests",
+    "telegraf/sensors/temperature",
+  ]
+  qos = 1
+  username = "mqtt"
+  password = "MQTTpass123"
+  data_format = "json"
+  json_string_fields= ["temperature",] 
+
+  [[inputs.mqtt_consumer.topic_parsing]]
+    topic = "IEC104/+/+/requests"
+    measurement = "measurement/_/_/_"
+    tags = "tag/_/_/_"
+    fields = "_/field/_/_"
+
+
+
+# nainstaluj pomoci
+sudo docker-compose up -d
+
+
+# konfigurace grafany pro cteni dat z influxdb
+# jdi na http://ip:3000
+# prihlaseni admin/admin
+# vlevo Connections>Add new conncetion
+# najdi InfluxDB > Add new data source
+
+Name: InfluxDB
+
+# lokalni ip adresu influxu lze zjistit z prikazu:
+sudo docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container-if>
+
+URL: http://172.19.0.2:8086
+Database: influx
+User: admin  # -> viz konfigurace instalacky docker-compose.yml
+Password: admin 
+>Save & test
