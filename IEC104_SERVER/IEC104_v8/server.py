@@ -254,7 +254,7 @@ class ServerIEC104:
         if client_addr not in self.clients:
             client_manager_instance = ClientManager(client_addr,
                                                     port=self.port,
-                                                    server_name=self.name,
+                                                    parent_name=self.name,
                                                     mqtt_enabled=self.mqtt_enabled,
                                                     mqtt_broker_ip=self.mqtt_broker_ip,
                                                     mqtt_broker_port=self.mqtt_broker_port,

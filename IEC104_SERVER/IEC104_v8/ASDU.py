@@ -323,10 +323,13 @@ class MMeNc1(InfoObj):
         if unpacked_data:
             self.value = bytes_to_float(unpacked_data[3:7])
             self.qds = QDS(unpacked_data[7])
+            self.value_bytes = struct.pack("<f", self.value)
+            formate = f"{'B' * (len(self.value_bytes))}"
+            self.unpack_value = struct.unpack(formate, self.value_bytes)
 
         if value is not None:
             self.value = value
-            self.value_bytes = pack = struct.pack("<f", value)
+            self.value_bytes = struct.pack("<f", value)
             formate = f"{'B' * (len(self.value_bytes))}"
             self.unpack_value = struct.unpack(formate, self.value_bytes)
         if qds is not None:

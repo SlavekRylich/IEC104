@@ -18,6 +18,11 @@ logging.basicConfig(
 
 class IEC104Client(object):
     def __init__(self, name: str = "Client"):
+        self.stop = None
+        self.__flag_set_callbacks = False
+        self.__callback_on_message = None
+        self.__callback_on_disconnect = None
+        self.__callback_on_connect = None
         self.reader: asyncio.StreamReader | None = None
         self.writer: asyncio.StreamWriter | None = None
         self.task_handle_response: asyncio.Task | None = None
@@ -26,24 +31,25 @@ class IEC104Client(object):
         self.client_manager: ClientManager | None = None
         self.active_session: Session | None = None
         self.servers: dict = {}
-        self.data: str = 'random data'
-        self.data1 = 0x65 + \
-                     0x01 + \
-                     0x0A + \
-                     0x00 + \
-                     0x0C + \
-                     0x00 + \
-                     0x00 + \
-                     0x00 + \
-                     0x00 + \
-                     0x05
-
         self.__event: asyncio.Event = asyncio.Event()
 
         self.__name: str = name
         self.loop: asyncio.BaseEventLoop | None = None
         self.no_overflow: int = 0
         self.async_time: float = 0.8
+
+        self.__config_loader: ConfigLoader = ConfigLoader('./config_parameters.json')
+
+        # MQTT config
+        self.mqtt_enabled: bool = self.__config_loader.config['mqtt']['enabled']
+        self.mqtt_broker_ip: str = self.__config_loader.config['mqtt']['mqtt_broker_ip']
+        self.mqtt_broker_port: int = self.__config_loader.config['mqtt']['mqtt_broker_port']
+        self.mqtt_topic: str = self.__config_loader.config['mqtt']['mqtt_topic']
+        self.mqtt_version: int = self.__config_loader.config['mqtt']['mqtt_version']
+        self.mqtt_transport: str = self.__config_loader.config['mqtt']['mqtt_transport']
+        self.mqtt_username: str = self.__config_loader.config['mqtt']['mqtt_username']
+        self.mqtt_password: str = self.__config_loader.config['mqtt']['mqtt_password']
+        self.mqtt_qos: int = self.__config_loader.config['mqtt']['mqtt_qos']
 
         self.data2: bytes = struct.pack(f"{'B' * 10}",
                                         0x65,  # start byte
@@ -60,8 +66,17 @@ class IEC104Client(object):
         self.data2 = (b'\x0B\x07\x03\x00\x0C\x00\x10\x30\x00\xBE\x09\x00\x11\x30'
                       b'\x00\x90\x09\x00\x0E\x30\x00\x75\x00\x00\x28\x30\x00\x25\x09\x00\x29\x30\x00\x75'
                       b'\x00\x00\x0F\x30\x00\x0F\x0A\x00\x2E\x30\x00\xAE\x05\x00')
-        #ac090011
-        # self.data2 = (b'\x0D\x81\x05\x00\x0C\x00\x10\x30\x00\xac\x09\x00\x11\x30')
+
+        dotaz_cteni_102 = b'\x66\x01\x05\x00\x01\x00\x01\x00\x00'
+        # hodnota ve floating point
+        merena_teplota_13 = b'\x0D\x81\x05\x00\x01\x00\x01\x00\x00\x42\xF6\x00\x11\x30'
+        # aktivace
+        povel_aktivace_45 = b'\x2D\x01\x06\x00\x01\x00\x02\x00\x00\x01'
+        # deaktivace
+        povel_deaktivace_45 = b'\x2D\x01\x08\x00\x01\x00\x02\x00\x00\x01'
+
+        povel_potvrzeni_aktivace_45 = b'\x2D\x01\x07\x00\x01\x00\x02\x00\x00\x01'
+        povel_potvrzeni_deaktivace_45 = b'\x2D\x01\x09\x00\x01\x00\x02\x00\x00\x00'
 
         self.data2 = b'\x2D\x01\x08\x00\x01\x00\x02\x00\x00\x01'
         self.dotaz_cteni_102 = b'\x66\x01\x05\x00\x01\x00\x01\x00\x00'
@@ -70,10 +85,8 @@ class IEC104Client(object):
 
         self.data_list: list[bytes] = [self.data2, self.data2]  # define static data
 
-        config_loader: ConfigLoader = ConfigLoader('./config_parameters.json')
-
-        self.server_ip: str = config_loader.config['server']['ip_address']
-        self.server_port: int = config_loader.config['server']['port']
+        self.server_ip: str = self.__config_loader.config['server']['ip_address']
+        self.server_port: int = self.__config_loader.config['server']['port']
 
         # load configuration parameters
         try:
@@ -81,7 +94,7 @@ class IEC104Client(object):
                 self.timeout_t0, \
                 self.timeout_t1, \
                 self.timeout_t2, \
-                self.timeout_t3 = self.load_session_params(config_loader)
+                self.timeout_t3 = self.load_session_params(self.__config_loader)
 
             self.session_params: tuple = (self.k,
                                           self.w,
@@ -159,6 +172,30 @@ class IEC104Client(object):
 
         return k, w, t0, t1, t2, t3
 
+    @property
+    def register_callback_on_connect(self):
+        return self.__callback_on_connect
+
+    @register_callback_on_connect.setter
+    def register_callback_on_connect(self, func):
+        self.__callback_on_connect = func
+
+    @property
+    def register_callback_on_disconnect(self):
+        return self.__callback_on_disconnect
+
+    @register_callback_on_disconnect.setter
+    def register_callback_on_disconnect(self, func):
+        self.__callback_on_disconnect = func
+
+    @property
+    def register_callback_on_message(self):
+        return self.__callback_on_message
+
+    @register_callback_on_message.setter
+    def register_callback_on_message(self, func):
+        self.__callback_on_message = func
+
     async def new_session(self, ip: str, port_num: int):
         try:
             self.reader, self.writer = await asyncio.wait_for(
@@ -170,7 +207,7 @@ class IEC104Client(object):
             logging.info(f"Connected to {client_address}:{client_port}"
                          f"<-->{self.server_ip}:{self.server_port}")
             print(f"Connected to {client_address}:{client_port}"
-                         f"<-->{self.server_ip}:{self.server_port}")
+                  f"<-->{self.server_ip}:{self.server_port}")
 
             # callback functions for class session
             callback_on_message_recv = self.client_manager.on_message_recv_or_timeout
@@ -196,22 +233,30 @@ class IEC104Client(object):
         except Exception as e:
             logging.error(f"Exception with create new session: {e}")
 
-    async def run_client(self, ip, port_num):
+    async def connect(self, ip, port_num):
         try:
             self.__loop = asyncio.get_running_loop()
 
+            callback_for_delete = self.delete_dead_clients
             callback_only_for_client = self.handle_response_for_client
             self.client_manager = ClientManager(ip,
                                                 port=None,
+                                                parent_name=self.__name,
+                                                mqtt_enabled=self.mqtt_enabled,
+                                                mqtt_broker_ip=self.mqtt_broker_ip,
+                                                mqtt_broker_port=self.mqtt_broker_port,
+                                                mqtt_topic=self.mqtt_topic,
+                                                mqtt_version=self.mqtt_version,
+                                                mqtt_transport=self.mqtt_transport,
+                                                mqtt_username=self.mqtt_username,
+                                                mqtt_password=self.mqtt_password,
+                                                mqtt_qos=self.mqtt_qos,
                                                 callback_for_delete=self.check_alive_clients,
-                                                mqtt_version=3,
+                                                callback_on_message=self.__callback_on_message,
+                                                callback_on_disconnect=self.__callback_on_disconnect,
+                                                flag_callbacks=self.__flag_set_callbacks,
                                                 callback_only_for_client=callback_only_for_client,
                                                 whoami='client')
-            # self._in_queue = self.queue.in_queue
-            # self._out_queue = self.queue.out_queue
-            # self._send_buffer = self.queue.send_buffer
-            # self._recv_buffer = self.queue.recv_buffer
-            # self.task_queue = asyncio.create_task(self.queue.start())
 
             logging.debug(f"Initializing {self.server_ip}:{self.server_port}")
 
@@ -219,6 +264,9 @@ class IEC104Client(object):
             self.active_session: Session = await self.new_session(ip, port_num)
             if self.active_session is None:
                 raise Exception("Connection refuse!")
+
+            if self.__flag_set_callbacks:
+                self.__callback_on_connect(ip, port_num, rc=0)
 
             self.servers[ip] = self.client_manager
 
@@ -244,11 +292,19 @@ class IEC104Client(object):
             # await asyncio.gather(self.task_periodic_event_check)
 
             # await asyncio.sleep(self.async_time)
+            task_session = asyncio.create_task(self.active_session.start())
+            task_mqtt_in_clientmager = asyncio.create_task(self.client_manager.start_mqtt())
 
-            await self.active_session.start()
-            await self.task_handle_response
+            if self.mqtt_enabled:
+                await asyncio.gather(task_session, self.task_handle_response, task_mqtt_in_clientmager)
+            # Start the session
+            await asyncio.gather(task_session, self.task_handle_response)
+
 
         except Exception as e:
+            # Wrong connection
+            if self.__flag_set_callbacks:
+                self.__callback_on_connect("", 0, rc=1)
             logging.error(f"Exception with run client app: {e}")
 
     def check_alive_clients(self, server: ClientManager = None) -> None:
@@ -261,37 +317,69 @@ class IEC104Client(object):
         else:
             pass
 
-    async def periodic_event_check(self):
-        while True:
-            logging.debug(f"Starting async server periodic event check.")
+    def delete_dead_clients(self, client: ClientManager = None) -> None:
+        """
+        Check if any client in the list self.clients has a flag for deletion.
+        If a client has the flag set, it is removed from the list.
+        If no clients are left in the list, it returns False.
+        If clients are still present, it returns True.
+
+        Parameters:
+        None
+
+        Returns:
+        None:
+        """
+        self.servers.pop(client.ip)
+        logging.debug(f"{client} deleted from server")
+        # if there are any clients in the list
+        if len(self.servers) > 0:
+            pass
+        # if there are no clients in the list
+        else:
+            pass
+
+    async def start(self) -> None:
+        """
+        The main function of the server application.
+
+        This function initializes a new instance of the ServerIEC104 class,
+        starts listening for incoming client connections, and runs the server.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+
+        Raises:
+        None
+        """
+        if self.__callback_on_connect and self.__callback_on_message and self.__callback_on_disconnect:
+            self.__flag_set_callbacks = True
+
+        else:
+            logging.error(f"Callbacks not set")
+        #
+        # print(f"Listen on {self.ip}:{self.port}")
+        # logging.info(f"Listen on {self.ip}:{self.port}")
+
+        while self.stop:
             try:
-                # delete queue if no session is connected
-                if len(self.servers) != 0:
-                    if self.task_check_alive_queue.done():
-
-                        for value in list(self.servers.values()):
-                            if isinstance(value, ClientManager):
-                                if value.flag_delete:
-                                    del self.servers[value.ip]
-
-                # UI se nebude volat tak často jako ostatní metody
-                self.no_overflow = self.no_overflow + 1
-                if self.no_overflow > 2:
-                    self.no_overflow = 0
-
-                    # await self.task_handle_response
-                    logging.debug(f"no_overflow run")
-
-                await asyncio.sleep(self.async_time)
-
-            except TimeoutError as e:
-                logging.error(f"TimeoutError in periodic_event_check {e}")
+                await asyncio.sleep(2)
                 pass
+                # self._server = await asyncio.start_server(
+                #     self.handle_client,
+                #     self.ip,
+                #     self.port,
+                # )
+                # self.__loop = asyncio.get_running_loop()
+                # await self._server.serve_forever()
 
             except Exception as e:
-                logging.error(f"Exception in periodic_event_check {e}")
-
-            await asyncio.sleep(self.async_time)
+                logging.error(f"Exception with start asyncio server {e}")
+            finally:
+                pass
 
     async def handle_response_for_client(self, session: Session) -> None:
         while not self.client_manager.flag_stop_tasks:
@@ -400,12 +488,31 @@ class IEC104Client(object):
             except Exception as e:
                 logging.error(f"Exception in handle_response_for_client: {e}")
 
+    def close(self):
+        """
+        Close the client.
+
+        This function closes the server by setting the stop flag to True.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+
+        Raises:
+        None
+        """
+        print(f"called close()")
+        # self.stop = True
+        # self.client_manager.flag_stop_tasks = True
+
 
 if __name__ == "__main__":
 
-    client = IEC104Client()
+    my_client = IEC104Client()
     try:
-        asyncio.run(client.run_client(client.server_ip, client.server_port))
+        asyncio.run(my_client.connect(my_client.server_ip, my_client.server_port))
     except KeyboardInterrupt:
         pass
     finally:

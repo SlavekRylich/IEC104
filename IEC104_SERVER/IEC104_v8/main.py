@@ -223,14 +223,14 @@ class Main:
 
 
 if __name__ == "__main__":
-    code = Main()
+    main_code = Main()
     try:
         if sys.platform.lower() == "win32" or os.name.lower() == "nt":
             from asyncio import set_event_loop_policy, WindowsSelectorEventLoopPolicy
 
             set_event_loop_policy(WindowsSelectorEventLoopPolicy())
         # Run your async application as usual
-        asyncio.run(code.main())
+        asyncio.run(main_code.main())
 
     except KeyboardInterrupt:
         pass
