@@ -454,3 +454,5 @@ task: <Task cancelling name='Task-16573' coro=<MQTTProtocol_async.run() running 
 2024-05-26 11:06:51,047 - INFO - Connection established with 192.168.1.131:58337 (Number of connections: 1)
 2024-05-26 11:06:51,047 - INFO - Established with new client: 192.168.1.131:58337
 2024-05-26 11:06:51,047 - INFO - Established with new client: 192.168.1.131:58337
+2024-05-27 23:42:39,050 - INFO - Listen on 192.168.1.10:2404
+2024-05-27 23:42:39,051 - ERROR - Exception with start asyncio server could not bind on any address out of [('192.168.1.10', 2404)]

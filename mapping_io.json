@@ -10,25 +10,25 @@
       "ioa": 1,
       "pin": "ai",
       "pin_id": "2_02",
-      "command_method": "evok_api",
+      "command_method": "evok_api"
     },
     {
       "ioa": 2,
       "pin": "do",
       "pin_id": "1_01",
-      "command_method": "evok_api",
+      "command_method": "evok_api"
     },
     {
       "ioa": 3,
       "pin": "ao",
       "pin_id": "1_01",
-      "command_method": "gpio",
+      "command_method": "gpio"
     },
     {
       "ioa": 4,
       "pin": "di",
       "pin_id": "1_01",
-      "command_method": "gpio",
+      "command_method": "gpio"
     }
   ]
 }

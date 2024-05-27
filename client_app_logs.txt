@@ -4135,3 +4135,6 @@ NotImplementedError
 2024-05-27 22:39:40,783 - ERROR - Error "Operation timed out". Reconnecting in 5 seconds.
 2024-05-27 22:39:45,784 - ERROR - Caught exception in on_socket_unregister_write: 
 2024-05-27 23:31:06,356 - INFO - Session_1 192.168.1.10:2404 disconnected!
+2024-05-27 23:43:37,203 - INFO - Connected to 192.168.1.131:16093<-->192.168.1.10:2404
+2024-05-27 23:43:37,204 - INFO - Connection established with 192.168.1.10:2404 (Number of connections: 1)
+2024-05-27 23:43:37,204 - INFO - Established with new client: 192.168.1.10:2404
