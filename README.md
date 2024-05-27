@@ -1,6 +1,6 @@
 # Project - IEC-104 
 
-This project primally for my bachelor thesis. 
+This project primarily for my bachelor thesis. 
 This is implementation of protocol IEC-104 for [Unipi Patron](https://kb.unipi.technology/en:hw:007-patron) series devices. 
 
 ## Requirements
@@ -71,70 +71,56 @@ In mapping_io.json setup your IOA address to correct pin.
   {
     "host": "192.168.1.10",
     "port": 8080,
-<<<<<<< HEAD
-=======
-    "username": "admin",
-    "password": "123",
->>>>>>> 3872ded21b4813febdfd7059d2e369f0491b1868
     "ASDU_address": 1
   }
 ],
   "mappings": [
     {
       "ioa": 1,
-<<<<<<< HEAD
       "pin": "ai",
       "pin_id": "2_02",
-      "command_method": "evok_api",
+      "command_method": "evok_api"
     },
     {
       "ioa": 2,
       "pin": "do",
       "pin_id": "1_01",
-      "command_method": "evok_api",
+      "command_method": "evok_api"
     },
     {
       "ioa": 3,
       "pin": "ao",
       "pin_id": "1_01",
-      "command_method": "gpio",
+      "command_method": "gpio"
     },
     {
       "ioa": 4,
       "pin": "di",
       "pin_id": "1_01",
-      "command_method": "gpio",
-=======
-      "iec101_type_id": 102,
+      "command_method": "gpio"
+    },
+    {
       "pin": "ai",
       "pin_id": "2_02",
-      "command_method": "evok_api",
-      "value": null
+      "command_method": "evok_api"
     },
     {
       "ioa": 2,
-      "iec101_type_id": 45,
       "pin": "do",
       "pin_id": "1_01",
-      "command_method": "evok_api",
-      "value": 1
+      "command_method": "evok_api"
     },
     {
       "ioa": 3,
-      "iec101_type_id": 20,
       "pin": "ao",
       "pin_id": "1_01",
-      "command_method": "gpio",
-      "value": 1
+      "command_method": "gpio"
     },
     {
       "ioa": 4,
-      "iec101_type_id": 21,
       "pin": "di",
       "pin_id": "1_01",
-      "command_method": "gpio",
-      "value": 1
->>>>>>> 3872ded21b4813febdfd7059d2e369f0491b1868
+      "command_method": "gpio"
     }
   ]
 }
