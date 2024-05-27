@@ -5,7 +5,7 @@ import logging
 class IEC101Mapper:
     def __init__(self):
 
-        config_file = "Mapper_IO.json"
+        config_file = "mapping_io.json"
         with open(config_file, "r") as f:
             self.config = json.load(f)
 

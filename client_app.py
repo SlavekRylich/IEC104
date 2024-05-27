@@ -44,9 +44,6 @@ class IEC104Client(object):
         self.mqtt_enabled: bool = self.__config_loader.config['mqtt']['enabled']
         self.mqtt_broker_ip: str = self.__config_loader.config['mqtt']['mqtt_broker_ip']
         self.mqtt_broker_port: int = self.__config_loader.config['mqtt']['mqtt_broker_port']
-        self.mqtt_topic: str = self.__config_loader.config['mqtt']['mqtt_topic']
-        self.mqtt_version: int = self.__config_loader.config['mqtt']['mqtt_version']
-        self.mqtt_transport: str = self.__config_loader.config['mqtt']['mqtt_transport']
         self.mqtt_username: str = self.__config_loader.config['mqtt']['mqtt_username']
         self.mqtt_password: str = self.__config_loader.config['mqtt']['mqtt_password']
         self.mqtt_qos: int = self.__config_loader.config['mqtt']['mqtt_qos']
@@ -245,9 +242,6 @@ class IEC104Client(object):
                                                 mqtt_enabled=self.mqtt_enabled,
                                                 mqtt_broker_ip=self.mqtt_broker_ip,
                                                 mqtt_broker_port=self.mqtt_broker_port,
-                                                mqtt_topic=self.mqtt_topic,
-                                                mqtt_version=self.mqtt_version,
-                                                mqtt_transport=self.mqtt_transport,
                                                 mqtt_username=self.mqtt_username,
                                                 mqtt_password=self.mqtt_password,
                                                 mqtt_qos=self.mqtt_qos,
@@ -504,6 +498,7 @@ class IEC104Client(object):
         None
         """
         print(f"called close()")
+        self.loop.close()
         # self.stop = True
         # self.client_manager.flag_stop_tasks = True
 

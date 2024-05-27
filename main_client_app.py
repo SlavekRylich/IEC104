@@ -39,26 +39,30 @@ class Main:
     #     while not self.client.stop:
 
     async def main(self):
-        task = asyncio.create_task(self.client.start())
-        self.tasks.append(task)
-        # self.tasks.append(asyncio.create_task(self.read_input()))
+        try:
+            task = asyncio.create_task(self.client.start())
+            self.tasks.append(task)
+            # self.tasks.append(asyncio.create_task(self.read_input()))
 
-        task = asyncio.create_task(self.client.connect("192.168.1.10", 2404))
-        self.tasks.append(task)
+            task = asyncio.create_task(self.client.connect("192.168.1.10", 2404))
+            self.tasks.append(task)
 
-        # while not self.client.stop:
-        #     key = input("zadej: \n")
-        #     if key == 'q':
-        #         self.client.stop = True
-        #         break
+            # while not self.client.stop:
+            #     key = input("zadej: \n")
+            #     if key == 'q':
+            #         self.client.stop = True
+            #         break
 
-        # TODO
-        # while True:
-        for task in self.tasks:
-            await asyncio.gather(*self.tasks)
-            # await task
-        await asyncio.sleep(1)
-        self.client.close()
+            # TODO
+            # while True:
+            for task in self.tasks:
+                await asyncio.gather(*self.tasks)
+                # await task
+            await asyncio.sleep(1)
+        except Exception as e:
+            logging.error(f"Error with run task server in main(): {e}")
+        finally:
+            self.client.close()
 
     def on_connect(self, host, port, rc):
         if rc == 0:

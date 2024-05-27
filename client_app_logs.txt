@@ -4104,3 +4104,34 @@ AttributeError: 'ClientManager' object has no attribute '_ClientManager__mqtt_en
 2024-05-27 18:34:13,917 - INFO - Connected to 192.168.1.131:10072<-->192.168.1.10:2404
 2024-05-27 18:34:13,918 - INFO - Connection established with 192.168.1.10:2404 (Number of connections: 1)
 2024-05-27 18:34:13,918 - INFO - Established with new client: 192.168.1.10:2404
+2024-05-27 22:36:47,445 - ERROR - Exception with create new session: [Errno 10061] Connect call failed ('192.168.1.10', 2404)
+2024-05-27 22:36:47,445 - ERROR - Connection refused with client!
+2024-05-27 22:36:47,445 - ERROR - Exception with run client app: Connection refuse!
+2024-05-27 22:38:44,106 - ERROR - Exception with create new session: [Errno 10061] Connect call failed ('192.168.1.10', 2404)
+2024-05-27 22:38:44,106 - ERROR - Connection refused with client!
+2024-05-27 22:38:44,106 - ERROR - Exception with run client app: Connection refuse!
+2024-05-27 22:39:07,288 - ERROR - Exception with create new session: [WinError 1225] Vzd·len˝ poËÌtaË odmÌtl sÌùovÈ p¯ipojenÌ
+2024-05-27 22:39:07,288 - ERROR - Exception with run client app: Connection refuse!
+2024-05-27 22:39:17,960 - ERROR - Exception with create new session: [WinError 1225] Vzd·len˝ poËÌtaË odmÌtl sÌùovÈ p¯ipojenÌ
+2024-05-27 22:39:17,960 - ERROR - Exception with run client app: Connection refuse!
+2024-05-27 22:39:30,760 - INFO - Connected to 192.168.1.131:15105<-->192.168.1.10:2404
+2024-05-27 22:39:30,760 - INFO - Connection established with 192.168.1.10:2404 (Number of connections: 1)
+2024-05-27 22:39:30,776 - ERROR - Exception in callback AbstractEventLoop.add_reader(1232, <function Cli...0021BE3046200>)
+handle: <Handle AbstractEventLoop.add_reader(1232, <function Cli...0021BE3046200>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 538, in add_reader
+    raise NotImplementedError
+NotImplementedError
+2024-05-27 22:39:30,777 - ERROR - Exception in callback AbstractEventLoop.add_writer(<socket.socke....1.10', 1883)>, <function Cli...0021BE3062200>)
+handle: <Handle AbstractEventLoop.add_writer(<socket.socke....1.10', 1883)>, <function Cli...0021BE3062200>)>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1008.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 544, in add_writer
+    raise NotImplementedError
+NotImplementedError
+2024-05-27 22:39:40,783 - ERROR - Error "Operation timed out". Reconnecting in 5 seconds.
+2024-05-27 22:39:45,784 - ERROR - Caught exception in on_socket_unregister_write: 
+2024-05-27 23:31:06,356 - INFO - Session_1 192.168.1.10:2404 disconnected!

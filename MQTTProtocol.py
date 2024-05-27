@@ -9,7 +9,7 @@ import aiomqtt as mqtt
 # import paho.mqtt as mqtt
 
 
-class MQTTProtocol_async:
+class MQTTProtocol:
     """
     MQTTProtocol class for handling MQTT communication.
     """
@@ -19,8 +19,6 @@ class MQTTProtocol_async:
                  port: int,
                  username: str = None,
                  password: str = None,
-                 version: int = None,
-                 transport: str = "tcp",
                  qos: int = 0
                  ):
         """
@@ -31,35 +29,25 @@ class MQTTProtocol_async:
         :param port: MQTT broker port.
         :param username: MQTT broker username.
         :param password: MQTT broker password.
-        :param version: MQTT protocol version.
-        :param transport: MQTT transport protocol.
         :param qos: MQTT Quality of Service level.
         """
 
         # self._msg_info: mqtt.MQTTMessage | None = None
         self.task = None
-        self.topic = "Doma/Pokoj1/Stul"
+        self.topic = ""
         self._username: str = username
         self._password: str = password
         self._broker_url: str = broker_url
         self._port: int = port
         self._qos: int = qos
 
-        if version == 5:
-            # self._client = mqtt.Client(client_id=client_id,
-            #                            transport=transport,
-            #                            protocol=mqtt.MQTTv5)
-            self.__client = mqtt.Client(
-                hostname=self._broker_url,  # The only non-optional parameter
-                port=self._port,
-                username=username,
-                password=password,
-                identifier=client_id,
-            )
-
-            self.transport = transport
-        else:
-            raise Exception("Invalid MQTT version!")
+        self.__client = mqtt.Client(
+            hostname=self._broker_url,  # The only non-optional parameter
+            port=self._port,
+            username=username,
+            password=password,
+            identifier=client_id,
+        )
 
         self.__client.on_connect = self._on_connect
         self.__client.on_message = self._on_message
@@ -185,7 +173,7 @@ class MQTTProtocol_async:
             None
         """
         logging.debug(f"Reason code from broker: {reason_code}"
-              f"\nMid: {mid}")
+                      f"\nMid: {mid}")
         pass
 
     def _on_subscribe(self, client, userdata, mid, reason_code=None, properties=None):
@@ -204,10 +192,10 @@ class MQTTProtocol_async:
             None
         """
         logging.debug(f"Subscribed back: \n client: {client}"
-              f"userdata: {userdata}\n"
-              f"mid: {mid}\n"
-              f"rc: {reason_code}\n"
-              f"properties: {properties}")
+                      f"userdata: {userdata}\n"
+                      f"mid: {mid}\n"
+                      f"rc: {reason_code}\n"
+                      f"properties: {properties}")
 
     async def connect(self, host, port, username, password):
         """

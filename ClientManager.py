@@ -16,7 +16,7 @@ from Session import Session
 
 # from MQTTProtocol_async_gmqtt import MQTTProtocol_async_gmqtt
 # # from MQTTProtocol import MQTTProtocol
-from MQTTProtocol import MQTTProtocol_async
+from MQTTProtocol import MQTTProtocol
 
 
 class ClientManager:
@@ -31,9 +31,6 @@ class ClientManager:
                  mqtt_enabled: bool = False,
                  mqtt_broker_ip: str = "",
                  mqtt_broker_port: int = 1883,
-                 mqtt_topic: str = "",
-                 mqtt_version: int = None,
-                 mqtt_transport: str = "",
                  mqtt_username: str = "",
                  mqtt_password: str = "",
                  mqtt_qos: int = 0,
@@ -123,29 +120,15 @@ class ClientManager:
             self.__mqtt_client_id: str = self.__ip + ':' + str(self.__port)
             self.__mqtt_broker_ip: str = mqtt_broker_ip
             self.__mqtt_broker_port: int = mqtt_broker_port
-            self.__mqtt_topic: str = mqtt_topic
-            self.__mqtt_version: int = mqtt_version
-            self.__mqtt_transport: str = mqtt_transport
             self.__mqtt_username: str = mqtt_username
             self.__mqtt_password: str = mqtt_password
             self.__mqtt_qos: int = mqtt_qos
-            # self.__mqtt_client = MQTTProtocol_async(self.__mqtt_client_id,
-            #                                   self.__mqtt_broker_ip,
-            #                                   self.__mqtt_broker_port,
-            #                                   username=self.__mqtt_username,
-            #                                   password=self.__mqtt_password,
-            #                                   version=self.__mqtt_version,
-            #                                   transport=self.__mqtt_transport,
-            #                                   qos=self.__mqtt_qos)
-            self.__mqtt_client = MQTTProtocol_async(self.__mqtt_client_id,
-                                                    self.__mqtt_broker_ip,
-                                                    self.__mqtt_broker_port,
-                                                    username=self.__mqtt_username,
-                                                    password=self.__mqtt_password,
-                                                    version=self.__mqtt_version,
-                                                    transport=self.__mqtt_transport,
-                                                    qos=self.__mqtt_qos)
-            # self.__mqtt_client.start(self.__loop)
+            self.__mqtt_client = MQTTProtocol(self.__mqtt_client_id,
+                                              self.__mqtt_broker_ip,
+                                              self.__mqtt_broker_port,
+                                              username=self.__mqtt_username,
+                                              password=self.__mqtt_password,
+                                              qos=self.__mqtt_qos)
         self.count = 0
 
         # statistics

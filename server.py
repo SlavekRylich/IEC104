@@ -48,9 +48,6 @@ class ServerIEC104:
         self.mqtt_enabled: bool = self.__config_loader.config['mqtt']['enabled']
         self.mqtt_broker_ip: str = self.__config_loader.config['mqtt']['mqtt_broker_ip']
         self.mqtt_broker_port: int = self.__config_loader.config['mqtt']['mqtt_broker_port']
-        self.mqtt_topic: str = self.__config_loader.config['mqtt']['mqtt_topic']
-        self.mqtt_version: int = self.__config_loader.config['mqtt']['mqtt_version']
-        self.mqtt_transport: str = self.__config_loader.config['mqtt']['mqtt_transport']
         self.mqtt_username: str = self.__config_loader.config['mqtt']['mqtt_username']
         self.mqtt_password: str = self.__config_loader.config['mqtt']['mqtt_password']
         self.mqtt_qos: int = self.__config_loader.config['mqtt']['mqtt_qos']
@@ -187,26 +184,100 @@ class ServerIEC104:
 
     @property
     def register_callback_on_connect(self):
+        """
+        Getter method for the callback function to be called when a client connects to the server.
+
+        Returns:
+        function: The callback function to be called when a client connects to the server.
+                  If no callback function is set, it returns None.
+
+        Raises:
+        None
+        """
         return self.__callback_on_connect
 
     @register_callback_on_connect.setter
     def register_callback_on_connect(self, func):
+        """
+        Set the callback function to be called when a client connects to the server.
+
+        Parameters:
+        func (function): The callback function to be called when a client connects to the server.
+                         The function should accept three parameters: client_ip (str), client_port (int), and rc (int).
+                         The rc parameter represents the result code of the connection attempt.
+                         If rc is 0, the connection was successful. If rc is not 0, the connection failed.
+
+        Returns:
+        None
+
+        Raises:
+        None
+        """
         self.__callback_on_connect = func
 
     @property
     def register_callback_on_disconnect(self):
+        """
+        Getter method for the callback function to be called when a client disconnects from the server.
+
+        Returns:
+        function: The callback function to be called when a client disconnects from the server.
+                  If no callback function is set, it returns None.
+
+        Raises:
+        None
+        """
         return self.__callback_on_disconnect
 
     @register_callback_on_disconnect.setter
     def register_callback_on_disconnect(self, func):
+        """
+        Set the callback function to be called when a client disconnects from the server.
+
+        Parameters:
+        func (function): The callback function to be called when a client disconnects from the server.
+                         The function should accept three parameters: client_ip (str), client_port (int), and rc (int).
+                         The rc parameter represents the result code of the disconnection attempt.
+                         If rc is 0, the disconnection was successful. If rc is not 0, the disconnection failed.
+
+        Returns:
+        None
+
+        Raises:
+        None
+        """
         self.__callback_on_disconnect = func
 
     @property
     def register_callback_on_message(self):
+        """
+        Getter method for the callback function to be called when a message is received from a client.
+
+        Returns:
+        function: The callback function to be called when a message is received from a client.
+                  If no callback function is set, it returns None.
+
+        Raises:
+        None
+        """
         return self.__callback_on_message
 
     @register_callback_on_message.setter
     def register_callback_on_message(self, func):
+        """
+        Set the callback function to be called when a message is received from a client.
+
+        Parameters:
+        func (function): The callback function to be called when a message is received from a client.
+                         The function should accept three parameters: client_ip (str), client_port (int), and message (str).
+                         The message parameter represents the received data from the client.
+
+        Returns:
+        None
+
+        Raises:
+        None
+        """
         self.__callback_on_message = func
 
     def get_all_clients_stats(self) -> list | None:
@@ -258,9 +329,6 @@ class ServerIEC104:
                                                     mqtt_enabled=self.mqtt_enabled,
                                                     mqtt_broker_ip=self.mqtt_broker_ip,
                                                     mqtt_broker_port=self.mqtt_broker_port,
-                                                    mqtt_topic=self.mqtt_topic,
-                                                    mqtt_version=self.mqtt_version,
-                                                    mqtt_transport=self.mqtt_transport,
                                                     mqtt_username=self.mqtt_username,
                                                     mqtt_password=self.mqtt_password,
                                                     mqtt_qos=self.mqtt_qos,
