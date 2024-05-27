@@ -1,9 +1,0 @@
-2024-05-14 14:56:12,459 - INFO - Toto je informaèní zpráva
-2024-05-14 14:56:12,459 - WARNING - Toto je varovná zpráva
-2024-05-14 14:56:12,459 - ERROR - Toto je chybová zpráva
-2024-05-14 14:56:44,129 - INFO - Toto je informaèní zpráva
-2024-05-14 14:56:44,130 - WARNING - Toto je varovná zpráva
-2024-05-14 14:56:44,130 - ERROR - Toto je chybová zpráva
-2024-05-14 14:57:04,047 - INFO - Toto je informaèní zpráva
-2024-05-14 14:57:04,047 - WARNING - Toto je varovná zpráva
-2024-05-14 14:57:04,047 - ERROR - Toto je chybová zpráva
