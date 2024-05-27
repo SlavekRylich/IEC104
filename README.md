@@ -71,12 +71,18 @@ In mapping_io.json setup your IOA address to correct pin.
   {
     "host": "192.168.1.10",
     "port": 8080,
+<<<<<<< HEAD
+=======
+    "username": "admin",
+    "password": "123",
+>>>>>>> 3872ded21b4813febdfd7059d2e369f0491b1868
     "ASDU_address": 1
   }
 ],
   "mappings": [
     {
       "ioa": 1,
+<<<<<<< HEAD
       "pin": "ai",
       "pin_id": "2_02",
       "command_method": "evok_api",
@@ -98,6 +104,37 @@ In mapping_io.json setup your IOA address to correct pin.
       "pin": "di",
       "pin_id": "1_01",
       "command_method": "gpio",
+=======
+      "iec101_type_id": 102,
+      "pin": "ai",
+      "pin_id": "2_02",
+      "command_method": "evok_api",
+      "value": null
+    },
+    {
+      "ioa": 2,
+      "iec101_type_id": 45,
+      "pin": "do",
+      "pin_id": "1_01",
+      "command_method": "evok_api",
+      "value": 1
+    },
+    {
+      "ioa": 3,
+      "iec101_type_id": 20,
+      "pin": "ao",
+      "pin_id": "1_01",
+      "command_method": "gpio",
+      "value": 1
+    },
+    {
+      "ioa": 4,
+      "iec101_type_id": 21,
+      "pin": "di",
+      "pin_id": "1_01",
+      "command_method": "gpio",
+      "value": 1
+>>>>>>> 3872ded21b4813febdfd7059d2e369f0491b1868
     }
   ]
 }
