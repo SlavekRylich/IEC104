@@ -5,7 +5,7 @@ import time
 import asyncio
 
 from ClientManager import ClientManager
-from config_loader import ConfigLoader
+from Config_loader import ConfigLoader
 from Session import Session
 
 # Nastavení úrovně logování
