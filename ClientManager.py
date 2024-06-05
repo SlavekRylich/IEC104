@@ -417,7 +417,7 @@ class ClientManager:
                                                 mqtt_data = {
                                                     "client": self.__name,
                                                     "session": session.name,
-                                                    "temperature": 20,
+                                                    "temperature": temperature,
                                                 }
                                                 # share payload with MQTT
                                                 task = asyncio.ensure_future(self.__mqtt_client.publish(

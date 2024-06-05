@@ -26,7 +26,6 @@ class IEC104Client(object):
         self.reader: asyncio.StreamReader | None = None
         self.writer: asyncio.StreamWriter | None = None
         self.task_handle_response: asyncio.Task | None = None
-        self.__loop: asyncio.BaseEventLoop | None = None
         self.task_check_alive_queue: asyncio.Task | None = None
         self.client_manager: ClientManager | None = None
         self.active_session: Session | None = None
@@ -39,6 +38,10 @@ class IEC104Client(object):
         self.async_time: float = 0.8
 
         self.__config_loader: ConfigLoader = ConfigLoader('./config_parameters.json')
+
+        self.__config_test: ConfigLoader = ConfigLoader('./config_10000frames.json')
+        self.__count_test_frames = self.__config_test.config['test']['count']
+        self.__test_pause = self.__config_test.config['test']['pause']/1000     # to ms
 
         # MQTT config
         self.mqtt_enabled: bool = self.__config_loader.config['mqtt']['enabled']
@@ -390,10 +393,11 @@ class IEC104Client(object):
                     if actual_transmission_state == 'STOPPED':
 
                         new_frame = self.client_manager.generate_testdt_act()
-                        for i in range(0, 2):
+                        for i in range(0, self.__count_test_frames):
                             # self.__out_queue.to_send((session, frame), session_event)
                             await self.client_manager.send_frame(session, new_frame)
-                            await asyncio.sleep(2.5)
+                            await asyncio.sleep(self.__test_pause)
+
 
                         # send start act
                         if self.client_manager.flag_start_sequence:
@@ -497,6 +501,7 @@ class IEC104Client(object):
         Raises:
         None
         """
+        print(f"called close()")
         if self.loop:
             self.loop.close()
         # self.stop = True

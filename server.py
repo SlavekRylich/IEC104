@@ -11,7 +11,7 @@ from ClientManager import ClientManager
 # Nastavení úrovně logování
 logging.basicConfig(
     filename='server_log.txt',
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 

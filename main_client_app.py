@@ -8,6 +8,7 @@ import time
 import requests
 
 import ASDU
+from Config_loader import ConfigLoader
 from Mapper_IO import IEC101Mapper
 from client_app import IEC104Client
 from server import ServerIEC104
@@ -43,8 +44,10 @@ class Main:
             task = asyncio.create_task(self.client.start())
             self.tasks.append(task)
             # self.tasks.append(asyncio.create_task(self.read_input()))
-
-            task = asyncio.create_task(self.client.connect("192.168.1.10", 2404))
+            config_loader: ConfigLoader = ConfigLoader('./config_parameters.json')
+            server_ip = config_loader.config['server']['ip_address']
+            server_port = config_loader.config['server']['port']
+            task = asyncio.create_task(self.client.connect(server_ip, server_port))
             self.tasks.append(task)
 
             # while not self.client.stop:

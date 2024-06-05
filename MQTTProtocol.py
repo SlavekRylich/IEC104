@@ -47,6 +47,7 @@ class MQTTProtocol:
             username=username,
             password=password,
             identifier=client_id,
+            timeout=20
         )
 
         self.__client.on_connect = self._on_connect
@@ -230,8 +231,12 @@ class MQTTProtocol:
         # self._msg_info = self._client.publish(topic, payload, qos)
         message = json.dumps(payload)
         if self._connected:
-            await self.__client.publish(topic, message, self._qos)
-            logging.debug(f"Published to {topic}: {message} with qos={qos}")
+            try:
+                await self.__client.publish(topic, message, self._qos)
+                logging.debug(f"Published to {topic}: {message} with qos={qos}")
+            except Exception as e:
+                logging.error(f"mqtt client: Exception: {e}")
+
         else:
             self.for_send.append((topic, payload))
 
